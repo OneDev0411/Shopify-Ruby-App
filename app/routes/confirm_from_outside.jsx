@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import { useAuthenticatedFetch } from "../hooks";
 
 const ConfirmFromOutside = () => {
-  const urlParams = new URLSearchParams(window.location.search);
+  const urlParams = new URLSearchParams(typeof document !== 'undefined' ? window.location.search : '');
   const shopify_domain = urlParams.get('shop');
   const charge_id = urlParams.get('charge_id');
   const app = useAppBridge();
@@ -24,7 +24,7 @@ const ConfirmFromOutside = () => {
      })
      .then( (response) => { return response.json(); })
      .then( (data) => {
-      if (window.top == window.self) {
+      if (typeof document !== 'undefined' && window.top == window.self) {
         // If the current window is the 'parent', change the URL by setting location.href  
         redirect.dispatch(Redirect.Action.REMOTE, `/confirm_charge?success=${data.success}`);
   

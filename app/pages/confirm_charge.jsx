@@ -8,7 +8,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 
 export default function ConfirmCharge() {
-    const urlParams = new URLSearchParams(window.location.search);
+    const urlParams = new URLSearchParams(typeof document !== 'undefined' ? window.location.search : '');
     const shopAndHost = useSelector(state => state.shopAndHost);
     const app = useAppBridge();
     const success = JSON.parse(urlParams.get('success'));

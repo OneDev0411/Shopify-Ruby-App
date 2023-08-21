@@ -73,7 +73,7 @@ export default function Settings() {
                 };
                 const toastNotice = Toast.create(app, toastOptions);
                 toastNotice.dispatch(Toast.Action.SHOW);
-                window.location.reload();
+                typeof document !== 'undefined' ? window.location.reload() : undefined;
             })
             .catch((error) => {
                 console.log("Error", error);

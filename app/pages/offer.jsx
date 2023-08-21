@@ -27,7 +27,7 @@ import {
     const emptyToastProps = { content: null };
     const [isLoading, setIsLoading] = useState(true);
     const [toastProps, setToastProps] = useState(emptyToastProps);
-    const info = { offer: { shop_domain: window.location.host } };
+    const info = { offer: { shop_domain: typeof document !== 'undefined' ? window.location.host : '' } };
   
     const [taggedWith, setTaggedWith] = useState('');
     const [queryValue, setQueryValue] = useState(null);
