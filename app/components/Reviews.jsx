@@ -1,7 +1,7 @@
-import {Layout, Card, Stack, Image, HorizontalGrid} from "@shopify/polaris";
+import {Layout, Card, LegacyStack as Stack, Image, HorizontalGrid} from "@shopify/polaris";
 import { useAppBridge } from '@shopify/app-bridge-react'
 import { TitleBar } from "@shopify/app-bridge-react";
-import {stars} from "../assets";
+import {stars} from "@assets";
 import "../components/stylesheets/reviewStyle.css";
 import React from 'react';
 

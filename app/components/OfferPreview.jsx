@@ -5,7 +5,7 @@ import {
 	Grid
 } from '@shopify/polaris';
 import TemplateComponent from 'react-mustache-template-component';
-import themeCss from '../assets/theme.css';
+import themeCss from '@assets/theme.css';
 import Compact from './layouts/template_single_compact';
 import Stack from './layouts/template_multi_stack';
 import Carousel from './layouts/template_multi_carousel';

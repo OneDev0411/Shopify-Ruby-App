@@ -12,7 +12,7 @@ import {
     Modal,
     Grid,
     ColorPicker,
-    Stack,
+    LegacyStack as Stack,
     Icon,
     Tooltip,
     RadioButton,
@@ -41,16 +41,16 @@ import { useAppQuery, useAuthenticatedFetch } from "../hooks";
 import { useNavigate } from 'react-router-dom';
 import SelectProductsModal from "../components/SelectProductsModal";
 import { SelectCollectionsModal } from "../components/SelectCollectionsModal";
-import customCss from '../assets/custom.css';
-import product_page_image_1 from "../assets/images/product_page_image_1.png";
-import product_page_image_2 from "../assets/images/product_page_image_2.png";
-import product_page_image_3 from "../assets/images/product_page_image_3.png";
-import cart_page_image_1 from "../assets/images/cart_page_image_1.png";
-import cart_page_image_2 from "../assets/images/cart_page_image_2.png";
-import cart_page_image_3 from "../assets/images/cart_page_image_3.png";
-import ajax_cart_image_1 from "../assets/images/ajax_cart_image_1.png";
-import ajax_cart_image_2 from "../assets/images/ajax_cart_image_2.png";
-import ajax_cart_image_3 from "../assets/images/ajax_cart_image_3.png";
+import customCss from '@assets/custom.css';
+import product_page_image_1 from "@assets/images/product_page_image_1.png";
+import product_page_image_2 from "@assets/images/product_page_image_2.png";
+import product_page_image_3 from "@assets/images/product_page_image_3.png";
+import cart_page_image_1 from "@assets/images/cart_page_image_1.png";
+import cart_page_image_2 from "@assets/images/cart_page_image_2.png";
+import cart_page_image_3 from "@assets/images/cart_page_image_3.png";
+import ajax_cart_image_1 from "@assets/images/ajax_cart_image_1.png";
+import ajax_cart_image_2 from "@assets/images/ajax_cart_image_2.png";
+import ajax_cart_image_3 from "@assets/images/ajax_cart_image_3.png";
 
 export function EditOfferTabs(props) {
     const shopAndHost = useSelector(state => state.shopAndHost);

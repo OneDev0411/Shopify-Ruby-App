@@ -14,6 +14,7 @@ if (
 
 /** @type {import('@remix-run/dev').AppConfig} */
 module.exports = {
+  serverDependenciesToBundle: ["axios"],
   ignoredRouteFiles: ["**/.*"],
   appDirectory: "app",
   serverModuleFormat: "cjs",

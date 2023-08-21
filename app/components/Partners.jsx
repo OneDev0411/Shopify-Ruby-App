@@ -1,6 +1,6 @@
 import {VerticalStack, LegacyCard, Image, Button, Grid, Pagination} from '@shopify/polaris';
 import {useState, useCallback, useEffect} from 'react';
-import {stars} from "../assets";
+import {stars} from "@assets";
 import Slider from "react-slick";
 import React from "react";
 import { useSelector } from 'react-redux';

@@ -12,7 +12,7 @@ import {
   VerticalStack,
   VideoThumbnail,
 } from "@shopify/polaris";
-import { homeImage } from "../assets/index.js";
+import { homeImage } from "@assets/index.js";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
@@ -135,7 +135,7 @@ function HelpSection({ handleOpen, shopData }) {
       <VideoThumbnail
         onClick={handleOpen}
         videoLength={80}
-        thumbnailUrl="./../assets/business-woman-smiling-in-office.jpeg"
+        thumbnailUrl="./@assets/business-woman-smiling-in-office.jpeg"
       />
     </MediaCard>
   );

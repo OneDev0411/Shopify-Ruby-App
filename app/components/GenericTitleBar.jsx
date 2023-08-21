@@ -1,4 +1,4 @@
-import {Button, DisplayText, Icon, Grid } from "@shopify/polaris";
+import {Button, Text, Icon, Grid } from "@shopify/polaris";
 
 export function GenericTitleBar(props) {
 	return (
@@ -8,9 +8,9 @@ export function GenericTitleBar(props) {
 				<Grid.Cell columnSpan={{xs: 6, sm: 3, md: 8, lg: 10, xl: 4}}>
 					<div style={{display: 'flex', float:'left', gap: '10px'}}>
 						<img src={props.image}></img>
-						<DisplayText size="small">
+						<Text variant="headingLg" as="p">
 							{props.title}
-						</DisplayText>
+						</Text>
 					</div>
 				</Grid.Cell>
 				{props.buttonText ? (

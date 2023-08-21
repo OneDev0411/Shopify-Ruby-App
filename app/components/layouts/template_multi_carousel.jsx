@@ -1,6 +1,6 @@
 import { forwardRef, useState, useEffect, useRef } from "react";
 import TemplateComponent from 'react-mustache-template-component';
-import themeCss from '../../assets/theme.css';
+import themeCss from '@assets/theme.css';
 import Siema from 'siema';
 import { useSelector } from 'react-redux';
 

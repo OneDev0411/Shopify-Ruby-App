@@ -7,7 +7,7 @@
     "jsx": "react-jsx",
     "moduleResolution": "node16",
     "resolveJsonModule": true,
-    "target": "ES2019",
+    "target": "ESNext",
     "strict": true,
     "allowJs": true,
     "checkJs": true,
@@ -15,7 +15,9 @@
     "forceConsistentCasingInFileNames": true,
     "baseUrl": ".",
     "paths": {
-      "~/*": ["./app/*"]
+      "~/*": ["./app/*"],
+      "@assets": ["./public/assets"],
+      "@assets/*": ["./public/assets/*"]
     },
     "types": [
       "@shopify/app-bridge-types"

@@ -5,7 +5,7 @@ import {
 	Grid
 } from '@shopify/polaris';
 import TemplateComponent from 'react-mustache-template-component';
-import themeCss from '../../assets/theme.css';
+import themeCss from '@assets/theme.css';
 import { useSelector } from 'react-redux';
 
 export default function Stack(props) {

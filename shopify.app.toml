@@ -2,7 +2,7 @@
 
 name = "icu-fit"
 client_id = "116375a77fd8cd8c68962564bbe03c3f"
-application_url = "https://nvidia-traveling-prize-entering.trycloudflare.com"
+application_url = "https://boards-alumni-sessions-replication.trycloudflare.com"
 embedded = true
 
 [access_scopes]
@@ -11,9 +11,9 @@ scopes = "write_products"
 
 [auth]
 redirect_urls = [
-  "https://nvidia-traveling-prize-entering.trycloudflare.com/auth/callback",
-  "https://nvidia-traveling-prize-entering.trycloudflare.com/auth/shopify/callback",
-  "https://nvidia-traveling-prize-entering.trycloudflare.com/api/auth/callback"
+  "https://boards-alumni-sessions-replication.trycloudflare.com/auth/callback",
+  "https://boards-alumni-sessions-replication.trycloudflare.com/auth/shopify/callback",
+  "https://boards-alumni-sessions-replication.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]

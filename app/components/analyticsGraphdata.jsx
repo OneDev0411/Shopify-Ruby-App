@@ -1,9 +1,11 @@
 import {LegacyCard, VerticalStack} from '@shopify/polaris';
 import React, { useEffect, useState, useCallback } from 'react';
-import {PolarisVizProvider, StackedAreaChart } from '@shopify/polaris-viz';
+import {PolarisVizProvider, StackedAreaChart } from "@shopify/polaris-viz/build/esm/index";
 import { useAuthenticatedFetch } from "../hooks";
 import { useSelector } from 'react-redux';
 import '@shopify/polaris-viz/build/esm/styles.css';
+
+
   
 function setKeys(period){
     if(period=='daily'){
