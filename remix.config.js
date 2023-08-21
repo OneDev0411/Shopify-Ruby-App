@@ -14,7 +14,22 @@ if (
 
 /** @type {import('@remix-run/dev').AppConfig} */
 module.exports = {
-  serverDependenciesToBundle: ["axios"],
+  serverDependenciesToBundle: [
+    "axios",
+    "@shopify/polaris-viz",
+    "@shopify/polaris-viz-core",
+    "d3-scale",
+    "d3-core",
+    "d3-array",
+    "d3-shape",
+    "d3-path",
+    "d3-interpolate",
+    "d3-time",
+    "d3-format",
+    "d3-time-format",
+    "d3-color",
+    "internmap"
+  ],
   ignoredRouteFiles: ["**/.*"],
   appDirectory: "app",
   serverModuleFormat: "cjs",

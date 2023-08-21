@@ -2,7 +2,7 @@
 
 name = "icu-fit"
 client_id = "116375a77fd8cd8c68962564bbe03c3f"
-application_url = "https://boards-alumni-sessions-replication.trycloudflare.com"
+application_url = "https://years-medicaid-petroleum-presentations.trycloudflare.com"
 embedded = true
 
 [access_scopes]
@@ -11,9 +11,9 @@ scopes = "write_products"
 
 [auth]
 redirect_urls = [
-  "https://boards-alumni-sessions-replication.trycloudflare.com/auth/callback",
-  "https://boards-alumni-sessions-replication.trycloudflare.com/auth/shopify/callback",
-  "https://boards-alumni-sessions-replication.trycloudflare.com/api/auth/callback"
+  "https://years-medicaid-petroleum-presentations.trycloudflare.com/auth/callback",
+  "https://years-medicaid-petroleum-presentations.trycloudflare.com/auth/shopify/callback",
+  "https://years-medicaid-petroleum-presentations.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]

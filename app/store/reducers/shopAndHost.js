@@ -1,8 +1,9 @@
 import {createSlice} from '@reduxjs/toolkit';
-const params = new URLSearchParams(window.location.search);
+const params = {};
+// new URLSearchParams(window.location.search);
 const initialState = {
-  shop: params.get('shop'),
-  host: params.get('host'),
+  shop: params['shop'],
+  host: params['host'],
 };
 
 export const shopAndHostSlice = createSlice({
