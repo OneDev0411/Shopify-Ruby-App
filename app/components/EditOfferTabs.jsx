@@ -27,11 +27,11 @@ import {
   } from '@shopify/polaris-icons';
 import {ModalAddProduct} from "./modal_AddProduct";
 import {ModalAddConditions} from "./modal_AddConditions";
-import HomePage from "../pages/subscription";
+import HomePage from "../routes/subscription";
 import { useState, useCallback, useRef, useEffect } from "react";
 import { SketchPicker } from 'react-color';
 import React from "react";
-import Subscription from "../pages/subscription";
+import Subscription from "../routes/subscription";
 import tinycolor from "tinycolor2";
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';

@@ -30,7 +30,10 @@ export default function App() {
         data-api-key={apiKey}
       />
       <ui-nav-menu>
-        <Link to="/app" rel="home">
+        <Link to="/app/additional" rel="home">
+          Home
+        </Link>
+        <Link to="/index" rel="entry">
           Home
         </Link>
         <Link to="/app/additional">Additional page</Link>
@@ -39,9 +42,9 @@ export default function App() {
         i18n={polarisTranslations}
         linkComponent={RemixPolarisLink}
       >
-        <Provider store={store}>
+        {/* <Provider store={store}> */}
               <Outlet />
-        </Provider>
+        {/* </Provider> */}
       </PolarisAppProvider>
     </>
   );

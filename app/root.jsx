@@ -6,8 +6,14 @@ import {
   Scripts,
   ScrollRestoration,
 } from "@remix-run/react";
+import MyGlobalContext from './contexts/global';
 
 export default function App() {
+  let globalData = {
+    theme: 'dark',
+    // ... other data
+  };
+
   return (
     <html>
       <head>
@@ -17,10 +23,12 @@ export default function App() {
         <Links />
       </head>
       <body>
-        <Outlet />
-        <ScrollRestoration />
-        <LiveReload />
-        <Scripts />
+        <MyGlobalContext.Provider value={globalData}>
+          <Outlet />
+          <ScrollRestoration />
+          <LiveReload />
+          <Scripts />
+        </MyGlobalContext.Provider>
       </body>
     </html>
   );
