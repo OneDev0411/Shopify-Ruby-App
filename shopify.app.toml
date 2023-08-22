@@ -2,7 +2,7 @@
 
 name = "icu-fit"
 client_id = "116375a77fd8cd8c68962564bbe03c3f"
-application_url = "https://urban-course-cradle-analyzed.trycloudflare.com"
+application_url = "https://vitamin-solving-gloves-estimated.trycloudflare.com"
 embedded = true
 
 [access_scopes]
@@ -11,9 +11,9 @@ scopes = "write_products"
 
 [auth]
 redirect_urls = [
-  "https://urban-course-cradle-analyzed.trycloudflare.com/auth/callback",
-  "https://urban-course-cradle-analyzed.trycloudflare.com/auth/shopify/callback",
-  "https://urban-course-cradle-analyzed.trycloudflare.com/api/auth/callback"
+  "https://vitamin-solving-gloves-estimated.trycloudflare.com/auth/callback",
+  "https://vitamin-solving-gloves-estimated.trycloudflare.com/auth/shopify/callback",
+  "https://vitamin-solving-gloves-estimated.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]

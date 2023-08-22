@@ -284,8 +284,7 @@ export function OffersList() {
     });
   }
 
-  const nav = (arg, arg2) => undefined;
-  // useNavigate();
+  const nav = useNavigate();
 
   const handleEditOffer = (offer_id) => {
     nav('/edit-offer', { state: { offerID: offer_id } });
