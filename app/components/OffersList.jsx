@@ -16,7 +16,7 @@ import {
 import { TitleBar } from "@shopify/app-bridge-react";
 import { useState, useCallback, useEffect } from 'react';
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "@remix-run/react";
 import { useAppQuery, useAuthenticatedFetch } from "../hooks";
 import { useSelector } from "react-redux";
 import {homeImage} from "@assets/index.js";
@@ -32,7 +32,7 @@ export function OffersList() {
   const emptyToastProps = { content: null };
   const [isLoading, setIsLoading] = useState(true);
   const [toastProps, setToastProps] = useState(emptyToastProps);
-  const info = { offer: { shop_domain: window.location.host } };
+  const info = { offer: { shop_domain: ''} };
 
   const [taggedWith, setTaggedWith] = useState('');
   const [queryValue, setQueryValue] = useState(null);
@@ -89,11 +89,11 @@ export function OffersList() {
   );
   const handleSorting = useCallback((headingIndex, direction) => {
     console.log('came in handle sorting');
-  });
+  }, []);
   const handleTaggedWithRemove = useCallback(() => setTaggedWith(null), []);
   const handleQueryValueChange = useCallback((value) => {
     setFilteredData(offersData.filter((o) => o.title.toLowerCase().includes(value.toLowerCase())));
-  });
+  }, []);
   const handleQueryValueRemove = useCallback(() => setQueryValue(null), []);
   const handleClearAll = useCallback(() => {
     handleTaggedWithRemove();
@@ -117,7 +117,7 @@ export function OffersList() {
         return b.revenue - a.revenue;
       });
     }
-    setSortValue(value), []});
+    setSortValue(value), []}, []);
 
   const promotedBulkActions = [
     {
@@ -284,10 +284,11 @@ export function OffersList() {
     });
   }
 
-  const navigateTo = useNavigate();
+  const nav = (arg, arg2) => undefined;
+  // useNavigate();
 
   const handleEditOffer = (offer_id) => {
-    navigateTo('/edit-offer', { state: { offerID: offer_id } });
+    nav('/edit-offer', { state: { offerID: offer_id } });
   }
 
   return (

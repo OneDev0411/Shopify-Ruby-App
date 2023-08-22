@@ -17,7 +17,7 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 export function CreateOfferCard() {
-  const navigateTo = useNavigate();
+  // const navigateTo = useNavigate();
   const shopAndHost = useSelector((state) => state.shopAndHost);
   const [shopData, setShopData] = useState({
     currentShop: null,
@@ -29,8 +29,8 @@ export function CreateOfferCard() {
   const handleOpen = useCallback(() => setActive(true), []);
   const handleClose = useCallback(() => setActive(false), []);
   const handleCreateOffer = useCallback(() => {
-    navigateTo("/edit-offer", { state: { offerID: null } });
-  }, [navigateTo]);
+    // navigateTo("/edit-offer", { state: { offerID: null } });
+  }, []);
 
   const fetchCurrentShop = useCallback(async () => {
     try {
@@ -135,7 +135,7 @@ function HelpSection({ handleOpen, shopData }) {
       <VideoThumbnail
         onClick={handleOpen}
         videoLength={80}
-        thumbnailUrl="./@assets/business-woman-smiling-in-office.jpeg"
+        thumbnailUrl="/assets/business-woman-smiling-in-office.jpeg"
       />
     </MediaCard>
   );

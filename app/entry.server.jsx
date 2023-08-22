@@ -3,6 +3,8 @@ import { renderToPipeableStream } from "react-dom/server";
 import { Response } from "@remix-run/node";
 import { RemixServer } from "@remix-run/react";
 import isbot from "isbot";
+import { Provider } from 'react-redux';
+import store from './store/store';
 
 import { addDocumentResponseHeaders } from "./shopify.server";
 
@@ -23,11 +25,14 @@ export default async function handleRequest(
 
   return new Promise((resolve, reject) => {
     const { pipe, abort } = renderToPipeableStream(
-      <RemixServer
-        context={remixContext}
-        url={request.url}
-        abortDelay={ABORT_DELAY}
-      />,
+      <Provider store={store}>
+        <RemixServer
+          context={remixContext}
+          url={request.url}
+          abortDelay={ABORT_DELAY}
+        />
+        </Provider>
+      ,
       {
         [callbackName]: () => {
           const body = new PassThrough();
