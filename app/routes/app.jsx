@@ -40,10 +40,10 @@ export default function App() {
   console.log('HOST', host);
   return (
     <>
-      {/* <script
+      <script
         src="https://cdn.shopify.com/shopifycloud/app-bridge.js"
         data-api-key={apiKey}
-      /> */}
+      />
       <ui-nav-menu>
         <Link to="/app/additional" rel="home">
           Home
