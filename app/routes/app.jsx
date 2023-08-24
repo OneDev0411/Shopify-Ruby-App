@@ -44,15 +44,6 @@ export default function App() {
         src="https://cdn.shopify.com/shopifycloud/app-bridge.js"
         data-api-key={apiKey}
       />
-      <ui-nav-menu>
-        <Link to="/app/additional" rel="home">
-          Home
-        </Link>
-        <Link to="/index" rel="entry">
-          Home
-        </Link>
-        <Link to="/app/additional">Additional page</Link>
-      </ui-nav-menu>
       <MyGlobalContext.Provider value={session}>
         <AppBridgeProvider
           config={{ host, apiKey, forceRedirect: true }}
@@ -62,6 +53,26 @@ export default function App() {
             linkComponent={RemixPolarisLink}
           >
             <Provider store={store}>
+              <ui-nav-menu>
+                <Link to="/app/dashboard">
+                  Dashboard
+                </Link>
+                <Link to="/app/offer">
+                  Offers
+                </Link>
+                <Link to="/app/analytics">
+                  Analytics
+                </Link>
+                <Link to="/app/subscription">
+                  Subscription
+                </Link>
+                <Link to="/app/settings">
+                  Settings
+                </Link>
+                <Link to="/app/help">
+                  Help
+                </Link>
+              </ui-nav-menu>
               <Outlet />
             </Provider>
           </PolarisAppProvider>
