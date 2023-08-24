@@ -27,11 +27,9 @@ import {
   } from '@shopify/polaris-icons';
 import {ModalAddProduct} from "./modal_AddProduct";
 import {ModalAddConditions} from "./modal_AddConditions";
-import HomePage from "../routes/subscription";
 import { useState, useCallback, useRef, useEffect } from "react";
 import { SketchPicker } from 'react-color';
 import React from "react";
-import Subscription from "../routes/subscription";
 import tinycolor from "tinycolor2";
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
@@ -103,7 +101,7 @@ export function EditOfferTabs(props) {
     const handleDiscountCodeChange = useCallback((value)=> props.updateOffer("discount_code", value), []);
     const handleCustomTextChange = useCallback((newChecked) => props.updateOffer("show_custom_field", newChecked), []);
     const handleShowNoThanksChange = useCallback((newChecked) => props.updateOffer("show_nothanks", !newChecked), []);
-    
+
     //modal controls
     const [productModal, setProductModal] = useState(false);
     const [productData, setProductData] = useState("");
@@ -242,8 +240,8 @@ export function EditOfferTabs(props) {
 
     useEffect(() => {
         setAutopilotButtonText(
-            props.autopilotCheck.isPending === "complete" 
-            ? "Configure Autopilot Settings" 
+            props.autopilotCheck.isPending === "complete"
+            ? "Configure Autopilot Settings"
             : props.autopilotCheck.isPending === "in progress"
             ? "setting up..."
             : "Launch Autopilot"
@@ -333,8 +331,8 @@ export function EditOfferTabs(props) {
         .then( (response) => { return response.json() })
         .then( (data) => {
             setAutopilotButtonText(
-                data.message === "complete" 
-                ? "Configure Autopilot Settings" 
+                data.message === "complete"
+                ? "Configure Autopilot Settings"
                 : data.message === "in progress"
                 ? "setting up..."
                 : "Launch Autopilot"
@@ -369,7 +367,7 @@ export function EditOfferTabs(props) {
                     <LegacyCard.Section>
                         <LegacyStack spacing="loose" vertical>
                                 {props.offer.id == null ? (
-                                    <>  
+                                    <>
                                         <p>What product would you like to have in the offer?</p>
                                         <br/>
                                         <ButtonGroup>
@@ -382,10 +380,10 @@ export function EditOfferTabs(props) {
                                         <p>What product would you like to have in the offer?</p>
                                         <br/>
                                         <ButtonGroup>
-                                            <Button id={"btnSelectProduct"} onClick={ () => { handleModal(); getProducts(); } } ref={modalRef}>Select product manually</Button> 
+                                            <Button id={"btnSelectProduct"} onClick={ () => { handleModal(); getProducts(); } } ref={modalRef}>Select product manually</Button>
                                         </ButtonGroup>
                                     </>
-                                    ) : (<></>) 
+                                    ) : (<></>)
                                 }
                             <ButtonGroup>
                             {(props.offer.id == null && props.autopilotCheck?.shop_autopilot == false) ? (
@@ -410,7 +408,7 @@ export function EditOfferTabs(props) {
                             {props.offer.offerable_product_details.length > 0 ? (
                                 <>
                                     {props.offer.offerable_product_details.map((value, index) => (
-                                        <>  
+                                        <>
                                             <Badge><p style={{color: 'blue'}}>{props.offer.offerable_product_details[index].title}</p></Badge>
                                         </>
                                     ))}
@@ -449,7 +447,7 @@ export function EditOfferTabs(props) {
                             </LegacyCard.Section>
                             <LegacyCard.Section>
                                 <LegacyStack spacing="loose" vertical>
-                                    <TextField 
+                                    <TextField
                                         label="Exclude products with a tag"
                                         helpText="Autopilot will not suggest any product with this tag."
                                         value={props.offer?.excluded_tags}
@@ -869,7 +867,7 @@ export function SecondTab(props) {
         else if (props.offer.in_cart_page) {
             setMultipleDefaultSettings(false);
             if(props.shop.default_template_settings && props.shop.default_template_settings.defaultSettingsForCartPage) {
-                setDefaultSetting(true);   
+                setDefaultSetting(true);
             }
             else if(props.shop.default_template_settings && props.shop.default_template_settings.templateForCartPage) {
                 setUseTemplate(true);
@@ -881,7 +879,7 @@ export function SecondTab(props) {
         else if (props.offer.in_product_page) {
             setMultipleDefaultSettings(false);
             if(props.shop.default_template_settings && props.shop.default_template_settings.defaultSettingsForProductPage) {
-                setDefaultSetting(true);   
+                setDefaultSetting(true);
             }
             else if(props.shop.default_template_settings && props.shop.default_template_settings.templateForProductPage) {
                 setUseTemplate(true);
@@ -1091,7 +1089,7 @@ export function SecondTab(props) {
             }
         }
     });
-    
+
 
     const handleUseTemplateChange = useCallback((value, selectedPage) => {
         if(value) {
@@ -1141,7 +1139,7 @@ export function SecondTab(props) {
                 setInsertedImage1(ajax_cart_image_1);
                 setInsertedImage2(ajax_cart_image_2);
                 setInsertedImage2(ajax_cart_image_3);
-                
+
             }
         }
         else {
@@ -1547,7 +1545,7 @@ export function SecondTab(props) {
                         <Button onClick={handleSelectProductsModal} ref={modalProd} >Select Product</Button>
                     </>
                     )}
-                    <Modal 
+                    <Modal
                         open={productModal}
                         onClose={handleProductsModal}
                         title="Select products from your store"
