@@ -21,10 +21,10 @@ export default function Flex(props) {
         </div>
       {{/show_product_image}}
       <div class="details">
-        
+
       	<div class="product-title-wrapper">
 		  {{#link_to_product }}
-			<a href="https://admin.shopify.com/store/${shopAndHost.shop.replace(/\.myshopify\.com$/, '')}/products/{{ id }}" target="_blank">
+			<a href="https://admin.shopify.com/store/${shopAndHost.shop?.replace(/\.myshopify\.com$/, '')}/products/{{ id }}" target="_blank">
 		  {{/link_to_product}}
 		  {{#show_product_title}}
 		      <span class="product-title">
@@ -131,9 +131,9 @@ export default function Flex(props) {
   {{/show_powered_by}}
 </div>
 `;
-	
 
-	return( 
+
+	return(
 		<TemplateComponent template={template} data={({...props.offer, ...props.shop, ...props.checkKeysValidity})} sanitize={false}/>
 	);
 }

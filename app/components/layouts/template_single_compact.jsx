@@ -1,5 +1,5 @@
 import { forwardRef, useState, useEffect, useRef } from "react";
-import { 
+import {
 	Text,
 	LegacyCard,
 	Grid
@@ -20,13 +20,13 @@ export default function Compact(props) {
 	        	{{#offerable_product_details}}
 	          <div class="nudge-wrapper" style="text-align: center">
 
-	          	<div style="display: flex; justify-content:center"> 
-	          		{{#show_product_image}}           
+	          	<div style="display: flex; justify-content:center">
+	          		{{#show_product_image}}
                 <img src="//{{ medium_image_url }}" class="product-image medium">
                 {{/show_product_image}}
 	            </div>
 	            {{#link_to_product }}
-					    	<a href="https://admin.shopify.com/store/${shopAndHost.shop.replace(/\.myshopify\.com$/, '')}/products/{{ id }}" target="_blank">
+					    	<a href="https://admin.shopify.com/store/${shopAndHost.shop?.replace(/\.myshopify\.com$/, '')}/products/{{ id }}" target="_blank">
 					  	{{/link_to_product}}
 	            <div class="product-title-wrapper">
 	                  <span class="product-title">
@@ -48,7 +48,7 @@ export default function Compact(props) {
 	                <span class="product-price-wrapper money">
 	                    {{{ available_json_variants.0.unparenthesized_price }}}
 	                </span>
-	                {{/show_product_price}}  
+	                {{/show_product_price}}
 	            </div>
 	            {{#link_to_product }}
 					    	</a>
@@ -118,9 +118,9 @@ export default function Compact(props) {
 			      {{/offerable_product_details}}
 	        </div>
 	</div>`
-	
 
-	return( 
+
+	return(
 		<TemplateComponent template={template} data={({...props.offer, ...props.shop, ...props.checkKeysValidity})} sanitize={false}/>
 	);
 };

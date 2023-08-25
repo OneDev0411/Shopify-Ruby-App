@@ -8,6 +8,7 @@ import { json } from "@remix-run/node";
 import {
   useActionData,
   useLoaderData,
+  useNavigate,
   useNavigation,
   useSubmit,
 } from "@remix-run/react";
@@ -97,6 +98,7 @@ export default function HomePage() {
   const { shopie } = useSelector(state => ({ shop: 'HEo'}) );
 
   const fetchCurrentShop = useCallback(async () => {
+    const navigate = useNavigate();
 
     fetch(`/api/merchant/current_shop?shop=${shopAndHost.shop}`, {
       method: 'GET',
@@ -112,12 +114,12 @@ export default function HomePage() {
      })
      .catch((error) => {
         console.log("error", error);
-     })    
+     })
   }, [setCurrentShop, setPlanName, setTrialDays]);
-  
+
   useEffect(()=>{
     fetchCurrentShop();
-  }, [fetchCurrentShop]) 
+  }, [fetchCurrentShop])
 
   return (
     <Page

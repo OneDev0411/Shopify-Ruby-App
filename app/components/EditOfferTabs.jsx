@@ -235,8 +235,8 @@ export function EditOfferTabs(props) {
       {label: '5', value: 5}
     ];
 
-    const navigateTo = useNavigate();
-    const location = useLocation();
+    // const location = useLocation(); TBD through context
+    const location = {};
 
     useEffect(() => {
         setAutopilotButtonText(

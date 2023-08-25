@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useState } from "react";
+import React, {useEffect, useCallback, useState, useContext} from "react";
 import {
   Button,
   ButtonGroup,
@@ -13,12 +13,14 @@ import {
   VideoThumbnail,
 } from "@shopify/polaris";
 import { homeImage } from "@assets/index.js";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "@remix-run/react";
 import { useSelector } from "react-redux";
+import MyGlobalContext from "~/contexts/global";
 
 export function CreateOfferCard() {
-  // const navigateTo = useNavigate();
   const shopAndHost = useSelector((state) => state.shopAndHost);
+  const { navigate } = useContext(MyGlobalContext);
+
   const [shopData, setShopData] = useState({
     currentShop: null,
     planName: "",
@@ -29,8 +31,8 @@ export function CreateOfferCard() {
   const handleOpen = useCallback(() => setActive(true), []);
   const handleClose = useCallback(() => setActive(false), []);
   const handleCreateOffer = useCallback(() => {
-    // navigateTo("/edit-offer", { state: { offerID: null } });
-  }, []);
+    navigate("/app/edit-offer", { state: { offerID: null } })
+  }, [navigate]);
 
   const fetchCurrentShop = useCallback(async () => {
     try {
@@ -40,7 +42,7 @@ export function CreateOfferCard() {
       console.log("error", error);
     }
   }, [shopAndHost]);
-  
+
   useEffect(() => {
     fetchCurrentShop();
   }, [fetchCurrentShop]);

@@ -12,7 +12,7 @@ import {
   Grid, TextField
 } from '@shopify/polaris';
 import { TitleBar } from '@shopify/app-bridge-react';
-import { useState, useEffect, useCallback } from 'react';
+import {useState, useEffect, useCallback, useContext} from 'react';
 import { OffersList } from "../components";
 import { useAppQuery, useAuthenticatedFetch } from "../hooks";
 import { useAppBridge } from "@shopify/app-bridge-react";
@@ -20,6 +20,7 @@ import { useSelector } from "react-redux";
 import { TotalSalesData, ConversionRate, OrderOverTimeData } from "../components"
 import {useNavigate} from "react-router-dom";
 import {redirect} from "@remix-run/node";
+import MyGlobalContext from "~/contexts/global";
 
 export default function IndexTableWithAllElementsExample() {
   const [queryValue, setQueryValue] = useState(null);
@@ -29,6 +30,7 @@ export default function IndexTableWithAllElementsExample() {
   const shopAndHost = useSelector(state => state.shopAndHost);
   const fetch = useAuthenticatedFetch(shopAndHost.host);
   const app = useAppBridge();
+  const { navigate } = useContext(MyGlobalContext);
 
 
 
@@ -109,7 +111,7 @@ export default function IndexTableWithAllElementsExample() {
   );
 
   const handleOpenOfferPage = () => {
-    redirect(`/edit-offer/new`);
+    navigate('/app/edit-offer', { state: { offerID: null } });
   }
 
   return (

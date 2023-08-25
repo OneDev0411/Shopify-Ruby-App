@@ -26,11 +26,11 @@ export default function Carousel(props) {
       </div>
       {{/show_product_image}}
       <div class="details">
-        
+
 
         <div class="product-title-wrapper">
 		  {{#link_to_product }}
-			<a href="https://admin.shopify.com/store/${shopAndHost.shop.replace(/\.myshopify\.com$/, '')}/products/{{ id }}" target="_blank">
+			<a href="https://admin.shopify.com/store/${shopAndHost.shop?.replace(/\.myshopify\.com$/, '')}/products/{{ id }}" target="_blank">
 		  {{/link_to_product}}
 		  {{#show_product_title}}
 		      <span class="product-title">
@@ -121,7 +121,7 @@ export default function Carousel(props) {
 		</div>
 
 
-        
+
       </div>
     </div>
     {{/offerable_product_details}}
@@ -155,9 +155,9 @@ export default function Carousel(props) {
 		  next.addEventListener('click', function () { mySiema.next() });
 		}
 	}, [props.checkKeysValidity.selectedCarouselWidth])
-	
 
-	return( 
+
+	return(
 		<>
 				<TemplateComponent template={template.current} data={({...props.offer, ...props.shop, ...props.checkKeysValidity})} sanitize={false}/>
 		</>

@@ -14,7 +14,7 @@ import {
   LegacyCard
 } from '@shopify/polaris';
 import { TitleBar } from "@shopify/app-bridge-react";
-import {useState, useCallback, useEffect} from 'react';
+import {useState, useCallback, useEffect, useContext} from 'react';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { GenericFooter } from '../components';
@@ -22,6 +22,7 @@ import { useAppQuery, useAuthenticatedFetch } from "../hooks";
 import { useSelector } from "react-redux";
 import { OffersList } from '../components';
 import {redirect} from "@remix-run/node";
+import MyGlobalContext from "~/contexts/global";
 
 export default function IndexTableWithAllElementsExample() {
 
@@ -37,9 +38,10 @@ export default function IndexTableWithAllElementsExample() {
   const [filteredData, setFilteredData] = useState([]);
   const shopAndHost = useSelector(state => state.shopAndHost);
   const fetch = useAuthenticatedFetch(shopAndHost.host);
+  const { navigate } = useContext(MyGlobalContext);
 
   const handleOpenOfferPage = () => {
-    redirect('/edit-offer/new');
+    navigate('/app/edit-offer', { state: { offerID: null } });
   }
 
   return (
