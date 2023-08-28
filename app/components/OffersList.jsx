@@ -287,7 +287,7 @@ export function OffersList() {
   const nav = useNavigate();
 
   const handleEditOffer = (offer_id) => {
-    nav('/edit-offer', { state: { offerID: offer_id } });
+    nav('/app/edit-offer', { state: { offerID: offer_id } });
   }
 
   return (

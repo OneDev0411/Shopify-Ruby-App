@@ -8,11 +8,6 @@ import {
 } from "@remix-run/react";
 
 export default function App() {
-  let globalData = {
-    theme: 'dark',
-    // ... other data
-  };
-
   return (
     <html>
       <head>
@@ -22,10 +17,10 @@ export default function App() {
         <Links />
       </head>
       <body>
-            <Outlet />
-            <ScrollRestoration />
-            <LiveReload />
-            <Scripts />
+        <Outlet />
+        <ScrollRestoration />
+        <LiveReload />
+        <Scripts />
       </body>
     </html>
   );

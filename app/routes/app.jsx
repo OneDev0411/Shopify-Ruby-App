@@ -4,6 +4,7 @@ import {
   Link,
   Outlet,
   useLoaderData,
+  useNavigate,
   useRouteError,
 } from "@remix-run/react";
 import { AppProvider as PolarisAppProvider } from "@shopify/polaris";
@@ -37,6 +38,8 @@ export async function loader({ request }) {
 
 export default function App() {
   const { apiKey, polarisTranslations, session, host } = useLoaderData();
+  const navigate = useNavigate();
+
   console.log('HOST', host);
   return (
     <>
@@ -44,16 +47,7 @@ export default function App() {
         src="https://cdn.shopify.com/shopifycloud/app-bridge.js"
         data-api-key={apiKey}
       />
-      <ui-nav-menu>
-        <Link to="/app/additional" rel="home">
-          Home
-        </Link>
-        <Link to="/index" rel="entry">
-          Home
-        </Link>
-        <Link to="/app/additional">Additional page</Link>
-      </ui-nav-menu>
-      <MyGlobalContext.Provider value={session}>
+      <MyGlobalContext.Provider value={{session, navigate}}>
         <AppBridgeProvider
           config={{ host, apiKey, forceRedirect: true }}
         >
@@ -62,6 +56,26 @@ export default function App() {
             linkComponent={RemixPolarisLink}
           >
             <Provider store={store}>
+              <ui-nav-menu>
+                <Link to="/app/dashboard">
+                  Dashboard
+                </Link>
+                <Link to="/app/offer">
+                  Offers
+                </Link>
+                <Link to="/app/analytics">
+                  Analytics
+                </Link>
+                <Link to="/app/subscription">
+                  Subscription
+                </Link>
+                <Link to="/app/settings">
+                  Settings
+                </Link>
+                <Link to="/app/help">
+                  Help
+                </Link>
+              </ui-nav-menu>
               <Outlet />
             </Provider>
           </PolarisAppProvider>
