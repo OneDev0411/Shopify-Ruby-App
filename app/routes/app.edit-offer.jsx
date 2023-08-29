@@ -8,14 +8,14 @@ import React from 'react';
 import { useAppQuery, useAuthenticatedFetch } from "../hooks";
 import { offerActivate, loadOfferDetails, getOfferSettings } from "../services/offers/actions/offer";
 import { useLocation } from '@remix-run/react';
-import { useSelector } from "react-redux";
+import { useGlobalData } from '~/contexts/global';
 import { OfferPreview } from "../components/OfferPreview";
 import { useAppBridge } from '@shopify/app-bridge-react'
 import { Redirect } from '@shopify/app-bridge/actions';
 
 export default function EditPage() {
-
-  const shopAndHost = useSelector(state => state.shopAndHost);
+  const shopAndHost = useGlobalData();
+  const fetch = useAuthenticatedFetch(shopAndHost.host);
   const app = useAppBridge();
 
   // Content section tab data
@@ -121,7 +121,6 @@ export default function EditPage() {
   const [shopifyThemeName, setShopifyThemeName] = useState(null);
 
   const offerID = location?.state?.offerID;
-  const fetch = useAuthenticatedFetch(shopAndHost.host);
 
   //Call on initial render
   useEffect(() => {

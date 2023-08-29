@@ -15,6 +15,13 @@ This is a template for building a [Shopify app](https://shopify.dev/docs/apps/ge
 
 <!-- TODO Make this section about using @shopify/app once it's added to the CLI. -->
 
+
+### Environmental Variables
+
+Use the .env.example file as a guide to create your .env file.
+- By default your Ruby API (which you should have running separately should be on PORT 3000)
+- You can acquire your APP's Secret Key in the partners.shopify.com dashboard
+
 ### Setup
 
 If you used the CLI to create the template, you can skip this section.
@@ -36,7 +43,6 @@ Using pnpm:
 ```shell
 pnpm install
 ```
-
 ### Local Development
 
 Using yarn:

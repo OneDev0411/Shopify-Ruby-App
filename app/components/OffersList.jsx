@@ -70,10 +70,10 @@ export function OffersList() {
 
   // Pagination configuration
   const itemsPerPage = 5;
-  const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+  const totalPages = Math.ceil(filteredData?.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const paginatedData = filteredData.slice(startIndex, endIndex);
+  const paginatedData = filteredData?.slice(startIndex, endIndex);
 
   const { selectedResources, allResourcesSelected, handleSelectionChange } =
     useIndexResourceState(paginatedData);
@@ -292,7 +292,7 @@ export function OffersList() {
 
   return (
     <Page>
-      { offersData.length === 0 ?
+      { offersData?.length === 0 ?
           <CreateOfferCard />
         :
         <>
@@ -325,9 +325,9 @@ export function OffersList() {
               sortColumnIndex={4}
               sort={{ handleSorting }}
               resourceName={resourceName}
-              itemCount={paginatedData.length}
+              itemCount={paginatedData?.length}
               selectedItemsCount={
-                allResourcesSelected ? 'All' : selectedResources.length
+                allResourcesSelected ? 'All' : selectedResources?.length
               }
               onSelectionChange={handleSelectionChange}
               hasZebraStriping
@@ -377,7 +377,7 @@ export function OffersList() {
 
   function isEmpty(value) {
     if (Array.isArray(value)) {
-      return value.length === 0;
+      return value?.length === 0;
     } else {
       return value === '' || value == null;
     }
