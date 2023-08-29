@@ -26,7 +26,7 @@ export async function loader({ request }) {
   // const internals = request[symbols.find(sym => String(sym).includes('Request internals'))];
   // const parsedURL = internals?.parsedURL;
   const parsedURL = new URL(request.url);
-
+  // console.log('SESSION', parsedURL, session);
   // return json({ shop: session.shop.replace(".myshopify.com", "") });
   return json({
     polarisTranslations: require("@shopify/polaris/locales/en.json"),
@@ -47,7 +47,7 @@ export default function App() {
         src="https://cdn.shopify.com/shopifycloud/app-bridge.js"
         data-api-key={apiKey}
       />
-      <MyGlobalContext.Provider value={{session, navigate}}>
+      <MyGlobalContext.Provider value={{...session, host, navigate}}>
         <AppBridgeProvider
           config={{ host, apiKey, forceRedirect: true }}
         >
