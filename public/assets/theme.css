@@ -1058,6 +1058,33 @@ h1{
 .Polaris-Button--primary:hover {
   background-color: #3049CD !important;
 }
+.title-bar-button {
+  display: flex;
+  justify-content: end;
+}
+.title-bar-title {
+  display: flex;
+  float: left;
+  gap: 10px;
+  align-items: center;
+  height: 36px;
+}
+
+@media (max-width: 489px) {
+  .title-bar-button {
+    display: flex;
+    justify-content: center;
+  }
+
+  .title-bar-title {
+    float: none;
+    justify-content: center;
+  }
+
+  .Polaris-Page__Content {
+    padding: 8px;
+  }
+}
 
 /*# sourceMappingURL=themes.css.map */
 
