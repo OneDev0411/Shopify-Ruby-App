@@ -8,6 +8,6 @@ export {ModalAddConditions} from "./modal_AddConditions";
 export {SettingTabs} from "./settingsTabs";
 export { Reviews } from "./Reviews";
 export { Partners } from "./Partners";
-export { GenericTitleBar } from "./GenericTitleBar";
+export { TitleBar } from "./TitleBar";
 export { GenericFooter} from "./GenericFooter";
 export { TotalSalesData, ConversionRate, OrderOverTimeData } from "./analyticsGraphdata";

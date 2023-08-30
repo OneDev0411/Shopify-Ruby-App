@@ -1,34 +1,19 @@
-import {iculogo} from "@assets";
 import "../components/stylesheets/mainstyle.css";
-import { GenericTitleBar, OffersList } from "../components";
+import { TitleBar, OffersList } from "../components";
 import { isSubscriptionActive } from "../services/actions/subscription";
-import {useEffect, useState, useCallback, useRef} from "react";
+import {useEffect, useState, useCallback, useRef, useContext} from "react";
 import { useAuthenticatedFetch } from "../hooks";
 import { json } from "@remix-run/node";
-import {
-  useActionData,
-  useLoaderData,
-  useNavigate,
-  useNavigation,
-  useSubmit,
-} from "@remix-run/react";
+import {iculogo} from "@assets";
+
 import {
   Page,
   Layout,
-  Text,
   Banner,
-  VerticalStack,
-  Card,
-  Button,
-  HorizontalStack,
-  Box,
-  Divider,
-  List,
-  Link,
 } from "@shopify/polaris";
 
 import { authenticate } from "../shopify.server";
-import { useGlobalData } from "~/contexts/global";
+import MyGlobalContext from "~/contexts/global";
 import { useSelector } from "react-redux";
 
 
@@ -43,7 +28,7 @@ export async function action({ request }) {
 
   const color = ["Red", "Orange", "Yellow", "Green"][
     Math.floor(Math.random() * 4)
-  ];
+    ];
   const response = await admin.graphql(
     `#graphql
       mutation populateProduct($input: ProductInput!) {
@@ -89,60 +74,50 @@ export default function HomePage() {
   const [currentShop, setCurrentShop] = useState(null);
   const [planName, setPlanName] = useState();
   const [trialDays, setTrialDays] = useState();
+  const { navigate } = useContext(MyGlobalContext);
 
-  const nav = useNavigation();
-  const { shop } = useLoaderData();
-  const actionData = useActionData();
-  const submit = useSubmit();
-  let { theme } = useGlobalData();
-  const { shopie } = useSelector(state => ({ shop: 'HEo'}) );
-
-  const fetchCurrentShop = useCallback(async () => {
-    const navigate = useNavigate();
-
+  useEffect(() => {
     fetch(`/api/merchant/current_shop?shop=${shopAndHost.shop}`, {
-      method: 'GET',
-         headers: {
-           'Content-Type': 'application/json',
-         },
-     })
-     .then( (response) => { return response.json(); })
-     .then( (data) => {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .then( (response) => { return response.json(); })
+      .then( (data) => {
         setCurrentShop(data.shop);
         setPlanName(data.plan);
         setTrialDays(data.days_remaining_in_trial);
-     })
-     .catch((error) => {
+      })
+      .catch((error) => {
         console.log("error", error);
-     })
-  }, [setCurrentShop, setPlanName, setTrialDays]);
+      })
+  }, [shopAndHost.shop, setCurrentShop, setPlanName, setTrialDays, fetch])
 
-  useEffect(()=>{
-    fetchCurrentShop();
-  }, [fetchCurrentShop])
+  const handleOpenOfferPage = () => {
+    navigate('/app/edit-offer', { state: { offerID: null } });
+  }
 
   return (
-    <Page
-      title={<GenericTitleBar image={iculogo} title={'In Cart Upsell & Cross Sell'} /> }
-      primaryAction={null}
-    >
-    <ui-title-bar title="Remix app template">
-      <button variant="primary" >
-        Generate a product
-      </button>
-    </ui-title-bar>
-      <Layout>
-        <Layout.Section>
-          {isSubscriptionActive(currentShop?.subscription) && planName!=='free' && trialDays>0 &&
-            <Banner icon='none' status="info">
-              <p>{ trialDays } days remaining for the trial period</p>
-            </Banner>
-          }
-        </Layout.Section>
-        <Layout.Section>
-          <OffersList />
-        </Layout.Section>
-      </Layout>
+    <Page fullWidth={true}>
+      <TitleBar
+        title="In Cart Upsell & Cross Sell"
+        image={iculogo}
+        buttonText={"Create offer"}
+        handleButtonClick={handleOpenOfferPage}
+      />
+        <Layout>
+          <Layout.Section>
+            {isSubscriptionActive(currentShop?.subscription) && planName!=='free' && trialDays > 0 &&
+              <Banner icon='none' status="info">
+                <p>{ trialDays } days remaining for the trial period</p>
+              </Banner>
+            }
+          </Layout.Section>
+          <Layout.Section>
+            <OffersList />
+          </Layout.Section>
+        </Layout>
     </Page>
   );
 };

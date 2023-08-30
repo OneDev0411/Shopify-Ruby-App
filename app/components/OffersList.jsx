@@ -357,12 +357,6 @@ export function OffersList() {
         </>
       }
       <div className="space-10"></div>
-      <FooterHelp>
-        Learn more about{' '}
-        <Link url="#">
-          Offers
-        </Link>
-      </FooterHelp><div> </div>
     </Page>
   );
 

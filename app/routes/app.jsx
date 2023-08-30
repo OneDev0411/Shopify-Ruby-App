@@ -9,6 +9,7 @@ import {
 } from "@remix-run/react";
 import { AppProvider as PolarisAppProvider } from "@shopify/polaris";
 import polarisStyles from "@shopify/polaris/build/esm/styles.css";
+import {themeCss} from "@assets";
 import { boundary } from "@shopify/shopify-app-remix";
 import { Provider } from "react-redux";
 import store from "../store/store";
@@ -18,7 +19,6 @@ const url = require('url');
 import { authenticate } from "../shopify.server";
 import MyGlobalContext from "~/contexts/global";
 
-export const links = () => [{ rel: "stylesheet", href: polarisStyles }];
 
 export async function loader({ request }) {
   const { session } = await authenticate.admin(request);
@@ -57,9 +57,6 @@ export default function App() {
           >
             <Provider store={store}>
               <ui-nav-menu>
-                <Link to="/app/dashboard">
-                  Dashboard
-                </Link>
                 <Link to="/app/offer">
                   Offers
                 </Link>
