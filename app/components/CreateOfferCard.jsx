@@ -1,10 +1,14 @@
+// @ts-ignore
 import React, {useEffect, useCallback, useState, useContext} from "react";
 import {
   Button,
   ButtonGroup, Card,
   Image,
+  // @ts-ignore
   LegacyCard,
+  // @ts-ignore
   LegacyStack,
+  // @ts-ignore
   Link,
   MediaCard,
   Modal,
@@ -13,12 +17,15 @@ import {
   VideoThumbnail,
 } from "@shopify/polaris";
 import { homeImage } from "@assets/index.js";
+// @ts-ignore
 import { useNavigate } from "@remix-run/react";
 import { useSelector } from "react-redux";
 import MyGlobalContext from "~/contexts/global";
 
 export function CreateOfferCard() {
+  // @ts-ignore
   const shopAndHost = useSelector((state) => state.shopAndHost);
+  // @ts-ignore
   const { navigate } = useContext(MyGlobalContext);
 
   const [shopData, setShopData] = useState({
@@ -53,7 +60,9 @@ export function CreateOfferCard() {
         <OfferCard  handleCreateOffer={handleCreateOffer} />
       </div>
       <HelpSection handleOpen={handleOpen} shopData={shopData} />
-      <VideoModal active={active} handleClose={handleClose} handleOpen={handleOpen} />
+      <VideoModal active={active} handleClose={handleClose} 
+// @ts-ignore
+      handleOpen={handleOpen} />
     </div>
   );
 }
@@ -105,7 +114,9 @@ function HelpSection({ handleOpen, shopData }) {
     // Intercom needs to be initialized/booted before it can be used.
     console.log('SHOP DATA', shopData);
     const { currentShop } = shopData;
+    // @ts-ignore
     window.Intercom('boot', {
+      // @ts-ignore
       app_id: window.CHAT_APP_ID,
       id: currentShop?.id,
       email: currentShop?.email,
@@ -119,6 +130,7 @@ function HelpSection({ handleOpen, shopData }) {
       // plan: '#{@currentShop.try(:plan).try(:name)}',
       // dashboard: "https://incartupsell.herokuapp.com/?shop_id=#{@currentShop.id}"
     });
+    // @ts-ignore
     window.Intercom('show');
   }, []);
 

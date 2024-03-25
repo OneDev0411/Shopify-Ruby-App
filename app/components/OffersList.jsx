@@ -25,7 +25,7 @@ import {
 import {CreateOfferCard} from "./CreateOfferCard.jsx";
 import {Redirect} from '@shopify/app-bridge/actions';
 import { useAppBridge } from "@shopify/app-bridge-react";
-// import ErrorPage from "../components/ErrorPage";
+import ErrorPage from "../components/ErrorPage";
 
 export function OffersList({ pageSize }) {
   const app = useAppBridge();
@@ -316,11 +316,12 @@ export function OffersList({ pageSize }) {
 
   const handleViewOffer = (offer_id) => {
     localStorage.setItem('Offer-ID', offer_id);
-    navigateTo('/edit-offer-view', { state: { offerID: offer_id } });
+
+    navigateTo(`/edit-offer-view`, { state: { offerID: offer_id } });
   }
 
-  // if (error) { return < ErrorPage showBranding={false} />; 
-// }
+  if (error) { return < ErrorPage showBranding={false} />; 
+}
   return (
     <div className="narrow-width-layout">
       {isLoading ? (
