@@ -1,3 +1,4 @@
+// @ts-nocheck
 import "../components/stylesheets/mainstyle.css";
 import { TitleBar, OffersList } from "../components";
 import { isSubscriptionActive } from "../services/actions/subscription";

@@ -36,7 +36,7 @@ import { useSelector } from 'react-redux';
 import { elementSearch, productsMulti } from "../services/products/actions/product";
 import { useLocation } from 'react-router-dom';
 import { useAppQuery, useAuthenticatedFetch } from "../hooks";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "@remix-run/react";
 import SelectProductsModal from "../components/SelectProductsModal";
 import { SelectCollectionsModal } from "../components/SelectCollectionsModal";
 import customCss from '@assets/custom.css';

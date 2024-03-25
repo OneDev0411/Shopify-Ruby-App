@@ -16,7 +16,7 @@ import {
 import { TitleBar } from "@shopify/app-bridge-react";
 import {useState, useCallback, useEffect, useContext} from 'react';
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "@remix-run/react";
 import { GenericFooter } from '../components';
 import { useAppQuery, useAuthenticatedFetch } from "../hooks";
 import { useSelector } from "react-redux";
