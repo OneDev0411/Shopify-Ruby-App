@@ -7,7 +7,7 @@
     "jsx": "react-jsx",
     "moduleResolution": "node16",
     "resolveJsonModule": true,
-    "target": "ESNext",
+    "target": "ES2019",
     "strict": true,
     "allowJs": true,
     "checkJs": true,
@@ -20,7 +20,10 @@
       "@assets/*": ["./public/assets/*"]
     },
     "types": [
-      "@shopify/app-bridge-types"
+      "@shopify/app-bridge-types",
+      "node",
+      "@remix-run/node",
+      "vite/client"
     ],
     "noEmit": true
   }
