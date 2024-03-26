@@ -29,7 +29,7 @@
     "@shopify/app-bridge-types": "^0.0.2",
     "@shopify/app-bridge-utils": "^3.5.1",
     "@shopify/cli": "3.48.3",
-    "@shopify/polaris": "^11.1.2",
+    "@shopify/polaris": "^12.22.1",
     "@shopify/polaris-viz": "^9.3.0",
     "@shopify/shopify-app-express": "^2.1",
     "@shopify/shopify-app-remix": "^1.0.3",
