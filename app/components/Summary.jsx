@@ -1,13 +1,13 @@
+// @ts-nocheck
 import { useEffect, useState, useCallback } from 'react';
 import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "@remix-run/react";
 import { Card, AppProvider, Text, Image, Grid, Link, Spinner } from '@shopify/polaris';
 import "../components/stylesheets/editOfferStyle.css";
 import { useAuthenticatedFetch } from '../hooks';
-import ErrorPage from "../components/ErrorPage"
+import ErrorPage from "../components/ErrorPage.jsx"
 
 const Summary = (props) => {
-    // @ts-ignore
     const shopAndHost = useSelector(state => state.shopAndHost);
     const fetch = useAuthenticatedFetch(shopAndHost.host);
     const [isLoading, setIsLoading] = useState(false);
@@ -19,7 +19,7 @@ const Summary = (props) => {
     const navigateTo = useNavigate();
 
     const handleViewAnalytics = () => {
-      navigateTo('/analytics');
+      navigateTo('/app/analytics');
     }
 
     const getShopOffersStats = (period) => {
@@ -67,7 +67,7 @@ const Summary = (props) => {
       getShopOffersStats('daily');
     }, [shopAndHost.shop]);
 
-    if (error) { return < ErrorPage showBranding={false} />; }
+    if (error) { return < ErrorPage/>; }
 
     return (
       <>
@@ -85,9 +85,7 @@ const Summary = (props) => {
                   alignItems: 'center',
                   minHeight: '20vh',
               }}>
-                <Spinner size="large" 
-// @ts-ignore
-                color="teal"/>
+                <Spinner size="large" color="teal"/>
               </div>
               ) : (
               <>

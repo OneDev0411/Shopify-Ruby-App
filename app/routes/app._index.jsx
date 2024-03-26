@@ -1,3 +1,5 @@
+// auto generated file
+//this is the file that will run on /app url directly
 // @ts-nocheck
 import "../components/stylesheets/mainstyle.css";
 import { TitleBar, OffersList } from "../components";

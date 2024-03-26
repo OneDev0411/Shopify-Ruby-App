@@ -1,12 +1,12 @@
 // @ts-nocheck
 import { useCallback } from "react";
-import { useNavigate } from "react-router-dom";
-import { Card, AppProvider, Link, Text, Badge } from '@shopify/polaris';
+import { useNavigate } from "@remix-run/react";
+import { Card, Box, AppProvider, Link, Text, Badge } from '@shopify/polaris';
 import { condition_options } from "../shared/constants/ConditionOptions";
 import { getLabelFromValue } from "../shared/helpers/commonHelpers";
 import "../components/stylesheets/editOfferStyle.css";
 
-const Details = (props) => {
+const OfferDetails = (props) => {
   const navigateTo = useNavigate();
   const checkPlacement = useCallback(() => {
     if(props.offer.in_product_page && props.offer.in_cart_page) {
@@ -41,17 +41,17 @@ const Details = (props) => {
             <span className="text-decor">Offer Details</span>
             <span><Link onClick={() => handleEditOffer(props.offer.id)} removeUnderline>Edit</Link></span>
           </div>
-          <Card.Section>
+          <Box>
             <Text>Placement: {checkPlacement()}</Text>
-          </Card.Section>
-          <Card.Section>
+          </Box>
+          <Box>
             <Text>Product offered: 
                 {props.offerableProducts?.map((offerableProduct, index)=> (
                     <p key={index}>{offerableProduct.title}</p>
                 ))}
             </Text>
-          </Card.Section>
-          <Card.Section>
+          </Box>
+          <Box>
             <Text>
               Display conditions: 
               {props.offer.rules_json?.length === 0 ? (
@@ -72,11 +72,11 @@ const Details = (props) => {
                   ))}</>
               )}
             </Text>
-          </Card.Section>
+          </Box>
         </Card>
       </AppProvider>
     </>
   )
 }
 
-export default Details;
+export default OfferDetails;

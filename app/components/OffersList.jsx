@@ -317,7 +317,7 @@ export function OffersList({ pageSize }) {
   const handleViewOffer = (offer_id) => {
     localStorage.setItem('Offer-ID', offer_id);
 
-    navigateTo(`/edit-offer-view`, { state: { offerID: offer_id } });
+    navigateTo(`/app/edit-offer-view`, { state: { offerID: offer_id } });
   }
 
   if (error) { return < ErrorPage showBranding={false} />; 

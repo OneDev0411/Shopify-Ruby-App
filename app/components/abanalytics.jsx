@@ -5,7 +5,7 @@ import { useEffect, useState, useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import { useAuthenticatedFetch } from '../hooks';
 import { ABTestingOptions } from '../shared/constants/Others';
-import ErrorPage from "./ErrorPage";
+import ErrorPage from "../components/ErrorPage";
 
 const AbAnalytics = (props) => {
     const shopAndHost = useSelector(state => state.shopAndHost);
@@ -40,7 +40,7 @@ const AbAnalytics = (props) => {
         getAbAnalytics(props.offerId, shopAndHost.shop, 'b', setBAnalytics)
       },[]);
 
-      if (error) { return < ErrorPage showBranding={false}/>; }
+      if (error) { return < ErrorPage />; }
 
     return (
       <>

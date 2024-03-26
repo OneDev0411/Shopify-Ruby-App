@@ -1,3 +1,5 @@
+// auto generated file
+//building shopify object so that rest of the application can use it, like authenicating user request, creating shopify api clients or sessions.
 import "@shopify/shopify-app-remix/adapters/node";
 import {
   AppDistribution,

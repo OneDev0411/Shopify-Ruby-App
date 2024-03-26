@@ -8,19 +8,19 @@ import {
   Spinner,
 } from "@shopify/polaris";
 import "@shopify/polaris/build/esm/styles.css";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "@remix-run/react";
 import {useState, useEffect, useContext} from "react";
-import { useSelector } from "react-redux";
+import { useSelector, Provider } from "react-redux";
 import { GenericFooter } from "../components";
 import Summary from "../components/Summary";
-import Details from "../components/OfferDetails";
+import OfferDetails from "../components/OfferDetails";
 import { OfferPreview } from "../components/OfferPreview";
 import { useAuthenticatedFetch } from "../hooks";
 import AbAnalytics from "../components/abanalytics";
 import "../components/stylesheets/mainstyle.css";
-import { useAppBridge } from "@shopify/app-bridge-react";
+import { useAppBridge } from '@shopify/app-bridge-react'
 import { Toast } from '@shopify/app-bridge/actions';
-import {OfferContext} from "../contexts/OfferContext.jsx";
+import {OfferContext} from "../contexts/OfferContext";
 import {useOffer} from "../hooks/useOffer.js";
 import {
   OFFER_ACTIVATE_URL,
@@ -35,12 +35,14 @@ import ErrorPage from "../components/ErrorPage.jsx"
 
 const EditOfferView = () => {
   const { offer, setOffer, updateOffer } = useContext(OfferContext);
+  const z = useContext(OfferContext);
+  console.log('here');
   const app = useAppBridge();
   const { fetchOffer } = useOffer();
   // @ts-ignore
   const shopAndHost = useSelector((state) => state.shopAndHost);
   const [isLoading, setIsLoading] = useState(true);
-  const offerID = localStorage.getItem('Offer-ID');
+  // const offerID = localStorage.getItem('Offer-ID');
   const fetch = useAuthenticatedFetch(shopAndHost.host)
   const [initialOfferableProductDetails, setInitialOfferableProductDetails] = useState();
   const [checkKeysValidity, setCheckKeysValidity] = useState({});
@@ -65,7 +67,7 @@ const EditOfferView = () => {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ offer: { offer_id: offerID }, shop: shopAndHost.shop })
+      body: JSON.stringify({ offer: { offer_id: "offerID" }, shop: shopAndHost.shop })
     }).then((response) => {
       if ([200,204].includes(response.status)) {
         updateOffer("publish_status", activate ? OFFER_PUBLISH : OFFER_DRAFT)
@@ -87,6 +89,7 @@ const EditOfferView = () => {
   }
 
   const handleDuplicateOffer = () => {
+    const offerID = localStorage.getItem('Offer-ID');
     fetch(`/api/v2/merchant/offers/${offerID}/duplicate`, {
       method: 'POST',
       headers: {
@@ -137,7 +140,8 @@ const EditOfferView = () => {
   }
 
   useEffect(() => {
-    if (offerID != null) {
+    const offerID = localStorage.getItem('Offer-ID');
+    if ( offerID != null) {
       setIsLoading(true);
       fetchOffer(offerID, shopAndHost.shop).then((response) => {
         if (response.status === 200) {
@@ -173,81 +177,83 @@ const EditOfferView = () => {
   if (error) { return < ErrorPage showBranding={false}/>; }
 
   return (
-      <div className="page-space">
-        {isLoading ? (
-          <div style={{
-              overflow: 'hidden',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              minHeight: '100vh',
-          }}>
-            <Spinner size="large" color="teal"/>
-          </div>
-        ) : (
-          <>
-            <Page
-              backAction={{onAction: () => {
-                navigateTo('/offer')
-              }}}
-              title={offer.title}
-              titleMetadata={
-                offer.publish_status === "published" ? (
-                  <Badge status="success">Published</Badge>
-                ) : (
-                  <Badge>Unpublished</Badge>
-                )
-              }
-              secondaryActions={[
-                {
-                  content: (offer.publish_status === 'draft') ? 'Publish' : 'Unpublish',
-                  onAction: () => offer.publish_status === 'draft' ? toggleOfferActivation(true) : toggleOfferActivation(false),
-                },
-                {
-                  content: 'Edit', 
-                  onAction: () => handleEditOffer(offerID),
-                },
-              ]}
-              actionGroups={[
-                {
-                  title: 'More Actions',
-                  actions: [
-                    {
-                      content: 'Duplicate',
-                      accessibilityLabel: 'Individual action label',
-                      onAction: () => handleDuplicateOffer(),
-                    },
-                    {
-                      content: 'Delete',
-                      accessibilityLabel: 'Individual action label',
-                      onAction: () => handleDeleteOffer(),
-                    },
-                  ],
-                },
-              ]}
-            >
-              <div className="grid-space">
-                <Grid>
-                  <Grid.Cell columnSpan={{xs: 6, sm: 6, md: 6, lg: 8, xl: 8}}>
-                    <div className="widget-visibility">
-                      <OfferPreview checkKeysValidity={checkKeysValidity} updateCheckKeysValidity={updateCheckKeysValidity} previewMode/>
-                    </div>
-                  </Grid.Cell>
-                  <Grid.Cell columnSpan={{xs: 6, sm: 6, md: 6, lg: 4, xl: 4}}>
-                    <VerticalStack gap="5">
-                      <Details offer={offer} offerableProducts={initialOfferableProductDetails}/>
-                      <Summary offerID={offerID}/>
-                      <AbAnalytics offerId={offerID}/>
-                    </VerticalStack>
-                  </Grid.Cell>
-                </Grid>
-              </div>
-              <GenericFooter text='Learn more about ' linkUrl='#' linkText='offers'></GenericFooter>
-            </Page>
-          </>
-        )}
-      </div>
-  );
+      <AppProvider i18n={[]}>
+        <div className="page-space">
+          {isLoading ? (
+            <div style={{
+                overflow: 'hidden',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                minHeight: '100vh',
+            }}>
+              <Spinner size="large" color="teal"/>
+            </div>
+          ) : (
+            <>
+              <Page
+                backAction={{onAction: () => {
+                  navigateTo('/offer')
+                }}}
+                title={offer.title}
+                titleMetadata={
+                  offer.publish_status === "published" ? (
+                    <Badge status="success">Published</Badge>
+                  ) : (
+                    <Badge>Unpublished</Badge>
+                  )
+                }
+                secondaryActions={[
+                  {
+                    content: (offer.publish_status === 'draft') ? 'Publish' : 'Unpublish',
+                    onAction: () => offer.publish_status === 'draft' ? toggleOfferActivation(true) : toggleOfferActivation(false),
+                  },
+                  {
+                    content: 'Edit', 
+                    onAction: () => handleEditOffer(offerID),
+                  },
+                ]}
+                actionGroups={[
+                  {
+                    title: 'More Actions',
+                    actions: [
+                      {
+                        content: 'Duplicate',
+                        accessibilityLabel: 'Individual action label',
+                        onAction: () => handleDuplicateOffer(),
+                      },
+                      {
+                        content: 'Delete',
+                        accessibilityLabel: 'Individual action label',
+                        onAction: () => handleDeleteOffer(),
+                      },
+                    ],
+                  },
+                ]}
+              >
+                <div className="grid-space">
+                  <Grid>
+                    <Grid.Cell columnSpan={{xs: 6, sm: 6, md: 6, lg: 8, xl: 8}}>
+                      <div className="widget-visibility">
+                        {/* <OfferPreview checkKeysValidity={checkKeysValidity} updateCheckKeysValidity={updateCheckKeysValidity} previewMode/> */}
+                      </div>
+                    </Grid.Cell>
+                    <Grid.Cell columnSpan={{xs: 6, sm: 6, md: 6, lg: 4, xl: 4}}>
+                      <VerticalStack gap="5">
+                        <OfferDetails offer={offer} offerableProducts={initialOfferableProductDetails}/>
+                        <Summary offerID={offer.id}/>
+                        <AbAnalytics offerId={offer.id}/>
+                      </VerticalStack>
+                    </Grid.Cell>
+                  </Grid>
+                </div>
+                <GenericFooter text='Learn more about ' linkUrl='#' linkText='offers'></GenericFooter>
+              </Page>
+            </>
+          )}
+        </div>
+      </AppProvider>
+    );
   }
 
 export default EditOfferView
