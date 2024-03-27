@@ -4,21 +4,23 @@ import {
     Checkbox,
     Text,
 } from "@shopify/polaris";
-import {useCallback, useContext} from "react";
+import {FC, useCallback, useContext} from "react";
 import React from "react";
-import {OfferContext} from "../../contexts/OfferContext.jsx";
-import { DomAction } from "../molecules/index.js";
+import {OfferContext} from "~/contexts/OfferContext";
+import { DomAction } from "../../molecules";
 
-const AdvancedSettings = () => {
+type Offer = {}
+
+const AdvancedSettings: FC = () => {
     const { offer, updateOffer, updateNestedAttributeOfOffer } = useContext(OfferContext);
-    const handleChange = useCallback((newChecked) => updateOffer("save_as_default_setting", newChecked), []);
-    const handleProductDomSelector = useCallback((newValue) => updateNestedAttributeOfOffer(newValue, "advanced_placement_setting",  "custom_product_page_dom_selector"), []);
-    const handleProductDomAction = useCallback((newValue) => updateNestedAttributeOfOffer(newValue, "advanced_placement_setting", "custom_product_page_dom_action"), []);
-    const handleCartDomSelector = useCallback((newValue) => updateNestedAttributeOfOffer(newValue, "advanced_placement_setting", "custom_cart_page_dom_selector"), []);
-    const handleCartDomAction = useCallback((newValue) => updateNestedAttributeOfOffer(newValue, "advanced_placement_setting", "custom_cart_page_dom_action"), []);
-    const handleAjaxDomSelector = useCallback((newValue) => updateNestedAttributeOfOffer(newValue, "advanced_placement_setting", "custom_ajax_dom_selector"), []);
-    const handleAjaxDomAction = useCallback((newValue) => updateNestedAttributeOfOffer(newValue, "advanced_placement_setting", "custom_ajax_dom_action"), []);
-    const handleOfferCss = useCallback((newValue) => updateNestedAttributeOfOffer(newValue, "custom_css"), []);
+    const handleChange = useCallback((newChecked: any) => updateOffer("save_as_default_setting", newChecked), []);
+    const handleProductDomSelector = useCallback((newValue: Offer) => updateNestedAttributeOfOffer(newValue, "advanced_placement_setting",  "custom_product_page_dom_selector"), []);
+    const handleProductDomAction = useCallback((newValue: Offer) => updateNestedAttributeOfOffer(newValue, "advanced_placement_setting", "custom_product_page_dom_action"), []);
+    const handleCartDomSelector = useCallback((newValue: Offer) => updateNestedAttributeOfOffer(newValue, "advanced_placement_setting", "custom_cart_page_dom_selector"), []);
+    const handleCartDomAction = useCallback((newValue: Offer) => updateNestedAttributeOfOffer(newValue, "advanced_placement_setting", "custom_cart_page_dom_action"), []);
+    const handleAjaxDomSelector = useCallback((newValue: Offer) => updateNestedAttributeOfOffer(newValue, "advanced_placement_setting", "custom_ajax_dom_selector"), []);
+    const handleAjaxDomAction = useCallback((newValue: Offer) => updateNestedAttributeOfOffer(newValue, "advanced_placement_setting", "custom_ajax_dom_action"), []);
+    const handleOfferCss = useCallback((newValue: Offer) => updateNestedAttributeOfOffer(newValue, "custom_css"), []);
 
     return (
         <>

@@ -8,8 +8,8 @@ import {
 import { useState, useCallback, useRef, useEffect, useContext } from "react";
 import React, { FC } from "react";
 import tinycolor from "tinycolor2";
-import {OfferContext} from "../../contexts/OfferContext";
-import { ColorPicker } from "../molecules/index.js";
+import {OfferContext} from "~/contexts/OfferContext";
+import { ColorPicker } from "../../molecules";
 
 const AppearanceColor: FC = () => {
     const {offer, updateNestedAttributeOfOffer} = useContext(OfferContext);
@@ -58,7 +58,7 @@ const AppearanceColor: FC = () => {
 
     const handleOutsideClick = (event: MouseEvent) => {
         for (const [colorPickerName, ref] of Object.entries(colorPickerRefs)) {
-            // TODO: Needs to be test
+            // TODO: Check
             if (ref.current && !ref.current.contains(event.currentTarget as Node)) {
                 setOpen((prevState) => ({ ...prevState, [colorPickerName]: false }));
             }
@@ -74,13 +74,13 @@ const AppearanceColor: FC = () => {
     }, []);
 
     //Sketch picker
-    const handleColorChanges = useCallback((newValue, comp, property) => {
-        const rgbColor = tinycolor({ h: newValue.hue, s: newValue.saturation, v: newValue.brightness, a: newValue.alpha }).toRgb();
+    const handleColorChanges = useCallback((colorSettings: { hue: number; saturation: number; brightness: number; alpha: number; }, comp: string, property: string) => {
+        const rgbColor = tinycolor({ h: colorSettings.hue, s: colorSettings.saturation, v: colorSettings.brightness, a: colorSettings.alpha }).toRgb();
         const hexColor = tinycolor(rgbColor).toHex();
         updateNestedAttributeOfOffer(`#${hexColor}`, "css_options", `${comp}`, `${property}`);
     }, []);
 
-    const handleTextFieldChanges = useCallback((newValue, comp, property) => {
+    const handleTextFieldChanges = useCallback((newValue: any, comp: any, property: any) => {
         updateNestedAttributeOfOffer(newValue, "css_options", `${comp}`, `${property}`);
     }, []);
 
@@ -115,7 +115,7 @@ const AppearanceColor: FC = () => {
                         <Grid.Cell columnSpan={{ xs: 4, sm: 4, md: 4, lg: 4, xl: 4 }}>
                             <ColorPicker
                                 label="Border"
-                                onChangeTextFiled={(newValue) => handleTextFieldChanges(newValue, "main", "borderColor")}
+                                onChangeTextFiled={(newValue: any) => handleTextFieldChanges(newValue, "main", "borderColor")}
                                 color={offer.css_options?.main?.borderColor}
                                 onClickColorSwatchSelector={() => handleToggle("borderColorPicker")}
                                 expanded={open.borderColorPicker}
