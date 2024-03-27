@@ -1,51 +1,55 @@
+// @ts-nocheck
 import {
   Button,
   TextField,
   IndexTable,
   Filters,
   useIndexResourceState,
-  Page,
   Badge,
-  Link,
-  FooterHelp,
   Pagination,
   Select,
-  LegacyCard, LegacyStack, Image, VerticalStack, Text, ButtonGroup, MediaCard, VideoThumbnail
+  LegacyCard,
+  Modal,
+  Spinner
 } from '@shopify/polaris';
 
-import { TitleBar } from "@shopify/app-bridge-react";
 import { useState, useCallback, useEffect } from 'react';
 import React from 'react';
 import { useNavigate } from "@remix-run/react";
-import { useAppQuery, useAuthenticatedFetch } from "../hooks";
+import { useAuthenticatedFetch } from "../hooks";
 import { useSelector } from "react-redux";
-import {homeImage} from "@assets/index.js";
+import {
+  OffersListSortOptions,
+  OffersResourceName
+} from './shared/constants/other';
 import {CreateOfferCard} from "./CreateOfferCard.jsx";
+import {Redirect} from '@shopify/app-bridge/actions';
+import { useAppBridge } from "@shopify/app-bridge-react";
+import ErrorPage from "../components/ErrorPage";
 
-export function OffersList() {
-
-  const resourceName = {
-    singular: 'offer',
-    plural: 'offers',
-  };
-
-  const emptyToastProps = { content: null };
+export function OffersList({ pageSize }) {
+  const app = useAppBridge();
   const [isLoading, setIsLoading] = useState(true);
-  const [toastProps, setToastProps] = useState(emptyToastProps);
-  const info = { offer: { shop_domain: ''} };
-
   const [taggedWith, setTaggedWith] = useState('');
   const [queryValue, setQueryValue] = useState(null);
   const [offersData, setOffersData] = useState([]);
   const [sortValue, setSortValue] = useState('today');
   const [filteredData, setFilteredData] = useState([]);
+  const [error, setError] = useState(null);
+
   const shopAndHost = useSelector(state => state.shopAndHost);
   const fetch = useAuthenticatedFetch(shopAndHost.host);
 
   const [currentPage, setCurrentPage] = useState(1);
+  const [modalActive, setModalActive] = useState(false);
+
+  const toggleModal = useCallback(() => {
+    setModalActive(!modalActive)
+  }, [modalActive]);
 
   useEffect(() => {
-    fetch('/api/merchant/offers_list', {
+    let redirect = Redirect.create(app);
+    fetch('/api/v2/merchant/offers_list', {
       method: 'POST',
       mode: 'cors',
       cache: 'no-cache',
@@ -59,21 +63,26 @@ export function OffersList() {
     })
       .then((response) => response.json())
       .then((data) => {
+        if (data.redirect_to) {
+          redirect.dispatch(Redirect.Action.APP, data.redirect_to);
+      } else {
         console.log('API Data >>> ', data);
         // localStorage.setItem('icushopify_domain', data.shopify_domain);
         setOffersData(data.offers);
         setFilteredData(data.offers);
-      }).catch((error) => {
+        setIsLoading(false);
+      }}).catch((error) => {
+        setError(error);
         console.log('Fetch error >> ', error);
       });
   }, []);
 
   // Pagination configuration
-  const itemsPerPage = 5;
-  const totalPages = Math.ceil(filteredData?.length / itemsPerPage);
+  const itemsPerPage = pageSize || 5;
+  const totalPages = Math.ceil(filteredData.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const paginatedData = filteredData?.slice(startIndex, endIndex);
+  const paginatedData = filteredData.slice(startIndex, endIndex);
 
   const { selectedResources, allResourcesSelected, handleSelectionChange } =
     useIndexResourceState(paginatedData);
@@ -87,13 +96,13 @@ export function OffersList() {
     (value) => setTaggedWith(value),
     [],
   );
-  const handleSorting = useCallback((headingIndex, direction) => {
+  const handleSorting = useCallback(() => {
     console.log('came in handle sorting');
-  }, []);
+  });
   const handleTaggedWithRemove = useCallback(() => setTaggedWith(null), []);
   const handleQueryValueChange = useCallback((value) => {
     setFilteredData(offersData.filter((o) => o.title.toLowerCase().includes(value.toLowerCase())));
-  }, []);
+  });
   const handleQueryValueRemove = useCallback(() => setQueryValue(null), []);
   const handleClearAll = useCallback(() => {
     handleTaggedWithRemove();
@@ -117,15 +126,31 @@ export function OffersList() {
         return b.revenue - a.revenue;
       });
     }
-    setSortValue(value), []}, []);
+    setSortValue(value), []});
 
-  const promotedBulkActions = [
+  const promotedBulkActions = ((selectedResources.length == 1 && paginatedData.find(obj => obj['id'] === selectedResources[0])?.offerable_type == 'auto')) ? 
+  [
+    {
+      content: 'Publish',
+      onAction: () => activateSelectedOffer(),
+    },
+  ] : [
     {
       content: 'Duplicate Offer',
-      onAction: () => createDuplicateOffer(),
+      onAction: () => { createDuplicateOffer();},
     },
   ];
-  const bulkActions = [
+  const bulkActions = ((selectedResources.length == 1 && paginatedData.find(obj => obj['id'] === selectedResources[0])?.offerable_type == 'auto')) ?
+  [
+    {
+      content: 'Unpublish',
+      onAction: () => deactivateSelectedOffer(),
+    },
+    {
+      content: 'Delete',
+      onAction: () => deleteSelectedOffer(),
+    },
+  ] : [
     {
       content: 'Publish',
       onAction: () => activateSelectedOffer(),
@@ -159,20 +184,13 @@ export function OffersList() {
 
   const appliedFilters = !isEmpty(taggedWith)
     ? [
-      {
+        {
         key: 'filteredby',
         label: disambiguateLabel('taggedWith', taggedWith),
-        onRemove: handleTaggedWithRemove,
-      },
-    ]
+          onRemove: handleTaggedWithRemove,
+        },
+      ]
     : [];
-
-  const sortOptions = [
-    {label: 'Date Desc', value: 'date_des'},
-    {label: 'Date Asc', value: 'date_asc'},
-    {label: 'Clicks', value: 'clicks'},
-    {label: 'Revenue', value: 'revenue'},
-  ];
 
   const rowMarkup = paginatedData.map(
     ({ id, title, status, clicks, views, revenue }, index) => (
@@ -182,13 +200,13 @@ export function OffersList() {
         selected={selectedResources.includes(id)}
         position={index}
       >
-        <IndexTable.Cell><b>{title}</b></IndexTable.Cell>
+        <IndexTable.Cell>{title}</IndexTable.Cell>
         <IndexTable.Cell>{status ? (<Badge status="success">Published</Badge>) : (<Badge>Unpublished</Badge>)}</IndexTable.Cell>
         <IndexTable.Cell>{clicks}</IndexTable.Cell>
         <IndexTable.Cell>{views}</IndexTable.Cell>
         <IndexTable.Cell>{`$${revenue}`}</IndexTable.Cell>
         <IndexTable.Cell>
-          <Button onClick={() => handleEditOffer(id)}>
+          <Button onClick={() => handleViewOffer(id)}>
             Edit
           </Button>
         </IndexTable.Cell>
@@ -198,28 +216,36 @@ export function OffersList() {
 
   function createDuplicateOffer() {
     selectedResources.forEach(function (resource) {
-      let url = `/api/merchant/offers/${resource}/duplicate`;
-      fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ offer_id: resource, shop: shopAndHost.shop })
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          setFilteredData(data.offers);
-          setOffersData(data.offers);
-          selectedResources.shift();
+      if(paginatedData.find(obj => obj['id'] === resource)?.offerable_type != 'auto')
+      {
+        let url = `/api/v2/merchant/offers/${resource}/duplicate`;
+        fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ offer_id: resource, shop: shopAndHost.shop })
         })
-        .catch((error) => {
+          .then((response) => response.json())
+          .then((data) => {
+            setFilteredData(data.offers);
+            setOffersData(data.offers);
+            selectedResources.shift();
+          })
+        .catch(() => {
+          setError(error);
         })
+      }
+      else {
+        setModalActive(paginatedData.find(obj => obj['id'] === resource)?.offerable_type == 'auto');
+        selectedResources.shift();
+      }
     });
   }
 
   function deleteSelectedOffer() {
     selectedResources.forEach(function (resource) {
-      let url = `/api/merchant/offers/${resource}`;
+      let url = `/api/v2/merchant/offers/${resource}`;
       fetch(url, {
         method: 'DELETE',
         headers: {
@@ -234,13 +260,14 @@ export function OffersList() {
           selectedResources.shift();
         })
         .catch((error) => {
+          setError(error);
         })
     });
   }
 
   function activateSelectedOffer() {
     selectedResources.forEach(function (resource) {
-      let url = '/api/merchant/offer_activate';
+      let url = '/api/v2/merchant/offer_activate';
       fetch(url, {
         method: 'POST',
         headers: {
@@ -249,21 +276,21 @@ export function OffersList() {
         body: JSON.stringify({ offer: { offer_id: resource }, shop: shopAndHost.shop })
       })
         .then((response) => response.json())
-        .then((data) => {
+        .then(() => {
           const dataDup = [...offersData];
           dataDup.find((o) => o.id == resource).status = true;
-
           setOffersData([...dataDup]);
           selectedResources.shift();
         })
         .catch((error) => {
+          setError(error);
         })
     });
   }
 
   function deactivateSelectedOffer() {
     selectedResources.forEach(function (resource) {
-      let url = '/api/merchant/offer_deactivate';
+      let url = '/api/v2/merchant/offer_deactivate';
       fetch(url, {
         method: 'POST',
         headers: {
@@ -272,7 +299,7 @@ export function OffersList() {
         body: JSON.stringify({ offer: { offer_id: resource }, shop: shopAndHost.shop })
       })
         .then((response) => response.json())
-        .then((data) => {
+        .then(() => {
           const dataDup = [...offersData];
           dataDup.find((o) => o.id == resource).status = false;
 
@@ -280,84 +307,118 @@ export function OffersList() {
           selectedResources.shift();
         })
         .catch((error) => {
+          setError(error);
         })
     });
   }
 
-  const nav = useNavigate();
+  const navigateTo = useNavigate();
 
-  const handleEditOffer = (offer_id) => {
-    nav('/app/edit-offer', { state: { offerID: offer_id } });
+  const handleViewOffer = (offer_id) => {
+    localStorage.setItem('Offer-ID', offer_id);
+
+    navigateTo(`/app/edit-offer-view`, { state: { offerID: offer_id } });
   }
 
+  if (error) { return < ErrorPage showBranding={false} />; 
+}
   return (
-    <Page>
-      { offersData?.length === 0 ?
-          <CreateOfferCard />
-        :
+    <div className="narrow-width-layout">
+      {isLoading ? (
+        <div
+          style={{
+            overflow: "hidden",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            minHeight: "100vh",
+          }}
+        >
+          <Spinner size="large" color="teal" />
+        </div>
+      ) : (
         <>
-          <LegacyCard sectioned>
+          {offersData.length === 0 ? (
+            <CreateOfferCard />
+          ) : (
+            <>
+              <LegacyCard sectioned>
             <div style={{ display: 'flex' }}>
-              <div style={{ flex: 1 }}>
-                <Filters
-                  queryValue={queryValue}
-                  filters={filters}
-                  appliedFilters={appliedFilters}
-                  onQueryChange={handleQueryValueChange}
-                  onQueryClear={handleQueryValueRemove}
-                  onClearAll={handleClearAll}
-                />
-              </div>
+                  <div style={{ flex: 1 }}>
+                    <Filters
+                      queryValue={queryValue}
+                      filters={filters}
+                      appliedFilters={appliedFilters}
+                      onQueryChange={handleQueryValueChange}
+                      onQueryClear={handleQueryValueRemove}
+                      onClearAll={handleClearAll}
+                    />
+                  </div>
               <div style={{ paddingLeft: '0.25rem' }}>
-                <Select
-                  labelInline
-                  label="Sort"
-                  options={sortOptions}
-                  value={sortValue}
-                  onChange={handleSortChange}
-                />
-              </div>
-            </div>
-            <IndexTable
-              sortOptions={sortOptions}
-              sortable={[false, false, true, true, true]}
+                    <Select
+                      labelInline
+                      label="Sort"
+                      options={OffersListSortOptions}
+                      value={sortValue}
+                      onChange={handleSortChange}
+                    />
+                  </div>
+                </div>
+                <IndexTable
+                  sortOptions={OffersListSortOptions}
+                  sortable={[false, false, true, true, true]}
               sortDirection={'descending'}
-              sortColumnIndex={4}
-              sort={{ handleSorting }}
-              resourceName={resourceName}
-              itemCount={paginatedData?.length}
-              selectedItemsCount={
-                allResourcesSelected ? 'All' : selectedResources?.length
-              }
-              onSelectionChange={handleSelectionChange}
-              hasZebraStriping
-              bulkActions={bulkActions}
-              promotedBulkActions={promotedBulkActions}
-              headings={[
+                  sortColumnIndex={4}
+                  sort={{ handleSorting }}
+                  resourceName={OffersResourceName}
+                  itemCount={paginatedData.length}
+                  selectedItemsCount={
+                allResourcesSelected ? 'All' : selectedResources.length
+                  }
+                  onSelectionChange={handleSelectionChange}
+                  hasZebraStriping
+                  bulkActions={bulkActions}
+                  promotedBulkActions={promotedBulkActions}
+                  headings={[
                 { title: 'Offer' },
                 { title: 'Status' },
                 { title: 'Clicks' },
                 { title: 'Views' },
                 { title: 'Revenue', hidden: false },
-              ]}
-            >
-              {rowMarkup}
-            </IndexTable>
-            <div className="space-4"></div>
-            <div className="offer-table-footer">
-              <Pagination
-                label={`${currentPage} of ${totalPages}`}
-                hasPrevious={currentPage > 1}
-                hasNext={currentPage < totalPages}
-                onPrevious={() => handlePageChange(currentPage - 1)}
-                onNext={() => handlePageChange(currentPage + 1)}
-              />
-            </div>
-          </LegacyCard>
+                  ]}
+                >
+                  {rowMarkup}
+                </IndexTable>
+                <Modal
+                  open={modalActive}
+                  onClose={toggleModal}
+                  title="Alert Message"
+                  primaryAction={{
+                    content: 'OK',
+                    onAction: toggleModal,
+                  }}
+                  >
+                  <Modal.Section>
+                      <p>Autopilot Offer cannot be duplicated.</p>
+                  </Modal.Section>
+                  </Modal>
+                <div className="space-4"></div>
+                <div className="offer-table-footer">
+                  <Pagination
+                    label={`${currentPage} of ${totalPages}`}
+                    hasPrevious={currentPage > 1}
+                    hasNext={currentPage < totalPages}
+                    onPrevious={() => handlePageChange(currentPage - 1)}
+                    onNext={() => handlePageChange(currentPage + 1)}
+                  />
+                </div>
+              </LegacyCard>
+            </>
+          )}
         </>
-      }
+      )}
       <div className="space-10"></div>
-    </Page>
+    </div>
   );
 
   function disambiguateLabel(key, value) {
@@ -371,7 +432,7 @@ export function OffersList() {
 
   function isEmpty(value) {
     if (Array.isArray(value)) {
-      return value?.length === 0;
+      return value.length === 0;
     } else {
       return value === '' || value == null;
     }

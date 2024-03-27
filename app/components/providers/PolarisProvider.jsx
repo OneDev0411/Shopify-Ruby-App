@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useCallback } from "react";
 import { AppProvider } from "@shopify/polaris";
 import { useNavigate } from "@shopify/app-bridge-react";
