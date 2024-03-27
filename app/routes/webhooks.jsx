@@ -1,3 +1,5 @@
+// auto generated file
+
 import { authenticate } from "../shopify.server";
 import db from "../db.server";
 
