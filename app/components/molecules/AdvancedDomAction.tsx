@@ -2,14 +2,14 @@ import React from "react";
 import { TextField, Select, Text } from "@shopify/polaris";
 import { DOMActionOptions } from "../../shared/constants/DOMActionOptions";
 
-type Props = {
+interface Props {
     title: string;
     actionId: string;
     selectorValue: string;
     actionValue: string;
     disabled: boolean;
-    onChangeSelector: () => void;
-    onChangeAction: () => void;
+    onChangeSelector: (value: string, id: string) => void;
+    onChangeAction: (selected: string, id: string) => void;
 };
 
 const DomAction: React.FC<Props> = ({

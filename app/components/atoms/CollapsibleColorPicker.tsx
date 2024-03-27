@@ -1,7 +1,7 @@
 import React from "react";
 import { ColorPicker, Collapsible, ColorPickerProps, HSBAColor } from '@shopify/polaris';
 
-type Props = {
+interface Props {
   open: boolean;
   id: string;
   color: ColorPickerProps["color"];

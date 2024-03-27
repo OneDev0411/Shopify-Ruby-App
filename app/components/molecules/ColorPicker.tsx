@@ -5,7 +5,7 @@ import CollapsibleColorPicker from "../atoms/CollapsibleColorPicker";
 import ColorSwatchSelector from "../atoms/ColorSwatchSelector";
 import "../../stylesheets/colorPickerStyles.css";
 
-type Props = {
+interface Props {
     label: string;
     onChangeTextFiled: (value: string, id: string) => void;
     color: string;

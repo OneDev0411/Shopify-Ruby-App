@@ -1,7 +1,7 @@
 import React from "react";
 import "../components/stylesheets/colorSwatchStyle.css";
 
-type Props = {
+interface Props {
   label?: string;
   backgroundColor: string;
   ariaExpanded?: boolean;

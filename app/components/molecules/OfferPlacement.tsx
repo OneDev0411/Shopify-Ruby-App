@@ -1,7 +1,7 @@
 import React from "react";
 import { Grid, Image, RadioButton, Text } from "@shopify/polaris";
 
-type Props = {
+interface Props {
     defalutLabel: string;
     templateLabel: string;
     isDefault: boolean;
