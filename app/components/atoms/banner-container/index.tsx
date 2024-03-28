@@ -1,17 +1,16 @@
 import { Banner } from "@shopify/polaris";
 import React from "react";
 
-type Props = {
+interface IBannerContainerProps {
     title: string,
     onDismiss: () => void,
-    status: object,
     tone: 'success' | 'info' | 'warning' | 'critical',
     children: React.ReactNode,
 }
 
-const BannerContainer = ({ title, onDismiss, status, tone, children } : Props) => (
+const BannerContainer = ({ title, onDismiss, tone, children } : IBannerContainerProps) => (
     <div style={{ marginBottom: "10px" }} className="polaris-banner-container">
-        <Banner title={title} onDismiss={onDismiss} tone={tone}>
+        <Banner title={title} onDismiss={onDismiss} status={tone}>
             {children}
         </Banner>
     </div>
