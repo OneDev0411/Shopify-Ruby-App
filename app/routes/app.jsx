@@ -1,3 +1,4 @@
+// @ts-nocheck
 // auto generated file
 
 import React from "react";
@@ -39,11 +40,14 @@ export async function loader({ request }) {
     apiKey: process.env.SHOPIFY_API_KEY,
     session,
     host: parsedURL?.searchParams.get('host'),
+    ENV: {
+      API_HOST: process.env.API_HOST,
+    },
   });
 }
 
 export default function App() {
-  const { apiKey, polarisTranslations, session, host } = useLoaderData();
+  const { apiKey, polarisTranslations, session, host, ENV } = useLoaderData();
   const navigate = useNavigate();
 
   console.log('HOST', host);
@@ -83,6 +87,7 @@ export default function App() {
               <ShopProvider>
                 <OfferProvider>
                   <Outlet />
+                  <script dangerouslySetInnerHTML={{__html: `window.ENV = ${JSON.stringify(ENV)}`}}/>
                 </OfferProvider>
               </ShopProvider>
             </Provider>           

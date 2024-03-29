@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { api } from "../api";
 import { CURRENT_SHOP, UPDATE_ACTIVATION, UPDATE_SHOP_SETTINGS, SHOP_OFFERS_STATS } from "../endpoints/shop";
 
@@ -39,20 +40,16 @@ export const getShopOffersStats = async (shopify_domain, period) => {
 
 export async function fetchShopData(shop) {
   try {
-    const response = await fetch(`/api/v2/merchant/current_shop?shop=${shop}`, {
+    const response = await api.get(`${window.ENV.API_HOST}/api/v2/merchant/current_shop?shop=${shop}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
+        mode: 'cors'
       },
     });
-
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
-    }
-
-    const data = await response.json();
-    return data;
-  } catch (error) {
+    return response;
+  } 
+  catch (error) {
     console.error("Failed to fetch shop data:", error);
     throw error;
   }
