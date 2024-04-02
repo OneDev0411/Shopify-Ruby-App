@@ -81,7 +81,8 @@ export default function Subscription() {
           mode: 'cors',
              headers: {
                'Content-Type': 'application/json',
-               "ngrok-skip-browser-warning": "69420"
+               // uncomment this line if you are using ngrok, otherwise server would not process the request.
+              //  "ngrok-skip-browser-warning": "69420"
              },
           redirect: 'follow',
           referrerPolicy: 'no-referrer',

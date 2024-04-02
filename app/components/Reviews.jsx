@@ -1,5 +1,5 @@
 // @ts-nocheck
-import {Layout, Card, Stack, Image, HorizontalGrid} from "@shopify/polaris";
+import {Layout, Card, Image, LegacyStack, HorizontalGrid} from "@shopify/polaris";
 import "../components/stylesheets/reviewStyle.css";
 
 export function Reviews() {
@@ -8,9 +8,9 @@ export function Reviews() {
     <div className="review-section">
       <Layout>
         <Layout.Section>
-          <Stack distribution="center">
+          <LegacyStack distribution="center">
             <p style={{textAlign:'center'}}><strong>750+ 5 star reviews<br/>Trusted by over a thousand Shopify merchants</strong></p>
-          </Stack>
+          </LegacyStack>
         </Layout.Section>
       </Layout>
       <div className="space-10"></div>
@@ -28,9 +28,9 @@ export function Reviews() {
               </p>
               <br />
             </div>
-            <Stack distribution="center">
+            <LegacyStack distribution="center">
               <Image source="https://assets.incartupsell.com/images/5-star.png" distribution="center" />
-            </Stack>
+            </LegacyStack>
           </div>
         </Card>
         <Card title="My Gaming Case" sectioned>
@@ -47,9 +47,9 @@ export function Reviews() {
               </p>
               <br />
             </div>
-            <Stack distribution="center">
+            <LegacyStack distribution="center">
               <Image source="https://assets.incartupsell.com/images/5-star.png" distribution="center" />
-            </Stack>
+            </LegacyStack>
           </div>
         </Card>
         <Card title="Deinhamudi.de" sectioned>
@@ -66,9 +66,9 @@ export function Reviews() {
               </p>
               <br />
             </div>
-            <Stack distribution="center">
+            <LegacyStack distribution="center">
               <Image source="https://assets.incartupsell.com/images/5-star.png" distribution="center" />
-            </Stack>
+            </LegacyStack>
           </div>
         </Card>
       </HorizontalGrid>
