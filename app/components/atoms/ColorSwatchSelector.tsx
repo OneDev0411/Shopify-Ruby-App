@@ -3,8 +3,8 @@ import "../components/stylesheets/colorSwatchStyle.css";
 
 interface IColorSwatchSelectorProps {
   backgroundColor: string;
-  ariaExpanded?: boolean;
-  ariaControls?: string;
+  ariaExpanded: boolean;
+  ariaControls: string;
   onClick: React.MouseEventHandler<HTMLButtonElement>;
 };
 
