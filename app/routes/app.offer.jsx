@@ -34,7 +34,6 @@ export default function Offers() {
   // }, []);
 
   useEffect(() => {
-    console.log('hiiii', shop)
     if (shop.id) {
       return
     }
