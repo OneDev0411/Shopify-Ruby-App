@@ -39,7 +39,6 @@ export function OffersList({ pageSize }) {
 
   const shopAndHost = useSelector(state => state.shopAndHost);
   const fetch = useAuthenticatedFetch(shopAndHost.host);
-
   const [currentPage, setCurrentPage] = useState(1);
   const [modalActive, setModalActive] = useState(false);
 

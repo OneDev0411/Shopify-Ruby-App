@@ -193,7 +193,7 @@ const EditOfferView = () => {
             <>
               <Page
                 backAction={{onAction: () => {
-                  navigateTo('/offer')
+                  navigateTo('/app')
                 }}}
                 title={offer.title}
                 titleMetadata={
