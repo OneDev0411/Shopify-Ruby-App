@@ -2,7 +2,7 @@ import React from "react";
 import { TextField, Select, Text } from "@shopify/polaris";
 import { DOMActionOptions } from "../../shared/constants/DOMActionOptions";
 
-interface Props {
+interface IDomActionProps {
     title: string;
     actionId: string;
     selectorValue: string;
@@ -12,7 +12,7 @@ interface Props {
     onChangeAction: (selected: string, id: string) => void;
 };
 
-const DomAction: React.FC<Props> = ({
+const DomAction = ({
     title,
     actionId,
     selectorValue,
@@ -20,7 +20,7 @@ const DomAction: React.FC<Props> = ({
     disabled,
     onChangeSelector,
     onChangeAction,
-}) => (
+}: IDomActionProps) => (
     <>
         <div>
             <div style={{paddingBottom: '10px'}}>

@@ -1,30 +1,22 @@
 import React from "react";
 import "../components/stylesheets/colorSwatchStyle.css";
 
-interface Props {
-  label?: string;
+interface IColorSwatchSelectorProps {
   backgroundColor: string;
   ariaExpanded?: boolean;
   ariaControls?: string;
   onClick: React.MouseEventHandler<HTMLButtonElement>;
 };
 
-const ColorSwatchSelector: React.FC<Props> = ({ label, onClick, backgroundColor, ariaExpanded, ariaControls }) => {
-  const buttonStyle = {
-    backgroundColor,
-  };
-
+const ColorSwatchSelector = ({ onClick, backgroundColor, ariaExpanded, ariaControls }: IColorSwatchSelectorProps) => {
   return (
     <button
       className='custom-button-style'
-      style={buttonStyle}
+      style={{ backgroundColor }}
       onClick={onClick}
-      aria-label={label}
       aria-expanded={ariaExpanded}
       aria-controls={ariaControls}
-    >
-      {label}
-    </button>
+    />
   );
 };
 

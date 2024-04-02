@@ -1,7 +1,7 @@
 import React from "react";
 import { Grid, Image, RadioButton, Text } from "@shopify/polaris";
 
-interface Props {
+interface IOfferPlacementProps {
     defalutLabel: string;
     templateLabel: string;
     isDefault: boolean;
@@ -16,7 +16,7 @@ interface Props {
     placementPosition: number;
 };
 
-const OfferPlacement: React.FC<Props> = ({
+const OfferPlacement = ({
     defalutLabel,
     templateLabel,
     isDefault,
@@ -29,7 +29,7 @@ const OfferPlacement: React.FC<Props> = ({
     images,
     onClickImage,
     placementPosition,
-  }) => (
+  }: IOfferPlacementProps) => (
     <>
         <hr className="legacy-card-hr legacy-card-hr-t20-b15"/>
 

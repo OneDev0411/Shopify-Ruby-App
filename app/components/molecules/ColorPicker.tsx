@@ -5,7 +5,7 @@ import CollapsibleColorPicker from "../atoms/CollapsibleColorPicker";
 import ColorSwatchSelector from "../atoms/ColorSwatchSelector";
 import "../../stylesheets/colorPickerStyles.css";
 
-interface Props {
+interface IColorPickerProps {
     label: string;
     onChangeTextFiled: (value: string, id: string) => void;
     color: string;
@@ -28,7 +28,7 @@ const hexToHsba = (hexColor: string) => {
     };
 };
   
-const ColorPicker: React.FC<Props> = ({
+const ColorPicker = ({
     label,
     onChangeTextFiled,
     color,
@@ -37,7 +37,7 @@ const ColorPicker: React.FC<Props> = ({
     id,
     colorPickerRef,
     onChangeColorPicker,
-}) => (
+}: IColorPickerProps) => (
     <div className="color-picker-container">
         <TextField
             label={label}

@@ -1,14 +1,14 @@
 import React from "react";
 import { ColorPicker, Collapsible, ColorPickerProps, HSBAColor } from '@shopify/polaris';
 
-interface Props {
+interface ICollapsibleColorPickerProps {
   open: boolean;
   id: string;
   color: ColorPickerProps["color"];
   onChange: (color: HSBAColor) => void;
 };
 
-const CollapsibleColorPicker: React.FC<Props> = ({ open, id, color, onChange }) => {
+const CollapsibleColorPicker = ({ open, id, color, onChange }: ICollapsibleColorPickerProps) => {
   return (
     <Collapsible
       open={open}
