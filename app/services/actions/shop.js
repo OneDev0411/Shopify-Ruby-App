@@ -42,8 +42,6 @@ export async function fetchShopData(shop) {
   try {
     const response = await api.get(`${window.ENV.API_HOST}/api/v2/merchant/current_shop?shop=${shop}`, {
       method: "GET",
-      // uncomment this line if you are using ngrok, otherwise server would not process the request.
-      //  "ngrok-skip-browser-warning": "69420"
       headers: {
         "Content-Type": "application/json",
         mode: 'cors'
