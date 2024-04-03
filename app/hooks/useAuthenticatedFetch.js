@@ -15,8 +15,8 @@ import { Redirect } from "@shopify/app-bridge/actions";
  * @returns {Function} fetch function
  */
 export function useAuthenticatedFetch(host) {
-  // Please replace the server url with the ngrok link:
-  const base_url = 'https://49ea-175-107-228-230.ngrok-free.app'
+  // Please replace the server url with the base/server url link:
+  const base_url = 'http://localhost:3000'
   const app = useAppBridge();
   const fetchFunction = authenticatedFetch(app);
   return async (uri, options) => {
