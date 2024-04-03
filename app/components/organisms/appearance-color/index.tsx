@@ -8,13 +8,23 @@ import {
 import { useState, useCallback, useRef, useEffect, useContext } from "react";
 import React, { FC } from "react";
 import tinycolor from "tinycolor2";
+// @ts-ignore
 import {OfferContext} from "~/contexts/OfferContext";
+// @ts-ignore
 import { ColorPicker } from "../../molecules";
 
-const AppearanceColor: FC = () => {
+type ColorSettings = {
+    hue: number,
+    saturation: number,
+    brightness: number,
+    alpha: number,
+}
+
+const AppearanceColor = () => {
+    // @ts-ignore
     const {offer, updateNestedAttributeOfOffer} = useContext(OfferContext);
 
-    const [openEditMenu, setOpenEditMenu] = useState(false)
+    const [openEditMenu, setOpenEditMenu] = useState<boolean>(false)
     const handleMenuToggle = useCallback(() => {
         setOpenEditMenu((openEditMenu) => !openEditMenu)
         setOpen({
@@ -38,7 +48,7 @@ const AppearanceColor: FC = () => {
     });
 
     const handleToggle = useCallback(
-        (colorPickerName) => {
+        (colorPickerName: string) => {
             setOpen((prevState) => ({
                 ...prevState,
                 [colorPickerName]: !prevState[colorPickerName],
@@ -74,13 +84,13 @@ const AppearanceColor: FC = () => {
     }, []);
 
     //Sketch picker
-    const handleColorChanges = useCallback((colorSettings: { hue: number; saturation: number; brightness: number; alpha: number; }, comp: string, property: string) => {
+    const handleColorChanges = useCallback((colorSettings: ColorSettings, comp: string, property: string) => {
         const rgbColor = tinycolor({ h: colorSettings.hue, s: colorSettings.saturation, v: colorSettings.brightness, a: colorSettings.alpha }).toRgb();
         const hexColor = tinycolor(rgbColor).toHex();
         updateNestedAttributeOfOffer(`#${hexColor}`, "css_options", `${comp}`, `${property}`);
     }, []);
 
-    const handleTextFieldChanges = useCallback((newValue: any, comp: any, property: any) => {
+    const handleTextFieldChanges = useCallback((newValue: string, comp: string, property: string) => {
         updateNestedAttributeOfOffer(newValue, "css_options", `${comp}`, `${property}`);
     }, []);
 
@@ -103,7 +113,7 @@ const AppearanceColor: FC = () => {
                         <Grid.Cell columnSpan={{ xs: 4, sm: 4, md: 4, lg: 4, xl: 4 }}>
                             <ColorPicker
                                 label="Card"
-                                onChangeTextFiled={(newValue) => handleTextFieldChanges(newValue, "main", "backgroundColor")}
+                                onChangeTextFiled={(newValue: string) => handleTextFieldChanges(newValue, "main", "backgroundColor")}
                                 color={offer.css_options?.main?.backgroundColor}
                                 onClickColorSwatchSelector={() => handleToggle("cardColorPicker")}
                                 expanded={open.cardColorPicker}
@@ -115,7 +125,7 @@ const AppearanceColor: FC = () => {
                         <Grid.Cell columnSpan={{ xs: 4, sm: 4, md: 4, lg: 4, xl: 4 }}>
                             <ColorPicker
                                 label="Border"
-                                onChangeTextFiled={(newValue: any) => handleTextFieldChanges(newValue, "main", "borderColor")}
+                                onChangeTextFiled={(newValue: string) => handleTextFieldChanges(newValue, "main", "borderColor")}
                                 color={offer.css_options?.main?.borderColor}
                                 onClickColorSwatchSelector={() => handleToggle("borderColorPicker")}
                                 expanded={open.borderColorPicker}
@@ -127,7 +137,7 @@ const AppearanceColor: FC = () => {
                         <Grid.Cell columnSpan={{ xs: 4, sm: 4, md: 4, lg: 4, xl: 4 }}>
                             <ColorPicker
                                 label="Button"
-                                onChangeTextFiled={(newValue) => handleTextFieldChanges(newValue, "button", "backgroundColor")}
+                                onChangeTextFiled={(newValue: string) => handleTextFieldChanges(newValue, "button", "backgroundColor")}
                                 color={offer.css_options?.button?.backgroundColor}
                                 onClickColorSwatchSelector={() => handleToggle("buttonColorPicker")}
                                 expanded={open.buttonColorPicker}
@@ -142,7 +152,7 @@ const AppearanceColor: FC = () => {
                         <Grid.Cell columnSpan={{ xs: 4, sm: 4, md: 4, lg: 4, xl: 4 }}>
                             <ColorPicker
                                 label="Offer text"
-                                onChangeTextFiled={(newValue) => handleTextFieldChanges(newValue, "text", "color")}
+                                onChangeTextFiled={(newValue: string) => handleTextFieldChanges(newValue, "text", "color")}
                                 color={offer.css_options?.text?.color}
                                 onClickColorSwatchSelector={() => handleToggle("textColorPicker")}
                                 expanded={open.textColorPicker}
@@ -154,19 +164,19 @@ const AppearanceColor: FC = () => {
                         <Grid.Cell columnSpan={{ xs: 4, sm: 4, md: 4, lg: 4, xl: 4 }}>
                             <ColorPicker
                                 label="Button text"
-                                onChangeTextFiled={(newValue: any) => handleTextFieldChanges(newValue, "button", "color")}
+                                onChangeTextFiled={(newValue: string) => handleTextFieldChanges(newValue, "button", "color")}
                                 color={offer.css_options?.button?.color}
                                 onClickColorSwatchSelector={() => handleToggle("btnTextColorPicker")}
                                 expanded={open.btnTextColorPicker}
                                 id="basic-button-text-collapsible"
                                 colorPickerRef={colorPickerRefs.btnTextColorPicker}
-                                onChangeColorPicker={(newValue: any) => handleColorChanges(newValue, "button", "color")}
+                                onChangeColorPicker={(newValue) => handleColorChanges(newValue, "button", "color")}
                             />
                         </Grid.Cell>
                         <Grid.Cell columnSpan={{ xs: 4, sm: 4, md: 4, lg: 4, xl: 4 }}>
                             <ColorPicker
                                 label="Button border"
-                                onChangeTextFiled={(newValue: any) => handleTextFieldChanges(newValue, "button", "borderColor")}
+                                onChangeTextFiled={(newValue: string) => handleTextFieldChanges(newValue, "button", "borderColor")}
                                 color={offer.css_options?.button?.borderColor}
                                 onClickColorSwatchSelector={() => handleToggle("btnBorderColorPicker")}
                                 expanded={open.btnBorderColorPicker}

@@ -1,32 +1,36 @@
 import React, {useCallback, useContext} from "react";
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+// @ts-ignore
 import { OfferContext } from "../../../contexts/OfferContext.jsx";
+// @ts-ignore
 import { useShopState } from "../../../contexts/ShopContext.jsx";
 
 import { Checkbox, LegacyCard, LegacyStack, TextField } from "@shopify/polaris";
+import {ShopAndHost} from "../../../types";
 
 const DisplayOptions = () => {
+    // @ts-ignore
     const { offer, updateOffer } = useContext(OfferContext);
     const { shopSettings } = useShopState();
-    const shopAndHost = useSelector<any,any>(state => state.shopAndHost);
+    const shopAndHost = useSelector<{ shopAndHost: ShopAndHost}, ShopAndHost>(state => state.shopAndHost);
 
-    const handleImageChange = useCallback((newChecked) => updateOffer("show_product_image", !newChecked), []);
-    const handlePriceChange = useCallback((newChecked) => updateOffer("show_product_price", !newChecked), []);
-    const handleCompareChange = useCallback((newChecked) => updateOffer("show_compare_at_price", !newChecked), []);
-    const handleProductPageChange = useCallback((newChecked) => updateOffer("link_to_product", !newChecked), []);
-    const handleQtySelectorChange = useCallback((newChecked) => updateOffer("show_quantity_selector", !newChecked), []);
-    const handleDiscountChange = useCallback((newChecked) => {
+    const handleImageChange = useCallback((newChecked: boolean) => updateOffer("show_product_image", !newChecked), []);
+    const handlePriceChange = useCallback((newChecked: boolean) => updateOffer("show_product_price", !newChecked), []);
+    const handleCompareChange = useCallback((newChecked: boolean) => updateOffer("show_compare_at_price", !newChecked), []);
+    const handleProductPageChange = useCallback((newChecked: boolean) => updateOffer("link_to_product", !newChecked), []);
+    const handleQtySelectorChange = useCallback((newChecked: boolean) => updateOffer("show_quantity_selector", !newChecked), []);
+    const handleDiscountChange = useCallback((newChecked: boolean) => {
         if (newChecked) {
             updateOffer("discount_target_type", "code");
         } else {
             updateOffer("discount_target_type", "none");
         }
     }, []);
-    const handleDiscountCodeChange = useCallback((value) => updateOffer("discount_code", value), []);
-    const handleCustomTextChange = useCallback((newChecked) => updateOffer("show_custom_field", newChecked), []);
-    const handleShowNoThanksChange = useCallback((newChecked) => updateOffer("show_nothanks", !newChecked), []);
-    const handleRedirectedToProductChange = useCallback((newChecked) => updateOffer("redirect_to_product", newChecked), []);
+    const handleDiscountCodeChange = useCallback((value: string) => updateOffer("discount_code", value), []);
+    const handleCustomTextChange = useCallback((newChecked: boolean) => updateOffer("show_custom_field", newChecked), []);
+    const handleShowNoThanksChange = useCallback((newChecked: boolean) => updateOffer("show_nothanks", !newChecked), []);
+    const handleRedirectedToProductChange = useCallback((newChecked: boolean) => updateOffer("redirect_to_product", newChecked), []);
 
     return (
         <LegacyCard title="Display options" sectioned>

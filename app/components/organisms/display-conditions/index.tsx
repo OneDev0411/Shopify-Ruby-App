@@ -17,7 +17,9 @@ import { condition_options } from "../../../shared/constants/ConditionOptions";
 // @ts-ignore
 import { getLabelFromValue } from "../../../shared/helpers/commonHelpers";
 import { QuantityArray, OrderArray } from "~/shared/constants/EditOfferOptions";
+// @ts-ignore
 import {OfferContext} from "~/contexts/OfferContext";
+import {IAutopilotSettingsProps} from "../../../types";
 
 type Rule = {
     quantity: number,
@@ -27,14 +29,16 @@ type Rule = {
     item_name: string,
 }
 
-interface IDisplayConditionsProps {
-  autopilotCheck: any
+const RULE_DEFAULTS: Rule = { quantity: 0, rule_selector: 'cart_at_least', item_type: 'product', item_shopify_id: 0, item_name: "" }
+
+interface IDisplayConditionsProps extends  IAutopilotSettingsProps{
 }
 
 const DisplayConditions = ({ autopilotCheck } : IDisplayConditionsProps) => {
+    // @ts-ignore
     const { offer, setOffer, updateOffer } = useContext(OfferContext);
 
-    const [rule, setRule] = useState<Rule>({ quantity: 0, rule_selector: 'cart_at_least', item_type: 'product', item_shopify_id: 0, item_name: "" });
+    const [rule, setRule] = useState<Rule>(RULE_DEFAULTS)
     const [quantityErrorText, setQuantityErrorText] = useState<string>("");
     const [itemErrorText, setItemErrorText] = useState<string>("");
 
@@ -70,9 +74,9 @@ const DisplayConditions = ({ autopilotCheck } : IDisplayConditionsProps) => {
         handleConditionModal();
     }
 
-    const handleDisableCheckoutBtn = useCallback((newChecked) => updateOffer("must_accept", newChecked), []);
-    const handleRemoveItiem = useCallback((newChecked) => updateOffer("remove_if_no_longer_valid", newChecked), []);
-    const handleStopShowingAfterAccepted = (newChecked) => updateOffer("stop_showing_after_accepted", newChecked);
+    const handleDisableCheckoutBtn = useCallback((newChecked: boolean) => updateOffer("must_accept", newChecked), []);
+    const handleRemoveItiem = useCallback((newChecked: boolean) => updateOffer("remove_if_no_longer_valid", newChecked), []);
+    const handleStopShowingAfterAccepted = (newChecked: boolean) => updateOffer("stop_showing_after_accepted", newChecked);
 
     //Modal controllers
     const [conditionModal, setConditionModal] = useState<boolean>(false);
@@ -84,7 +88,7 @@ const DisplayConditions = ({ autopilotCheck } : IDisplayConditionsProps) => {
     const activatorCon = modalCon;
 
     const setDefaultRule = () => {
-        setRule({ quantity: 0, rule_selector: 'cart_at_least', item_type: 'product', item_shopify_id: 0, item_name: "" });
+        setRule(RULE_DEFAULTS);
         setQuantityErrorText("");
         setItemErrorText("");
     }
@@ -95,7 +99,7 @@ const DisplayConditions = ({ autopilotCheck } : IDisplayConditionsProps) => {
         updateOffer('rules_json', updatedRules);
     }
 
-    function updateRuleSet (value) {
+    function updateRuleSet (value: string) {
         updateOffer('ruleset_type', value);
     }
 

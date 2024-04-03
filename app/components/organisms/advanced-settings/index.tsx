@@ -6,21 +6,22 @@ import {
 } from "@shopify/polaris";
 import {FC, useCallback, useContext} from "react";
 import React from "react";
+// @ts-ignore
 import {OfferContext} from "~/contexts/OfferContext";
+// @ts-ignore
 import { DomAction } from "../../molecules";
 
-type Offer = {}
-
-const AdvancedSettings: FC = () => {
+const AdvancedSettings = () => {
+    // @ts-ignore
     const { offer, updateOffer, updateNestedAttributeOfOffer } = useContext(OfferContext);
-    const handleChange = useCallback((newChecked: any) => updateOffer("save_as_default_setting", newChecked), []);
-    const handleProductDomSelector = useCallback((newValue: Offer) => updateNestedAttributeOfOffer(newValue, "advanced_placement_setting",  "custom_product_page_dom_selector"), []);
-    const handleProductDomAction = useCallback((newValue: Offer) => updateNestedAttributeOfOffer(newValue, "advanced_placement_setting", "custom_product_page_dom_action"), []);
-    const handleCartDomSelector = useCallback((newValue: Offer) => updateNestedAttributeOfOffer(newValue, "advanced_placement_setting", "custom_cart_page_dom_selector"), []);
-    const handleCartDomAction = useCallback((newValue: Offer) => updateNestedAttributeOfOffer(newValue, "advanced_placement_setting", "custom_cart_page_dom_action"), []);
-    const handleAjaxDomSelector = useCallback((newValue: Offer) => updateNestedAttributeOfOffer(newValue, "advanced_placement_setting", "custom_ajax_dom_selector"), []);
-    const handleAjaxDomAction = useCallback((newValue: Offer) => updateNestedAttributeOfOffer(newValue, "advanced_placement_setting", "custom_ajax_dom_action"), []);
-    const handleOfferCss = useCallback((newValue: Offer) => updateNestedAttributeOfOffer(newValue, "custom_css"), []);
+    const handleChange = useCallback((newChecked: boolean) => updateOffer("save_as_default_setting", newChecked), []);
+    const handleProductDomSelector = useCallback((newValue: string) => updateNestedAttributeOfOffer(newValue, "advanced_placement_setting",  "custom_product_page_dom_selector"), []);
+    const handleProductDomAction = useCallback((newValue: string) => updateNestedAttributeOfOffer(newValue, "advanced_placement_setting", "custom_product_page_dom_action"), []);
+    const handleCartDomSelector = useCallback((newValue: string) => updateNestedAttributeOfOffer(newValue, "advanced_placement_setting", "custom_cart_page_dom_selector"), []);
+    const handleCartDomAction = useCallback((newValue: string) => updateNestedAttributeOfOffer(newValue, "advanced_placement_setting", "custom_cart_page_dom_action"), []);
+    const handleAjaxDomSelector = useCallback((newValue: string) => updateNestedAttributeOfOffer(newValue, "advanced_placement_setting", "custom_ajax_dom_selector"), []);
+    const handleAjaxDomAction = useCallback((newValue: string) => updateNestedAttributeOfOffer(newValue, "advanced_placement_setting", "custom_ajax_dom_action"), []);
+    const handleOfferCss = useCallback((newValue: string) => updateNestedAttributeOfOffer(newValue, "custom_css"), []);
 
     return (
         <>

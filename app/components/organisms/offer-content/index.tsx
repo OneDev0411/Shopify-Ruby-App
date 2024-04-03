@@ -1,20 +1,24 @@
 import React, {useCallback, useContext} from "react";
 import { Link } from 'react-router-dom';
+// @ts-ignore
 import { OfferContext } from "~/contexts/OfferContext";
+// @ts-ignore
 import { useShopState } from "~/contexts/ShopContext";
 
 import { Checkbox, Collapsible, LegacyCard, LegacyStack, Text, TextField } from "@shopify/polaris";
+import {IAutopilotSettingsProps} from "../../../types";
 
-interface IOfferContentProps extends autopilotSettingsProps{
-  updateCheckKeysValidity: any
+interface IOfferContentProps extends IAutopilotSettingsProps{
+  updateCheckKeysValidity: (key: string, value: string) => void;
 }
 
 const OfferContent = ({ updateCheckKeysValidity, autopilotCheck }: IOfferContentProps) => {
+    // @ts-ignore
     const { offer, updateOffer } = useContext(OfferContext);
     const { shopSettings } = useShopState();
 
-    const handleTitleChange = useCallback((newValue) => updateOffer("title", newValue), []);
-    const handleTextChange = useCallback((newValue) => {
+    const handleTitleChange = useCallback((newValue: string) => updateOffer("title", newValue), []);
+    const handleTextChange = useCallback((newValue: string) => {
         updateOffer("text_a", newValue);
         if (offer.offerable_product_details.length > 0) {
             updateCheckKeysValidity("text", newValue.replace("{{ product_title }}", offer.offerable_product_details[0].title));
@@ -23,14 +27,14 @@ const OfferContent = ({ updateCheckKeysValidity, autopilotCheck }: IOfferContent
         }
     }, [offer.offerable_product_details]);
 
-    const handleAltTextChange = useCallback((newValue) => updateOffer("text_b", newValue), []);
-    const handleBtnChange = useCallback((newValue) => {
+    const handleAltTextChange = useCallback((newValue: string) => updateOffer("text_b", newValue), []);
+    const handleBtnChange = useCallback((newValue: string) => {
         updateOffer("cta_a", newValue);
         updateCheckKeysValidity('cta', newValue);
     }, []);
-    const handleAltBtnChange = useCallback((newValue) => updateOffer("cta_b", newValue), []);
+    const handleAltBtnChange = useCallback((newValue: string) => updateOffer("cta_b", newValue), []);
 
-    const handleAbChange = useCallback((newChecked) => updateOffer("uses_ab_test", newChecked), []);
+    const handleAbChange = useCallback((newChecked: boolean) => updateOffer("uses_ab_test", newChecked), []);
 
     return (
         <LegacyCard title="Text" sectioned>

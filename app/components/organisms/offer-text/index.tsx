@@ -9,29 +9,31 @@ import {
 import { useCallback, useContext } from "react";
 import React from "react";
 import { OfferBorderOptions, OfferFontOptions } from "~/shared/constants/EditOfferOptions";
+// @ts-ignore
 import { OfferContext } from "~/contexts/OfferContext";
 
 const OfferText = () => {
+    // @ts-ignore
     const {offer, updateNestedAttributeOfOffer} = useContext(OfferContext);
 
     //Font options
     // const [fontSelect, setFontSelect] = useState("Dummy font 1");
-    const handleFontSelect = useCallback((value) => updateNestedAttributeOfOffer(value, "css_options", "text", "fontFamily"), []);
+    const handleFontSelect = useCallback((value: string) => updateNestedAttributeOfOffer(value, "css_options", "text", "fontFamily"), []);
 
     //Font sizes
-    const handleFontSize = useCallback((newValue) => updateNestedAttributeOfOffer(`${newValue}px`, "css_options", "text", "fontSize"), []);
+    const handleFontSize = useCallback((newValue: string) => updateNestedAttributeOfOffer(`${newValue}px`, "css_options", "text", "fontSize"), []);
 
 
     //Button options
-    const handleBtnSelect = useCallback((value) => updateNestedAttributeOfOffer(value, "css_options", "button", "fontFamily"), []);
+    const handleBtnSelect = useCallback((value: string) => updateNestedAttributeOfOffer(value, "css_options", "button", "fontFamily"), []);
 
     //Button size
-    const handleBtnSize = useCallback((newValue) => updateNestedAttributeOfOffer(`${newValue}px`, "css_options", "button", "fontSize"), []);
+    const handleBtnSize = useCallback((newValue: string) => updateNestedAttributeOfOffer(`${newValue}px`, "css_options", "button", "fontSize"), []);
 
     // Btn radius
-    const handleRangeSliderChange = useCallback((newValue) => updateNestedAttributeOfOffer(parseInt(newValue), "css_options", "button", "borderRadius"), []);
+    const handleRangeSliderChange = useCallback((newValue: string) => updateNestedAttributeOfOffer(parseInt(newValue), "css_options", "button", "borderRadius"), []);
 
-    const handleBtnBorderWidth =useCallback((newValue) => {
+    const handleBtnBorderWidth =useCallback((newValue: string) => {
         const numericValue = parseInt(newValue);
         if (isNaN(numericValue) || numericValue >= 0 && numericValue <= 5) {
             updateNestedAttributeOfOffer(
@@ -44,7 +46,7 @@ const OfferText = () => {
     }, []);
 
     //Button Border style drop-down menu
-    const handleBtnBorderStyle = useCallback((newValue) => {
+    const handleBtnBorderStyle = useCallback((newValue: string) => {
         updateNestedAttributeOfOffer(newValue, "css_options", "button", "borderStyle");
     }, []);
 
@@ -99,12 +101,13 @@ const OfferText = () => {
             <br />
             <Grid>
                 <Grid.Cell columnSpan={{ xs: 6, sm: 3, md: 3, lg: 6, xl: 6 }}>
+                    {/*TODO: double check slider*/}
                     <RangeSlider
                         label="Border Radius"
                         value={offer.css_options?.button?.borderRadius || 0}
                         min={0}
                         max={16}
-                        onChange={handleRangeSliderChange}
+                        onChange={(sliderVal) => handleRangeSliderChange(sliderVal.toString())}
                         output
                     />
                 </Grid.Cell>

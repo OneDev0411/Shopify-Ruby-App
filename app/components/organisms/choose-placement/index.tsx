@@ -15,16 +15,22 @@ import SelectProductsModal from "../../SelectProductsModal";
 import { SelectCollectionsModal } from "../../SelectCollectionsModal";
 import {Link} from 'react-router-dom';
 import { OfferThemeOptions, OfferNewThemeOptions } from "~/shared/constants/EditOfferOptions";
+// @ts-ignore
 import {OfferContext} from "~/contexts/OfferContext";
+// @ts-ignore
 import {useShopState} from "~/contexts/ShopContext";
+// @ts-ignore
 import { OfferPlacement } from "../../molecules/index.js";
+// @ts-ignore
 import { BannerContainer } from "../../atoms/index.js";
+import {IAutopilotSettingsProps, Product, Rule} from "../../../types";
 
-interface IChoosePlacementProps extends autopilotSettingsProps{
+interface IChoosePlacementProps extends IAutopilotSettingsProps{
     enableOrDisablePublish: any
 }
 
 const ChoosePlacement = ({ enableOrDisablePublish, autopilotCheck}: IChoosePlacementProps) => {
+    // @ts-ignore
     const { offer, updateOffer, updateNestedAttributeOfOffer } = useContext(OfferContext);
     const { shopSettings, themeAppExtension } = useShopState();
     // TODO: swap into context
@@ -49,6 +55,7 @@ const ChoosePlacement = ({ enableOrDisablePublish, autopilotCheck}: IChoosePlace
     const [templateImagesURL, setTemplateImagesURL] = useState<any>({});
     const [storedThemeNames, setStoredThemeName] = useState<string[]>([]);
 
+    // @ts-ignore
     const isLegacy = themeAppExtension.theme_version !== '2.0' || import.meta.env.VITE_ENABLE_THEME_APP_EXTENSION?.toLowerCase() !== 'true';
 
     useEffect(() => {
@@ -181,7 +188,7 @@ const ChoosePlacement = ({ enableOrDisablePublish, autopilotCheck}: IChoosePlace
     }, [storedThemeNames, shopifyThemeName])
 
 
-    const handleSelectChange = useCallback((value) => {
+    const handleSelectChange = useCallback((value: string) => {
         if (value === "cartpage") {
             updateOffer("in_cart_page", true);
             updateOffer("in_product_page", false);
@@ -210,7 +217,7 @@ const ChoosePlacement = ({ enableOrDisablePublish, autopilotCheck}: IChoosePlace
         setSelected(value);
     }, []);
 
-    const handleDefaultSettingChange = useCallback((value, selectedPage) => {
+    const handleDefaultSettingChange = useCallback((value: boolean, selectedPage: string) => {
         if(value) {
             enableOrDisablePublish(!value);
             if(offer.in_product_page && offer.in_cart_page) {
@@ -285,7 +292,7 @@ const ChoosePlacement = ({ enableOrDisablePublish, autopilotCheck}: IChoosePlace
     }, []);
 
 
-    const handleUseTemplateChange = useCallback((value, selectedPage) => {
+    const handleUseTemplateChange = useCallback((value: boolean, selectedPage: string) => {
         if(value) {
             enableOrDisablePublish(value);
             if(offer.in_product_page && offer.in_cart_page) {
@@ -362,7 +369,7 @@ const ChoosePlacement = ({ enableOrDisablePublish, autopilotCheck}: IChoosePlace
         }
     }, []);
 
-    const handleDefaultSettingSecondChange = useCallback((value, selectedPage) => {
+    const handleDefaultSettingSecondChange = useCallback((value: boolean, selectedPage: string) => {
         if(value) {
             enableOrDisablePublish(!value);
             if(offer.in_product_page && offer.in_cart_page) {
@@ -427,7 +434,7 @@ const ChoosePlacement = ({ enableOrDisablePublish, autopilotCheck}: IChoosePlace
         }
     }, []);
 
-    const handleUseTemplateSecondChange = useCallback((value, selectedPage) => {
+    const handleUseTemplateSecondChange = useCallback((value: boolean, selectedPage: string) => {
         if(value) {
             enableOrDisablePublish(value);
             if(offer.in_product_page && offer.in_cart_page) {
@@ -457,7 +464,7 @@ const ChoosePlacement = ({ enableOrDisablePublish, autopilotCheck}: IChoosePlace
 
 
     // Called on clickedImages that opened after checking Use Template checkbox
-    const handleImageClick = useCallback((pageName, clickedImageNum) => {
+    const handleImageClick = useCallback((pageName: string, clickedImageNum: number) => {
         enableOrDisablePublish(false);
         if(pageName === 'product_page') {
             themeTemplateData.forEach(function(record){
@@ -504,7 +511,7 @@ const ChoosePlacement = ({ enableOrDisablePublish, autopilotCheck}: IChoosePlace
     }, []);
 
     //Modal controllers
-    const [productModal, setProductModal] = useState(false);
+    const [productModal, setProductModal] = useState<boolean>(false);
     const [selectedProducts, setSelectedProducts] = useState<Product[]>([]);
 
     const handleProductsModal = () => {
@@ -518,7 +525,7 @@ const ChoosePlacement = ({ enableOrDisablePublish, autopilotCheck}: IChoosePlace
         handleProductsModal();
     }
 
-    const [collectionModal, setCollectionModal] = useState(false);
+    const [collectionModal, setCollectionModal] = useState<boolean>(false);
     // TODO: Cross check product and collection
     const [selectedCollections, setSelectedCollections] = useState<Product[]>([]);
 
@@ -526,7 +533,7 @@ const ChoosePlacement = ({ enableOrDisablePublish, autopilotCheck}: IChoosePlace
         setCollectionModal(!collectionModal);
     }, [collectionModal]);
 
-    const handleEnableAdvancedSetting = useCallback((newChecked) => {
+    const handleEnableAdvancedSetting = useCallback((newChecked: boolean) => {
         if(storedThemeNames?.includes(shopifyThemeName)) {
             updateNestedAttributeOfOffer(newChecked, "advanced_placement_setting", "advanced_placement_setting_enabled");
         }
@@ -564,7 +571,7 @@ const ChoosePlacement = ({ enableOrDisablePublish, autopilotCheck}: IChoosePlace
         }
     }, []);
 
-    function getSelectedItems(item_type) {
+    function getSelectedItems(item_type: string) {
         return fetch(`/api/v2/merchant/offer/shopify_ids_from_rule`, {
             method: 'POST',
             headers: {
@@ -622,6 +629,9 @@ const ChoosePlacement = ({ enableOrDisablePublish, autopilotCheck}: IChoosePlace
         handleCollectionsModal();
     }
 
+    // @ts-ignore
+    // @ts-ignore
+    // @ts-ignore
     return (
         <>
             {(!storedThemeNames?.includes(shopifyThemeName) && openBanner && isLegacy) && (
@@ -647,6 +657,7 @@ const ChoosePlacement = ({ enableOrDisablePublish, autopilotCheck}: IChoosePlace
                 >
                     <p>In order to show the offer in the Ajax Cart, you need to enable it in the Theme Editor.</p><br/>
                     <p><Link
+                        // @ts-ignore
                         to={`https://${shopSettings.shopify_domain}/admin/themes/current/editor?context=apps&template=product&activateAppId=${import.meta.env.VITE_SHOPIFY_ICU_EXTENSION_APP_ID}/ajax_cart_app_block`}
                         target="_blank">Click here</Link> to go to the theme editor</p>
                 </BannerContainer>
@@ -795,12 +806,12 @@ const ChoosePlacement = ({ enableOrDisablePublish, autopilotCheck}: IChoosePlace
                             isDefault={defaultSetting}
                             isTemplate={useTemplate}
                             radioName="product-settings"
-                            onChangeDefault={(event) =>handleDefaultSettingChange(event, null)}
-                            onChangeTemplate={(event) => handleUseTemplateChange(event, null)}
+                            onChangeDefault={(event: boolean) =>handleDefaultSettingChange(event, "")}
+                            onChangeTemplate={(event: boolean) => handleUseTemplateChange(event, "")}
                             disabled={offer?.advanced_placement_setting?.advanced_placement_setting_enabled}
                             images={[insertedImage1, insertedImage2, insertedImage3]}
                             showImages={useTemplate}
-                            onClickImage={(position) => handleImageClick(null, position)}
+                            onClickImage={(position: number) => handleImageClick("", position)}
                             placementPosition={offer.in_cart_page ? themeTemplateData?.find((item) => item["id"] === offer.placement_setting?.template_cart_id)?.position : offer.in_product_page ? themeTemplateData?.find((item) => item["id"] === offer.placement_setting?.template_product_id)?.position : offer.in_ajax_cart ? themeTemplateData?.find((item) => item["id"] === offer.placement_setting?.template_ajax_id)?.position : 0}
                         />
                     ))
