@@ -1,5 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
-import shopAndHost from './reducers/shopAndHost';
+import shopAndHost, { IShopAndHostState } from './reducers/shopAndHost';
+
+
+export interface IRootState {
+	shopAndHost: IShopAndHostState
+}
 
 export const store = configureStore({
 	reducer: {
