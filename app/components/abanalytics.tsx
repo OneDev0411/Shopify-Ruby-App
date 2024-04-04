@@ -1,21 +1,31 @@
-// @ts-nocheck
 import { Card, AppProvider, Text, Grid } from '@shopify/polaris';
 import "../components/stylesheets/editOfferStyle.css";
 import { useEffect, useState, useCallback } from 'react';
 import { useSelector } from 'react-redux';
+import translations from "@shopify/polaris/locales/en.json";
 import { useAuthenticatedFetch } from '../hooks';
 import { ABTestingOptions } from '../shared/constants/Others';
 import ErrorPage from "../components/ErrorPage";
+import { IRootState } from '~/store/store';
 
-const AbAnalytics = (props) => {
-    const shopAndHost = useSelector(state => state.shopAndHost);
-    const [aAnalytics, setAAnalytics] = useState();
-    const [bAnalytics, setBAnalytics] = useState();
+interface IAbAnalyticsProps {
+	offerId: number;
+};
+
+const AbAnalytics = ({ offerId }: IAbAnalyticsProps) => {
+    const shopAndHost = useSelector((state: IRootState) => state.shopAndHost);
+    const [aAnalytics, setAAnalytics] = useState<string>("");
+    const [bAnalytics, setBAnalytics] = useState<string>("");
     const [error, setError] = useState(null);
 
     const fetch = useAuthenticatedFetch(shopAndHost.host);
 
-    const getAbAnalytics = useCallback((offerId, shop, version, setRequiredState) => {
+    const getAbAnalytics = useCallback((
+        offerId: number,
+        shop: string,
+        version: string,
+        setRequiredState: React.Dispatch<React.SetStateAction<string>>
+    ) => {
         fetch(`/api/v2/merchant/offers/load_ab_analytics`, {
             method: 'POST',
             headers: {
@@ -36,15 +46,15 @@ const AbAnalytics = (props) => {
     }, []); 
 
     useEffect(() => {
-        getAbAnalytics(props.offerId, shopAndHost.shop, 'a', setAAnalytics)
-        getAbAnalytics(props.offerId, shopAndHost.shop, 'b', setBAnalytics)
+        getAbAnalytics(offerId, shopAndHost.shop, 'a', setAAnalytics)
+        getAbAnalytics(offerId, shopAndHost.shop, 'b', setBAnalytics)
       },[]);
 
       if (error) { return < ErrorPage />; }
 
     return (
       <>
-        <AppProvider>
+        <AppProvider i18n={translations}>
           <Card>
             <div className="analytics-card-style">
                 <Grid>
@@ -64,12 +74,12 @@ const AbAnalytics = (props) => {
                 {ABTestingOptions.map((option, index) => (
                     <Grid key={index}>
                         <Grid.Cell columnSpan={{ xs: 6, sm: 6, md: 6, lg: 6, xl: 6 }}>
-                            <Text variant="body" as="p">
+                            <Text variant="bodyMd" as="p">
                                 {option}
                             </Text>
                         </Grid.Cell>
                         <Grid.Cell columnSpan={{ xs: 6, sm: 6, md: 6, lg: 6, xl: 6 }}>
-                            <Text variant="body" as="p">
+                            <Text variant="bodyMd" as="p">
                                 {index === 0 ? aAnalytics : bAnalytics}
                             </Text>
                         </Grid.Cell>

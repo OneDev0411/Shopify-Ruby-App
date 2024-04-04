@@ -2,7 +2,7 @@
 import {Layout, Card, Image, LegacyStack, HorizontalGrid} from "@shopify/polaris";
 import "../components/stylesheets/reviewStyle.css";
 
-export function Reviews() {
+export const Reviews = () => {
     
   return (
     <div className="review-section">
