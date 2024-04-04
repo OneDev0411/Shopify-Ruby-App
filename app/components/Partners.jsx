@@ -1,59 +1,22 @@
+// @ts-nocheck
 import {VerticalStack, LegacyCard, Image, Button, Grid, Pagination} from '@shopify/polaris';
 import {useState, useCallback, useEffect} from 'react';
-import {stars} from "@assets";
 import Slider from "react-slick";
-import React from "react";
 import { useSelector } from 'react-redux';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useAuthenticatedFetch } from "../hooks";
+import { PartnersSliderSettings } from '../shared/constants/PartnersSliderSettings';
+import ErrorPage from "../components/ErrorPage";
 
-export function Partners(){
+export function Partners() {
     const shopAndHost = useSelector(state => state.shopAndHost);
     const fetch = useAuthenticatedFetch(shopAndHost.host);
     const [expandedIndex, setExpandedIndex] = useState(null);
     const [partners, setPartners] = useState(null);
-    const previousVal = null;
-    const nextVal = null;
-    let slider;
+    const [error, setError] = useState(null);
 
-    const settings = {
-      dots: false,
-      infinite: true,
-      speed: 500,
-      slidesToShow: 3,
-      slidesToScroll: 1,
-      responsive: [
-        {
-          breakpoint: 1200,
-          settings: {
-            slidesToShow: 3,
-            slidesToScroll: 1,
-          }
-        },
-        {
-          breakpoint: 991,
-          settings: {
-            slidesToShow: 3,
-            slidesToScroll: 1,
-          }
-        },
-        {
-          breakpoint: 767,
-          settings: {
-            slidesToShow: 2,
-            slidesToScroll: 1
-          }
-        },
-        {
-          breakpoint: 576,
-          settings: {
-            slidesToShow: 1,
-            slidesToScroll: 1
-          }
-        }
-      ]
-    };
+    let slider;
 
     function next(){
       slider.slickNext();
@@ -63,7 +26,7 @@ export function Partners(){
     }
 
     const getAllPartners = useCallback(async ()=>{
-      fetch(`/api/merchant/partners?shop=${shopAndHost.shop}`, {
+      fetch(`/api/v2/merchant/partners?shop=${shopAndHost.shop}`, {
         method: 'GET',
            headers: {
              'Content-Type': 'application/json',
@@ -74,6 +37,7 @@ export function Partners(){
         setPartners(data.partners);
        })
        .catch((error) => {
+        setError(error)
         console.log("error", error);
        })
      }, [])
@@ -86,13 +50,15 @@ export function Partners(){
       getAllPartners();
     }, [getAllPartners]);
 
+    // if (error) { return < ErrorPage />; }
+
     return(<>
       <LegacyCard sectioned title="Recommended Apps" id={"LegacyCardYpadding"}>
         <p>Check out our partners below.</p>
         <div className="space-4"></div>
-        <Grid >
+          <Grid >
             <Grid.Cell columnSpan={{ xs: 6, sm: 6, md: 12, lg: 12, xl: 12}}>
-                <Slider ref={c => (slider = c)} {...settings}>
+                <Slider ref={c => (slider = c)} {...PartnersSliderSettings}>
                   {partners && partners.map((partner, index) => (
                     <Grid key={index}>
                       <Grid.Cell columnSpan={{ xs: 6, sm: 6, md: 12, lg: 12, xl: 12}}>
@@ -130,7 +96,7 @@ export function Partners(){
                               width:'60%',
                               marginBottom:'15px',
                               }}
-                              source={stars}
+                              source="https://assets.incartupsell.com/images/5-star.png"
                             />
                             <Button url={partner.app_url} target="blank">View on Shopify App Store</Button>
                             </VerticalStack>
