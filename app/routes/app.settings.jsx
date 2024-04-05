@@ -157,7 +157,7 @@ export default function Settings() {
               <Grid.Cell columnSpan={{ xs: 6, sm: 6, md: 6, lg: 6, xl: 6 }}>
                 <LegacyCard sectioned columnSpan={{ md: 6, lg: 6, xl: 6 }}>
                     {/* Tabs */}
-                    {/* {shopSettings ? <SettingTabs formData={formData} currentShop={shopSettings} updateShop={updateShopSettingsAttributes} handleFormChange={handleFormChange} /> : 'Loading...'} */}
+                    {shopSettings ? <SettingTabs formData={formData} currentShop={shopSettings} updateShop={updateShopSettingsAttributes} handleFormChange={handleFormChange} /> : 'Loading...'}
                 </LegacyCard>
               </Grid.Cell>
             </Grid>
