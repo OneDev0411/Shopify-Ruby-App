@@ -1,5 +1,5 @@
 import React from "react";
-import "../components/stylesheets/colorSwatchStyle.css";
+import "../stylesheets/colorSwatchStyle.css";
 
 interface IColorSwatchSelectorProps {
   backgroundColor: string;

@@ -55,7 +55,7 @@ const ModalChoosePlan = () => {
     >
       <Modal.Section>
         <div id="not-dismissable-modal">
-          {/* <p>{import.meta.env.VITE_REACT_APP_MODAL_CONTENT}</p> */}
+          <p>{typeof(window) != 'undefined' ? window.ENV.VITE_REACT_APP_MODAL_CONTENT : ''}</p>
         </div>
       </Modal.Section>
     </Modal>
