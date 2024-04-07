@@ -20,7 +20,7 @@ export function useAuthenticatedFetch(host) {
   const app = useAppBridge();
   const fetchFunction = authenticatedFetch(app);
   return async (uri, options) => {
-    const req_url = `${base_url}/${uri}`
+    const req_url = `${base_url}${uri}`
     const hasQueryParams = uri.includes("?");
     const uriWithHost = hasQueryParams
       ? `${req_url}&host=${host}`

@@ -42,6 +42,7 @@ export async function loader({ request }) {
     host: parsedURL?.searchParams.get('host'),
     ENV: {
       API_HOST: process.env.API_HOST,
+      VITE_REACT_APP_MODAL_CONTENT: process.env.VITE_REACT_APP_MODAL_CONTENT
     },
   });
 }

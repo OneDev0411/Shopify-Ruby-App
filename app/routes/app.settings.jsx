@@ -66,7 +66,6 @@ export default function Settings() {
 
 
     const handleFormChange = (value, id) => {
-      debugger;
 
         setFormData({
             ...formData,
