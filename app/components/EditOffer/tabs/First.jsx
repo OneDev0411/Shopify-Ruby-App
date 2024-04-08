@@ -1,6 +1,6 @@
-import React, {useCallback, useEffect, useRef, useState, useContext} from "react";
-import {Link, useLocation} from 'react-router-dom';
-import { useNavigate } from "@remix-run/react";
+// @ts-nocheck
+import {useCallback, useEffect, useRef, useState, useContext} from "react";
+import { Link, useNavigate, useLocation } from "@remix-run/react";
 import {useSelector} from 'react-redux';
 import { OfferContext } from "../../../contexts/OfferContext.jsx";
 

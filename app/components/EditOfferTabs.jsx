@@ -11,12 +11,9 @@ import {
     Collapsible,
     Modal,
     Grid,
-    ColorPicker,
     LegacyStack as Stack,
     Icon,
-    Tooltip,
     RadioButton,
-    Text,
     Badge,
     Image,
     Spinner
@@ -31,10 +28,10 @@ import { useState, useCallback, useRef, useEffect } from "react";
 import { SketchPicker } from 'react-color';
 import React from "react";
 import tinycolor from "tinycolor2";
-import { Link } from 'react-router-dom';
+import { Link } from '@remix-run/react';
 import { useSelector } from 'react-redux';
 import { elementSearch, productsMulti } from "../services/products/actions/product";
-import { useLocation } from 'react-router-dom';
+import { useLocation } from '@remix-run/react';
 import { useAppQuery, useAuthenticatedFetch } from "../hooks";
 import { useNavigate } from "@remix-run/react";
 import SelectProductsModal from "../components/SelectProductsModal";
@@ -129,7 +126,7 @@ export function EditOfferTabs(props) {
     //Called from chiled modal_AddProduct.jsx when the text in searchbox changes
     function updateQuery(childData) {
         setResourceListLoading(true);
-        fetch(`/api/merchant/element_search`, {
+        fetch(`/api/v2/merchant/element_search`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -164,7 +161,7 @@ export function EditOfferTabs(props) {
     //Called when "select product manually button clicked"
     function getProducts() {
         setResourceListLoading(true);
-        fetch(`/api/merchant/element_search`, {
+        fetch(`/api/v2/merchant/element_search`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -199,7 +196,7 @@ export function EditOfferTabs(props) {
         props.updateInitialVariants(props.offer.included_variants);
         var responseCount = 0;
         for (var i = 0; i < selectedProducts.length; i++) {
-            fetch(`/api/merchant/products/multi/${selectedProducts[i]}?shop_id=${props.shop.shop_id}&shop=${shopAndHost.shop}`, {
+            fetch(`/api/v2/merchant/products/multi/${selectedProducts[i]}?shop_id=${props.shop.shop_id}&shop=${shopAndHost.shop}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -284,7 +281,7 @@ export function EditOfferTabs(props) {
     function enableAutopilot() {
         if(autopilotButtonText === "Configure Autopilot Settings") {
             if(!props.openAutopilotSection) {
-                fetch(`/api/merchant/autopilot_details?shop=${shopAndHost.shop}`, {
+                fetch(`/api/v2/merchant/autopilot_details?shop=${shopAndHost.shop}`, {
                     method: 'GET',
                     headers: {
                       'Content-Type': 'application/json',
@@ -302,7 +299,7 @@ export function EditOfferTabs(props) {
         }
         else {
             setIsLoading(true);
-            fetch(`/api/merchant/enable_autopilot`, {
+            fetch(`/api/v2/merchant/enable_autopilot`, {
                 method: 'POST',
                 headers: {
                   'Content-Type': 'application/json',
@@ -322,7 +319,7 @@ export function EditOfferTabs(props) {
 
 
     function checkAutopilotStatus() {
-        fetch(`/api/merchant/enable_autopilot_status?shop_id=${props.shop.shop_id}&shop=${shopAndHost.shop}`, {
+        fetch(`/api/v2/merchant/enable_autopilot_status?shop_id=${props.shop.shop_id}&shop=${shopAndHost.shop}`, {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',
@@ -1441,7 +1438,7 @@ export function SecondTab(props) {
     }, []);
 
     function getSelectedItems(item_type) {
-        return fetch(`/api/merchant/offer/shopify_ids_from_rule`, {
+        return fetch(`/api/v2/merchant/offer/shopify_ids_from_rule`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

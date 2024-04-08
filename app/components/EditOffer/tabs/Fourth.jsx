@@ -9,7 +9,7 @@ import {
 } from "@shopify/polaris";
 import {useState, useCallback, useEffect, useContext} from "react";
 import React from "react";
-import {Link} from "react-router-dom";
+import {Link} from "@remix-run/react";
 import { DOMActionOptions } from "../../../shared/constants/DOMActionOptions";
 import {OfferContext} from "../../../contexts/OfferContext.jsx";
 import {useShopState} from "../../../contexts/ShopContext.jsx";

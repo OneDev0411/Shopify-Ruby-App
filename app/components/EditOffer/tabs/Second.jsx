@@ -16,14 +16,13 @@ import {
 import { CancelMinor  } from '@shopify/polaris-icons';
 import { ModalAddConditions } from "./../../modal_AddConditions";
 import { useState, useCallback, useRef, useEffect, useContext } from "react";
-import React from "react";
 import { useSelector } from 'react-redux';
 import { useAuthenticatedFetch } from "../../../hooks";
 import SelectProductsModal from "../../SelectProductsModal";
 import { SelectCollectionsModal } from "../../SelectCollectionsModal";
 import { condition_options } from "../../../shared/constants/ConditionOptions";
 import { getLabelFromValue } from "../../../shared/helpers/commonHelpers";
-import {Link} from 'react-router-dom';
+import { Link } from "@remix-run/react";;
 import {
     OfferThemeOptions,
     OfferNewThemeOptions,
