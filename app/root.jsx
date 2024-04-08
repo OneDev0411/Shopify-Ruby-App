@@ -1,3 +1,5 @@
+// auto generated file
+// Entry Point for our code and it wraps around the entire application code that's found in routes folder
 import {
   Links,
   LiveReload,
@@ -21,6 +23,7 @@ export default function App() {
         <Links />
       </head>
       <body>
+        {/* Any subroutes are going to be rendered here means every route will be placed here in outlet component*/}
         <Outlet />
         <ScrollRestoration />
         <LiveReload />

@@ -1,171 +1,168 @@
+// @ts-nocheck
 import { LegacyCard, Grid, Button, Page } from "@shopify/polaris";
 import {
-  SettingsMajor
+    SettingsMajor
 } from '@shopify/polaris-icons';
 import { useAppBridge } from '@shopify/app-bridge-react'
 import { useSelector } from 'react-redux';
-import React, { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Redirect, Toast } from '@shopify/app-bridge/actions';
-import { Partners, SettingTabs, TitleBar } from "../components";
-import { useAuthenticatedFetch } from "../hooks";
+import { Partners, SettingTabs } from "../components/";
+import {CustomTitleBar } from "../components/customtitlebar";
+
+import { useAuthenticatedFetch } from "../hooks/useAuthenticatedFetch";
+import { useShopSettings} from "../hooks/useShopSettings";
+
+import ModalChoosePlan from '../components/modal_ChoosePlan'
+// import { onLCP, onFID, onCLS } from 'web-vitals';
+// import { traceStat } from "../services/firebase/perf.js";
+import ErrorPage from "../components/ErrorPage.jsx"
+import {useShopState} from "../contexts/ShopContext.jsx";
+import FrontWidgetSection from "../components/FrontWidgetSection.jsx"
 
 export default function Settings() {
-  const shopAndHost = useSelector(state => state.shopAndHost);
-  const fetch = useAuthenticatedFetch(shopAndHost.host);
-  const [currentShop, setCurrentShop] = useState(null);
-  const [formData, setFormData] = useState({});
-  const app = useAppBridge();
+    const shopAndHost = useSelector(state => state.shopAndHost);
+    const fetch = useAuthenticatedFetch(shopAndHost.host);
+    const { fetchShopSettings, updateShopSettings } = useShopSettings();
+    const { shopSettings, setShopSettings, updateShopSettingsAttributes } = useShopState();
+    const [formData, setFormData] = useState({});
+    const app = useAppBridge();
+    const [error, setError] = useState(null);
 
-  const fetchCurrentShop = useCallback(async () => {
-    let redirect = Redirect.create(app);
+    // useEffect(()=> {
+    //     onLCP(traceStat, {reportSoftNavs: true});
+    //     onFID(traceStat, {reportSoftNavs: true});
+    //     onCLS(traceStat, {reportSoftNavs: true});
+    // }, []);
+    
+    const fetchCurrentShop = useCallback(async () => {
+        let redirect = Redirect.create(app);
 
-    fetch(`/api/merchant/shop_settings`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ shop: shopAndHost.shop, admin: null }),
-    })
-      .then((response) => { return response.json() })
-      .then((data) => {
-        if (data.redirect_to) {
-          redirect.dispatch(Redirect.Action.APP, data.redirect_to);
-        }
-        setCurrentShop(data.shop_settings);
+        fetchShopSettings({admin: null})
+            .then((response) => { return response.json() })
+            .then((data) => {
+                if (data.redirect_to) {
+                    redirect.dispatch(Redirect.Action.APP, data.redirect_to);
+                }
+                setShopSettings(data.shop_settings);
+                setFormData({
+                    productDomSelector: data.shop_settings?.custom_product_page_dom_selector,
+                    productDomAction: data.shop_settings?.custom_product_page_dom_action,
+                    cartDomSelector: data.shop_settings?.custom_cart_page_dom_selector,
+                    cartDomAction: data.shop_settings?.custom_cart_page_dom_action,
+                    ajaxDomSelector: data.shop_settings?.custom_ajax_dom_selector,
+                    ajaxDomAction: data.shop_settings?.custom_ajax_dom_action,
+                })
+            })
+            .catch((error) => {
+                setError(error);
+                console.log("Error > ", error);
+            })
+    }, [])
+
+    useEffect(() => {
+        fetchCurrentShop();
+      }, []);
+
+
+    const handleFormChange = (value, id) => {
+
         setFormData({
-          productDomSelector: data.shop_settings?.custom_product_page_dom_selector || "[class*='description']",
-          productDomAction: data.shop_settings?.custom_product_page_dom_action || 'prepend',
-          cartDomSelector: data.shop_settings?.custom_cart_page_dom_selector || "form[action^='/cart']",
-          cartDomAction: data.shop_settings?.custom_cart_page_dom_action || 'prepend',
-          ajaxDomSelector: data.shop_settings?.custom_ajax_dom_selector || ".ajaxcart__row:first",
-          ajaxDomAction: data.shop_settings?.custom_ajax_dom_action || 'prepend',
+            ...formData,
+            [id]: value
+        });
+    };
+
+    const toggleActivation = async () => {
+        fetch(`/api/v2/merchant/toggle_activation?shop=${shopAndHost.shop}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
         })
-      })
-      .catch((error) => {
-        console.log("Error > ", error);
-      })
-  }, [])
+            .then((response) => { return response.json(); })
+            .then((data) => {
+                const toastOptions = {
+                    message: data.message,
+                    duration: 3000,
+                    isError: false,
+                };
+                const toastNotice = Toast.create(app, toastOptions);
+                toastNotice.dispatch(Toast.Action.SHOW);
+                updateShopSettingsAttributes(!shopSettings.activated,'activated');
+            })
+            .catch((error) => {
+                const toastOptions = {
+                    message: 'An error occurred. Please try again later.',
+                    duration: 3000,
+                    isError: true,
+                };
+                const toastError = Toast.create(app, toastOptions);
+                toastError.dispatch(Toast.Action.SHOW, toastOptions);
+                console.log("Error:", error);
+            })
+    }
 
-  useEffect(() => {
-    fetchCurrentShop()
-  }, [fetchCurrentShop]);
+    const handleSave = async () => {
+        setShopSettings(prev => {
+            let data = {
+                ...prev, custom_product_page_dom_selector: formData.productDomSelector, custom_product_page_dom_action: formData.productDomAction,
+                custom_cart_page_dom_selector: formData.cartDomSelector, custom_cart_page_dom_action: formData.cartDomAction, custom_ajax_dom_selector: formData.ajaxDomSelector,
+                custom_ajax_dom_action: formData.ajaxDomAction
+            }
+            updateShopSettings(data)
+                .then((response) => { return response.json(); })
+                .then((data) => {
+                    const toastOptions = {
+                        message: data.message,
+                        duration: 3000,
+                        isError: false,
+                    };
+                    const toastNotice = Toast.create(app, toastOptions);
+                    toastNotice.dispatch(Toast.Action.SHOW);
+                })
+                .catch(() => {
+                    const toastOptions = {
+                        message: "Error saving shop settings",
+                        duration: 3000,
+                        isError: false,
+                    };
+                    const toastNotice = Toast.create(app, toastOptions);
+                    toastNotice.dispatch(Toast.Action.SHOW);
+                })
+            return data
+        });
+    }
 
-  const handleFormChange = (value, id) => {
-    setFormData({
-      ...formData,
-      [id]: value
-    });
-  };
+    if (error) { return < ErrorPage showBranding={true} />; }
 
-  const toggleActivation = async () => {
-    fetch(`/api/merchant/toggle_activation?shop=${shopAndHost.shop}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .then((response) => { return response.json(); })
-      .then((data) => {
-        const toastOptions = {
-          message: data.message,
-          duration: 3000,
-          isError: false,
-        };
-        const toastNotice = Toast.create(app, toastOptions);
-        toastNotice.dispatch(Toast.Action.SHOW);
-        typeof document !== 'undefined' ? window.location.reload() : undefined;
-      })
-      .catch((error) => {
-        console.log("Error", error);
-      })
-  }
-
-  const handleSave = async () => {
-    setCurrentShop(prev => {
-      let data = {
-        ...prev, custom_product_page_dom_selector: formData.productDomSelector, custom_product_page_dom_action: formData.productDomAction,
-        custom_cart_page_dom_selector: formData.cartDomSelector, custom_cart_page_dom_action: formData.cartDomAction, custom_ajax_dom_selector: formData.ajaxDomSelector,
-        custom_ajax_dom_action: formData.ajaxDomAction
-      }
-      fetch('/api/merchant/update_shop_settings', {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ shop_attr: data, shop: shopAndHost.shop, admin: data.admin, json: true }),
-      })
-        .then((response) => { return response.json(); })
-        .then((data) => {
-          const toastOptions = {
-            message: data.message,
-            duration: 3000,
-            isError: false,
-          };
-          const toastNotice = Toast.create(app, toastOptions);
-          toastNotice.dispatch(Toast.Action.SHOW);
-        })
-        .catch((error) => {
-          const toastOptions = {
-            message: "Error saving shop settings",
-            duration: 3000,
-            isError: false,
-          };
-          const toastNotice = Toast.create(app, toastOptions);
-          toastNotice.dispatch(Toast.Action.SHOW);
-        })
-      return data
-    });
-  }
-
-  return (
-    <>
-      <Page>
-        <TitleBar title='Settings' image={SettingsMajor} buttonText='Save' handleButtonClick={handleSave} />
-        <LegacyCard sectioned>
-          {(currentShop?.activated) ? (
+    return (
+        <>
+          <Page>
+            <ModalChoosePlan />
+            <CustomTitleBar title='Settings' icon={SettingsMajor} buttonText='Save' handleButtonClick={handleSave} />
+            <FrontWidgetSection isStatusActive={shopSettings?.activated} toggleActivation={toggleActivation} />
+            <div className="space-4"></div>
             <Grid>
-              <Grid.Cell columnSpan={{ xs: 6, sm: 3, md: 8, lg: 10, xl: 4 }}>
-                <p>This app is activated</p>
+              <Grid.Cell columnSpan={{ xs: 6, sm: 6, md: 6, lg: 6, xl: 6 }}>
+                  <div id="no-bg-LegacyCard">
+                      <LegacyCard sectioned style={{ backgroundColor: "transparent" }}>
+                          <h2><strong>Default offer placement settings</strong></h2>
+                          <br />
+                          <p>Only edit these settings if you know HTML.</p>
+                      </LegacyCard>
+                  </div>
               </Grid.Cell>
-              <Grid.Cell columnSpan={{ xs: 6, sm: 3, md: 8, lg: 2, xl: 4 }}>
-                <div style={{ display: 'flex', justifyContent: 'end' }}>
-                  <Button onClick={toggleActivation}>Deactivate</Button>
-                </div>
-              </Grid.Cell>
-            </Grid>) : (
-            <Grid>
-              <Grid.Cell columnSpan={{ xs: 6, sm: 3, md: 8, lg: 10, xl: 4 }}>
-                <p>This app is deactivated</p>
-              </Grid.Cell>
-              <Grid.Cell columnSpan={{ xs: 6, sm: 3, md: 8, lg: 2, xl: 4 }}>
-                <div style={{ display: 'flex', justifyContent: 'end' }}>
-                  <Button onClick={toggleActivation}>Activate</Button>
-                </div>
+              <Grid.Cell columnSpan={{ xs: 6, sm: 6, md: 6, lg: 6, xl: 6 }}>
+                <LegacyCard sectioned columnSpan={{ md: 6, lg: 6, xl: 6 }}>
+                    {/* Tabs */}
+                    {shopSettings ? <SettingTabs formData={formData} currentShop={shopSettings} updateShop={updateShopSettingsAttributes} handleFormChange={handleFormChange} /> : 'Loading...'}
+                </LegacyCard>
               </Grid.Cell>
             </Grid>
-          )}
-        </LegacyCard>
-        <div className="space-4"></div>
-        <Grid>
-          <Grid.Cell columnSpan={{ xs: 6, sm: 6, md: 6, lg: 6, xl: 6 }}>
-            <div id="no-bg-LegacyCard">
-              <LegacyCard sectioned style={{ backgroundColor: "transparent" }}>
-                <h2><strong>Default offer placement settings</strong></h2>
-                <br />
-                <p>Only edit these settings if you know HTML.</p>
-              </LegacyCard>
-            </div>
-          </Grid.Cell>
-          <Grid.Cell columnSpan={{ xs: 6, sm: 6, md: 6, lg: 6, xl: 6 }}>
-            <LegacyCard sectioned columnSpan={{ md: 6, lg: 6, xl: 6 }}>
-              {/* Tabs */}
-              {currentShop ? <SettingTabs formData={formData} handleFormChange={handleFormChange} /> : 'Loading...'}
-            </LegacyCard>
-          </Grid.Cell>
-        </Grid>
-        <div className="space-4"></div>
-        <Partners />
-      </Page>
-    </>
-  );
+            <div className="space-4"></div>
+            <Partners />
+          </Page>
+        </>
+    );
 }

@@ -1,9 +1,6 @@
-import {Layout, Card, LegacyStack as Stack, Image, HorizontalGrid} from "@shopify/polaris";
-import { useAppBridge } from '@shopify/app-bridge-react'
-import { TitleBar } from "@shopify/app-bridge-react";
-import {stars} from "@assets";
+// @ts-nocheck
+import {Layout, Card, Image, LegacyStack, HorizontalGrid} from "@shopify/polaris";
 import "../components/stylesheets/reviewStyle.css";
-import React from 'react';
 
 export function Reviews() {
     
@@ -11,9 +8,9 @@ export function Reviews() {
     <div className="review-section">
       <Layout>
         <Layout.Section>
-          <Stack distribution="center">
+          <LegacyStack distribution="center">
             <p style={{textAlign:'center'}}><strong>750+ 5 star reviews<br/>Trusted by over a thousand Shopify merchants</strong></p>
-          </Stack>
+          </LegacyStack>
         </Layout.Section>
       </Layout>
       <div className="space-10"></div>
@@ -31,9 +28,9 @@ export function Reviews() {
               </p>
               <br />
             </div>
-            <Stack distribution="center">
-              <Image source={stars} distribution="center" />
-            </Stack>
+            <LegacyStack distribution="center">
+              <Image source="https://assets.incartupsell.com/images/5-star.png" distribution="center" />
+            </LegacyStack>
           </div>
         </Card>
         <Card title="My Gaming Case" sectioned>
@@ -50,9 +47,9 @@ export function Reviews() {
               </p>
               <br />
             </div>
-            <Stack distribution="center">
-              <Image source={stars} distribution="center" />
-            </Stack>
+            <LegacyStack distribution="center">
+              <Image source="https://assets.incartupsell.com/images/5-star.png" distribution="center" />
+            </LegacyStack>
           </div>
         </Card>
         <Card title="Deinhamudi.de" sectioned>
@@ -69,9 +66,9 @@ export function Reviews() {
               </p>
               <br />
             </div>
-            <Stack distribution="center">
-              <Image source={stars} distribution="center" />
-            </Stack>
+            <LegacyStack distribution="center">
+              <Image source="https://assets.incartupsell.com/images/5-star.png" distribution="center" />
+            </LegacyStack>
           </div>
         </Card>
       </HorizontalGrid>

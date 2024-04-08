@@ -1,3 +1,6 @@
+// @ts-nocheck
+// auto generated file
+
 import React from "react";
 import { json } from "@remix-run/node";
 import {
@@ -11,14 +14,18 @@ import { AppProvider as PolarisAppProvider } from "@shopify/polaris";
 import polarisStyles from "@shopify/polaris/build/esm/styles.css";
 import {themeCss} from "@assets";
 import { boundary } from "@shopify/shopify-app-remix";
+// manually imported provider
 import { Provider } from "react-redux";
 import store from "../store/store";
 import { Provider as AppBridgeProvider } from "@shopify/app-bridge-react";
+import ShopProvider from "../contexts/ShopContext"
+import OfferProvider from "../contexts/OfferContext";
 const url = require('url');
 
 import { authenticate } from "../shopify.server";
-import MyGlobalContext from "~/contexts/global";
 
+// manually imported provider
+import MyGlobalContext from "~/contexts/global";
 
 export async function loader({ request }) {
   const { session } = await authenticate.admin(request);
@@ -33,11 +40,15 @@ export async function loader({ request }) {
     apiKey: process.env.SHOPIFY_API_KEY,
     session,
     host: parsedURL?.searchParams.get('host'),
+    ENV: {
+      API_HOST: process.env.API_HOST,
+      VITE_REACT_APP_MODAL_CONTENT: process.env.VITE_REACT_APP_MODAL_CONTENT
+    },
   });
 }
 
 export default function App() {
-  const { apiKey, polarisTranslations, session, host } = useLoaderData();
+  const { apiKey, polarisTranslations, session, host, ENV } = useLoaderData();
   const navigate = useNavigate();
 
   console.log('HOST', host);
@@ -47,6 +58,24 @@ export default function App() {
         src="https://cdn.shopify.com/shopifycloud/app-bridge.js"
         data-api-key={apiKey}
       />
+      <ui-nav-menu>
+        <Link to="/app/offer">
+          Offers
+        </Link>
+        <Link to="/app/analytics">
+          Analytics
+        </Link>
+        <Link to="/app/subscription">
+          Subscription
+        </Link>
+        <Link to="/app/settings">
+          Settings
+        </Link>
+        <Link to="/app/help">
+          Help
+        </Link>
+      </ui-nav-menu>
+      
       <MyGlobalContext.Provider value={{...session, host, navigate}}>
         <AppBridgeProvider
           config={{ host, apiKey, forceRedirect: true }}
@@ -56,25 +85,13 @@ export default function App() {
             linkComponent={RemixPolarisLink}
           >
             <Provider store={store}>
-              <ui-nav-menu>
-                <Link to="/app/offer">
-                  Offers
-                </Link>
-                <Link to="/app/analytics">
-                  Analytics
-                </Link>
-                <Link to="/app/subscription">
-                  Subscription
-                </Link>
-                <Link to="/app/settings">
-                  Settings
-                </Link>
-                <Link to="/app/help">
-                  Help
-                </Link>
-              </ui-nav-menu>
-              <Outlet />
-            </Provider>
+              <ShopProvider>
+                <OfferProvider>
+                  <Outlet />
+                  <script dangerouslySetInnerHTML={{__html: `window.ENV = ${JSON.stringify(ENV)}`}}/>
+                </OfferProvider>
+              </ShopProvider>
+            </Provider>           
           </PolarisAppProvider>
         </AppBridgeProvider>
       </MyGlobalContext.Provider>

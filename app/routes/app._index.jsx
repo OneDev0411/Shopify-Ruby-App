@@ -1,3 +1,6 @@
+// auto generated file
+//this is the file that will run on /app url directly
+// @ts-nocheck
 import "../components/stylesheets/mainstyle.css";
 import { TitleBar, OffersList } from "../components";
 import { isSubscriptionActive } from "../services/actions/subscription";
@@ -77,7 +80,7 @@ export default function HomePage() {
   const { navigate } = useContext(MyGlobalContext);
 
   useEffect(() => {
-    fetch(`/api/merchant/current_shop?shop=${shopAndHost.shop}`, {
+    fetch(`/api/v2/merchant/current_shop?shop=${shopAndHost.shop}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

@@ -1,7 +1,3 @@
-h1{
-    font-size: 1.75rem!important;
-    font-weight: var(--p-font-weight-regular)!important;
-}
 .center-content{
     text-align: center;
 }
@@ -29,6 +25,9 @@ h1{
 .space-4{
     margin-bottom: var(--p-space-4);
 }
+.space-5{
+    margin-bottom: var(--p-space-5);
+}
 .space-10{
     margin-bottom: var(--p-space-10);
 }
@@ -45,6 +44,10 @@ h1{
 
 #appearance input[type=number]{
     max-width: 100px;
+}
+
+.edit-offer #appearance input[type=number]{
+    max-width: unset;
 }
 
 .flex-tab{
@@ -70,4 +73,162 @@ h1{
 
 .settings-card-heading {
     height: 33px;
+}
+
+.Polaris-Button--primary {
+    background-color: #3551E7 !important;
+    padding: 8px 16px !important;
+    border-radius: 4px !important;
+    box-shadow: 0px -1px 0px 0px rgba(0, 0, 0, 0.20) inset, 0px 1px 0px 0px rgba(0, 0, 0, 0.08)  !important;
+}
+
+.Polaris-Button--primary:hover {
+    background-color: #3049CD !important;
+}
+
+.Polaris-ActionMenu-SecondaryAction .Polaris-Button {
+    background-color: white !important;
+    box-shadow: 0px 1px 0px 0px rgba(0, 0, 0, 0.05) !important;
+    border: 1px solid #BABFC3 !important;
+}
+
+.Polaris-Button.Polaris-Button--primary.Polaris-Button--disabled {
+    background-color: #ebecef !important;
+    cursor: not-allowed !important;
+    box-shadow: none !important;
+}
+
+.title-bar-button {
+    display: flex;
+    justify-content: end;
+}
+.title-bar-title {
+    display: flex;
+    float: left;
+    gap: 10px;
+    align-items: center;
+    height: 36px;
+}
+
+@media (max-width: 489px) {
+    .title-bar-button {
+        display: flex;
+        justify-content: center;
+    }
+
+    .title-bar-title {
+        float: none;
+        justify-content: center;
+    }
+
+    .Polaris-Page__Content {
+        padding: 8px;
+    }
+}
+
+.narrow-width-layout {
+    margin: 0 auto;
+    max-width: 62rem;
+}
+
+.min-height-container {
+    min-height: 92vh;
+}
+
+.custom-footer .Polaris-Link {
+    display: inline-flex;
+}
+
+.offer-tabs-no-padding > div > .Polaris-Box:first-child {
+    padding: 0;
+    margin-bottom: 40px;
+}
+
+.offer-tabs-no-padding .Polaris-Tabs__TabContainer button {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.offer-tabs-no-padding .Polaris-Tabs__Tab--selected .Polaris-Tabs__Title::before {
+    background-color: #3049CD !important;
+}
+
+#first-tab-offer .Polaris-LegacyStack.Polaris-LegacyStack--vertical.Polaris-LegacyStack--spacingLoose .Polaris-LegacyStack__Item:nth-child(5) {
+    margin-top: 0;
+}
+
+#right-align-polaris span.Polaris-Thumbnail.Polaris-Thumbnail--sizeMedium {
+    position: absolute;
+    right: 10px;
+    border: 0;
+}
+
+#right-align-polaris .Polaris-Box .Polaris-HorizontalGrid  > .Polaris-HorizontalGrid {
+    position: relative;
+    min-height: 64px;
+}
+
+.Polaris-Page {
+    width: 100%;
+}
+
+#polaris-placement-cards .Polaris-LegacyStack.Polaris-LegacyStack--vertical.Polaris-LegacyStack--spacingLoose .Polaris-LegacyStack__Item:nth-child(3),
+#polaris-placement-cards .Polaris-LegacyStack.Polaris-LegacyStack--vertical.Polaris-LegacyStack--spacingLoose .Polaris-LegacyStack__Item:nth-child(4) {
+    display: none;
+}
+
+.range-slider-container {
+    display: flex;
+    align-items: end;
+    flex-direction: row;
+    height: 100%;
+}
+
+.range-slider-container > div {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+@media screen and (min-width: 490px) {
+    .range-slider-container input[type="range"] {
+        padding-top: 25px;
+    }
+    .range-slider-container .Polaris-RangeSlider-SingleThumb__InputWrapper:after {
+        margin-top: 12px;
+    }
+}
+
+.legacy-card-hr {
+    margin: 30px -20px 20px;
+    border-top: 0.5px solid #BABFC3;
+}
+
+.legacy-card-hr-t20-b15 {
+    margin-top: 20px;
+    margin-bottom: 15px;
+}
+
+#appearance-offers .Polaris-TextField__Input.Polaris-TextField__Input--suffixed {
+    max-width: none;
+}
+
+#appearance-offers .Polaris-TextField__Spinner {
+    visibility: visible;
+}
+
+.banner-btn .Polaris-Banner__Button{
+    background-color: rgba(222, 245, 247, 1);
+}
+
+.widget-visibility { 
+    overflow: hidden;
+}
+
+.video-intro-section > .Polaris-LegacyCard {
+    width: 40rem;
+}
+
+#graphs .Polaris-LegacyCard {
+    min-height: 365px;
 }

@@ -1,590 +1,405 @@
-import { Page, LegacyCard, Layout, Tabs, Icon, Grid, Spinner, Toast } from '@shopify/polaris';
-import { DesktopMajor, MobileMajor} from '@shopify/polaris-icons';
-import { TitleBar } from "@shopify/app-bridge-react";
+// @ts-nocheck
+import React, {useCallback, useContext, useEffect, useState} from 'react';
+import {useSelector} from "react-redux";
+import {Link, useLocation, useNavigate} from "@remix-run/react";
+
+import {Banner, Icon, Layout, Page, Spinner, Tabs} from '@shopify/polaris';
+import {DesktopMajor, MobileMajor} from '@shopify/polaris-icons';
+import {Redirect} from '@shopify/app-bridge/actions';
+import {useAuthenticatedFetch} from "../hooks";
+import {FirstTab} from "../components/EditOffer/tabs/First";
+import {SecondTab} from "../components/EditOffer/tabs/Second";
+import {ThirdTab} from "../components/EditOffer/tabs/Third";
+import {FourthTab} from "../components/EditOffer/tabs/Fourth";
+import {OfferPreview} from "../components/OfferPreview";
 import "../components/stylesheets/mainstyle.css";
-import { EditOfferTabs, SecondTab, ThirdTab, FourthTab } from "../components";
-import { useState, useCallback, useEffect } from 'react';
-import React from 'react';
-import { useAppQuery, useAuthenticatedFetch } from "../hooks";
-import { offerActivate, loadOfferDetails, getOfferSettings } from "../services/offers/actions/offer";
-import { useLocation } from '@remix-run/react';
-import { useGlobalData } from '~/contexts/global';
-import { OfferPreview } from "../components/OfferPreview";
-import { useAppBridge } from '@shopify/app-bridge-react'
-import { Redirect } from '@shopify/app-bridge/actions';
+import {EditOfferTabs, OFFER_DEFAULTS} from '../shared/constants/EditOfferOptions';
+import {OfferContext} from "../contexts/OfferContext.jsx";
+import {useOffer} from "../hooks/useOffer.js";
+import {useAppBridge} from '@shopify/app-bridge-react';
+import {Toast} from '@shopify/app-bridge/actions';
+import ErrorPage from "../components/ErrorPage.jsx"
+import {useShopSettings} from "../hooks/useShopSettings.js";
+import {useShopState} from "../contexts/ShopContext.jsx";
+// import { onLCP, onFID, onCLS } from 'web-vitals';
+// import { traceStat } from "../services/firebase/perf.js";
 
 export default function EditPage() {
-  const shopAndHost = useGlobalData();
-  const fetch = useAuthenticatedFetch(shopAndHost.host);
-  const app = useAppBridge();
+    const { offer, setOffer } = useContext(OfferContext);
+    const { shopSettings, setShopSettings, themeAppExtension, setThemeAppExtension } = useShopState();
+    const { fetchOffer, saveOffer, createOffer } = useOffer();
+    const { fetchShopSettings, updateShopSettings } = useShopSettings();
+    const shopAndHost = useSelector(state => state.shopAndHost);
+    const app = useAppBridge();
+    const navigateTo = useNavigate();
+    const location = useLocation();
+    const [error, setError] = useState(null);
 
-  // Content section tab data
-  const location = useLocation();
-  const [selected, setSelected] = useState(0);
-  const handleTabChange = useCallback(
-    (selectedTabIndex) => setSelected(selectedTabIndex),
-    [],
-  );
-  const [checkKeysValidity, setCheckKeysValidity] = useState({});
-  const [initialVariants, setInitialVariants] = useState({});
-  const [autopilotCheck, setAutopilotCheck] = useState({
-    isPending: "Launch Autopilot",
-  });
-  const [openAutopilotSection, setOpenAutopilotSection] = useState(false);
+    const [enablePublish, setEnablePublish] = useState(false)
 
-  const [offer, setOffer] = useState({
-    offerId: undefined,
-    ajax_cart: '',
-    calculated_image_url: 'placebear.com/125/125',
-    cart_page: '',
-    checkout_page: '',
-    checkout_after_accepted: false,
-    css: '',
-    cta_a: 'Add To Cart',
-    cta_b: '',
-    custom_field_name: '',
-    custom_field_placeholder: '',
-    custom_field_required: false,
-    discount_code: '',
-    discount_target_type: 'none',
-    hide_variants_wrapper: '',
-    id: null,
-    link_to_product: true,
-    multi_layout: 'compact',
-    must_accept: false,
-    offerable: {},
-    offerable_type: 'multi',
-    offerable_product_shopify_ids: [],
-    offerable_product_details: [],
-    included_variants: {},
-    page_settings: '',
-    product_image_size: 'medium',
-    publish_status: 'draft',
-    products_to_remove: [],
-    powered_by_text_color: null,
-    powered_by_link_color: null,
-    remove_if_no_longer_valid: false,
-    rules_json: [],
-    ruleset_type: 'and',
-    redirect_to_product: null,
-    shop: {},
-    show_product_image: true,
-    show_variant_price: false,
-    show_product_price: true,
-    show_product_title: false,
-    show_spinner: null,
-    show_nothanks: false,
-    show_quantity_selector: true,
-    show_custom_field: false,
-    show_compare_at_price: true,
-    uses_ab_test: null,
-    stop_showing_after_accepted: false,
-    recharge_subscription_id: null,
-    interval_unit: null,
-    interval_frequency: null,
-    text_a: 'Would you like to add a {{ product_title }}?',
-    text_b: '',
-    theme: 'custom',
-    title: '',
-    in_cart_page: true,
-    in_ajax_cart: true,
-    in_product_page: true,
-    show_powered_by: false,
-    custom_field_2_name: '',
-    custom_field_2_placeholder: '',
-    custom_field_2_required: '',
-    custom_field_3_name: '',
-    custom_field_3_placeholder: '',
-    custom_field_3_required: '',
-  });
+    // Content section tab data
+    const [selected, setSelected] = useState(0);
+    const [checkKeysValidity, setCheckKeysValidity] = useState({});
+    const [initialVariants, setInitialVariants] = useState({});
+    const [autopilotCheck, setAutopilotCheck] = useState({
+        isPending: "Launch Autopilot",
+    });
+    const [initialOfferableProductDetails, setInitialOfferableProductDetails] = useState({});
 
-  const [offerSettings, setOfferSettings] = useState({
-    customTheme: "",
-    css_options: {
-      main: {},
-      text: {},
-      button: {},
-    },
-  });
+    const [isLoading, setIsLoading] = useState(false);
 
-  const [shop, setShop] = useState({
-    shop_id: undefined,
-    offer_css: '',
-    css_options: {
-      main: {},
-      text: {},
-      button: {},
-    }
-  });
+    const [updatePreviousAppOffer, setUpdatePreviousAppOffer] = useState(false);
 
-  const [isLoading, setIsLoading] = useState(false);
-  const [shopifyThemeName, setShopifyThemeName] = useState(null);
+    const offerID = location?.state?.offerID;
 
-  const offerID = location?.state?.offerID;
+    // useEffect(()=> {
+    //     onLCP(traceStat, {reportSoftNavs: true});
+    //     onFID(traceStat, {reportSoftNavs: true});
+    //     onCLS(traceStat, {reportSoftNavs: true});
+    //   }, []);
 
-  //Call on initial render
-  useEffect(() => {
-    let redirect = Redirect.create(app);
-    if(location?.state?.offerID == null) {
-      setIsLoading(true);
-      fetch(`/api/merchant/offer_settings`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ offer: {include_sample_products: 0}, shop: shopAndHost.shop }),
-      })
-        .then( (response) => { return response.json() })
-        .then( (data) => {
-          setOfferSettings(data);
-          setIsLoading(false);
-        })
-        .catch((error) => {
-          console.log("Error > ", error);
-        })
-      setIsLoading(true);
-      fetch(`/api/merchant/shop_settings`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ shop_attr: { admin: null }, shop: shopAndHost.shop}),
-      })
-        .then( (response) => { return response.json() })
-        .then( (data) => {
-          if (data.redirect_to) {
+    //Call on initial render
+    useEffect(() => {
+        let redirect = Redirect.create(app);
+        if (location?.state?.offerID == null) {
+            // fetching shop settings
+            fetchShopSettings({admin: null})
+                .then((response) => {
+                    return response.json()
+                })
+                .then((data) => {
+                    updateSettingsOrRedirect(data)
+
+                    let newOffer = {...offer};
+                    newOffer.advanced_placement_setting = {
+                      custom_product_page_dom_selector: data.shop_settings.custom_product_page_dom_selector,
+                      custom_product_page_dom_action: data.shop_settings.custom_product_page_dom_action,
+                      custom_cart_page_dom_selector: data.shop_settings.custom_cart_page_dom_selector,
+                      custom_cart_page_dom_action: data.shop_settings.custom_cart_page_dom_action,
+                      custom_ajax_dom_selector: data.shop_settings.custom_ajax_dom_selector,
+                      custom_ajax_dom_action: data.shop_settings.custom_ajax_dom_action,
+                    };
+
+                    setOffer(newOffer);
+                })
+                .catch((error) => {
+                    setError(error);
+                    console.log("Error > ", error);
+                })
+
+        } else {
+            setIsLoading(true);
+            fetchOffer(offerID, shopAndHost.shop).then((response) => {
+                if (response.status === 200) {
+                    return response.json()
+                }
+                navigateTo('/offer');
+            }).then((data) => {
+                setInitialVariants({...data.included_variants});
+                if (data.offerable_product_details.length > 0) {
+                    updateCheckKeysValidity('text', data.text_a.replace("{{ product_title }}", data.offerable_product_details[0]?.title));
+                }
+                updateCheckKeysValidity('cta', data.cta_a);
+                for (var i = 0; i < data.offerable_product_details.length; i++) {
+                    data.offerable_product_details[i].preview_mode = true;
+                }
+                setOffer({...data});
+                setInitialOfferableProductDetails(data.offerable_product_details);
+                setIsLoading(false);
+
+                fetchShopSettings({admin: null})
+                  .then((response) => {
+                      return response.json()
+                  })
+                  .then((data) => {
+                      updateSettingsOrRedirect(data)
+                      setUpdatePreviousAppOffer(!updatePreviousAppOffer);
+                  })
+                  .catch((error) => {
+                    setError(error);
+                    console.log("Error > ", error);
+                  })
+            })
+            .catch((error) => {
+                setError(error);
+                setIsLoading(false);
+                console.log("Error > ", error);
+            })
+        }
+        return function cleanup() {
+            setOffer(OFFER_DEFAULTS);
+        };
+    },[]);
+
+
+    function updateSettingsOrRedirect(data) {
+        if (data.redirect_to) {
             redirect.dispatch(Redirect.Action.APP, data.redirect_to);
-          }
-          setShop(data.shop_settings);
-        })
-        .catch((error) => {
-          console.log("Error > ", error);
-        })
+        } else {
+            if (Object.keys(data.shop_settings.css_options.main).length === 0) {
+                data.shop_settings.css_options.main.color = "#2B3D51";
+                data.shop_settings.css_options.main.backgroundColor = "#AAAAAA";
+                data.shop_settings.css_options.button.color = "#FFFFFF";
+                data.shop_settings.css_options.button.backgroundColor = "#2B3D51";
+                data.shop_settings.css_options.widows = '100%';
+            }
+        }
+
+        setShopSettings(data.shop_settings);
+        setThemeAppExtension(data.theme_app_extension)
     }
-    else {
-      setIsLoading(true);
-      fetch(`/api/merchant/load_offer_details`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+
+    // TODO: Relocate to offer context
+    //Called whenever the checkKeysValidity changes in any child component
+    function updateCheckKeysValidity(updatedKey, updatedValue) {
+        setCheckKeysValidity(previousState => {
+            return {...previousState, [updatedKey]: updatedValue};
+        });
+    }
+
+    //Called to update the initial variants of the offer
+    function updateInitialVariants(value) {
+        setInitialVariants({...value});
+    }
+
+    const save = async (status) =>  {
+        if (offer.title === "") {
+            const toastNotice = Toast.create(app, {
+                message: 'Offer requires a title',
+                duration: 3000,
+                isError: true,
+            });
+
+            toastNotice.dispatch(Toast.Action.SHOW);
+            return
+        }
+
+        if (offer.offerable_product_details.length < 1) {
+            const toastNotice = Toast.create(app, {
+                message: 'Offer requires a valid item',
+                duration: 3000,
+                isError: true,
+            });
+
+            toastNotice.dispatch(Toast.Action.SHOW);
+            return
+        }
+
+        let shop_uses_ajax_cart;
+
+        if(offer.in_product_page && offer.in_cart_page) {
+            shop_uses_ajax_cart = offer.in_ajax_cart;
+        }
+        else if (offer.in_ajax_cart && offer.in_cart_page) {
+            shop_uses_ajax_cart = offer.in_ajax_cart;
+        }
+        else if (offer.in_cart_page) {
+            shop_uses_ajax_cart = offer.in_ajax_cart;
+        }
+        else if (offer.in_product_page) {
+            shop_uses_ajax_cart = offer.in_ajax_cart;
+        }
+        else if (offer.in_ajax_cart) {
+            shop_uses_ajax_cart = offer.in_ajax_cart;
+        }
+
+        setIsLoading(true);
+        setShopSettings(prev => {
+            let data = {
+                ...prev, uses_ajax_cart: shop_uses_ajax_cart
+            }
+            updateShopSettings(data)
+                .then((response) => { return response.json(); })
+                .then((data) => {
+                    console.log('updated shop settings', data)
+                })
+                .catch((error) => {
+                    setError(error);
+                    console.log('an error during api call', error)
+                })
+            return data
+        });
+
+        if (location.state != null && location.state?.offerID == null) {
+            try {
+                let responseData = await createOffer(offer, shopSettings, status)
+                location.state.offerID = responseData.offer.id
+                setIsLoading(false);
+            } catch (error) {
+                setIsLoading(false);
+                const toastOptions = {
+                    message: 'An error occurred. Please try again later.',
+                    duration: 3000,
+                    isError: true,
+                  };
+                  const toastError = Toast.create(app, toastOptions);
+                  toastError.dispatch(Toast.Action.SHOW);
+                console.log('Error:', error);
+            }
+        } else {
+            try {
+                await saveOffer(offer, location, shopSettings, status);
+                setIsLoading(false);
+            } catch (error) {
+                console.log('Error:', error);
+                setIsLoading(false);
+                const toastOptions = {
+                    message: 'An error occurred. Please try again later.',
+                    duration: 3000,
+                    isError: true,
+                  };
+                  const toastError = Toast.create(app, toastOptions);
+                  toastError.dispatch(Toast.Action.SHOW);
+            }
+        }
+        navigateTo('/app/offer');
+    }
+
+    function saveDraft() {
+        save(false);
+    }
+
+    // Preview section tab data
+    const [selectedPre, setSelectedPre] = useState(0);
+    const handlePreTabChange = useCallback((selectedPreTabIndex) => {
+        setSelectedPre(selectedPreTabIndex);
+        if (selectedPreTabIndex == 0) {
+            setShopSettings(previousState => {
+                return {...previousState, selectedView: 'desktop'};
+            });
+        } else {
+            setShopSettings(previousState => {
+                return {...previousState, selectedView: 'mobile'};
+            });
+        }
+    }, []);
+
+    const tabsPre = [
+        {
+            id: 'desktop',
+            content: (
+                <div className='flex-tab'>
+                    <Icon source={DesktopMajor}/>
+                    <p>Desktop</p>
+                </div>
+            ),
+            panelID: 'desktop',
         },
-        body: JSON.stringify({ offer: { offer_id: offerID } , shop: shopAndHost.shop}),
-      })
-        .then( (response) => { return response.json() })
-        .then( (data) => {
-          setInitialVariants({...data.included_variants});
-          updateCheckKeysValidity('text', data.text_a?.replace("{{ product_title }}", data.offerable_product_details[0].title));
-          updateCheckKeysValidity('cta', data.cta_a);
-          for(var i=0; i<data.offerable_product_details.length; i++) {
-            data.offerable_product_details[i].preview_mode = true;
-          }
-          setOffer({...data});
-          setIsLoading(false);
-        })
-        .catch((error) => {
-          console.log("Error > ", error);
-        })
-      setIsLoading(true);
-      fetch(`/api/merchant/offer_settings`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ offer: {include_sample_products: 0}, shop: shopAndHost.shop}),
-      })
-        .then( (response) => { return response.json() })
-        .then( (data) => {
-          setOfferSettings(data);
-        })
-        .catch((error) => {
-          console.log("Error > ", error);
-        })
-      setIsLoading(true);
-      fetch(`/api/merchant/shop_settings`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ shop_attr: { admin: null }, shop: shopAndHost.shop }),
-      })
-        .then( (response) => { return response.json() })
-        .then( (data) => {
-          if (data.redirect_to) {
-            redirect.dispatch(Redirect.Action.APP, data.redirect_to);
-          }
-          setShop(data.shop_settings);
-        })
-        .catch((error) => {
-          console.log("Error > ", error);
-        })
-    }
-    setIsLoading(true);
-    fetch(`/api/merchant/autopilot_details?shop=${shopAndHost.shop}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .then( (response) => { return response.json() })
-      .then( (data) => {
-        setAutopilotCheck(data);
-        setIsLoading(false);
-      })
-      .catch((error) => {
-        console.log("# Error AutopilotDetails > ", JSON.stringify(error));
-      })
-
-    fetch(`/api/merchant/active_theme_for_dafault_template?shop=${shopAndHost.shop}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .then( (response) => { return response.json() })
-      .then( (data) => {
-        if(data.themeExist) {
-          setShopifyThemeName(data.shopify_theme_name)
+        {
+            id: 'mobile',
+            content: (
+                <div className='flex-tab'>
+                    <Icon source={MobileMajor}/>
+                    <p>Mobile</p>
+                </div>
+            ),
+            panelID: 'mobile',
         }
-        else {
-          setShopifyThemeName(null);
-        }
-      })
-      .catch((error) => {
-        console.log("# Error updateProducts > ", JSON.stringify(error));
-      })
+    ];
 
-  },[openAutopilotSection]);
-
-
-  //Called whenever the checkKeysValidity changes in any child component
-  function updateCheckKeysValidity(updatedKey, updatedValue) {
-    setCheckKeysValidity(previousState => {
-      return { ...previousState, [updatedKey]: updatedValue };
-    });
-  }
-
-
-  //Called whenever the offer changes in any child component
-  function updateOffer(updatedKey, updatedValue) {
-    setOffer(previousState => {
-      return { ...previousState, [updatedKey]: updatedValue };
-    });
-  }
-
-  //Called whenever the offer settings for shop changes in any child component
-  function updateOfferSettings(updatedShop) {
-    setOfferSettings(updatedShop);
-  }
-
-  // Called to update the included variants in offer
-  function updateIncludedVariants(selectedItem, selectedVariants) {
-    const updatedOffer = {...offer};
-    if(Array.isArray(selectedItem)) {
-      for(var key in selectedVariants) {
-        updatedOffer.included_variants[key] = selectedVariants[key];
-      }
-    }
-    else {
-      updatedOffer.included_variants[selectedItem] = selectedVariants;
-    }
-    setOffer({...updatedOffer});
-  }
-
-  // Called to update offerable_product_details and offerable_product_shopify_ids of offer
-  function updateProductsOfOffer(data) {
-    setOffer(previousState => {
-      return { ...previousState, offerable_product_details: [...previousState.offerable_product_details, data], };
-    });
-    setOffer(previousState => {
-      return { ...previousState, offerable_product_shopify_ids: [...previousState.offerable_product_shopify_ids, data.id], };
-    });
-  }
-
-  //Called whenever the shop changes in any child component
-  function updateShop(updatedValue, ...updatedKey) {
-    if(updatedKey.length == 1) {
-      setShop(previousState => {
-        return { ...previousState, [updatedKey[0]]: updatedValue };
-      });
-    }
-    else if(updatedKey.length == 2) {
-      setShop(previousState => ({
-        ...previousState,
-        [updatedKey[0]]: {
-          ...previousState[updatedKey[0]],
-          [updatedKey[1]]: updatedValue
-        }
-      }));
-    }
-    else if(updatedKey.length == 3) {
-      setShop(previousState => ({
-        ...previousState,
-        [updatedKey[0]]: {
-          ...previousState[updatedKey[0]],
-          [updatedKey[1]]: {
-            ...previousState[updatedKey[0]][updatedKey[1]],
-            [updatedKey[2]]: updatedValue
-          }
-        }
-      }));
-    }
-  }
-
-  //Called to update the initial variants of the offer
-  function updateInitialVariants(value) {
-    setInitialVariants({...value});
-  }
-
-
-  //Called to update the openAutopilotSection attribute
-  function updateOpenAutopilotSection(value) {
-    setOpenAutopilotSection(value);
-  }
-
-  function save(status) {
-    var ots = {
-      active: status,
-      checkout_after_accepted: offer.checkout_after_accepted,
-      custom_field_name: offer.custom_field_name,
-      custom_field_placeholder: offer.custom_field_placeholder,
-      custom_field_required: offer.custom_field_required,
-      custom_field_2_name: offer.custom_field_2_name,
-      custom_field_2_placeholder: offer.custom_field_2_placeholder,
-      custom_field_2_required: offer.custom_field_2_required,
-      custom_field_3_name: offer.custom_field_3_name,
-      custom_field_3_placeholder: offer.custom_field_3_placeholder,
-      custom_field_3_required: offer.custom_field_3_required,
-      discount_target_type: offer.discount_target_type,
-      discount_code: offer.discount_code,
-      included_variants: offer.included_variants,
-      link_to_product: offer.link_to_product,
-      multi_layout: offer.multi_layout,
-      must_accept: offer.must_accept,
-      offerable_product_shopify_ids: offer.offerable_product_shopify_ids,
-      offerable_type: offer.offerable_type,
-      autopilot_quantity: offer.autopilot_quantity,
-      excluded_tags: offer.excluded_tags,
-      offer_css: offer.css,
-      offer_cta: offer.cta_a,
-      offer_cta_alt: offer.cta_b,
-      offer_text: offer.text_a,
-      offer_text_alt: offer.text_b,
-      product_image_size: offer.product_image_size,
-      products_to_remove: offer.products_to_remove,
-      publish_status: status ? "published" : "draft",
-      remove_if_no_longer_valid: offer.remove_if_no_longer_valid,
-      redirect_to_product: offer.redirect_to_product,
-      rules_json: offer.rules_json,
-      ruleset_type: offer.ruleset_type,
-      show_variant_price: offer.show_variant_price,
-      show_product_image: offer.show_product_image,
-      show_product_title: offer.show_product_title,
-      show_product_price: offer.show_product_price,
-      show_compare_at_price: offer.show_compare_at_price,
-      show_nothanks: offer.show_nothanks,
-      show_quantity_selector: offer.show_quantity_selector,
-      show_custom_field: offer.show_custom_field,
-      stop_showing_after_accepted: offer.stop_showing_after_accepted,
-      theme: offer.theme,
-      title: offer.title,
-      in_cart_page: offer.in_cart_page,
-      in_ajax_cart: offer.in_ajax_cart,
-      in_product_page: offer.in_product_page,
+    function publishOffer() {
+        save(true);
     };
-    if (shop.has_recharge && offer.recharge_subscription_id) {
-      ots.recharge_subscription_id = offer.recharge_subscription_id;
-      ots.interval_unit = offer.interval_unit;
-      ots.interval_frequency = offer.interval_frequency;
-    }
-    setIsLoading(true);
-    if(location.state != null && location.state?.offerID == null) {
-      fetch(`/api/offers/create/${shop?.shop_id}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({offer: ots})
-      })
-        .then( (response) => { return response.json(); })
-        .then( (data) => {
-          setOffer(data.offer);
-          location.state.offerID = data.offer.id;
-          setIsLoading(false);
-        })
-        .catch((error) => {
-        })
-      // offerUpdate(fetch, offer.id, shopId, ots);
-    }
-    else {
-      fetch(`/api/offers/${offer.id}/update/${shop.shop_id}`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({offer: ots, shop: shopAndHost.shop, host: shopAndHost.host}),
-      })
-        .then( (response) => { return response.json(); })
-        .then( (data) => {
-          data.text = data.text_a?.replace("{{ product_title }}", data.offerable_product_details[0].title)
-          data.cta = data.cta_a;
-          for(var i=0; i<data.offer.offerable_product_details.length; i++) {
-            data.offer.offerable_product_details[i].preview_mode = true;
-          }
-          setOffer(data.offer);
-          setIsLoading(false);
-        })
-        .catch((error) => {
-        })
-      // offerUpdate(fetch, offer.id, shopId, ots);
+
+    const changeTab = () => {
+        setSelected(selected + 1)
     }
 
-    fetch('/api/merchant/update_shop_settings', {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify( {shop_attr: shop, shop: shopAndHost.shop, admin: shop.admin, json: true }),
-    })
-      .then( (response) => { return response.json(); })
-      .then( (data) => {
-        setShop(data.shop);
-        setIsLoading(false);
-      })
-      .catch((error) => {
-      })
-  }
+    const enableOrDisablePublish = (enable) => {
+        setEnablePublish(enable);
+    };
 
-  function saveDraft(){
-    save(false);
-  }
+    if (error) { return < ErrorPage/>; }
 
-  const tabs = [
-    {
-      id: 'content',
-      content: "Content",
-      panelID: 'content',
-    },
-    {
-      id: 'placement',
-      content: 'Placement',
-      panelID: 'placement',
-    },
-    {
-      id: 'appearance',
-      content: 'Appearance',
-      panelID: 'appearance',
-    },
-    {
-      id: 'advanced',
-      content: 'Advanced',
-      panelID: 'advanced',
-    },
-  ];
-
-  // Preview section tab data
-  const [selectedPre, setSelectedPre] = useState(0);
-  const handlePreTabChange = useCallback((selectedPreTabIndex) => {
-    setSelectedPre(selectedPreTabIndex);
-    if (selectedPreTabIndex == 0) {
-      setShop(previousState => {
-        return { ...previousState, selectedView: 'desktop' };
-      });
-    }
-    else {
-      setShop(previousState => {
-        return { ...previousState, selectedView: 'mobile' };
-      });
-    }
-  },[]);
-
-  const tabsPre = [
-    {
-      id: 'desktop',
-      content:  (
-        <div className='flex-tab'>
-          <Icon source={DesktopMajor} />
-          <p>Desktop</p>
+    return (
+        <div className="edit-offer" style={{
+            overflow: 'hidden',
+            display: 'flex',
+            justifyContent: 'center',
+            minHeight: '100vh',
+        }}>
+            {isLoading ? (
+                <Spinner size="large" color="teal"/>
+            ) : (
+                <Page
+                    backAction={{content: 'Offers', url: '/offer'}}
+                    title="Create new offer"
+                    primaryAction={{content: 'Publish', disabled: enablePublish || shopSettings?.offers_limit_reached, onClick: publishOffer}}
+                    secondaryActions={[{content: 'Save Draft', disabled: false, onAction: () => saveDraft()}]}
+                    style={{overflow: 'hidden'}}
+                >
+                    <Layout>
+                        <Layout.Section>
+                            <div className="offer-tabs-no-padding">
+                                <Tabs
+                                    tabs={EditOfferTabs}
+                                    selected={selected}
+                                    onSelect={setSelected}
+                                    disclosureText="More views"
+                                    fitted
+                                >
+                                    { shopSettings?.offers_limit_reached && (
+                                      <Banner status="warning">
+                                          <p>You are currently at the limit for published offers. <Link
+                                            to="/subscription">Click here</Link> to upgrade your plan and get access to unlimited offers and features!</p>
+                                      </Banner>
+                                    )}
+                                    <div className='space-4'></div>
+                                    
+                                    {selected == 0 ?
+                                        // page was imported from components folder
+                                        <FirstTab updateCheckKeysValidity={updateCheckKeysValidity}
+                                                  handleTabChange={changeTab} initialVariants={initialVariants}
+                                                  updateInitialVariants={updateInitialVariants}
+                                                  autopilotCheck={autopilotCheck} setAutopilotCheck={setAutopilotCheck}
+                                                  initialOfferableProductDetails={initialOfferableProductDetails}
+                                                  enableOrDisablePublish={enableOrDisablePublish}/>
+                                        : ""}
+                                    {selected == 1 ?
+                                        // page was imported from components folder
+                                        <SecondTab autopilotCheck={autopilotCheck} handleTabChange={changeTab}
+                                                   enableOrDisablePublish={enableOrDisablePublish}
+                                        />
+                                        : ""}
+                                    {selected == 2 ?
+                                        // page was imported from components folder
+                                        <ThirdTab saveDraft={saveDraft} publishOffer={publishOffer}
+                                                  autopilotCheck={autopilotCheck} enablePublish={enablePublish}
+                                                  handleTabChange={changeTab}/>
+                                        : ""}
+                                    {selected == 3 ?
+                                        // page was imported from components folder
+                                        <FourthTab saveDraft={saveDraft} publishOffer={publishOffer}
+                                                   enablePublish={enablePublish} />
+                                        : ""}
+                                </Tabs>
+                            </div>
+                        </Layout.Section>
+                        <Layout.Section secondary>
+                            <div className="offer-tabs-no-padding">
+                                <Tabs
+                                    tabs={tabsPre}
+                                    selected={selectedPre}
+                                    onSelect={handlePreTabChange}
+                                    disclosureText="More views"
+                                    fitted
+                                >
+                                    <div style={{paddingTop: '40px', marginTop: '-40px'}}></div>
+                                    {selectedPre == 0 ?
+                                        <OfferPreview checkKeysValidity={checkKeysValidity}
+                                                      updateCheckKeysValidity={updateCheckKeysValidity}
+                                                      updatePreviousAppOffer={updatePreviousAppOffer}/>
+                                        :
+                                        <OfferPreview checkKeysValidity={checkKeysValidity}
+                                                      updateCheckKeysValidity={updateCheckKeysValidity}
+                                                      updatePreviousAppOffer={updatePreviousAppOffer}/>}
+                                </Tabs>
+                            </div>
+                        </Layout.Section>
+                    </Layout>
+                </Page>
+            )}
         </div>
-      ),
-      panelID: 'desktop',
-    },
-    {
-      id: 'mobile',
-      content: (
-        <div className='flex-tab'>
-          <Icon source={MobileMajor} />
-          <p>Mobile</p>
-        </div>
-      ),
-      panelID: 'mobile',
-    }
-  ];
-
-  async function publishOffer() {
-    save(true);
-  };
-
-  return (
-    <div style={{ overflow: 'hidden', display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', }}>
-      {isLoading ? (
-        <Spinner size="large" color="teal"/>
-      )   :   (
-        <Page
-          breadcrumbs={[{content: 'Products', url: '/'}]}
-          title="Create new offer"
-          primaryAction={{content: 'Publish', disabled: false, onClick: publishOffer}}
-          secondaryActions={[{content: 'Save Draft', disabled: false, onAction: () => saveDraft()}]}
-          style={{ overflow: 'hidden' }}
-        >
-          <TitleBar/>
-          <Layout>
-            <Layout.Section>
-              <Tabs
-                tabs={tabs}
-                selected={selected}
-                onSelect={handleTabChange}
-                disclosureText="More views"
-                fitted
-              >
-                <div className='space-4'></div>
-
-                {selected == 0 ?
-                  // page was imported from components folder
-                  <EditOfferTabs offer={offer} shop={shop} offerSettings={offerSettings} updateOffer={updateOffer} updateIncludedVariants={updateIncludedVariants} updateProductsOfOffer={updateProductsOfOffer} updateCheckKeysValidity={updateCheckKeysValidity} initialVariants={initialVariants} updateInitialVariants={updateInitialVariants} autopilotCheck={autopilotCheck} openAutopilotSection={openAutopilotSection} updateOpenAutopilotSection={updateOpenAutopilotSection}/>
-                  : "" }
-                {selected == 1 ?
-                  // page was imported from components folder
-                  <SecondTab offer={offer} shop={shop} setOffer={setOffer} offerSettings={offerSettings} updateOffer={updateOffer} updateShop={updateShop} shopifyThemeName={shopifyThemeName} autopilotCheck={autopilotCheck}/>
-                  : "" }
-                {selected == 2 ?
-                  // page was imported from components folder
-                  <ThirdTab offer={offer} shop={shop} updateOffer={updateOffer} updateShop={updateShop} saveDraft={saveDraft} publishOffer={publishOffer} autopilotCheck={autopilotCheck}/>
-                  : "" }
-                {selected == 3 ?
-                  // page was imported from components folder
-                  <FourthTab offer={offer} shop={shop} updateOffer={updateOffer} updateShop={updateShop} updateOfferSettings={updateOfferSettings}/>
-                  : "" }
-              </Tabs>
-            </Layout.Section>
-            <Layout.Section secondary>
-              <Tabs
-                tabs={tabsPre}
-                selected={selectedPre}
-                onSelect={handlePreTabChange}
-                disclosureText="More views"
-                fitted
-              >
-                <div className='space-4'></div>
-                {selectedPre == 0 ?
-                  <OfferPreview offer={offer} shop={shop} updateOffer={updateOffer} checkKeysValidity={checkKeysValidity} updateCheckKeysValidity={updateCheckKeysValidity}/>
-                  :
-                  <OfferPreview offer={offer} shop={shop} updateOffer={updateOffer} checkKeysValidity={checkKeysValidity} updateCheckKeysValidity={updateCheckKeysValidity}/>  }
-              </Tabs>
-            </Layout.Section>
-          </Layout>
-        </Page>
-      )}
-    </div>
-  );
+    );
 }
 

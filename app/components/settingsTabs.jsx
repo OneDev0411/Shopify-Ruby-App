@@ -1,16 +1,9 @@
-import {Tabs, Card, TextField,Select} from '@shopify/polaris';
+// @ts-nocheck
+import {Tabs, Card, TextField, Select, Checkbox} from '@shopify/polaris';
 import {useState, useCallback} from 'react';
-import React from "react";
+import { DOMActionOptions } from '../shared/constants/DOMActionOptions';
 
 export function SettingTabs(props){
- 
-   const options = [
-     {label: 'Prepend', value: 'prepend'},
-     {label: 'Append', value: 'append'},
-     {label: 'Before', value: 'before'},
-     {label: 'After', value: 'after'},
-   ];
-  
     // Tabs
     const [selected, setSelected] = useState(0);
 
@@ -18,6 +11,8 @@ export function SettingTabs(props){
       (selectedTabIndex) => setSelected(selectedTabIndex),
       [],
     );
+    const handleAjaxRefreshCode = useCallback((newValue) => props.updateShop(newValue, "ajax_refresh_code"), []);
+    const handleUsesAjaxCartChange = useCallback((newValue) => props.updateShop(newValue, "uses_ajax_cart"), []);
   
     const tabs = [
       {
@@ -35,7 +30,7 @@ export function SettingTabs(props){
                 <Select
                     label="DOM action"
                     id="productDomAction"
-                    options={options}
+                    options={DOMActionOptions}
                     onChange={props.handleFormChange}
                     value={props.formData.productDomAction}
                 />
@@ -55,7 +50,7 @@ export function SettingTabs(props){
                 <Select
                     label="DOM action"
                     id="cartDomAction"
-                    options={options}
+                    options={DOMActionOptions}
                     onChange={props.handleFormChange}
                     value={props.formData.cartDomAction}
                 />
@@ -75,20 +70,32 @@ export function SettingTabs(props){
                 <Select
                     label="DOM action"
                     id="ajaxDomAction"
-                    options={options}
+                    options={DOMActionOptions}
                     onChange={props.handleFormChange}
                     value={props.formData.ajaxDomAction}
                 />
+                <br/>
+                <Checkbox
+                    label="My store uses an AJAX (popup or drawer-style) cart"
+                    checked={props.currentShop.uses_ajax_cart}
+                    onChange={handleUsesAjaxCartChange}
+                ></Checkbox>
+                {(props.currentShop.uses_ajax_cart) && (
+                    <>
+                        <br/><br/>
+                        <TextField label="AJAX refresh code" value={props.currentShop.ajax_refresh_code} onChange={handleAjaxRefreshCode} multiline={6}></TextField>
+                    </>
+                )}
             </>
       }
     ];
 
     return(<>
         <Tabs tabs={tabs} selected={selected} onSelect={handleTabChange}>
-            <Card.Section>
+            <Card>
             <div>{tabs[selected].innerContent}</div>
             <div className="space-4"></div>
-            </Card.Section>
+            </Card>
         </Tabs>
     </>);
 }
