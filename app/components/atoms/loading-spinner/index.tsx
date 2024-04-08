@@ -10,7 +10,7 @@ const LoadingSpinner = () => (
             minHeight: "100vh",
         }}
     >
-        <Spinner size="large" />
+        <Spinner accessibilityLabel="Loading data" size="large" />
     </div>
 );
 

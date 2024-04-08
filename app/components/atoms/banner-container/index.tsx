@@ -10,7 +10,7 @@ interface IBannerContainerProps {
 
 const BannerContainer = ({ title, onDismiss, tone, children } : IBannerContainerProps) => (
     <div style={{ marginBottom: "10px" }} className="polaris-banner-container">
-        <Banner title={title} onDismiss={onDismiss} status={tone}>
+        <Banner title={title} onDismiss={onDismiss} tone={tone}>
             {children}
         </Banner>
     </div>
