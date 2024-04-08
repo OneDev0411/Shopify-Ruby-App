@@ -1,9 +1,11 @@
-import { Select, TextField, LegacyStack, ResourceList, ResourceItem, OptionList } from '@shopify/polaris';
-import { useState, useCallback, useEffect } from 'react';
+import { Select, TextField, LegacyStack } from '@shopify/polaris';
+import { useState, useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import { SearchProductsList } from './SearchProductsList';
 import { countriesList } from "../components/countries.js";
-import { useAppQuery, useAuthenticatedFetch } from "../hooks";
+import { useAuthenticatedFetch } from "../hooks";
+import { CartItemOptions } from '../shared/constants/Others';
+import ErrorPage from "../components/ErrorPage";
 
 export function ModalAddConditions(props) {
   const shopAndHost = useSelector(state => state.shopAndHost);
@@ -13,12 +15,9 @@ export function ModalAddConditions(props) {
   const [productData, setProductData] = useState("");
   const [item, setItem] = useState("product");
   const [resourceListLoading, setResourceListLoading] = useState(false);
-  const [errorText, setErrorText] = useState(null);
+  const [error, setError] = useState(null);
 
-  const item_options = [
-    { label: "Product", value: "product" },
-    { label: "Collection", value: "collection" }
-  ]
+
   function findProduct() {
     return (props.rule.rule_selector === 'cart_at_least' || props.rule.rule_selector === 'cart_at_most' || props.rule.rule_selector === 'cart_exactly' || props.rule.rule_selector === 'cart_does_not_contain' || props.rule.rule_selector === 'cart_contains_variant' || props.rule.rule_selector === 'cart_does_not_contain_variant' || props.rule.rule_selector === 'cart_contains_item_from_vendor' || props.rule.rule_selector === 'on_product_this_product_or_in_collection' || props.rule.rule_selector === 'on_product_not_this_product_or_not_in_collection')
   }
@@ -41,7 +40,7 @@ export function ModalAddConditions(props) {
 
   function updateQuery(childData) {
     setResourceListLoading(true);
-    fetch('/api/merchant/element_search', {
+    fetch('/api/v2/merchant/element_search', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -54,10 +53,13 @@ export function ModalAddConditions(props) {
         setProductData(data);
       })
       .catch((error) => {
+        setError(error);
+        console.log("Error", error)
       })
   }
 
   const handleQueryValueChange = useCallback((value) => {
+    debugger;
     setQueryValue(value);
     updateQuery(value);
   }, [item],
@@ -68,14 +70,16 @@ export function ModalAddConditions(props) {
     props.setRule(prev => ({ ...prev, item_type: item, item_shopify_id: shopify_id, item_name: title }))
   }
 
-  function countryNames(){
-    var names = ['Select a country']
+  function countryOptions(){
+    const names = [{ value: '', label: 'Select a country' }]
     countriesList.map(([code, name]) => {
-      names.push(name)
+      names.push({ value: code, label: name })
     })
     return names;
   }
 
+  if (error) { return <ErrorPage />; }
+  
   return (
     <>
       <LegacyStack distribution='fillEvenly'>
@@ -107,7 +111,7 @@ export function ModalAddConditions(props) {
           <LegacyStack.Item distribution='fillEvenly'>
             <Select
               label="Item"
-              options={item_options}
+              options={CartItemOptions}
               id='item_selector'
               onChange={handleItemChange}
               value={item}
@@ -128,7 +132,7 @@ export function ModalAddConditions(props) {
             </LegacyStack.Item>
             {productData ? (
               <LegacyStack.Item>
-                <SearchProductsList item_type={item} shop={shopAndHost.shop} updateQuery={updateQuery} productData={productData} resourceListLoading={resourceListLoading} setResourceListLoading={setResourceListLoading} updateSelectedProduct={updateSelectedProduct} />
+                <SearchProductsList item_type={item} shop={shopAndHost.shop} updateQuery={updateQuery} productData={productData} resourceListLoading={resourceListLoading} setResourceListLoading={setResourceListLoading} updateSelectedProduct={updateSelectedProduct} rule={props.rule}/>
               </LegacyStack.Item>
             ) : null
             }
@@ -152,7 +156,7 @@ export function ModalAddConditions(props) {
           <LegacyStack.Item>
             <Select
               label="Select a country"
-              options={countryNames()}
+              options={countryOptions()}
               id='item_name'
               onChange={handleChange}
               value={props.rule.item_name}

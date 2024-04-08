@@ -1,7 +1,7 @@
 import { Redirect } from "@shopify/app-bridge/actions";
 import { useAppBridge, Loading } from "@shopify/app-bridge-react";
 import { useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation } from "@remix-run/react";
 
 export default function ExitIframe() {
   const app = useAppBridge();

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
     LegacyCard,
     LegacyStack,
@@ -8,14 +9,13 @@ import {
     RangeSlider,
     Collapsible,
     Grid,
-    Text,
-    Stack} from "@shopify/polaris";
+    Text} from "@shopify/polaris";
 import { useState, useCallback, useRef, useEffect, useContext } from "react";
 import React from "react";
-import CollapsibleColorPicker from "../../CollapsibleColorPicker";
+import CollapsibleColorPicker from "../../atoms/CollapsibleColorPicker";
 import tinycolor from "tinycolor2";
 import "../../../components/stylesheets/colorPickerStyles.css";
-import ColorSwatchSelector from "../../ColorSwatchSelector";
+import ColorSwatchSelector from "../../atoms/ColorSwatchSelector";
 import {
     OfferStyleOptions,
     OfferBorderOptions,
@@ -268,7 +268,7 @@ export function ThirdTab(props) {
             <div className="space-10" />
 
             <LegacyCard title="Color" sectioned>
-                <Stack vertical>
+                <LegacyStack vertical>
                     {/*<Button>Choose Template</Button>*/}
                     <Button
                         onClick={handleMenuToggle}
@@ -436,7 +436,7 @@ export function ThirdTab(props) {
                             </Grid.Cell>
                         </Grid>
                     </Collapsible>
-                </Stack>
+                </LegacyStack>
             </LegacyCard>
             <div className="space-10" />
 

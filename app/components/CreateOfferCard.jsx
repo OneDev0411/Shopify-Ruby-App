@@ -193,7 +193,7 @@ function VideoModal({ active, handleClose }) {
 // This service function should be placed in a separate file
 async function fetchShopData(shop) {
   try {
-    const response = await fetch(`/api/merchant/current_shop?shop=${shop}`, {
+    const response = await fetch(`/api/v2/merchant/current_shop?shop=${shop}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

@@ -1,41 +1,46 @@
+// @ts-nocheck
 import {
   Filters,
   ResourceList,
-  Avatar,
   ResourceItem,
-  OptionList
+  OptionList,
+  Text, Thumbnail
 } from '@shopify/polaris';
-import { useState, useCallback, useEffect, useRef } from 'react';
+import { useState, useCallback } from 'react';
 import { useSelector } from 'react-redux';
-
+import { useAuthenticatedFetch } from '../hooks';
 
 export function ModalAddProduct(props) {
   const shopAndHost = useSelector(state => state.shopAndHost);
-  const [resourceListLoading, setResourceListLoading] = useState(false);
   const [selectedVariants, setSelectedVariants] = useState(props.offer.included_variants);
   const [taggedWith, setTaggedWith] = useState(null);
   const [queryValue, setQueryValue] = useState(null);
+  const fetch = useAuthenticatedFetch(shopAndHost.host);
 
-  const handleTaggedWithChange = useCallback(
-    (value) => setTaggedWith(value),
-    []
-  );
+  let timer;
+
   const handleQueryValueChange = useCallback((value) => {
-    setQueryValue(value);
     props.updateQuery(value);
-  }, [],
-  );
+  }, []);
+  const WaitForQueryToComplete = useCallback((value) => {
+    setQueryValue(value);
+    clearTimeout(timer);
+
+    timer = setTimeout(() => {
+      handleQueryValueChange(value);
+    }, 1000);
+  }, []);
   const handleTaggedWithRemove = useCallback(() => setTaggedWith(null), []);
-  const handleQueryValueRemove = useCallback(() => setQueryValue(null), []);
+  const handleQueryValueRemove = useCallback(() => {
+    setQueryValue("");
+    timer = setTimeout(() => {
+      handleQueryValueChange("");
+    }, 1000);
+  }, []);
   const handleClearAll = useCallback(() => {
     handleTaggedWithRemove();
     handleQueryValueRemove();
   }, [handleQueryValueRemove, handleTaggedWithRemove]);
-
-
-  useEffect(() => {
-    setResourceListLoading(props.resourceListLoading);
-  }, [props.resourceListLoading]);
 
   const resourceName = props.isCollection ? {
     singular: 'collection',
@@ -44,24 +49,6 @@ export function ModalAddProduct(props) {
     singular: 'product',
     plural: 'products',
   };
-
-  const items = props.productData;
-
-  const bulkActions = [
-    {
-      content: 'Add products',
-      onAction: () => console.log('Todo: implement bulk add tags'),
-    }
-  ];
-
-  const filters = [
-    {
-      key: 'taggedWith3',
-      label: 'Tagged withh',
-      filter: null,
-      shortcut: true,
-    },
-  ];
 
   const appliedFilters = !isEmpty(taggedWith)
     ? [
@@ -78,53 +65,56 @@ export function ModalAddProduct(props) {
       queryValue={queryValue}
       filters={appliedFilters}
       appliedFilters={appliedFilters}
-      onQueryChange={handleQueryValueChange}
+      onQueryChange={WaitForQueryToComplete}
       onQueryClear={handleQueryValueRemove}
       onClearAll={handleClearAll}
-    >
-    </Filters>
-  ); filters
+    />
+  );
 
   return (
-    <ResourceList
-      resourceName={resourceName}
-      items={items}
-      renderItem={renderItem}
-      selectedItems={props.selectedItems}
-      onSelectionChange={selectionChange}
-      selectable
-      showHeader={false}
-      filterControl={filterControl}
-      loading={resourceListLoading}
-    />
+    <div id="right-align-polaris">
+      <ResourceList
+          resourceName={resourceName}
+          items={props.productData}
+          renderItem={renderItem}
+          selectedItems={props.selectedItems}
+          onSelectionChange={selectionChange}
+          selectable
+          showHeader={false}
+          filterControl={filterControl}
+          loading={props.resourceListLoading}
+      />
+    </div>
   );
 
   function renderItem(item) {
 
     const { id, title, image, variants } = item;
-    const media = <Avatar customer size="medium" name={title} />;
-    if (variants.length <= 1) {
-
+    const media =  <Thumbnail
+        source={image}
+        alt={title}
+        size="medium"
+    />
+    if (!variants || variants.length <= 1) {
       return (
         <ResourceItem
           id={id}
+          key={id}
           title={title}
-          image={image}
+          verticalAlignment="center"
+          media={media}
           accessibilityLabel={`View details for ${title}`}
           persistActions
-          disabled={true}
           onClick={() => selectedProduct(id)}
         >
-          <p variant="bodyMd" fontWeight="bold" as="h3">
-            <strong>{title}</strong>
-          </p>
-
+          <Text as="h3" variant="bodyMd" fontWeight="regular">
+            {title}
+          </Text>
         </ResourceItem>
-
       );
     }
     else {
-      const option = variants.map((currentValue) => {
+      const option = variants?.map((currentValue) => {
         const label = currentValue.title;
         const value = currentValue.id;
         return { value, label };
@@ -133,25 +123,27 @@ export function ModalAddProduct(props) {
         <>
           <ResourceItem
             id={id}
+            key={id}
             title={title}
-            image={image}
+            media={media}
             accessibilityLabel={`View details for ${title}`}
             persistActions
             onClick={() => selectedProduct(id)}
+            verticalAlignment="center"
           >
-            <p variant="bodyMd" fontWeight="bold" as="h3">
-              <strong>{title}</strong>
-            </p>
+            <Text as="h3" variant="bodyMd" fontWeight="regular">
+              {title}
+            </Text>
           </ResourceItem>
           <div style={{ marginLeft: '30px' }}>
             <OptionList
-              options={option}
-              selected={selectedVariants[id]}
-              onChange={(selectedOptions) => handleSelectedVariant(selectedOptions, id)}
-              allowMultiple
-            >
-            </OptionList>
+                options={option}
+                selected={selectedVariants[id]}
+                onChange={(selectedOptions) => handleSelectedVariant(selectedOptions, id)}
+                allowMultiple
+            />
           </div>
+          <hr style={{borderTop: '0.2px solid #f0f0f0', marginBottom: 0}} />
         </>
       );
     }
@@ -192,10 +184,9 @@ export function ModalAddProduct(props) {
   function selectionChange(id) {
     if (!props.isCollection) {
       if (props.selectedItems.length < id.length) {
-        setResourceListLoading(true);
+        props.setResourceListLoading(true);
         let shopifyId = id[id.length - 1]
-
-        fetch(`/api/merchant/products/shopify/${shopifyId}?shop_id=${props.shop_id}&shop=${shopAndHost.shop}`, {
+        fetch(`/api/v2/merchant/products/shopify/${shopifyId}?shop_id=${props.shop_id}&shop=${shopAndHost.shop}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -208,11 +199,9 @@ export function ModalAddProduct(props) {
                 props.productData[i].variants = data.variants;
                 break;
               }
-              else {
-              }
             }
             selectedVariants[id[id.length - 1]] = [];
-            for (var i = 0; i < data.variants.length; i++) {
+            for (var i = 0; i < data.variants?.length; i++) {
               selectedVariants[id[id.length - 1]].push(data.variants[i].id);
             }
             if (props.updateSelectedProduct) {
@@ -221,11 +210,11 @@ export function ModalAddProduct(props) {
             else if (props.updateSelectedProducts) {
               props.updateSelectedProducts({ id: data.id, title: data.title }, selectedVariants);
             }
-            setResourceListLoading(false);
+            props.setResourceListLoading(false);
             props.setSelectedItems(id)
           })
           .catch((error) => {
-            console.log("Error > ", error);
+            console.log("Error ", error);
           })
       }
       else {
@@ -239,7 +228,7 @@ export function ModalAddProduct(props) {
         }
         for (var i = 0; i < props.productData.length; i++) {
           if (props.productData[i].id == props.selectedItems[uncheckedIndex]) {
-            for (var j = 0; j < props.productData[i].variants.length; j++) {
+            for (var j = 0; j < props.productData[i].variants?.length; j++) {
               tempArray[j] = props.productData[i].variants[j].id;
             }
             props.productData[i].variants = [];
@@ -270,7 +259,7 @@ export function ModalAddProduct(props) {
           props.updateSelectedCollection(null);
         }
       }
-      setResourceListLoading(false);
+      props.setResourceListLoading(false);
       props.setSelectedItems(id);
     }
   }
