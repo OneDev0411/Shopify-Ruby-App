@@ -12,14 +12,13 @@ import { CancelMinor  } from '@shopify/polaris-icons';
 import { ModalAddConditions } from "~/components";
 import { useState, useCallback, useRef, useContext } from "react";
 import React from "react";
-// @ts-ignore
-import { condition_options } from "../../../shared/constants/ConditionOptions";
-// @ts-ignore
-import { getLabelFromValue } from "../../../shared/helpers/commonHelpers";
+
+import { condition_options } from "~/shared/constants/ConditionOptions";
+import { getLabelFromValue } from "~/shared/helpers/commonHelpers";
 import { QuantityArray, OrderArray } from "~/shared/constants/EditOfferOptions";
-// @ts-ignore
-import {OfferContext} from "~/contexts/OfferContext";
-import {IAutopilotSettingsProps} from "../../../types";
+
+import {OfferContent, OfferContext} from "~/contexts/OfferContext";
+import {IAutopilotSettingsProps, Offer} from "~/types/global";
 
 type Rule = {
     quantity: number,
@@ -35,8 +34,7 @@ interface IDisplayConditionsProps extends  IAutopilotSettingsProps{
 }
 
 const DisplayConditions = ({ autopilotCheck } : IDisplayConditionsProps) => {
-    // @ts-ignore
-    const { offer, setOffer, updateOffer } = useContext(OfferContext);
+    const { offer, setOffer, updateOffer } = useContext(OfferContext) as OfferContent;
 
     const [rule, setRule] = useState<Rule>(RULE_DEFAULTS)
     const [quantityErrorText, setQuantityErrorText] = useState<string>("");
@@ -59,8 +57,7 @@ const DisplayConditions = ({ autopilotCheck } : IDisplayConditionsProps) => {
                 return;
             }
             else {
-              // @ts-ignore
-              if (rule.item_name < 1) {
+              if (rule.item_name.length < 1) {
                               setItemErrorText("Amount can't be less than 1");
                               return;
                           }
@@ -70,7 +67,8 @@ const DisplayConditions = ({ autopilotCheck } : IDisplayConditionsProps) => {
             setItemErrorText("Required field");
             return;
         }
-        setOffer(prev => ({ ...prev, rules_json: [...prev.rules_json, rule] }));
+        // @ts-ignore
+        setOffer((prev: Offer) => ({ ...prev, rules_json: [...prev.rules_json, rule] }));
         handleConditionModal();
     }
 
@@ -84,8 +82,6 @@ const DisplayConditions = ({ autopilotCheck } : IDisplayConditionsProps) => {
         setConditionModal(!conditionModal), [conditionModal]
         setDefaultRule();
     }, []);
-    const modalCon = useRef(null);
-    const activatorCon = modalCon;
 
     const setDefaultRule = () => {
         setRule(RULE_DEFAULTS);
@@ -103,14 +99,13 @@ const DisplayConditions = ({ autopilotCheck } : IDisplayConditionsProps) => {
         updateOffer('ruleset_type', value);
     }
 
-    // @ts-ignore
     return (
         <>
             {(offer.id == null || offer.id != autopilotCheck?.autopilot_offer_id) && (
                 <>
                     <LegacyCard title="Display Conditions" sectioned>
 
-                        {offer?.rules_json?.length === 0 ? (
+                        {offer?.rules_json ? (
                             <p style={{color: '#6D7175', marginTop: '-10px', marginBottom: '14px'}}>None selected (show
                                 offer to all customer)</p>
                         ) : (
@@ -137,7 +132,7 @@ const DisplayConditions = ({ autopilotCheck } : IDisplayConditionsProps) => {
                                             {/*</div>*/}
                                         </Badge>
                                     </div>
-                                    {/*{getLabelFromValue(rule.rule_selector)}: &nbsp; {rule.quantity} <b>{rule.item_name}</b>*/}
+                                    {getLabelFromValue(rule.rule_selector)}: &nbsp; {rule.quantity} <b>{rule.item_name}</b>
                                 </li>
                             ))}</>
                         )}
@@ -189,7 +184,6 @@ const DisplayConditions = ({ autopilotCheck } : IDisplayConditionsProps) => {
                 </>
             )}
             <Modal
-                activator={activatorCon}
                 open={conditionModal}
                 onClose={handleConditionModal}
                 title="Select products from your store"

@@ -8,9 +8,7 @@ import {
 import { useState, useCallback, useRef, useEffect, useContext } from "react";
 import React, { FC } from "react";
 import tinycolor from "tinycolor2";
-// @ts-ignore
-import {OfferContext} from "~/contexts/OfferContext";
-// @ts-ignore
+import {OfferContent, OfferContext} from "~/contexts/OfferContext";
 import { ColorPicker } from "../../molecules";
 
 type ColorSettings = {
@@ -21,8 +19,7 @@ type ColorSettings = {
 }
 
 const AppearanceColor = () => {
-    // @ts-ignore
-    const {offer, updateNestedAttributeOfOffer} = useContext(OfferContext);
+    const {offer, updateNestedAttributeOfOffer} = useContext(OfferContext) as OfferContent;
 
     const [openEditMenu, setOpenEditMenu] = useState<boolean>(false)
     const handleMenuToggle = useCallback(() => {

@@ -1,17 +1,14 @@
 import React, {useCallback, useContext} from "react";
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-// @ts-ignore
-import { OfferContext } from "../../../contexts/OfferContext.jsx";
-// @ts-ignore
-import { useShopState } from "../../../contexts/ShopContext.jsx";
+import {OfferContent, OfferContext} from "~/contexts/OfferContext";
+import { useShopState } from "~/contexts/ShopContext";
 
 import { Checkbox, LegacyCard, LegacyStack, TextField } from "@shopify/polaris";
-import {ShopAndHost} from "../../../types";
+import {ShopAndHost} from "~/types/global";
 
 const DisplayOptions = () => {
-    // @ts-ignore
-    const { offer, updateOffer } = useContext(OfferContext);
+    const { offer, updateOffer } = useContext(OfferContext) as OfferContent;
     const { shopSettings } = useShopState();
     const shopAndHost = useSelector<{ shopAndHost: ShopAndHost}, ShopAndHost>(state => state.shopAndHost);
 

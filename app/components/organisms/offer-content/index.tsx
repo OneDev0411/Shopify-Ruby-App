@@ -1,20 +1,17 @@
 import React, {useCallback, useContext} from "react";
 import { Link } from 'react-router-dom';
-// @ts-ignore
-import { OfferContext } from "~/contexts/OfferContext";
-// @ts-ignore
+import {OfferContent, OfferContext} from "~/contexts/OfferContext";
 import { useShopState } from "~/contexts/ShopContext";
 
 import { Checkbox, Collapsible, LegacyCard, LegacyStack, Text, TextField } from "@shopify/polaris";
-import {IAutopilotSettingsProps} from "../../../types";
+import {IAutopilotSettingsProps} from "~/types/global";
 
 interface IOfferContentProps extends IAutopilotSettingsProps{
   updateCheckKeysValidity: (key: string, value: string) => void;
 }
 
 const OfferContent = ({ updateCheckKeysValidity, autopilotCheck }: IOfferContentProps) => {
-    // @ts-ignore
-    const { offer, updateOffer } = useContext(OfferContext);
+    const { offer, updateOffer } = useContext(OfferContext) as OfferContent;
     const { shopSettings } = useShopState();
 
     const handleTitleChange = useCallback((newValue: string) => updateOffer("title", newValue), []);

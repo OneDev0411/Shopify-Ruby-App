@@ -4,16 +4,14 @@ import {
     Checkbox,
     Text,
 } from "@shopify/polaris";
-import {FC, useCallback, useContext} from "react";
+import { useCallback, useContext } from "react";
 import React from "react";
-// @ts-ignore
-import {OfferContext} from "~/contexts/OfferContext";
-// @ts-ignore
+import {OfferContent, OfferContext} from "~/contexts/OfferContext";
 import { DomAction } from "../../molecules";
 
 const AdvancedSettings = () => {
-    // @ts-ignore
-    const { offer, updateOffer, updateNestedAttributeOfOffer } = useContext(OfferContext);
+
+    const { offer, updateOffer, updateNestedAttributeOfOffer } = useContext(OfferContext) as OfferContent;
     const handleChange = useCallback((newChecked: boolean) => updateOffer("save_as_default_setting", newChecked), []);
     const handleProductDomSelector = useCallback((newValue: string) => updateNestedAttributeOfOffer(newValue, "advanced_placement_setting",  "custom_product_page_dom_selector"), []);
     const handleProductDomAction = useCallback((newValue: string) => updateNestedAttributeOfOffer(newValue, "advanced_placement_setting", "custom_product_page_dom_action"), []);

@@ -8,16 +8,14 @@ import {
 import { useCallback, useContext } from "react";
 import React from "react";
 import { OfferStyleOptions, OfferBorderOptions } from "~/shared/constants/EditOfferOptions";
-// @ts-ignore
-import { OfferContext } from "~/contexts/OfferContext";
-import {IAutopilotSettingsProps} from "../../../types";
+import {OfferContent, OfferContext} from "~/contexts/OfferContext";
+import {IAutopilotSettingsProps} from "~/types/global";
 
 interface IOfferBoxProp extends IAutopilotSettingsProps {
 }
 
 const OfferBox = ({ autopilotCheck }: IOfferBoxProp) => {
-    // @ts-ignore
-    const {offer, updateOffer, updateNestedAttributeOfOffer} = useContext(OfferContext);
+    const {offer, updateOffer, updateNestedAttributeOfOffer} = useContext(OfferContext) as OfferContent;
 
     const handleLayout = useCallback((value: string) => {
         updateOffer("multi_layout", value);
@@ -63,7 +61,6 @@ const OfferBox = ({ autopilotCheck }: IOfferBoxProp) => {
     //Border range slider
     const handlesetBorderRange = useCallback((newValue: string) => updateNestedAttributeOfOffer(parseInt(newValue), "css_options", "main", "borderRadius"), []);
 
-    // @ts-ignore
     return (
         <LegacyCard title="Offer box" sectioned>
             {(offer.id != null && autopilotCheck?.autopilot_offer_id == offer.id) ? (
@@ -134,7 +131,7 @@ const OfferBox = ({ autopilotCheck }: IOfferBoxProp) => {
                             {/*TODO: Double check range slider*/}
                         <RangeSlider
                             label="Corner Radius"
-                            value={parseInt(offer.css_options?.main?.borderRadius)}
+                            value={parseInt(offer.css_options?.main?.borderRadius as string)}
                             min={0}
                             max={50}
                             onChange={(value, id) => handlesetBorderRange(id)}

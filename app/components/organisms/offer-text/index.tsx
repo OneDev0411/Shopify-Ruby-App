@@ -9,12 +9,10 @@ import {
 import { useCallback, useContext } from "react";
 import React from "react";
 import { OfferBorderOptions, OfferFontOptions } from "~/shared/constants/EditOfferOptions";
-// @ts-ignore
-import { OfferContext } from "~/contexts/OfferContext";
+import {OfferContent, OfferContext} from "~/contexts/OfferContext";
 
 const OfferText = () => {
-    // @ts-ignore
-    const {offer, updateNestedAttributeOfOffer} = useContext(OfferContext);
+    const {offer, updateNestedAttributeOfOffer} = useContext(OfferContext) as OfferContent;
 
     //Font options
     // const [fontSelect, setFontSelect] = useState("Dummy font 1");

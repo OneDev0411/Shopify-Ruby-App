@@ -1,10 +1,8 @@
 import React, { useCallback, useEffect, useRef, useState, useContext } from "react";
 import { Link, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-// @ts-ignore
-import { OfferContext } from "../../../contexts/OfferContext.jsx";
-// @ts-ignore
-import {useShopState} from "../../../contexts/ShopContext.jsx";
+import {OfferContent, OfferContext} from "~/contexts/OfferContext";
+import {useShopState} from "~/contexts/ShopContext";
 
 import {
     Badge,
@@ -23,19 +21,18 @@ import {InfoMinor} from '@shopify/polaris-icons';
 import { ModalAddProduct } from "~/components";
 import { useAuthenticatedFetch } from "~/hooks";
 import { AutopilotQuantityOptionsNew } from "~/shared/constants/EditOfferOptions";
-import {IAutopilotSettingsProps, Product, ProductDetails, ProductVariants, ShopAndHost} from "../../../types";
+import {IAutopilotSettingsProps, Offer, Product, ProductDetails, ProductVariants, ShopAndHost} from "~/types/global";
 
 interface IOfferProductProps extends IAutopilotSettingsProps {
   initialVariants: ProductVariants;
   updateCheckKeysValidity: (key: string, value: string) => void;
-  updateInitialVariants: (selectedItem: string|string[], selectedVariants: number[]) => void;
+  updateInitialVariants: (selectedItem: string | string[] | Offer['included_variants'], selectedVariants?: number[]) => void;
   initialOfferableProductDetails: ProductDetails[];
   setIsLoading: (b: boolean) => void
 }
 
 const OfferProduct = (props: IOfferProductProps) => {
-    // @ts-ignore
-    const { offer, updateOffer, updateProductsOfOffer, updateIncludedVariants } = useContext(OfferContext);
+    const { offer, updateOffer, updateProductsOfOffer, updateIncludedVariants } = useContext(OfferContext) as OfferContent;
     const { shopSettings } = useShopState();
     const shopAndHost = useSelector<{ shopAndHost: ShopAndHost}, ShopAndHost>(state => state.shopAndHost);
     const fetch = useAuthenticatedFetch(shopAndHost.host);
@@ -51,7 +48,7 @@ const OfferProduct = (props: IOfferProductProps) => {
 
     const [openAutopilotSection, setOpenAutopilotSection] = useState<boolean>(false);
     const [autopilotButtonText, setAutopilotButtonText] = useState<string>("");
-    const [autopilotQuantity, setAutopilotQuantity] = useState<number>(offer?.autopilot_quantity);
+    const [autopilotQuantity, setAutopilotQuantity] = useState<number>(0);
 
     //Available Products
     const [query, setQuery] = useState<string>("");
@@ -153,7 +150,6 @@ const OfferProduct = (props: IOfferProductProps) => {
         }
         updateOffer("offerable_product_details", []);
         updateOffer("offerable_product_shopify_ids", []);
-        // @ts-ignore
         props.updateInitialVariants(offer.included_variants);
         let responseCount = 0;
         const promises = selectedProducts.map((productId) =>
@@ -224,7 +220,7 @@ const OfferProduct = (props: IOfferProductProps) => {
     }, [])
 
     useEffect(() => {
-        if (offer.id != null && offer.id == props.autopilotCheck?.autopilot_offer_id && offer.autopilot_quantity != offer.offerable_product_details.length) {
+        if (offer.id != null && offer.id == props.autopilotCheck?.autopilot_offer_id && offer.autopilot_quantity && offer.autopilot_quantity != offer.offerable_product_details.length) {
             let tempArrProdDetails: any = [];
             for (let i = 0; i < offer?.autopilot_quantity; i++) {
                 if (offer.offerable_product_details.length > i) {

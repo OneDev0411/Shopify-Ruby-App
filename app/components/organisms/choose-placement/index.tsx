@@ -15,26 +15,21 @@ import SelectProductsModal from "../../SelectProductsModal";
 import { SelectCollectionsModal } from "../../SelectCollectionsModal";
 import {Link} from 'react-router-dom';
 import { OfferThemeOptions, OfferNewThemeOptions } from "~/shared/constants/EditOfferOptions";
-// @ts-ignore
-import {OfferContext} from "~/contexts/OfferContext";
-// @ts-ignore
+import {OfferContent, OfferContext} from "~/contexts/OfferContext";
 import {useShopState} from "~/contexts/ShopContext";
-// @ts-ignore
 import { OfferPlacement } from "../../molecules/index.js";
-// @ts-ignore
 import { BannerContainer } from "../../atoms/index.js";
-import {IAutopilotSettingsProps, Product, Rule} from "../../../types";
+import {IAutopilotSettingsProps, Product, Rule, ShopAndHost, ThemeSetting} from "~/types/global";
 
 interface IChoosePlacementProps extends IAutopilotSettingsProps{
     enableOrDisablePublish: any
 }
 
 const ChoosePlacement = ({ enableOrDisablePublish, autopilotCheck}: IChoosePlacementProps) => {
-    // @ts-ignore
-    const { offer, updateOffer, updateNestedAttributeOfOffer } = useContext(OfferContext);
+    const { offer, updateOffer, updateNestedAttributeOfOffer } = useContext(OfferContext) as OfferContent;
     const { shopSettings, themeAppExtension } = useShopState();
     // TODO: swap into context
-    const shopAndHost = useSelector<any, any>(state => state.ShopAndHost);
+    const shopAndHost = useSelector<{ shopAndHost: ShopAndHost}, ShopAndHost>(state => state.shopAndHost);
     const fetch = useAuthenticatedFetch(shopAndHost.host);
 
     const [selected, setSelected] = useState('cartpage');
@@ -55,7 +50,6 @@ const ChoosePlacement = ({ enableOrDisablePublish, autopilotCheck}: IChoosePlace
     const [templateImagesURL, setTemplateImagesURL] = useState<any>({});
     const [storedThemeNames, setStoredThemeName] = useState<string[]>([]);
 
-    // @ts-ignore
     const isLegacy = themeAppExtension.theme_version !== '2.0' || import.meta.env.VITE_ENABLE_THEME_APP_EXTENSION?.toLowerCase() !== 'true';
 
     useEffect(() => {
@@ -629,9 +623,6 @@ const ChoosePlacement = ({ enableOrDisablePublish, autopilotCheck}: IChoosePlace
         handleCollectionsModal();
     }
 
-    // @ts-ignore
-    // @ts-ignore
-    // @ts-ignore
     return (
         <>
             {(!storedThemeNames?.includes(shopifyThemeName) && openBanner && isLegacy) && (
@@ -653,11 +644,9 @@ const ChoosePlacement = ({ enableOrDisablePublish, autopilotCheck}: IChoosePlace
             {(selected === "ajax" && !themeAppExtension?.theme_app_embed && !isLegacy) && (
                 <BannerContainer
                     title="You are using Shopify's Theme Editor"
-                    tone="warning"
-                >
+                    tone="warning">
                     <p>In order to show the offer in the Ajax Cart, you need to enable it in the Theme Editor.</p><br/>
                     <p><Link
-                        // @ts-ignore
                         to={`https://${shopSettings.shopify_domain}/admin/themes/current/editor?context=apps&template=product&activateAppId=${import.meta.env.VITE_SHOPIFY_ICU_EXTENSION_APP_ID}/ajax_cart_app_block`}
                         target="_blank">Click here</Link> to go to the theme editor</p>
                 </BannerContainer>
@@ -762,7 +751,8 @@ const ChoosePlacement = ({ enableOrDisablePublish, autopilotCheck}: IChoosePlace
                                     ]}
                                     onClickImage={(position) => handleImageClick("product_page", position)}
                                     placementPosition={themeTemplateData?.find((item) => item["id"] === offer.placement_setting?.template_product_id)?.position}
-                                />
+                                    isTemplate
+                                    showImages/>
                             ) : (
                                 <OfferPlacement
                                     defalutLabel="Use default settings for Ajax Cart"
@@ -777,9 +767,10 @@ const ChoosePlacement = ({ enableOrDisablePublish, autopilotCheck}: IChoosePlace
                                         templateImagesURL.ajax_cart_image_2,
                                         templateImagesURL.ajax_cart_image_3,
                                     ]}
-                                    showImages={shopSettings.default_template_settings?.templateForAjaxCart}
+                                    showImages={shopSettings?.default_template_settings?.templateForAjaxCart}
                                     onClickImage={(position) => handleImageClick("ajax_cart", position)}
                                     placementPosition={themeTemplateData?.find((item) => item["id"] === offer.placement_setting?.template_ajax_id)?.position}
+                                    isTemplate
                                 />
                             )}
                             <OfferPlacement
@@ -797,7 +788,8 @@ const ChoosePlacement = ({ enableOrDisablePublish, autopilotCheck}: IChoosePlace
                                 ]}
                                 onClickImage={(position) => handleImageClick("cart_page", position)}
                                 placementPosition={themeTemplateData?.find((item) => item["id"] === offer.placement_setting?.template_cart_id)?.position}
-                            />
+                                isTemplate
+                                showImages/>
                         </>
                     ) : (
                         <OfferPlacement
