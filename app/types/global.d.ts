@@ -63,12 +63,16 @@ declare type AdvancedPlacementSetting = {
 declare type CssOptions = {
     main?: {
         color: string,
-        backgroundColor: string
+        backgroundColor: string,
+        [key: string]: string
     },
-    text?: {},
+    text?: {
+        [key: string]: string
+    },
     button?: {
         color: string,
-        backgroundColor: string
+        backgroundColor: string,
+        [key: string]: string
     }
 }
 
@@ -312,7 +316,7 @@ declare type ShopSettings = {
     money_format?: string,
     stats_from?: string,
     shop_id?: number,
-    default_template_settings?: {},
+    default_template_settings?: any,
     has_redirect_to_product?: boolean,
     theme_version?: string,
     offers_limit_reached?: boolean
@@ -320,7 +324,7 @@ declare type ShopSettings = {
 
 declare type Offer = {
     id?: number,
-    rules_json?: any[],
+    rules_json?: Rule,
     text_a: string,
     text_b?: string,
     cta_a: string,
@@ -391,4 +395,46 @@ declare type Offer = {
     custom_css: string,
     offers_limit_reached?: boolean,
     remove_if_no_longer_valid: boolean
+    autopilot_quantity?: number,
+    excluded_tags?: string
 }
+
+declare type ThemeSetting = {
+  id: number,
+  theme_name: string,
+  page_type: string,
+  position: number,
+  action: string,
+  selector: string,
+  image_url: string
+}
+
+export interface IAutopilotSettingsProps {
+  autopilotCheck: AutopilotCheck;
+  setAutopilotCheck: (autopilotCheck: AutopilotCheck) => void;
+}
+
+export type ShopAndHost = {
+  shop: string,
+  host: string,
+}
+
+type AutopilotCheck = {
+  shop_autopilot: boolean,
+  isPending: boolean,
+  autopilot_offer_id: number
+}
+
+// TODO: Shift to global
+export type Product = {
+  id: any,
+  title: string,
+  variants: any,
+}
+// TODO: Shift to global
+export type Rule = { quantity: number, rule_selector: string, item_type: string, item_shopify_id: number, item_name: string }
+
+export type ProductVariants = {
+  [key:string]: number[]
+}
+
