@@ -1,16 +1,17 @@
-// @ts-nocheck
 import {useCallback, useEffect} from 'react';
 import { useNavigate } from "@remix-run/react";
 import { Modal } from '@shopify/polaris';
-import {useShopState} from "../contexts/ShopContext.jsx";
-import {useAuthenticatedFetch} from "../hooks/index.js";
+import {useShopState} from "~/contexts/ShopContext";
+import {useAuthenticatedFetch} from "~/hooks";
 import {useSelector} from "react-redux";
 
 const ModalChoosePlan = () => {
   const navigateTo = useNavigate();
+  // @ts-ignore
   const shopAndHost = useSelector((state) => state.shopAndHost);
   const fetch = useAuthenticatedFetch(shopAndHost.host);
   const { isSubscriptionUnpaid, setIsSubscriptionUnpaid } = useShopState();
+  let content = ''
 
   useEffect(() => {
     const modalContent = document.getElementById('not-dismissable-modal');
@@ -19,10 +20,9 @@ const ModalChoosePlan = () => {
       let modal = modalContent.closest('.Polaris-Modal-Dialog__Modal');
 
       if (modal) {
-        let closeButton = modal.querySelector('.Polaris-Modal-CloseButton')
+        let closeButton: HTMLButtonElement | null = modal.querySelector('.Polaris-Modal-CloseButton')
         if (closeButton) {
           closeButton.style.display = 'none';
-
         }
       }
     }
@@ -34,7 +34,10 @@ const ModalChoosePlan = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ shop: shopAndHost.shop })
-      }).then(response => response.json()).then((response) => { setIsSubscriptionUnpaid(response.subscription_not_paid) });
+      }).then(response => response.json()).then((response) => {
+        if (setIsSubscriptionUnpaid) {
+          setIsSubscriptionUnpaid(response.subscription_not_paid)
+        } });
     }
 
   }, [])
@@ -45,7 +48,7 @@ const ModalChoosePlan = () => {
 
   return (
   <Modal
-      open={isSubscriptionUnpaid}
+      open={true}
       onClose={() => false}
       title="Choose Plan"
       primaryAction={{

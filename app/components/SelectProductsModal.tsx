@@ -2,8 +2,21 @@ import { useState, useEffect, memo } from 'react';
 import { useSelector } from 'react-redux';
 import { ModalAddProduct } from './modal_AddProduct';
 import { useAuthenticatedFetch } from "../hooks";
+import {Offer, ProductDetails, Shop} from "~/types/types";
 
-export function SelectProductsModal(props) {
+interface ISelectProductsModalProps {
+  offer: Offer,
+  shop: Shop,
+  selectedProducts: ProductDetails[],
+  setSelectedProducts: (prodDetails: ProductDetails[]) => void,
+  selectedItems: ProductDetails,
+  setSelectedItems: () => void,
+  handleProductsModal: () => void,
+}
+
+export function SelectProductsModal({ offer, selectedProducts, setSelectedProducts, handleProductsModal,
+                                      setSelectedItems, selectedItems, shop }: ISelectProductsModalProps) {
+  // @ts-ignore
   const shopAndHost = useSelector(state => state.shopAndHost);
   const fetch = useAuthenticatedFetch(shopAndHost.host);
 
@@ -23,7 +36,7 @@ export function SelectProductsModal(props) {
       .then((response) => { return response.json() })
       .then((data) => {
         for (var i = 0; i < data.length; i++) {
-          if (!Object.keys(props.offer.included_variants).includes(data[i].id.toString())) {
+          if (!Object.keys(offer.included_variants).includes(data[i].id.toString())) {
             data[i].variants = [];
           }
         }
@@ -49,7 +62,7 @@ export function SelectProductsModal(props) {
       .then((response) => { return response.json() })
       .then((data) => {
         for (var i = 0; i < data.length; i++) {
-          if (!Object.keys(props.offer.included_variants).includes(data[i].id.toString())) {
+          if (!Object.keys(offer.included_variants).includes(data[i].id.toString())) {
             data[i].variants = [];
           }
         }
@@ -64,11 +77,11 @@ export function SelectProductsModal(props) {
 
   function updateSelectedProducts(selectedItem) {
     if(selectedItem.id){
-      props.selectedProducts.push(selectedItem);
+      selectedProducts.push(selectedItem);
     }
     else{
-      const products = props.selectedProducts.filter(item => selectedItem.includes(item.id));
-      props.setSelectedProducts(products);
+      const products = selectedProducts.filter(item => selectedItem.includes(item.id));
+      setSelectedProducts(products);
     }
   }
 
@@ -79,7 +92,9 @@ export function SelectProductsModal(props) {
 
   return (
     <>
-      <ModalAddProduct selectedItems={props.selectedItems} setSelectedItems={props.setSelectedItems} offer={props.offer} updateQuery={updateQuery} shop_id={props.shop.shop_id} productData={productData} resourceListLoading={resourceListLoading} updateSelectedProducts={updateSelectedProducts} />
+      <ModalAddProduct selectedItems={selectedItems} setSelectedItems={setSelectedItems} offer={offer}
+                       updateQuery={updateQuery} shop_id={shop.shop_id} productData={productData}
+                       resourceListLoading={resourceListLoading} updateSelectedProducts={updateSelectedProducts} />
     </>
   );
 }
