@@ -1,4 +1,4 @@
-declare type JsonVariants = {
+type JsonVariants = {
     "id": number,
     "image_url": string | URL,
     "title": string,
@@ -20,7 +20,7 @@ declare type JsonVariants = {
     "price_is_minor_than_compare_at_price": boolean
 }
 
-declare type ProductDetails = {
+type ProductDetails = {
     id: number,
     offer_id: number,
     title: string,
@@ -33,7 +33,7 @@ declare type ProductDetails = {
     medium_image_url: string | URL
 }
 
-declare type PlacementSetting = {
+type PlacementSetting = {
     id?: number,
     default_ajax_cart: boolean,
     default_product_page: boolean,
@@ -46,7 +46,7 @@ declare type PlacementSetting = {
     updated_at?: string
 }
 
-declare type AdvancedPlacementSetting = {
+type AdvancedPlacementSetting = {
     id?: number,
     advanced_placement_setting_enabled?: null,
     custom_product_page_dom_selector: string,
@@ -60,7 +60,7 @@ declare type AdvancedPlacementSetting = {
     updated_at?: string
 }
 
-declare type CssOptions = {
+type CssOptions = {
     main?: {
         color: string,
         backgroundColor: string
@@ -73,8 +73,9 @@ declare type CssOptions = {
 }
 
 // TODO: More changes to be made
-declare type Shop = {
+type Shop = {
     id: number,
+    shop_id: number,
     name: string,
     myshopify_domain: string,
     shopify_id: number,
@@ -215,7 +216,7 @@ declare type Shop = {
     active_offers_count: number,
 }
 
-declare type Plan = {
+type Plan = {
     "id": number,
     "name": string,
     "price_in_cents": number,
@@ -237,7 +238,7 @@ declare type Plan = {
     "internal_name": string
 }
 
-declare type Subscription = {
+type Subscription = {
     id: number,
     plan_id: number,
     shop_id: number,
@@ -267,7 +268,7 @@ declare type Subscription = {
     shopify_charge_status?: any
 }
 
-declare type ThemeAppExtension = {
+type ThemeAppExtension = {
     "id": number,
     "shop_id": number,
     "product_block_added": boolean,
@@ -280,7 +281,7 @@ declare type ThemeAppExtension = {
     "theme_version": string
 }
 
-declare type ShopSettings = {
+type ShopSettings = {
     custom_ajax_dom_selector?: string,
     custom_ajax_dom_action?: string,
     custom_cart_page_dom_selector?: string,
@@ -318,7 +319,7 @@ declare type ShopSettings = {
     offers_limit_reached?: boolean
 }
 
-declare type Offer = {
+type Offer = {
     id?: number,
     rules_json?: any[],
     text_a: string,
@@ -391,4 +392,14 @@ declare type Offer = {
     custom_css: string,
     offers_limit_reached?: boolean,
     remove_if_no_longer_valid: boolean
+}
+
+
+export type { JsonVariants, ProductDetails, PlacementSetting, AdvancedPlacementSetting, CssOptions, Plan, Offer,
+    Shop, ShopSettings, Subscription, ThemeAppExtension }
+
+declare global {
+    interface Window {
+        ENV: any;
+    }
 }
