@@ -75,36 +75,31 @@ export default function Subscription() {
 
     const fetchSubscription = useCallback(() => {
       let redirect = Redirect.create(app);
-
-      fetch(`api/v2/merchant/current_subscription?shop=${shopAndHost.shop}`, {
+      fetch(`/api/v2/merchant/current_subscription?shop=${shopAndHost.shop}`, {
           method: 'GET',
-          mode: 'cors',
              headers: {
                'Content-Type': 'application/json',
-               // uncomment this line if you are using ngrok, otherwise server would not process the request.
-              //  "ngrok-skip-browser-warning": "69420"
              },
-          redirect: 'follow',
-          referrerPolicy: 'no-referrer',
-         })
-         .then( (response) => { 
-            return response.json(); 
-          })
-         .then( (data) => {
-          if (data.redirect_to) {
-            redirect.dispatch(Redirect.Action.APP, data.redirect_to);
+
+      })
+      .then( (response) => { 
+        return response.json(); 
+      })
+      .then( (data) => {
+        if (data.redirect_to) {
+          redirect.dispatch(Redirect.Action.APP, data.redirect_to);
         } else {
-              setCurrentSubscription(data.subscription);
-              setPlanName(data.plan);
-              setTrialDays(data.days_remaining_in_trial);
-              setActiveOffersCount(data.active_offers_count);
-              setUnpublishedOfferIds(data.unpublished_offer_ids)
-              setIsSubscriptionUnpaid(data.subscription_not_paid)
-         }})
-         .catch((error) => {
-            setError(error);
-            console.log("error", error);
-         })
+          setCurrentSubscription(data.subscription);
+          setPlanName(data.plan);
+          setTrialDays(data.days_remaining_in_trial);
+          setActiveOffersCount(data.active_offers_count);
+          setUnpublishedOfferIds(data.unpublished_offer_ids)
+          setIsSubscriptionUnpaid(data.subscription_not_paid)
+      }})
+      .catch((error) => {
+        setError(error);
+        console.log("error", error);
+      })
     }, []);
 
     useEffect(() => {
