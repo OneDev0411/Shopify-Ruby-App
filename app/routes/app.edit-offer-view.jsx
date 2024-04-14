@@ -35,8 +35,6 @@ import ErrorPage from "../components/ErrorPage.jsx"
 
 const EditOfferView = () => {
   const { offer, setOffer, updateOffer } = useContext(OfferContext);
-  const z = useContext(OfferContext);
-  console.log('here');
   const app = useAppBridge();
   const { fetchOffer } = useOffer();
   // @ts-ignore
@@ -55,7 +53,7 @@ const EditOfferView = () => {
   // }, []);
 
   const handleEditOffer = (offer_id) => {
-    navigateTo('/edit-offer', { state: { offerID: offer_id } });
+    navigateTo('/app/edit-offer', { state: { offerID: offer_id } });
   }
   const [error, setError] = useState(null);
 
@@ -147,7 +145,7 @@ const EditOfferView = () => {
         if (response.status === 200) {
           return response.json()
         }
-        navigateTo('/offer');
+        navigateTo('/app/offer');
       }).then((data) => {
           setOffer({...data});
           setInitialOfferableProductDetails(data.offerable_product_details);
