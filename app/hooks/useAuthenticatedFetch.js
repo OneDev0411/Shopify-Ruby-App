@@ -1,6 +1,9 @@
+// @ts-nocheck
 import { authenticatedFetch } from "@shopify/app-bridge-utils";
 import { useAppBridge } from "@shopify/app-bridge-react";
 import { Redirect } from "@shopify/app-bridge/actions";
+import { useEnv } from '../contexts/EnvContext';
+import React from 'react'
 
 /**
  * A hook that returns an auth-aware fetch function.
@@ -15,20 +18,25 @@ import { Redirect } from "@shopify/app-bridge/actions";
  * @returns {Function} fetch function
  */
 export function useAuthenticatedFetch(host) {
-  // Please replace the server url with the base/server url link:
-  const base_url = 'http://localhost:3000'
+  const env = useEnv();
   const app = useAppBridge();
   const fetchFunction = authenticatedFetch(app);
-  return async (uri, options) => {
-    const req_url = `${base_url}${uri}`
+  return React.useCallback(async (uri, options) => {
+    const req_url = `${env.API_HOST}${uri}`
     const hasQueryParams = uri.includes("?");
     const uriWithHost = hasQueryParams
       ? `${req_url}&host=${host}`
       : `${req_url}?host=${host}`;
-    const response = await fetchFunction(uriWithHost, options);
-    checkHeadersForReauthorization(response.headers, app);
-    return response;
-  };
+    try {
+      const response = await fetchFunction(uriWithHost, options);
+      checkHeadersForReauthorization(response.headers, app);
+      return response;
+    } 
+    catch (error) {
+      console.error("Error fetching data:", error);
+      throw error;
+    }
+  }, [env, app, fetchFunction, host]);
 }
 
 function checkHeadersForReauthorization(headers, app) {
