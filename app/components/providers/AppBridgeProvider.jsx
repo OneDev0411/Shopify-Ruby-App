@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { useLocation } from "@remix-run/react";
 import { useLocation, useNavigate } from  "@remix-run/react";
 import { Provider } from "@shopify/app-bridge-react";
 import { Banner, Layout, Page } from "@shopify/polaris";

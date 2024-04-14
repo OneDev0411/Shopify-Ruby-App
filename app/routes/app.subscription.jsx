@@ -76,7 +76,7 @@ export default function Subscription() {
     const fetchSubscription = useCallback(() => {
       let redirect = Redirect.create(app);
 
-      fetch(`/api/v2/merchant/current_subscription?shop=${shopAndHost.shop}`, {
+      fetch(`api/v2/merchant/current_subscription?shop=${shopAndHost.shop}`, {
           method: 'GET',
           mode: 'cors',
              headers: {
