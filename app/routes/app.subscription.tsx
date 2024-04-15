@@ -16,11 +16,10 @@ import { isSubscriptionActive } from "../services/actions/subscription";
 import {billingImg} from "../assets/index";
 // import { onLCP, onFID, onCLS } from 'web-vitals';
 // import { traceStat } from "../services/firebase/perf.js";
-import ErrorPage from "../components/ErrorPage.js"
+import ErrorPage from "../components/ErrorPage.jsx"
 import {useShopState} from "../contexts/ShopContext";
 import  type { LinksFunction } from "remix";
 import styles from "../assets/custom.css?url";
-
 
 export let links: LinksFunction = () => {
   return [{ rel: "stylesheet", href: styles }];
