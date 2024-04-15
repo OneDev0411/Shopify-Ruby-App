@@ -1,5 +1,5 @@
 // @ts-nocheck
-import React, {createContext, useCallback, useContext, useEffect, useState} from "react";
+import {createContext, useCallback, useContext, useEffect, useState} from "react";
 import {
   Button,
   ButtonGroup,
@@ -238,7 +238,7 @@ export function ThemeAppCard({ shopData, themeAppExtension}) {
           <div style={{marginBottom: '20px'}} className={"homepage-info"}>
             <Text variant="headingSm" as="p" fontWeight="regular" >
               <ol>
-              {!tab.content.includes('Ajax') ?
+              {tab.content.includes('Ajax') ?
                 <>
                   <li>Click on the <b>{tab.buttonName}</b> button below, a new tab will open up, and the app block will be automatically added for you.</li>
                   <li>
