@@ -102,7 +102,7 @@ const OfferText = () => {
                     {/*TODO: double check slider*/}
                     <RangeSlider
                         label="Border Radius"
-                        value={offer.css_options?.button?.borderRadius || 0}
+                        value={parseInt(offer.css_options?.button?.borderRadius || "0")}
                         min={0}
                         max={16}
                         onChange={(sliderVal) => handleRangeSliderChange(sliderVal.toString())}
