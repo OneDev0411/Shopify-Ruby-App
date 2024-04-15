@@ -13,9 +13,11 @@ interface IOfferPlacementProps {
     showImages: boolean;
     images: string[];
     onClickImage: (position: number) => void;
-    placementPosition: number;
+    placementPosition?: number;
 };
 
+
+// TODO:why hard set values to show images and template label
 const OfferPlacement = ({
     defalutLabel,
     templateLabel,
