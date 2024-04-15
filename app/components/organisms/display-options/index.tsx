@@ -1,5 +1,5 @@
 import React, {useCallback, useContext} from "react";
-import { Link } from 'react-router-dom';
+import { Link } from '@remix-run/react';
 import { useSelector } from 'react-redux';
 import {OfferContent, OfferContext} from "~/contexts/OfferContext";
 import { useShopState } from "~/contexts/ShopContext";

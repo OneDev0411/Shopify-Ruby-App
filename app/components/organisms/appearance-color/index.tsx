@@ -6,7 +6,6 @@ import {
     LegacyStack,
 } from "@shopify/polaris";
 import { useState, useCallback, useRef, useEffect, useContext } from "react";
-import React, { FC } from "react";
 import tinycolor from "tinycolor2";
 import {OfferContent, OfferContext} from "~/contexts/OfferContext";
 import { ColorPicker } from "../../molecules";

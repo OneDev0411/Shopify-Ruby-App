@@ -11,7 +11,6 @@ import {
 import { CancelMinor  } from '@shopify/polaris-icons';
 import { ModalAddConditions } from "~/components";
 import { useState, useCallback, useRef, useContext } from "react";
-import React from "react";
 
 import { condition_options } from "~/shared/constants/ConditionOptions";
 import { getLabelFromValue } from "~/shared/helpers/commonHelpers";
