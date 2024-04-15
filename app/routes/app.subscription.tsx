@@ -14,12 +14,11 @@ import { useEffect, useState, useCallback } from "react";
 import { useAuthenticatedFetch } from "../hooks";
 import { isSubscriptionActive } from "../services/actions/subscription";
 import {billingImg} from "../assets/index";
-
 // import { onLCP, onFID, onCLS } from 'web-vitals';
 // import { traceStat } from "../services/firebase/perf.js";
 import ErrorPage from "../components/ErrorPage.js"
 import {useShopState} from "../contexts/ShopContext";
-import type { LinksFunction } from "remix";
+import  type { LinksFunction } from "remix";
 import styles from "../assets/custom.css?url";
 
 
@@ -131,7 +130,7 @@ export default function Subscription() {
           </div>
         ) : (
           <>
-            <div className="paid-subscription auto-height">
+            <div className="auto-height paid-subscription">
               <Layout>
                 <Layout.Section>
                   {(isSubscriptionActive(currentSubscription) && planName!=='free' && trialDays>0) ? (
