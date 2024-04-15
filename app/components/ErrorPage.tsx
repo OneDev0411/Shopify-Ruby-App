@@ -2,7 +2,7 @@ import React from "react";
 import { CustomTitleBar } from "../components/customtitlebar";
 
 interface IErrorPageProps {
-  showBranding: boolean;
+  showBranding?: boolean;
 };
 
 const ErrorPage = ({ showBranding }: IErrorPageProps) => {
