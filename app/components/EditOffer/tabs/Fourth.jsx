@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
     LegacyCard,
     LegacyStack,
@@ -8,14 +9,15 @@ import {
     Select, Text, Banner
 } from "@shopify/polaris";
 import {useState, useCallback, useEffect, useContext} from "react";
-import React from "react";
 import {Link} from "@remix-run/react";
 import { DOMActionOptions } from "../../../shared/constants/DOMActionOptions";
-import {OfferContext} from "../../../contexts/OfferContext.jsx";
-import {useShopState} from "../../../contexts/ShopContext.jsx";
+import {OfferContext} from "../../../contexts/OfferContext";
+import {useShopState} from "../../../contexts/ShopContext";
+import {useEnv} from "../../../contexts/EnvContext";
 
 // Advanced Tab
 export function FourthTab(props) {
+    const env = useEnv();
     const { offer, updateOffer, updateNestedAttributeOfOffer } = useContext(OfferContext);
     const { shopSettings, themeAppExtension } = useShopState();
     const handleChange = useCallback((newChecked) => updateOffer("save_as_default_setting", newChecked), []);
@@ -27,7 +29,7 @@ export function FourthTab(props) {
     const handleAjaxDomAction = useCallback((newValue) => updateNestedAttributeOfOffer(newValue, "advanced_placement_setting", "custom_ajax_dom_action"), []);
     const handleOfferCss = useCallback((newValue) => updateNestedAttributeOfOffer(newValue, "custom_css"), []);
 
-    const isLegacy = themeAppExtension.theme_version !== '2.0' || import.meta.env.VITE_ENABLE_THEME_APP_EXTENSION?.toLowerCase() !== 'true';
+    const isLegacy = themeAppExtension.theme_version !== '2.0' || env.VITE_ENABLE_THEME_APP_EXTENSION?.toLowerCase() !== 'true';
 
     const [themeAppUrl, setThemeAppUrl] = useState('');
 

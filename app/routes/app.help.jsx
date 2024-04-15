@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {Link,Icon,Modal, LegacyCard, Page, Layout, Image, LegacyStack, Grid, List} from "@shopify/polaris";
 import {HintMajor} from '@shopify/polaris-icons';
 import {useRef, useState, useCallback} from 'react';

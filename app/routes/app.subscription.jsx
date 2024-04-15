@@ -16,7 +16,7 @@ import { isSubscriptionActive } from "../services/actions/subscription";
 // import { onLCP, onFID, onCLS } from 'web-vitals';
 // import { traceStat } from "../services/firebase/perf.js";
 import ErrorPage from "../components/ErrorPage.jsx"
-import {useShopState} from "../contexts/ShopContext.jsx";
+import {useShopState} from "../contexts/ShopContext";
 
 export default function Subscription() {
     const billingImg = "https://assets.incartupsell.com/images/billing-ICU-Logo-Small.png";

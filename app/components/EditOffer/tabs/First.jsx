@@ -2,7 +2,7 @@
 import {useCallback, useEffect, useRef, useState, useContext} from "react";
 import { Link, useNavigate, useLocation } from "@remix-run/react";
 import {useSelector} from 'react-redux';
-import { OfferContext } from "../../../contexts/OfferContext.jsx";
+import { OfferContext } from "../../../contexts/OfferContext";
 
 import {
     Badge,
@@ -24,7 +24,7 @@ import {InfoMinor} from '@shopify/polaris-icons';
 import {ModalAddProduct} from "./../../modal_AddProduct";
 import {useAuthenticatedFetch} from "../../../hooks";
 import { AutopilotQuantityOptions } from "../../../shared/constants/EditOfferOptions";
-import {useShopState} from "../../../contexts/ShopContext.jsx";
+import {useShopState} from "../../../contexts/ShopContext";
 
 
 export function FirstTab(props) {

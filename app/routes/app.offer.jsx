@@ -11,7 +11,7 @@ import {OffersList} from '../components/OffersList';
 
 import ModalChoosePlan from '../components/modal_ChoosePlan';
 import { fetchShopData } from "../services/actions/shop";
-import {useShopState} from "../contexts/ShopContext.jsx";
+import {useShopState} from "../contexts/ShopContext";
 import ABTestBanner from '../components/ABTestBanner';
 import ErrorPage from "../components/ErrorPage";
 

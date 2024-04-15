@@ -10,8 +10,8 @@ import Flex from './layouts/template_multi_flex';
 import {useAuthenticatedFetch} from "../hooks/index.js";
 import {useSelector} from "react-redux";
 import ErrorPage from "../components/ErrorPage";
-import {OfferContext} from "../contexts/OfferContext.jsx";
-import {useShopState} from "../contexts/ShopContext.jsx";
+import {OfferContext} from "../contexts/OfferContext";
+import {useShopState} from "../contexts/ShopContext";
 
 export function OfferPreview(props) {
 	const { offer, updateOffer, updateNestedAttributeOfOffer } = useContext(OfferContext);
