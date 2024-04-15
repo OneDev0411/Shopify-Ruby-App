@@ -97,7 +97,7 @@ const EditOfferView = () => {
     })
       .then((response) => {
         if ([200,204].includes(response.status)) {
-          navigateTo('/offer');
+          navigateTo('/app/offer');
         }
       })
       .catch((error) => {
@@ -122,7 +122,7 @@ const EditOfferView = () => {
     })
       .then((response) => {
         if ([200,204].includes(response.status)) {
-          navigateTo('/offer');
+          navigateTo('/app/offer');
         }
       })
       .catch((error) => {
