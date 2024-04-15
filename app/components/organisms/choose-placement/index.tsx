@@ -8,7 +8,6 @@ import {
     Select,
 } from "@shopify/polaris";
 import { useState, useCallback, useRef, useEffect, useContext } from "react";
-import React from "react";
 import { useSelector } from 'react-redux';
 import { useAuthenticatedFetch } from "~/hooks";
 import SelectProductsModal from "../../SelectProductsModal";

@@ -5,7 +5,6 @@ import {
     Text,
 } from "@shopify/polaris";
 import { useCallback, useContext } from "react";
-import React from "react";
 import {OfferContent, OfferContext} from "~/contexts/OfferContext";
 import { DomAction } from "../../molecules";
 
