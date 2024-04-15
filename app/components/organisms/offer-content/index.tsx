@@ -69,7 +69,7 @@ const OfferContent = ({ updateCheckKeysValidity, autopilotCheck }: IOfferContent
                           onChange={handleAbChange}
                 />
                 <Collapsible
-                    open={offer.uses_ab_test}
+                    open={offer.uses_ab_test ?? false}
                     id="basic-collapsible"
                     transition={{ duration: '500ms', timingFunction: 'ease-in-out' }}
                 >

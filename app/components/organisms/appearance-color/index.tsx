@@ -110,7 +110,7 @@ const AppearanceColor = () => {
                             <ColorPicker
                                 label="Card"
                                 onChangeTextFiled={(newValue: string) => handleTextFieldChanges(newValue, "main", "backgroundColor")}
-                                color={offer.css_options?.main?.backgroundColor}
+                                color={offer.css_options?.main?.backgroundColor ?? ""}
                                 onClickColorSwatchSelector={() => handleToggle("cardColorPicker")}
                                 expanded={open.cardColorPicker}
                                 id="basic-card-collapsible"
@@ -122,7 +122,7 @@ const AppearanceColor = () => {
                             <ColorPicker
                                 label="Border"
                                 onChangeTextFiled={(newValue: string) => handleTextFieldChanges(newValue, "main", "borderColor")}
-                                color={offer.css_options?.main?.borderColor}
+                                color={offer.css_options?.main?.borderColor ?? ""}
                                 onClickColorSwatchSelector={() => handleToggle("borderColorPicker")}
                                 expanded={open.borderColorPicker}
                                 id="basic-border-collapsible"
@@ -134,7 +134,7 @@ const AppearanceColor = () => {
                             <ColorPicker
                                 label="Button"
                                 onChangeTextFiled={(newValue: string) => handleTextFieldChanges(newValue, "button", "backgroundColor")}
-                                color={offer.css_options?.button?.backgroundColor}
+                                color={offer.css_options?.button?.backgroundColor ?? ""}
                                 onClickColorSwatchSelector={() => handleToggle("buttonColorPicker")}
                                 expanded={open.buttonColorPicker}
                                 id="basic-button-collapsible"
@@ -149,7 +149,7 @@ const AppearanceColor = () => {
                             <ColorPicker
                                 label="Offer text"
                                 onChangeTextFiled={(newValue: string) => handleTextFieldChanges(newValue, "text", "color")}
-                                color={offer.css_options?.text?.color}
+                                color={offer.css_options?.text?.color ?? ""}
                                 onClickColorSwatchSelector={() => handleToggle("textColorPicker")}
                                 expanded={open.textColorPicker}
                                 id="basic-offer-collapsible"
@@ -161,7 +161,7 @@ const AppearanceColor = () => {
                             <ColorPicker
                                 label="Button text"
                                 onChangeTextFiled={(newValue: string) => handleTextFieldChanges(newValue, "button", "color")}
-                                color={offer.css_options?.button?.color}
+                                color={offer.css_options?.button?.color ?? ""}
                                 onClickColorSwatchSelector={() => handleToggle("btnTextColorPicker")}
                                 expanded={open.btnTextColorPicker}
                                 id="basic-button-text-collapsible"
@@ -173,7 +173,7 @@ const AppearanceColor = () => {
                             <ColorPicker
                                 label="Button border"
                                 onChangeTextFiled={(newValue: string) => handleTextFieldChanges(newValue, "button", "borderColor")}
-                                color={offer.css_options?.button?.borderColor}
+                                color={offer.css_options?.button?.borderColor ?? ""}
                                 onClickColorSwatchSelector={() => handleToggle("btnBorderColorPicker")}
                                 expanded={open.btnBorderColorPicker}
                                 id="basic-button-border-collapsible"
