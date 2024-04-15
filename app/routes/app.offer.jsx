@@ -1,6 +1,6 @@
 // @ts-nocheck
-import React, {useEffect, useState} from 'react';
-import {useDispatch, useSelector} from "react-redux";
+import {useEffect, useState} from 'react';
+import { useSelector} from "react-redux";
 import {useNavigate} from "@remix-run/react";
 
 import {Layout, Page} from '@shopify/polaris';
@@ -9,7 +9,6 @@ import {AddProductMajor} from '@shopify/polaris-icons';
 import {CustomTitleBar} from '../components/customtitlebar';
 import {OffersList} from '../components/OffersList';
 
-import {useAuthenticatedFetch} from "../hooks";
 import ModalChoosePlan from '../components/modal_ChoosePlan';
 import { fetchShopData } from "../services/actions/shop";
 import {useShopState} from "../contexts/ShopContext.jsx";
@@ -34,7 +33,7 @@ export default function Offers() {
   // }, []);
 
   useEffect(() => {
-    if (shop.id) {
+    if (shop && shop.id) {
       return
     }
     fetchShopData(shopAndHost.shop)
