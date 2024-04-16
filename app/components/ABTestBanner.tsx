@@ -1,24 +1,23 @@
-// @ts-ignore
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "@remix-run/react";
 import { useSelector } from "react-redux";
 import { Banner } from "@shopify/polaris";
+
+import { IRootState } from "~/store/store";
 
 import { useAuthenticatedFetch } from "../hooks";
 
 const ABTestBanner = () => {
   const navigateTo = useNavigate();
   const location = useLocation();
-  // @ts-ignore
-  const shopAndHost = useSelector((state) => state.shopAndHost);
+  const shopAndHost = useSelector((state: IRootState) => state.shopAndHost);
   const fetch = useAuthenticatedFetch(shopAndHost.host);
 
-  const [abTestBannerPage, setAbTestBannerPage] = useState(null);
+  const [abTestBannerPage, setAbTestBannerPage] = useState<string>("");
 
   const openBanner = () => {
     if (
       (location.pathname === "/" && abTestBannerPage === "dashboard") ||
-      // @ts-ignore
       location.pathname.endsWith(abTestBannerPage)
     ) {
       return true;
@@ -48,8 +47,7 @@ const ABTestBanner = () => {
           console.log("error", error);
         });
     } else {
-      // @ts-ignore
-      setAbTestBannerPage(localStorage.getItem("abTestBannerPage"));
+      setAbTestBannerPage(localStorage.getItem("abTestBannerPage") || "");
     }
   }, []);
 

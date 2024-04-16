@@ -1,15 +1,18 @@
 import React from "react";
 import { CustomTitleBar } from "../components/customtitlebar";
 
-const ErrorPage = ({ showBranding }) => {
+interface IErrorPageProps {
+  showBranding?: boolean;
+};
+
+const ErrorPage = ({ showBranding }: IErrorPageProps) => {
   return (
     <div style={{ textAlign: "center", padding: "50px" }}>
       { showBranding &&
-        // @ts-ignore
         <CustomTitleBar
-        title="In Cart Upsell & Cross Sell"
-        image={"https://in-cart-upsell.nyc3.cdn.digitaloceanspaces.com/images/ICU-Logo-Small.png"}
-      />
+          title="In Cart Upsell & Cross Sell"
+          image={"https://in-cart-upsell.nyc3.cdn.digitaloceanspaces.com/images/ICU-Logo-Small.png"}
+        />
       }
       <img
         src={ '' }

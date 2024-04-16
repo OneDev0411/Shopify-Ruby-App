@@ -1,6 +1,13 @@
-import {Button, Text, Icon, Grid } from "@shopify/polaris";
+import {Button, Text, Grid } from "@shopify/polaris";
 
-export function TitleBar ({title, image, buttonText, handleButtonClick}) {
+interface ITitleBarProps {
+	title: string;
+	image: string;
+	buttonText?: string;
+	handleButtonClick?: () => void;
+};
+
+export const TitleBar = ({title, image, buttonText, handleButtonClick}: ITitleBarProps) => {
 	return (
 		<>
       <div style={{borderBottom: '1px solid #E1E3E5'}}>

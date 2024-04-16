@@ -1,20 +1,21 @@
 import {createContext, useState} from 'react';
 import {OFFER_DEFAULTS} from "~/shared/constants/EditOfferOptions";
+import {Offer, ProductDetails} from "~/types/global";
 
-type OfferContent = {
+export type OfferContent = {
     offer: Offer,
-    setOffer?: (offer: Offer) => void,
-    updateOffer?: (key: string, value: keyof Offer) => void,
-    updateProductsOfOffer?: (productDetails: ProductDetails) => void,
-    updateIncludedVariants?: (selectedItem: string | string[], selectedVariants: number[]) => void,
-    updateNestedAttributeOfOffer?: (updatedValue: any, ...updatedKey: any[]) => void
+    setOffer: (offer: Offer | ((prevOffer: Offer) => Offer)) => void,
+    updateOffer: (key: string, value: any) => void,
+    updateProductsOfOffer: (productDetails: ProductDetails) => void,
+    updateIncludedVariants: (selectedItem: string | string[], selectedVariants: number[]) => void,
+    updateNestedAttributeOfOffer: (updatedValue: any, ...updatedKey: any[]) => void
 }
 
 export default function OfferProvider({ children }) {
     const [offer, setOffer] = useState<Offer>({...OFFER_DEFAULTS});
 
     //Called whenever the offer changes in any child component
-    function updateOffer(updatedKey: string, updatedValue: keyof Offer) {
+    function updateOffer(updatedKey: string, updatedValue: any) {
         setOffer(previousState => {
             return {...previousState, [updatedKey]: updatedValue};
         });
@@ -91,4 +92,4 @@ export default function OfferProvider({ children }) {
     );
 }
 
-export const OfferContext = createContext<OfferContent>({offer: {...OFFER_DEFAULTS}});
+export const OfferContext = createContext<OfferContent | undefined>(undefined);

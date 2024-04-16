@@ -3,7 +3,7 @@ import React from "react";
 
 interface IBannerContainerProps {
     title: string,
-    onDismiss: () => void,
+    onDismiss?: () => void,
     tone: 'success' | 'info' | 'warning' | 'critical',
     children: React.ReactNode,
 }

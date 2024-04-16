@@ -1,9 +1,13 @@
 import { Text, Icon, Link, LegacyStack } from "@shopify/polaris";
-import {
-  AlertMinor, ExternalSmallMinor
-} from '@shopify/polaris-icons';
+import { AlertMinor, ExternalSmallMinor } from '@shopify/polaris-icons';
 
-export function GenericFooter(props) {
+interface IGenericFooterProps {
+	text: string;
+	linkText?: string;
+	linkUrl?: string;
+};
+
+export const GenericFooter = ({text, linkText, linkUrl}: IGenericFooterProps) => {
 	return (
 		<>
     <style>
@@ -20,10 +24,10 @@ export function GenericFooter(props) {
             source={AlertMinor}
             color="base"
           />
-          <Text size="small">
-            {props.text}
-            {props.linkText ? (
-              <Link url={props.linkUrl} target="blank">{props.linkText}.
+          <Text as="p" variant="bodySm">
+            {text}
+            {linkText ? (
+              <Link url={linkUrl} target="_blank">{linkText}.
                 <Icon
                   source={ExternalSmallMinor}
                   color="base"

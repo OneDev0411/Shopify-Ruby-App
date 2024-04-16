@@ -72,12 +72,16 @@ type AdvancedPlacementSetting = {
 type CssOptions = {
     main?: {
         color: string,
-        backgroundColor: string
+        backgroundColor: string,
+        [key: string]: string
     },
-    text?: {},
+    text?: {
+        [key: string]: string
+    },
     button?: {
         color: string,
-        backgroundColor: string
+        backgroundColor: string,
+        [key: string]: string
     }
 }
 
@@ -322,7 +326,7 @@ type ShopSettings = {
     money_format?: string,
     stats_from?: string,
     shop_id?: number,
-    default_template_settings?: {},
+    default_template_settings?: any,
     has_redirect_to_product?: boolean,
     theme_version?: string,
     offers_limit_reached?: boolean
@@ -330,7 +334,7 @@ type ShopSettings = {
 
 type Offer = {
     id?: number,
-    rules_json?: any[],
+    rules_json?: Rule,
     text_a: string,
     text_b?: string,
     cta_a: string,
@@ -401,14 +405,50 @@ type Offer = {
     custom_css: string,
     offers_limit_reached?: boolean,
     remove_if_no_longer_valid: boolean
+    autopilot_quantity?: number,
+    excluded_tags?: string
+}
+
+type ThemeSetting = {
+  id: number,
+  theme_name: string,
+  page_type: string,
+  position: number,
+  action: string,
+  selector: string,
+  image_url: string
+}
+
+interface IAutopilotSettingsProps {
+  autopilotCheck: AutopilotCheck;
+  setAutopilotCheck: (autopilotCheck: AutopilotCheck) => void;
+}
+
+type ShopAndHost = {
+  shop: string,
+  host: string,
+}
+
+type AutopilotCheck = {
+  shop_autopilot: boolean,
+  isPending: boolean,
+  autopilot_offer_id: number
+}
+
+type Rule = {
+    quantity: number,
+    rule_selector: string,
+    item_type: string,
+    item_shopify_id: number,
+    item_name: string
 }
 
 type ProductVariants = {
-    [key:string]: string[] | number[],
+    [key:string]: (string|number)[],
 }
 
 export type { JsonVariants, ProductDetails, PlacementSetting, AdvancedPlacementSetting, CssOptions, Plan, Offer,
-    Shop, ShopSettings, Subscription, ThemeAppExtension, ProductVariants, Product }
+    Shop, ShopSettings, Subscription, ThemeAppExtension, ProductVariants, Product, Rule, IAutopilotSettingsProps, AutopilotCheck, ShopAndHost, ThemeSetting}
 
 declare global {
     interface Window {

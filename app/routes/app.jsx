@@ -20,6 +20,8 @@ import store from "../store/store";
 import { Provider as AppBridgeProvider } from "@shopify/app-bridge-react";
 import ShopProvider from "../contexts/ShopContext"
 import OfferProvider from "../contexts/OfferContext";
+import EnvProvider from "../contexts/EnvContext"
+
 const url = require('url');
 
 import { authenticate } from "../shopify.server";
@@ -77,23 +79,20 @@ export default function App() {
       </ui-nav-menu>
       
       <MyGlobalContext.Provider value={{...session, host, navigate}}>
-        <AppBridgeProvider
-          config={{ host, apiKey, forceRedirect: true }}
-        >
-          <PolarisAppProvider
-            i18n={polarisTranslations}
-            linkComponent={RemixPolarisLink}
-          >
-            <Provider store={store}>
-              <ShopProvider>
-                <OfferProvider>
-                  <Outlet />
-                  <script dangerouslySetInnerHTML={{__html: `window.ENV = ${JSON.stringify(ENV)}`}}/>
-                </OfferProvider>
-              </ShopProvider>
-            </Provider>           
-          </PolarisAppProvider>
-        </AppBridgeProvider>
+        <EnvProvider env={ENV}>
+          <AppBridgeProvider config={{ host, apiKey, forceRedirect: true }}>
+            <PolarisAppProvider i18n={polarisTranslations} linkComponent={RemixPolarisLink}>
+              <Provider store={store}>
+                <ShopProvider>
+                  <OfferProvider>
+                    <Outlet />
+                    <script dangerouslySetInnerHTML={{__html: `window.ENV = ${JSON.stringify(ENV)}`}}/>
+                  </OfferProvider>
+                </ShopProvider>
+              </Provider>           
+            </PolarisAppProvider>
+          </AppBridgeProvider>
+        </EnvProvider>
       </MyGlobalContext.Provider>
     </>
   );

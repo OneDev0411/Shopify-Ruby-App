@@ -1,12 +1,11 @@
 // @ts-nocheck
-import React, {useCallback, useContext, useEffect, useState} from 'react';
+import {useCallback, useContext, useEffect, useState} from 'react';
 import {useSelector} from "react-redux";
 import {Link, useLocation, useNavigate} from "@remix-run/react";
 
 import {Banner, Icon, Layout, Page, Spinner, Tabs} from '@shopify/polaris';
 import {DesktopMajor, MobileMajor} from '@shopify/polaris-icons';
 import {Redirect} from '@shopify/app-bridge/actions';
-import {useAuthenticatedFetch} from "../hooks";
 import {FirstTab} from "../components/EditOffer/tabs/First";
 import {SecondTab} from "../components/EditOffer/tabs/Second";
 import {ThirdTab} from "../components/EditOffer/tabs/Third";
@@ -93,7 +92,7 @@ export default function EditPage() {
                 if (response.status === 200) {
                     return response.json()
                 }
-                navigateTo('/offer');
+                navigateTo('/app/offer');
             }).then((data) => {
                 setInitialVariants({...data.included_variants});
                 if (data.offerable_product_details.length > 0) {
@@ -322,7 +321,7 @@ export default function EditPage() {
                 <Spinner size="large" color="teal"/>
             ) : (
                 <Page
-                    backAction={{content: 'Offers', url: '/offer'}}
+                    backAction={{content: 'Offers', url: '/app/offer'}}
                     title="Create new offer"
                     primaryAction={{content: 'Publish', disabled: enablePublish || shopSettings?.offers_limit_reached, onClick: publishOffer}}
                     secondaryActions={[{content: 'Save Draft', disabled: false, onAction: () => saveDraft()}]}
