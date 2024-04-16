@@ -40,7 +40,7 @@ const ModalChoosePlan = () => {
   }, [])
 
   const handleChoosePlan = useCallback(() => {
-    navigateTo('/subscription');
+    navigateTo('/app/subscription');
   }, [navigateTo]);
 
   return (

@@ -321,7 +321,7 @@ export default function EditPage() {
                 <Spinner size="large" color="teal"/>
             ) : (
                 <Page
-                    backAction={{content: 'Offers', url: '/app/offer'}}
+                    backAction={{content: 'Offers', url: '/app'}}
                     title="Create new offer"
                     primaryAction={{content: 'Publish', disabled: enablePublish || shopSettings?.offers_limit_reached, onClick: publishOffer}}
                     secondaryActions={[{content: 'Save Draft', disabled: false, onAction: () => saveDraft()}]}

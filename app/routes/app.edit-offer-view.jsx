@@ -208,7 +208,7 @@ const EditOfferView = () => {
                   },
                   {
                     content: 'Edit', 
-                    onAction: () => handleEditOffer(offerID),
+                    onAction: () => handleEditOffer(offer.id),
                   },
                 ]}
                 actionGroups={[

@@ -13,13 +13,19 @@ import { useSelector } from 'react-redux';
 import { useEffect, useState, useCallback } from "react";
 import { useAuthenticatedFetch } from "../hooks";
 import { isSubscriptionActive } from "../services/actions/subscription";
+import {billingImg} from "../assets/index";
 // import { onLCP, onFID, onCLS } from 'web-vitals';
 // import { traceStat } from "../services/firebase/perf.js";
 import ErrorPage from "../components/ErrorPage.jsx"
 import {useShopState} from "../contexts/ShopContext";
+import  type { LinksFunction } from "remix";
+import styles from "../assets/custom.css?url";
+
+export const links: LinksFunction = () => {
+  return [{ rel: "stylesheet", href: styles }];
+};
 
 export default function Subscription() {
-    const billingImg = "https://assets.incartupsell.com/images/billing-ICU-Logo-Small.png";
     const shopAndHost = useSelector(state => state.shopAndHost);
     const fetch = useAuthenticatedFetch(shopAndHost.host);
     const [currentSubscription, setCurrentSubscription] = useState(null);
