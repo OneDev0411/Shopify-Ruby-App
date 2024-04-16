@@ -21,7 +21,7 @@ import {useShopState} from "../contexts/ShopContext";
 import  type { LinksFunction } from "remix";
 import styles from "../assets/custom.css?url";
 
-export let links: LinksFunction = () => {
+export const links: LinksFunction = () => {
   return [{ rel: "stylesheet", href: styles }];
 };
 
