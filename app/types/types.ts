@@ -21,16 +21,25 @@ type JsonVariants = {
 }
 
 type ProductDetails = {
-    id: number,
-    offer_id: number,
+  variants: any[],
+  id: number,
+  offer_id: number,
+  title: string,
+  price: string,
+  url: string,
+  compare_at_price: null,
+  available_json_variants: JsonVariants[],
+  show_single_variant_wrapper: boolean,
+  hide_variants_wrapper: boolean,
+  medium_image_url: string | URL,
+  image: string,
+}
+
+type Product = {
+    id: any,
     title: string,
-    price: string,
-    url: string,
-    compare_at_price: null,
-    available_json_variants: JsonVariants[],
-    show_single_variant_wrapper: boolean,
-    hide_variants_wrapper: boolean,
-    medium_image_url: string | URL
+    variants: any[],
+    image: string,
 }
 
 type PlacementSetting = {
@@ -376,7 +385,7 @@ type Offer = {
     custom_field_3_required?: boolean,
     title?: string,
     included_variants: {
-        [key:string]: number[]
+        [key:string]: string[] | number[]
     },
     show_compare_at_price: boolean,
     redirect_to_product?: boolean,
@@ -394,9 +403,12 @@ type Offer = {
     remove_if_no_longer_valid: boolean
 }
 
+type ProductVariants = {
+    [key:string]: string[] | number[],
+}
 
 export type { JsonVariants, ProductDetails, PlacementSetting, AdvancedPlacementSetting, CssOptions, Plan, Offer,
-    Shop, ShopSettings, Subscription, ThemeAppExtension }
+    Shop, ShopSettings, Subscription, ThemeAppExtension, ProductVariants, Product }
 
 declare global {
     interface Window {

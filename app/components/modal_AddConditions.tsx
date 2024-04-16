@@ -15,8 +15,6 @@ interface IModalAddConditionsProps {
   itemErrorText: string,
   quantityErrorText: string
   condition_options: string[],
-
-
 }
 
 export function ModalAddConditions({ rule, setRule, itemErrorText, quantityErrorText, condition_options }: IModalAddConditionsProps) {

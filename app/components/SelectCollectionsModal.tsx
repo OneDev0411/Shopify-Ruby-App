@@ -2,15 +2,15 @@ import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { ModalAddProduct } from './modal_AddProduct';
 import { useAuthenticatedFetch } from "~/hooks";
-import {ProductDetails} from "~/types/types";
+import {Offer, ProductDetails} from "~/types/types";
 
 interface ISelectCollectionsModalProps {
-    offer: any,
+    offer: Offer,
     setSelectedCollections: (selectedColl: ProductDetails[]) => void,
     selectedCollections: ProductDetails[],
-    setSelectedItems: any[],
-    selectedItems: any[],
-    shop: any,
+    setSelectedItems: (selectedItems: (number|string)[]) => void,
+    selectedItems: (number|string)[],
+    shop: Shop,
 }
 
 export function SelectCollectionsModal({offer,
@@ -66,8 +66,8 @@ export function SelectCollectionsModal({offer,
     })
   }
 
-  function updateSelectedCollection(selectedItem: ProductDetails, uncheck: boolean = false) {
-    if(selectedItem===null){
+  function updateSelectedCollection(selectedItem: ProductDetails | undefined, uncheck: boolean = false) {
+    if(selectedItem==null){
       setSelectedCollections([]);
       return;
     }
@@ -100,7 +100,7 @@ export function SelectCollectionsModal({offer,
       <ModalAddProduct selectedItems={selectedItems} setSelectedItems={setSelectedItems}
                        isCollection={true} offer={offer} updateQuery={updateQuery} shop_id={shop.shop_id}
                        productData={collectionData} resourceListLoading={resourceListLoading}
-                       updateSelectedCollection={updateSelectedCollection}/>
+                       updateSelectedCollection={updateSelectedCollection} setResourceListLoading={setResourceListLoading}/>
     </>
   );
 }

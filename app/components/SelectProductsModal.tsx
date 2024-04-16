@@ -1,7 +1,7 @@
 import { useState, useEffect, memo } from 'react';
 import { useSelector } from 'react-redux';
 import { ModalAddProduct } from './modal_AddProduct';
-import { useAuthenticatedFetch } from "../hooks";
+import { useAuthenticatedFetch } from "~/hooks";
 import {Offer, ProductDetails, Shop} from "~/types/types";
 
 interface ISelectProductsModalProps {
@@ -9,7 +9,7 @@ interface ISelectProductsModalProps {
   shop: Shop,
   selectedProducts: ProductDetails[],
   setSelectedProducts: (prodDetails: ProductDetails[]) => void,
-  selectedItems: ProductDetails,
+  selectedItems: (number|string)[],
   setSelectedItems: () => void,
   handleProductsModal: () => void,
 }
@@ -20,9 +20,9 @@ export function SelectProductsModal({ offer, selectedProducts, setSelectedProduc
   const shopAndHost = useSelector(state => state.shopAndHost);
   const fetch = useAuthenticatedFetch(shopAndHost.host);
 
-  const [productData, setProductData] = useState([]);
-  const [resourceListLoading, setResourceListLoading] = useState(true);
-  const [query, setQuery] = useState("");
+  const [productData, setProductData] = useState<ProductDetails[]>([]);
+  const [resourceListLoading, setResourceListLoading] = useState<boolean>(true);
+  const [query, setQuery] = useState<string>("");
 
   function updateQuery(childData) {
     setResourceListLoading(true);
@@ -50,7 +50,7 @@ export function SelectProductsModal({ offer, selectedProducts, setSelectedProduc
     setQuery(childData);
   }
 
-  async function getProducts() {
+   function getProducts() {
     setResourceListLoading(true);
     fetch(`/api/v2/merchant/element_search`, {
       method: 'POST',
@@ -59,9 +59,9 @@ export function SelectProductsModal({ offer, selectedProducts, setSelectedProduc
       },
       body: JSON.stringify({ product: { query: query, type: 'product' }, shop: shopAndHost.shop }),
     })
-      .then((response) => { return response.json() })
-      .then((data) => {
-        for (var i = 0; i < data.length; i++) {
+      .then((response: Response) => { return response.json() })
+      .then((data: ProductDetails[]) => {
+        for (let i = 0; i < data.length; i++) {
           if (!Object.keys(offer.included_variants).includes(data[i].id.toString())) {
             data[i].variants = [];
           }
@@ -75,12 +75,12 @@ export function SelectProductsModal({ offer, selectedProducts, setSelectedProduc
       })
   }
 
-  function updateSelectedProducts(selectedItem) {
+  function updateSelectedProducts(selectedItem: ProductDetails) {
     if(selectedItem.id){
       selectedProducts.push(selectedItem);
     }
     else{
-      const products = selectedProducts.filter(item => selectedItem.includes(item.id));
+      const products = selectedProducts.filter(item => selectedItem.id === item.id);
       setSelectedProducts(products);
     }
   }
@@ -94,7 +94,7 @@ export function SelectProductsModal({ offer, selectedProducts, setSelectedProduc
     <>
       <ModalAddProduct selectedItems={selectedItems} setSelectedItems={setSelectedItems} offer={offer}
                        updateQuery={updateQuery} shop_id={shop.shop_id} productData={productData}
-                       resourceListLoading={resourceListLoading} updateSelectedProducts={updateSelectedProducts} />
+                       resourceListLoading={resourceListLoading} setResourceListLoading={setResourceListLoading} updateSelectedProduct={updateSelectedProducts} />
     </>
   );
 }
