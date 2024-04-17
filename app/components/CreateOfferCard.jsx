@@ -258,14 +258,14 @@ export function ThemeAppCard({ shopData, themeAppExtension}) {
           <ButtonGroup>
             { !tab.title.includes('Embedded') ?
               <Button primary
-                      url={`https://${shopData?.shopify_domain}/admin/themes/current/editor?template=${tab.handle}&addAppBlockId=${env?.VITE_SHOPIFY_ICU_EXTENSION_APP_ID}/${tab.panelID}&target=mainSection`}
+                      url={`https://${shopData?.shopify_domain}/admin/themes/current/editor?template=${tab.handle}&addAppBlockId=${env?.SHOPIFY_ICU_EXTENSION_APP_ID}/${tab.panelID}&target=mainSection`}
                       target="_blank"
               >
                 {tab.buttonName}
               </Button>
               :
               <Button primary
-                      url={`https://${shopData?.shopify_domain}/admin/themes/current/editor?context=apps&template=product&activateAppId=${env?.VITE_SHOPIFY_ICU_EXTENSION_APP_ID}/${tab.panelID}`}
+                      url={`https://${shopData?.shopify_domain}/admin/themes/current/editor?context=apps&template=product&activateAppId=${env?.SHOPIFY_ICU_EXTENSION_APP_ID}/${tab.panelID}`}
                       target="_blank"
               >
                 {tab.buttonName}
