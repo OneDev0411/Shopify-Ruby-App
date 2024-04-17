@@ -16,8 +16,7 @@ interface IModalAddConditionsProps {
 }
 
 export function ModalAddConditions({ rule, setRule, itemErrorText, quantityErrorText, condition_options }: IModalAddConditionsProps) {
-  // @ts-ignore
-  const shopAndHost = useSelector(state => state.shopAndHost);
+  const shopAndHost = useSelector((state: IRootState) => state.shopAndHost);
   const fetch = useAuthenticatedFetch(shopAndHost.host);
 
   const [queryValue, setQueryValue] = useState<string>("");

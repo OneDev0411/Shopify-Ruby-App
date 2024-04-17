@@ -30,8 +30,8 @@ export function ModalAddProduct({
                                   updateSelectedCollection, updateQuery, isCollection, setSelectedItems,
                                   selectedItems, setResourceListLoading, resourceListLoading, shop_id
                                 }: IModalAddProductProps) {
-  // @ts-ignore
-  const shopAndHost = useSelector(state => state.shopAndHost);
+
+  const shopAndHost = useSelector((state: IRootState) => state.shopAndHost);
   const [selectedVariants, setSelectedVariants] = useState<ProductVariants>(offer.included_variants);
   const [taggedWith, setTaggedWith] = useState(null);
   const [queryValue, setQueryValue] = useState<string>("");

@@ -18,8 +18,8 @@ export function SelectProductsModal({
                                       offer, selectedProducts, setSelectedProducts, handleProductsModal,
                                       setSelectedItems, selectedItems, shop
                                     }: ISelectProductsModalProps) {
-  // @ts-ignore
-  const shopAndHost = useSelector(state => state.shopAndHost);
+
+  const shopAndHost = useSelector((state: IRootState) => state.shopAndHost);
   const fetch = useAuthenticatedFetch(shopAndHost.host);
 
   const [productData, setProductData] = useState<ProductDetails[]>([]);
