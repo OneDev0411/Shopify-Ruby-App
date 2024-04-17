@@ -12,14 +12,14 @@ import { useSelector } from 'react-redux';
 import { useAuthenticatedFetch } from "~/hooks";
 import SelectProductsModal from "../../SelectProductsModal";
 import { SelectCollectionsModal } from "../../SelectCollectionsModal";
-import {Link} from 'react-router-dom';
+import {Link} from "@remix-run/react";
 import { OfferThemeOptions, OfferNewThemeOptions } from "~/shared/constants/EditOfferOptions";
 import {OfferContent, OfferContext} from "~/contexts/OfferContext";
-import {useShopState} from "~/contexts/ShopContext";
+import {useShopState} from "../../../contexts/ShopContext";
 import { OfferPlacement } from "../../molecules/index.js";
 import { BannerContainer } from "../../atoms/index.js";
 import {IAutopilotSettingsProps, Product, Rule, ShopAndHost, ThemeSetting} from "~/types/global";
-
+import {useEnv} from "../../../contexts/EnvContext";
 interface IChoosePlacementProps extends IAutopilotSettingsProps{
     enableOrDisablePublish: any
 }
@@ -48,8 +48,8 @@ const ChoosePlacement = ({ enableOrDisablePublish, autopilotCheck}: IChoosePlace
     // TODO: double check
     const [templateImagesURL, setTemplateImagesURL] = useState<any>({});
     const [storedThemeNames, setStoredThemeName] = useState<string[]>([]);
-
-    const isLegacy = themeAppExtension.theme_version !== '2.0' || import.meta.env.VITE_ENABLE_THEME_APP_EXTENSION?.toLowerCase() !== 'true';
+    const env = useEnv();
+    const isLegacy = themeAppExtension.theme_version !== '2.0' || env.VITE_ENABLE_THEME_APP_EXTENSION?.toLowerCase() !== 'true';
 
     useEffect(() => {
         fetch(`/api/v2/merchant/active_theme_for_dafault_template?shop=${shopAndHost.shop}`, {

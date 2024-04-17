@@ -2,7 +2,7 @@
 import {useCallback, useEffect} from 'react';
 import { useNavigate } from "@remix-run/react";
 import { Modal } from '@shopify/polaris';
-import {useShopState} from "../contexts/ShopContext.jsx";
+import {useShopState} from "../contexts/ShopContext";
 import {useAuthenticatedFetch} from "../hooks/index.js";
 import {useSelector} from "react-redux";
 
@@ -40,7 +40,7 @@ const ModalChoosePlan = () => {
   }, [])
 
   const handleChoosePlan = useCallback(() => {
-    navigateTo('/subscription');
+    navigateTo('/app/subscription');
   }, [navigateTo]);
 
   return (

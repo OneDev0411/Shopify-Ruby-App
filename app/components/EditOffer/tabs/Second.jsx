@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
     Badge,
     Banner,
@@ -29,8 +30,9 @@ import {
     QuantityArray,
     OrderArray
 } from "../../../shared/constants/EditOfferOptions";
-import {OfferContext} from "../../../contexts/OfferContext.jsx";
-import {useShopState} from "../../../contexts/ShopContext.jsx";
+import {OfferContext} from "../../../contexts/OfferContext";
+import {useShopState} from "../../../contexts/ShopContext";
+import {useEnv} from "../../../contexts/EnvContext";
 
 export function SecondTab(props) {
     const { offer, setOffer, updateOffer, updateNestedAttributeOfOffer } = useContext(OfferContext);
@@ -57,8 +59,9 @@ export function SecondTab(props) {
     const [themeTemplateData, setThemeTemplateData] = useState(null);
     const [templateImagesURL, setTemplateImagesURL] = useState({});
     const [storedThemeNames, setStoredThemeName] = useState([]);
+    const env = useEnv();
 
-    const isLegacy = themeAppExtension.theme_version !== '2.0' || import.meta.env.VITE_ENABLE_THEME_APP_EXTENSION?.toLowerCase() !== 'true';
+    const isLegacy = themeAppExtension.theme_version !== '2.0' || env.VITE_ENABLE_THEME_APP_EXTENSION?.toLowerCase() !== 'true';
 
     useEffect(() => {
         fetch(`/api/v2/merchant/active_theme_for_dafault_template?shop=${shopAndHost.shop}`, {

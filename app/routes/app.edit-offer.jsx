@@ -13,13 +13,13 @@ import {FourthTab} from "../components/EditOffer/tabs/Fourth";
 import {OfferPreview} from "../components/OfferPreview";
 import "../components/stylesheets/mainstyle.css";
 import {EditOfferTabs, OFFER_DEFAULTS} from '../shared/constants/EditOfferOptions';
-import {OfferContext} from "../contexts/OfferContext.jsx";
+import {OfferContext} from "../contexts/OfferContext";
 import {useOffer} from "../hooks/useOffer.js";
 import {useAppBridge} from '@shopify/app-bridge-react';
 import {Toast} from '@shopify/app-bridge/actions';
 import ErrorPage from "../components/ErrorPage.jsx"
 import {useShopSettings} from "../hooks/useShopSettings.js";
-import {useShopState} from "../contexts/ShopContext.jsx";
+import {useShopState} from "../contexts/ShopContext";
 // import { onLCP, onFID, onCLS } from 'web-vitals';
 // import { traceStat } from "../services/firebase/perf.js";
 
@@ -321,7 +321,7 @@ export default function EditPage() {
                 <Spinner size="large" color="teal"/>
             ) : (
                 <Page
-                    backAction={{content: 'Offers', url: '/app/offer'}}
+                    backAction={{content: 'Offers', url: '/app'}}
                     title="Create new offer"
                     primaryAction={{content: 'Publish', disabled: enablePublish || shopSettings?.offers_limit_reached, onClick: publishOffer}}
                     secondaryActions={[{content: 'Save Draft', disabled: false, onAction: () => saveDraft()}]}

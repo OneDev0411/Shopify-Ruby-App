@@ -1,7 +1,7 @@
 // @ts-nocheck
 // auto generated file
 
-import React from "react";
+import React, { useEffect } from "react";
 import { json } from "@remix-run/node";
 import {
   Link,
@@ -11,19 +11,15 @@ import {
   useRouteError,
 } from "@remix-run/react";
 import { AppProvider as PolarisAppProvider } from "@shopify/polaris";
-import polarisStyles from "@shopify/polaris/build/esm/styles.css";
-import {themeCss} from "@assets";
 import { boundary } from "@shopify/shopify-app-remix";
 // manually imported provider
 import { Provider } from "react-redux";
 import store from "../store/store";
 import { Provider as AppBridgeProvider } from "@shopify/app-bridge-react";
+import { intercomSettingsConfig } from "../assets/index";
 import ShopProvider from "../contexts/ShopContext"
 import OfferProvider from "../contexts/OfferContext";
 import EnvProvider from "../contexts/EnvContext"
-
-const url = require('url');
-
 import { authenticate } from "../shopify.server";
 
 // manually imported provider
@@ -44,7 +40,8 @@ export async function loader({ request }) {
     host: parsedURL?.searchParams.get('host'),
     ENV: {
       API_HOST: process.env.API_HOST,
-      VITE_REACT_APP_MODAL_CONTENT: process.env.VITE_REACT_APP_MODAL_CONTENT
+      VITE_REACT_APP_MODAL_CONTENT: process.env.VITE_REACT_APP_MODAL_CONTENT,
+      INTERCOM_APP_ID: process.env.INTERCOM_APP_ID
     },
   });
 }
@@ -52,6 +49,14 @@ export async function loader({ request }) {
 export default function App() {
   const { apiKey, polarisTranslations, session, host, ENV } = useLoaderData();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // configured intercom settings
+    const moduleScripts = document.head.querySelectorAll("script[type='module']");
+    if (moduleScripts.length > 0) {
+      moduleScripts[0].append(intercomSettingsConfig()); 
+    }
+  }, []);
 
   console.log('HOST', host);
   return (

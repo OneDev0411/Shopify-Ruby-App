@@ -30,7 +30,7 @@ const OfferDetails = (props) => {
   }, [props.offer]);
 
   const handleEditOffer = (offer_id) => {
-    navigateTo('/edit-offer', { state: { offerID: offer_id } });
+    navigateTo('/app/edit-offer', { state: { offerID: offer_id } });
   }
 
   return (

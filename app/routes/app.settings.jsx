@@ -17,7 +17,7 @@ import ModalChoosePlan from '../components/modal_ChoosePlan'
 // import { onLCP, onFID, onCLS } from 'web-vitals';
 // import { traceStat } from "../services/firebase/perf.js";
 import ErrorPage from "../components/ErrorPage.jsx"
-import {useShopState} from "../contexts/ShopContext.jsx";
+import {useShopState} from "../contexts/ShopContext";
 import FrontWidgetSection from "../components/FrontWidgetSection.jsx"
 
 export default function Settings() {
