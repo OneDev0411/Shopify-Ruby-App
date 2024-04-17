@@ -17,8 +17,8 @@ export function SelectCollectionsModal({ offer, setSelectedCollections, selected
                                          setSelectedItems, selectedItems, shop
                                        }: ISelectCollectionsModalProps) {
 
-  // @ts-ignore
-  const shopAndHost = useSelector(state => state.shopAndHost);
+
+  const shopAndHost = useSelector((state: IRootState) => state.shopAndHost);
   const fetch = useAuthenticatedFetch(shopAndHost.host);
 
   const [collectionData, setCollectionData] = useState<ProductDetails[]>({} as ProductDetails[]);
