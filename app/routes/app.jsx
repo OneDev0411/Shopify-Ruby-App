@@ -39,9 +39,13 @@ export async function loader({ request }) {
     session,
     host: parsedURL?.searchParams.get('host'),
     ENV: {
-      API_HOST: process.env.API_HOST,
-      VITE_REACT_APP_MODAL_CONTENT: process.env.VITE_REACT_APP_MODAL_CONTENT,
-      INTERCOM_APP_ID: process.env.INTERCOM_APP_ID
+      SERVER_BASE_URL: process.env.SERVER_BASE_URL,
+      CHOOSE_PLAN_MODAL_CONTENT: process.env.CHOOSE_PLAN_MODAL_CONTENT,
+      INTERCOM_APP_ID: process.env.INTERCOM_APP_ID,
+      ERROR_IMG_URL: process.env.ERROR_IMG_URL,
+      ERROR_TITLE: process.env.ERROR_TITLE,
+      ERROR_CONTENT: process.env.ERROR_CONTENT,
+      SHOPIFY_ICU_EXTENSION_APP_ID: process.env.SHOPIFY_ICU_EXTENSION_APP_ID
     },
   });
 }

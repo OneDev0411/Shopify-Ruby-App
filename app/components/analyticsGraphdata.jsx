@@ -39,7 +39,6 @@ export function TotalSalesData(props) {
                 if (data.redirect_to) {
                     redirect.dispatch(Redirect.Action.APP, data.redirect_to);
                 } else {
-                // console.log(import.meta.env)
                 setSalesTotal(data.sales_stats.sales_total)
                 setSalesData(data.sales_stats.results);
                 }})
