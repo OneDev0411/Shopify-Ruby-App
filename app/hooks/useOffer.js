@@ -9,8 +9,7 @@ import { useSelector } from "react-redux";
 export const useOffer = () => {
   const [isPending, setIsPending] = useState(false);
   const [error, setError] = useState(false);
-  // @ts-ignore
-  const shopAndHost = useSelector(state => state.shopAndHost);
+  const shopAndHost = useSelector((state: IRootState) => state.shopAndHost);
   const authFetch = useAuthenticatedFetch(shopAndHost.host);
 
   const fetchOffer = async (offerID, shop) => {

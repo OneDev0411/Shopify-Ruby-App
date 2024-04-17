@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
     Badge,
     Banner,
@@ -29,8 +30,9 @@ import {
     QuantityArray,
     OrderArray
 } from "../../../shared/constants/EditOfferOptions";
-import {OfferContext} from "../../../contexts/OfferContext.jsx";
-import {useShopState} from "../../../contexts/ShopContext.jsx";
+import {OfferContext} from "../../../contexts/OfferContext";
+import {useShopState} from "../../../contexts/ShopContext";
+import {useEnv} from "../../../contexts/EnvContext";
 
 export function SecondTab(props) {
     const { offer, setOffer, updateOffer, updateNestedAttributeOfOffer } = useContext(OfferContext);
@@ -57,8 +59,9 @@ export function SecondTab(props) {
     const [themeTemplateData, setThemeTemplateData] = useState(null);
     const [templateImagesURL, setTemplateImagesURL] = useState({});
     const [storedThemeNames, setStoredThemeName] = useState([]);
+    const env = useEnv();
 
-    const isLegacy = themeAppExtension.theme_version !== '2.0' || import.meta.env.VITE_ENABLE_THEME_APP_EXTENSION?.toLowerCase() !== 'true';
+    const isLegacy = themeAppExtension.theme_version !== '2.0' || env?.ENABLE_THEME_APP_EXTENSION?.toLowerCase() !== 'true';
 
     useEffect(() => {
         fetch(`/api/v2/merchant/active_theme_for_dafault_template?shop=${shopAndHost.shop}`, {
@@ -712,7 +715,7 @@ export function SecondTab(props) {
                   <Banner title="You are using Shopify's Theme Editor" tone='warning'>
                       <p>In order to show the offer in the Ajax Cart, you need to enable it in the Theme Editor.</p><br/>
                       <p><Link
-                        to={`https://${shopSettings.shopify_domain}/admin/themes/current/editor?context=apps&template=product&activateAppId=${import.meta.env.VITE_SHOPIFY_ICU_EXTENSION_APP_ID}/ajax_cart_app_block`}
+                        to={`https://${shopSettings.shopify_domain}/admin/themes/current/editor?context=apps&template=product&activateAppId=${env?.SHOPIFY_ICU_EXTENSION_APP_ID}/ajax_cart_app_block`}
                         target="_blank">Click here</Link> to go to the theme editor</p>
                   </Banner>
               </div>

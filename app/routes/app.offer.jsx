@@ -2,16 +2,12 @@
 import {useEffect, useState} from 'react';
 import { useSelector} from "react-redux";
 import {useNavigate} from "@remix-run/react";
-
 import {Layout, Page} from '@shopify/polaris';
-import {AddProductMajor} from '@shopify/polaris-icons';
-
 import {CustomTitleBar} from '../components/customtitlebar';
 import {OffersList} from '../components/OffersList';
-
 import ModalChoosePlan from '../components/modal_ChoosePlan';
 import { fetchShopData } from "../services/actions/shop";
-import {useShopState} from "../contexts/ShopContext.jsx";
+import {useShopState} from "../contexts/ShopContext";
 import ABTestBanner from '../components/ABTestBanner';
 import ErrorPage from "../components/ErrorPage";
 
@@ -61,7 +57,7 @@ export default function Offers() {
           <Page>
             {hasOffers ? (
               <CustomTitleBar
-                image={AddProductMajor}
+                image={"https://assets.incartupsell.com/images/ICU-Logo-Small.png"}
                 title='Offers'
                 buttonText='Create offer'
                 handleButtonClick={handleOpenOfferPage}

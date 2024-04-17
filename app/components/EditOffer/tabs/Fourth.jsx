@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
     LegacyCard,
     LegacyStack,
@@ -8,14 +9,15 @@ import {
     Select, Text, Banner
 } from "@shopify/polaris";
 import {useState, useCallback, useEffect, useContext} from "react";
-import React from "react";
 import {Link} from "@remix-run/react";
 import { DOMActionOptions } from "../../../shared/constants/DOMActionOptions";
-import {OfferContext} from "../../../contexts/OfferContext.jsx";
-import {useShopState} from "../../../contexts/ShopContext.jsx";
+import {OfferContext} from "../../../contexts/OfferContext";
+import {useShopState} from "../../../contexts/ShopContext";
+import {useEnv} from "../../../contexts/EnvContext";
 
 // Advanced Tab
 export function FourthTab(props) {
+    const env = useEnv();
     const { offer, updateOffer, updateNestedAttributeOfOffer } = useContext(OfferContext);
     const { shopSettings, themeAppExtension } = useShopState();
     const handleChange = useCallback((newChecked) => updateOffer("save_as_default_setting", newChecked), []);
@@ -27,7 +29,7 @@ export function FourthTab(props) {
     const handleAjaxDomAction = useCallback((newValue) => updateNestedAttributeOfOffer(newValue, "advanced_placement_setting", "custom_ajax_dom_action"), []);
     const handleOfferCss = useCallback((newValue) => updateNestedAttributeOfOffer(newValue, "custom_css"), []);
 
-    const isLegacy = themeAppExtension.theme_version !== '2.0' || import.meta.env.VITE_ENABLE_THEME_APP_EXTENSION?.toLowerCase() !== 'true';
+    const isLegacy = themeAppExtension.theme_version !== '2.0' || env?.ENABLE_THEME_APP_EXTENSION?.toLowerCase() !== 'true';
 
     const [themeAppUrl, setThemeAppUrl] = useState('');
 
@@ -46,7 +48,7 @@ export function FourthTab(props) {
             }
             setThemeAppUrl(
               `https://${shopSettings.shopify_domain}/admin/themes/current/editor?template=${urlPlacement}
-              &addAppBlockId=${import.meta.env.VITE_SHOPIFY_ICU_EXTENSION_APP_ID}/${urlPlacement}_app_block&target=${urlSection}`
+              &addAppBlockId=${env?.SHOPIFY_ICU_EXTENSION_APP_ID}/${urlPlacement}_app_block&target=${urlSection}`
             )
         }
     }, [])
@@ -74,7 +76,7 @@ export function FourthTab(props) {
                             <>
                                 <p>In order to show the offer in the Ajax Cart, you need to enable it in the Theme Editor.</p><br/>
                                 <p><Link
-                                to={`https://${shopSettings.shopify_domain}/admin/themes/current/editor?context=apps&template=product&activateAppId=${import.meta.env.VITE_SHOPIFY_ICU_EXTENSION_APP_ID}/ajax_cart_app_block`}
+                                to={`https://${shopSettings.shopify_domain}/admin/themes/current/editor?context=apps&template=product&activateAppId=${env?.SHOPIFY_ICU_EXTENSION_APP_ID}/ajax_cart_app_block`}
                                 target="_blank">Click here</Link> to go to theme editor</p>
                             </>
                         :

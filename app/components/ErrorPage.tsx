@@ -1,11 +1,13 @@
-import React from "react";
-import { CustomTitleBar } from "../components/customtitlebar";
+import { CustomTitleBar } from "./customtitlebar";
+import {useEnv} from "../contexts/EnvContext";
 
 interface IErrorPageProps {
   showBranding?: boolean;
 };
 
 const ErrorPage = ({ showBranding }: IErrorPageProps) => {
+  const env = useEnv();
+  console.log("USE ENV", env)
   return (
     <div style={{ textAlign: "center", padding: "50px" }}>
       { showBranding &&
@@ -15,12 +17,12 @@ const ErrorPage = ({ showBranding }: IErrorPageProps) => {
         />
       }
       <img
-        src={ '' }
+        src={ env.ERROR_IMG_URL }
         alt= "Error Image"
         style={{ maxWidth: "100%", maxHeight: "400px", marginTop: "20px" }}
       />
-      <h2 style={{ fontSize: "22px", fontStyle: "bold", lineHeight: "45px" }}> {  } </h2>
-      <p style={{ fontSize: "17px" }}> {  } </p>
+      <h2 style={{ fontSize: "22px", fontStyle: "bold", lineHeight: "45px" }}> { env.ERROR_TITLE  } </h2>
+      <p style={{ fontSize: "17px" }}> { env.ERROR_CONTENT   } </p>
     </div>
   );
 };
