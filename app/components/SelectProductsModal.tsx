@@ -1,21 +1,23 @@
-import { useState, useEffect, memo } from 'react';
-import { useSelector } from 'react-redux';
-import { ModalAddProduct } from './modal_AddProduct';
-import { useAuthenticatedFetch } from "~/hooks";
-import {Offer, ProductDetails, Shop} from "~/types/types";
+import {useState, useEffect, memo} from 'react';
+import {useSelector} from 'react-redux';
+import {ModalAddProduct} from './modal_AddProduct';
+import {useAuthenticatedFetch} from "~/hooks";
+import { Offer, ProductDetails, Shop } from "~/types/types";
 
 interface ISelectProductsModalProps {
   offer: Offer,
   shop: Shop,
   selectedProducts: ProductDetails[],
   setSelectedProducts: (prodDetails: ProductDetails[]) => void,
-  selectedItems: (number|string)[],
+  selectedItems: (number | string)[],
   setSelectedItems: () => void,
   handleProductsModal: () => void,
 }
 
-export function SelectProductsModal({ offer, selectedProducts, setSelectedProducts, handleProductsModal,
-                                      setSelectedItems, selectedItems, shop }: ISelectProductsModalProps) {
+export function SelectProductsModal({
+                                      offer, selectedProducts, setSelectedProducts, handleProductsModal,
+                                      setSelectedItems, selectedItems, shop
+                                    }: ISelectProductsModalProps) {
   // @ts-ignore
   const shopAndHost = useSelector(state => state.shopAndHost);
   const fetch = useAuthenticatedFetch(shopAndHost.host);
@@ -31,9 +33,11 @@ export function SelectProductsModal({ offer, selectedProducts, setSelectedProduc
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ product: { query: childData, type: 'product' }, shop: shopAndHost.shop }),
+      body: JSON.stringify({product: {query: childData, type: 'product'}, shop: shopAndHost.shop}),
     })
-      .then((response) => { return response.json() })
+      .then((response) => {
+        return response.json()
+      })
       .then((data) => {
         for (var i = 0; i < data.length; i++) {
           if (!Object.keys(offer.included_variants).includes(data[i].id.toString())) {
@@ -50,16 +54,18 @@ export function SelectProductsModal({ offer, selectedProducts, setSelectedProduc
     setQuery(childData);
   }
 
-   function getProducts() {
+  function getProducts() {
     setResourceListLoading(true);
     fetch(`/api/v2/merchant/element_search`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ product: { query: query, type: 'product' }, shop: shopAndHost.shop }),
+      body: JSON.stringify({product: {query: query, type: 'product'}, shop: shopAndHost.shop}),
     })
-      .then((response: Response) => { return response.json() })
+      .then((response: Response) => {
+        return response.json()
+      })
       .then((data: ProductDetails[]) => {
         for (let i = 0; i < data.length; i++) {
           if (!Object.keys(offer.included_variants).includes(data[i].id.toString())) {
@@ -76,10 +82,9 @@ export function SelectProductsModal({ offer, selectedProducts, setSelectedProduc
   }
 
   function updateSelectedProducts(selectedItem: ProductDetails) {
-    if(selectedItem.id){
+    if (selectedItem.id) {
       selectedProducts.push(selectedItem);
-    }
-    else{
+    } else {
       const products = selectedProducts.filter(item => selectedItem.id === item.id);
       setSelectedProducts(products);
     }
@@ -87,14 +92,15 @@ export function SelectProductsModal({ offer, selectedProducts, setSelectedProduc
 
 
   useEffect(() => {
-      getProducts();
+    getProducts();
   }, []);
 
   return (
     <>
       <ModalAddProduct selectedItems={selectedItems} setSelectedItems={setSelectedItems} offer={offer}
                        updateQuery={updateQuery} shop_id={shop.shop_id} productData={productData}
-                       resourceListLoading={resourceListLoading} setResourceListLoading={setResourceListLoading} updateSelectedProduct={updateSelectedProducts} />
+                       resourceListLoading={resourceListLoading} setResourceListLoading={setResourceListLoading}
+                       updateSelectedProduct={updateSelectedProducts}/>
     </>
   );
 }

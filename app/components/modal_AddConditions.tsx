@@ -6,8 +6,6 @@ import { countriesList } from "~/components/countries";
 import { useAuthenticatedFetch } from "~/hooks";
 import { CartItemOptions } from '~/shared/constants/Others';
 import ErrorPage from "../components/ErrorPage";
-import {Linter} from "eslint";
-import RuleEntry = Linter.RuleEntry;
 
 interface IModalAddConditionsProps {
   rule: any,
@@ -89,7 +87,7 @@ export function ModalAddConditions({ rule, setRule, itemErrorText, quantityError
     return names;
   }
 
-  if (error) { return <ErrorPage showBranding={undefined} />; }
+  if (error) { return <ErrorPage showBranding={false} />; }
 
   return (
     <>

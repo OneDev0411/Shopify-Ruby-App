@@ -3,9 +3,9 @@ import {
   ResourceList,
   ResourceItem,
   OptionList,
-  Text, Thumbnail, FilterInterface
+  Text, Thumbnail,
 } from '@shopify/polaris';
-import React, {useState, useCallback} from 'react';
+import {useState, useCallback} from 'react';
 import {useSelector} from 'react-redux';
 import {useAuthenticatedFetch} from '~/hooks';
 import {Offer, Product, ProductDetails, ProductVariants} from "~/types/types";
