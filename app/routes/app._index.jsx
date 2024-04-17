@@ -50,7 +50,7 @@ export default function HomePage() {
 
   const navigateTo = useNavigate();
   const [isLegacy, setIsLegacy] = useState(
-    themeAppExtension?.theme_version !== "2.0" || env.VITE_ENABLE_THEME_APP_EXTENSION?.toLowerCase() !== 'true'
+    themeAppExtension?.theme_version !== "2.0" || env?.ENABLE_THEME_APP_EXTENSION?.toLowerCase() !== 'true'
   );
 
   // useEffect(()=> {
@@ -65,7 +65,7 @@ export default function HomePage() {
 
   const notifyIntercom = (icu_shop) => {
     window.Intercom('boot', {
-      app_id: env.INTERCOM_APP_ID,
+      app_id: env?.INTERCOM_APP_ID,
       id: icu_shop.id,
       email: icu_shop.email,
       phone: icu_shop.phone_number,
@@ -102,7 +102,7 @@ export default function HomePage() {
           updateShopSettingsAttributes(data.offers_limit_reached, "offers_limit_reached");
 
           if (data.theme_app_extension) {
-            setIsLegacy(data.theme_app_extension.theme_version !== "2.0" || env.VITE_ENABLE_THEME_APP_EXTENSION?.toLowerCase() !== 'true');
+            setIsLegacy(data.theme_app_extension.theme_version !== "2.0" || env?.ENABLE_THEME_APP_EXTENSION?.toLowerCase() !== 'true');
           }
           // notify intercom as soon as app is loaded and shop info is fetched
           notifyIntercom(data.shop);

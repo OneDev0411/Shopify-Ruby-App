@@ -49,7 +49,7 @@ const ChoosePlacement = ({ enableOrDisablePublish, autopilotCheck}: IChoosePlace
     const [templateImagesURL, setTemplateImagesURL] = useState<any>({});
     const [storedThemeNames, setStoredThemeName] = useState<string[]>([]);
     const env = useEnv();
-    const isLegacy = themeAppExtension.theme_version !== '2.0' || env.VITE_ENABLE_THEME_APP_EXTENSION?.toLowerCase() !== 'true';
+    const isLegacy = themeAppExtension.theme_version !== '2.0' || env?.ENABLE_THEME_APP_EXTENSION?.toLowerCase() !== 'true';
 
     useEffect(() => {
         fetch(`/api/v2/merchant/active_theme_for_dafault_template?shop=${shopAndHost.shop}`, {

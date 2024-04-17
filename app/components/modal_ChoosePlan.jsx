@@ -5,8 +5,10 @@ import { Modal } from '@shopify/polaris';
 import {useShopState} from "../contexts/ShopContext";
 import {useAuthenticatedFetch} from "../hooks/index.js";
 import {useSelector} from "react-redux";
+import {useEnv} from "../contexts/EnvContext";
 
 const ModalChoosePlan = () => {
+  const env = useEnv();
   const navigateTo = useNavigate();
   const shopAndHost = useSelector((state) => state.shopAndHost);
   const fetch = useAuthenticatedFetch(shopAndHost.host);
@@ -55,7 +57,7 @@ const ModalChoosePlan = () => {
     >
       <Modal.Section>
         <div id="not-dismissable-modal">
-          <p>{typeof(window) != 'undefined' ? window.ENV.VITE_REACT_APP_MODAL_CONTENT : ''}</p>
+          <p>{ env?.CHOOSE_PLAN_MODAL_CONTENT }</p>
         </div>
       </Modal.Section>
     </Modal>

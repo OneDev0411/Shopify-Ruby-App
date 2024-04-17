@@ -11,14 +11,14 @@ export async function passThrough(request, pathname = '', body = undefined) {
   };
 
   // Change the host to proxy to our actual endpoint
-  request.headers.set('host', process.env.API_HOST);
+  request.headers.set('host', process.env.SERVER_BASE_URL);
   // Also change the request url to ensure that the request is proxied properly
   const symbols = Object.getOwnPropertySymbols(request);
   const internals = request[symbols.find(sym => String(sym).includes('Request internals')) as any];
   const parsedURL = internals?.parsedURL;
   const requestPath = parsedURL?.searchParams?.get('pathname');
   // replace the pathname if a new path is passed.
-  const endpoint = `${parsedURL.href.replace(parsedURL.host, process.env.API_HOST).replace(requestPath, pathname || requestPath)}`;
+  const endpoint = `${parsedURL.href.replace(parsedURL.host, process.env.SERVER_BASE_URL).replace(requestPath, pathname || requestPath)}`;
   internals.parsedURL =  new URL(endpoint);
 
   const response = await fetch(request, {
