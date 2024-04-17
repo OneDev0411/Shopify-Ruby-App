@@ -3,6 +3,7 @@ import {useSelector} from 'react-redux';
 import {ModalAddProduct} from './modal_AddProduct';
 import {useAuthenticatedFetch} from "~/hooks";
 import { Offer, ProductDetails, Shop } from "~/types/types";
+import {IRootState} from "~/store/store";
 
 interface ISelectProductsModalProps {
   offer: Offer,

@@ -2,7 +2,8 @@ import {useState, useEffect} from 'react';
 import {useSelector} from 'react-redux';
 import {ModalAddProduct} from './modal_AddProduct';
 import {useAuthenticatedFetch} from "~/hooks";
-import { Offer, ProductDetails } from "~/types/types";
+import {Offer, ProductDetails, Shop} from "~/types/types";
+import {IRootState} from "~/store/store";
 
 interface ISelectCollectionsModalProps {
   offer: Offer,

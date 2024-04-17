@@ -6,6 +6,7 @@ import { countriesList } from "~/components/countries";
 import { useAuthenticatedFetch } from "~/hooks";
 import { CartItemOptions } from '~/shared/constants/Others';
 import ErrorPage from "../components/ErrorPage";
+import {IRootState} from "~/store/store";
 
 interface IModalAddConditionsProps {
   rule: any,
