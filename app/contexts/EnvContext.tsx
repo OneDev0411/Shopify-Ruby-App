@@ -1,6 +1,11 @@
 import { createContext, useContext } from 'react';
 
-const EnvContext = createContext({});
+interface IEnvContext {
+  ENABLE_THEME_APP_EXTENSION?: string
+  INTERCOM_APP_ID?: string
+}
+
+const EnvContext = createContext<IEnvContext>({});
 
 export default function ShopProvider({ env, children }) {  
   return (

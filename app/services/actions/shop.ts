@@ -1,6 +1,7 @@
-// @ts-nocheck
+import { AxiosResponse } from "axios";
 import { api } from "../api";
 import { CURRENT_SHOP, UPDATE_ACTIVATION, UPDATE_SHOP_SETTINGS, SHOP_OFFERS_STATS } from "../endpoints/shop";
+import { Shop, ThemeAppExtension } from "~/types/global";
 
 export function getShop(shopify_domain) {
   return api.get(CURRENT_SHOP, {
@@ -38,15 +39,27 @@ export const getShopOffersStats = async (shopify_domain, period) => {
     }
 }
 
-export async function fetchShopData(shop) {
+interface IShopData {
+	offers_limit_reached: boolean;
+	has_offers: boolean;
+  subscription_not_paid: boolean;
+  redirect_to?: string;
+  theme_app_extension: ThemeAppExtension;
+  shop: Shop;
+  plan: string;
+  days_remaining_in_trial: number;
+}
+
+export async function fetchShopData(shop: string): Promise<IShopData> {
   try {
+    // @ts-ignore
     const response = await api.get(`${window.ENV.SERVER_BASE_URL}/api/v2/merchant/current_shop?shop=${shop}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
         mode: 'cors'
       },
-    });
+    }) as Promise<IShopData>;
     return response;
   } 
   catch (error) {

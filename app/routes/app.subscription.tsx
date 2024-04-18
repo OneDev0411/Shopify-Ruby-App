@@ -1,10 +1,6 @@
-// @ts-nocheck
-import {LegacyCard, Page, Layout, Image, LegacyStack, Banner, Spinner} from "@shopify/polaris";
+import {LegacyCard, Page, Layout, Image, LegacyStack, Banner} from "@shopify/polaris";
 import { useAppBridge } from '@shopify/app-bridge-react'
 import {Redirect, Toast} from '@shopify/app-bridge/actions';
-import {
-	BillingStatementDollarMajor
-} from '@shopify/polaris-icons';
 import { Reviews } from "../components";
 import { CustomTitleBar } from "../components/customtitlebar";
 
@@ -18,20 +14,22 @@ import {billingImg} from "../assets/index";
 // import { traceStat } from "../services/firebase/perf.js";
 import ErrorPage from "../components/ErrorPage.jsx"
 import {useShopState} from "../contexts/ShopContext";
-import  type { LinksFunction } from "remix";
+import { LinksFunction } from "@remix-run/node";
 import styles from "../assets/custom.css?url";
+import { IRootState } from "~/store/store";
+import { LoadingSpinner } from "../components/atoms/index.js";
 
 export const links: LinksFunction = () => {
   return [{ rel: "stylesheet", href: styles }];
 };
 
 export default function Subscription() {
-    const shopAndHost = useSelector(state => state.shopAndHost);
+    const shopAndHost = useSelector((state: IRootState) => state.shopAndHost);
     const fetch = useAuthenticatedFetch(shopAndHost.host);
     const [currentSubscription, setCurrentSubscription] = useState(null);
     const { planName, setPlanName, trialDays, setTrialDays, isSubscriptionUnpaid, setIsSubscriptionUnpaid } = useShopState()
-    const [activeOffersCount, setActiveOffersCount] = useState();
-    const [unpublishedOfferIds, setUnpublishedOfferIds] = useState();
+    const [activeOffersCount, setActiveOffersCount] = useState<number>();
+    const [unpublishedOfferIds, setUnpublishedOfferIds] = useState<number[]>([]);
     const app = useAppBridge();
     const [isLoading, setIsLoading] = useState(false);
     
@@ -40,9 +38,9 @@ export default function Subscription() {
   //   onFID(traceStat, {reportSoftNavs: true});
   //   onCLS(traceStat, {reportSoftNavs: true});
   // }, []);
-    const [error, setError] = useState(null);
+    const [error, setError] = useState<Error | null>(null);
 
-    async function handlePlanChange (internal_name) {
+    async function handlePlanChange (internal_name: string) {
         let redirect = Redirect.create(app);
 
         fetch('/api/v2/merchant/subscription', {
@@ -67,7 +65,7 @@ export default function Subscription() {
                       redirect.dispatch(Redirect.Action.REMOTE, data.url+'/?shop='+shopAndHost.shop);
                   }
            })
-           .catch((error) => {
+           .catch((error: Error) => {
             const toastOptions = {
               message: 'An error occurred. Please try again later.',
               duration: 3000,
@@ -96,13 +94,13 @@ export default function Subscription() {
           redirect.dispatch(Redirect.Action.APP, data.redirect_to);
         } else {
           setCurrentSubscription(data.subscription);
-          setPlanName(data.plan);
-          setTrialDays(data.days_remaining_in_trial);
+          setPlanName && setPlanName(data.plan);
+          setTrialDays && setTrialDays(data.days_remaining_in_trial);
           setActiveOffersCount(data.active_offers_count);
           setUnpublishedOfferIds(data.unpublished_offer_ids)
-          setIsSubscriptionUnpaid(data.subscription_not_paid)
+          setIsSubscriptionUnpaid && setIsSubscriptionUnpaid(data.subscription_not_paid)
       }})
-      .catch((error) => {
+      .catch((error: Error) => {
         setError(error);
         console.log("error", error);
       })
@@ -116,23 +114,15 @@ export default function Subscription() {
 
   return (
     <Page>
-        <CustomTitleBar title='Billing' icon={BillingStatementDollarMajor}/>
+        <CustomTitleBar title='Billing' />
         { isLoading ?  (
-          <div style={{
-            overflow: 'hidden',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            minHeight: '100vh',
-          }}>
-            <Spinner size="large" color="teal"/>
-          </div>
+          <LoadingSpinner />
         ) : (
           <>
             <div className="auto-height paid-subscription">
               <Layout>
                 <Layout.Section>
-                  {(isSubscriptionActive(currentSubscription) && planName!=='free' && trialDays>0) ? (
+                  {(isSubscriptionActive(currentSubscription) && planName!=='free' && trialDays && trialDays>0) ? (
                     <Banner icon='none' status="info">
                       <p>{ trialDays } days remaining for the trial period</p>
                     </Banner>) : null
@@ -142,7 +132,7 @@ export default function Subscription() {
                       <p>Your Subscription Is Not Active: please confirm it on this page</p>
                     </Banner> ) : null
                   }
-                  {(planName==='trial' && (unpublishedOfferIds?.lenght>0 || activeOffersCount)) ? (
+                  {(planName==='trial' && (unpublishedOfferIds?.length>0 || activeOffersCount)) ? (
                     <Banner icon='none' status="info">
                       <p>If you choose free plan after trial, offers will be unpublished</p>
                     </Banner>) : null
@@ -153,9 +143,7 @@ export default function Subscription() {
                 </Layout.Section>
                 <Layout.Section>
                   <LegacyCard title="In Cart Upsell & Cross-sell Unlimited - Paid Subscription"
-                              primaryFooterAction={(planName==='flex' && isSubscriptionActive(currentSubscription))
-                              && !isSubscriptionUnpaid ? 
-                                    null : { content: 'Upgrade', onClick: () => handlePlanChange('plan_based_billing') }}
+                              primaryFooterAction={(planName==='flex' && isSubscriptionActive(currentSubscription)) && !isSubscriptionUnpaid ? undefined : {content: 'Upgrade', onAction: () => handlePlanChange('plan_based_billing')}}
                               sectioned
                   >
                     <LegacyStack>
@@ -221,7 +209,7 @@ export default function Subscription() {
                   </LegacyCard>
                 </Layout.Section>
                 <Layout.Section secondary>
-                  <LegacyCard title="Free" sectioned primaryFooterAction={(planName==='free' || planName === "trial" && isSubscriptionActive(currentSubscription)) ? null : {content: 'Downgrade', onClick: () => handlePlanChange('free_plan'), id: 'btnf'}}>
+                  <LegacyCard title="Free" sectioned primaryFooterAction={(planName==='free' || planName === "trial" && isSubscriptionActive(currentSubscription)) ? undefined : {content: 'Downgrade', onAction: () => handlePlanChange('free_plan'), id: 'btnf'}}>
                     <div className="recommended-current">
                       {(planName==='free' && isSubscriptionActive(currentSubscription)) ? (
                         <p><small>Current Plan</small></p>
