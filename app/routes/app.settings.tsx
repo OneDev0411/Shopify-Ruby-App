@@ -51,13 +51,13 @@ export default function Settings() {
 
     const fetchCurrentShop = useCallback(async () => {
         let redirect = Redirect.create(app);
-        fetchShopSettings({admin: null})
+        setShopSettings && fetchShopSettings({admin: null})
             .then((response) => { return response.json() })
             .then((data) => {
                 if (data.redirect_to) {
                     redirect.dispatch(Redirect.Action.APP, data.redirect_to);
                 }
-                setShopSettings && setShopSettings(data.shop_settings);
+                setShopSettings(data.shop_settings);
                 setFormData({
                     productDomSelector: data.shop_settings?.custom_product_page_dom_selector,
                     productDomAction: data.shop_settings?.custom_product_page_dom_action,
