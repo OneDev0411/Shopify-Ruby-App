@@ -2,36 +2,45 @@ import { Select, TextField, LegacyStack } from '@shopify/polaris';
 import { useState, useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import { SearchProductsList } from './SearchProductsList';
-import { countriesList } from "../components/countries.js";
-import { useAuthenticatedFetch } from "../hooks";
-import { CartItemOptions } from '../shared/constants/Others';
+import { countriesList } from "~/components/countries";
+import { useAuthenticatedFetch } from "~/hooks";
+import { CartItemOptions } from '~/shared/constants/Others';
 import ErrorPage from "../components/ErrorPage";
+import {IRootState} from "~/store/store";
 
-export function ModalAddConditions(props) {
-  const shopAndHost = useSelector(state => state.shopAndHost);
+interface IModalAddConditionsProps {
+  rule: any,
+  setRule: (thing: any) => void,
+  itemErrorText: string,
+  quantityErrorText: string
+  condition_options: string[],
+}
+
+export function ModalAddConditions({ rule, setRule, itemErrorText, quantityErrorText, condition_options }: IModalAddConditionsProps) {
+  const shopAndHost = useSelector((state: IRootState) => state.shopAndHost);
   const fetch = useAuthenticatedFetch(shopAndHost.host);
 
-  const [queryValue, setQueryValue] = useState(null);
-  const [productData, setProductData] = useState("");
-  const [item, setItem] = useState("product");
-  const [resourceListLoading, setResourceListLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [queryValue, setQueryValue] = useState<string>("");
+  const [productData, setProductData] = useState<string>("");
+  const [item, setItem] = useState<string>("product");
+  const [resourceListLoading, setResourceListLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string>("");
 
 
   function findProduct() {
-    return (props.rule.rule_selector === 'cart_at_least' || props.rule.rule_selector === 'cart_at_most' || props.rule.rule_selector === 'cart_exactly' || props.rule.rule_selector === 'cart_does_not_contain' || props.rule.rule_selector === 'cart_contains_variant' || props.rule.rule_selector === 'cart_does_not_contain_variant' || props.rule.rule_selector === 'cart_contains_item_from_vendor' || props.rule.rule_selector === 'on_product_this_product_or_in_collection' || props.rule.rule_selector === 'on_product_not_this_product_or_not_in_collection')
+    return (rule.rule_selector === 'cart_at_least' || rule.rule_selector === 'cart_at_most' || rule.rule_selector === 'cart_exactly' || rule.rule_selector === 'cart_does_not_contain' || rule.rule_selector === 'cart_contains_variant' || rule.rule_selector === 'cart_does_not_contain_variant' || rule.rule_selector === 'cart_contains_item_from_vendor' || rule.rule_selector === 'on_product_this_product_or_in_collection' || rule.rule_selector === 'on_product_not_this_product_or_not_in_collection')
   }
 
   function inputAmount() {
-    return props.rule.rule_selector === 'total_at_least' || props.rule.rule_selector === 'total_at_most'
+    return rule.rule_selector === 'total_at_least' || rule.rule_selector === 'total_at_most'
   }
 
   function inputCountry() {
-    return props.rule.rule_selector === 'in_location' || props.rule.rule_selector === 'not_in_location'
+    return rule.rule_selector === 'in_location' || rule.rule_selector === 'not_in_location'
   }
 
   const handleChange = (value, id) => {
-    props.setRule(prev => ({ ...prev, [id]: value }))
+    setRule(prev => ({ ...prev, [id]: value }))
   }
 
   const handleItemChange = (value) => {
@@ -67,7 +76,7 @@ export function ModalAddConditions(props) {
 
   function updateSelectedProduct(title, id, selectedVariants) {
     const shopify_id = Array.isArray(id) ? id[id.length-1] : id;
-    props.setRule(prev => ({ ...prev, item_type: item, item_shopify_id: shopify_id, item_name: title }))
+    setRule(prev => ({ ...prev, item_type: item, item_shopify_id: shopify_id, item_name: title }))
   }
 
   function countryOptions(){
@@ -78,37 +87,36 @@ export function ModalAddConditions(props) {
     return names;
   }
 
-  if (error) { return <ErrorPage />; }
-  
+  if (error) { return <ErrorPage showBranding={false} />; }
+
   return (
     <>
-      <LegacyStack distribution='fillEvenly'>
+      <LegacyStack distribution={'fillEvenly'}>
         <LegacyStack.Item>
           <Select
             label="Condition"
-            options={props.condition_options}
+            options={condition_options}
             id='rule_selector'
             onChange={handleChange}
-            value={props.rule.rule_selector}
+            value={rule.rule_selector}
           />
         </LegacyStack.Item>
-        {props.rule.rule_selector === 'cart_at_least' || props.rule.rule_selector === 'cart_at_most' || props.rule.rule_selector === 'cart_exactly' ? (
-          <LegacyStack.Item distribution='fillEvenly'>
+        {rule.rule_selector === 'cart_at_least' || rule.rule_selector === 'cart_at_most' || rule.rule_selector === 'cart_exactly' ? (
+          <LegacyStack.Item fill>
             <TextField
               label="Quantity"
               type="number"
               id="quantity"
-              value={props.rule.quantity}
+              value={rule.quantity}
               onChange={handleChange}
               autoComplete="off"
-              className={"qtyCon"}
               min={0}
-              error={props.quantityErrorText}
+              error={quantityErrorText}
             />
           </LegacyStack.Item>
         ) : null}
-        {props.rule.rule_selector === 'cart_at_least' || props.rule.rule_selector === 'cart_at_most' || props.rule.rule_selector === 'cart_exactly' || props.rule.rule_selector === 'cart_does_not_contain' || props.rule.rule_selector === 'on_product_this_product_or_in_collection' || props.rule.rule_selector === 'on_product_not_this_product_or_not_in_collection' ? (
-          <LegacyStack.Item distribution='fillEvenly'>
+        {rule.rule_selector === 'cart_at_least' || rule.rule_selector === 'cart_at_most' || rule.rule_selector === 'cart_exactly' || rule.rule_selector === 'cart_does_not_contain' || rule.rule_selector === 'on_product_this_product_or_in_collection' || rule.rule_selector === 'on_product_not_this_product_or_not_in_collection' ? (
+          <LegacyStack.Item fill>
             <Select
               label="Item"
               options={CartItemOptions}
@@ -120,35 +128,34 @@ export function ModalAddConditions(props) {
         ) : null}
         {findProduct() ? (
           <>
-            <LegacyStack.Item distribution='fillEvenly'>
+            <LegacyStack.Item fill>
               <TextField
                 label="Select product or collection"
                 value={queryValue}
                 onChange={handleQueryValueChange}
                 autoComplete="off"
                 placeholder='Search product or collection'
-                error={props.itemErrorText}
+                error={itemErrorText}
               />
             </LegacyStack.Item>
             {productData ? (
               <LegacyStack.Item>
-                <SearchProductsList item_type={item} shop={shopAndHost.shop} updateQuery={updateQuery} productData={productData} resourceListLoading={resourceListLoading} setResourceListLoading={setResourceListLoading} updateSelectedProduct={updateSelectedProduct} rule={props.rule}/>
+                <SearchProductsList item_type={item} shop={shopAndHost.shop} updateQuery={updateQuery} productData={productData} resourceListLoading={resourceListLoading} setResourceListLoading={setResourceListLoading} updateSelectedProduct={updateSelectedProduct} rule={rule}/>
               </LegacyStack.Item>
             ) : null
             }
           </>
         ) : null}
         {inputAmount() ? (
-          <LegacyStack.Item distribution='fillEvenly'>
+          <LegacyStack.Item fill>
             <TextField
               label="Enter the amount in cents (or your local equivalent)"
               type="number"
               id= "item_name"
-              value={props.rule.item_name}
+              value={rule.item_name}
               onChange={handleChange}
               autoComplete="off"
-              className={"qtyCon"}
-              error={props.itemErrorText}
+              error={itemErrorText}
             />
           </LegacyStack.Item>
         ) : null}
@@ -159,21 +166,21 @@ export function ModalAddConditions(props) {
               options={countryOptions()}
               id='item_name'
               onChange={handleChange}
-              value={props.rule.item_name}
-              error={props.itemErrorText}
+              value={rule.item_name}
+              error={itemErrorText}
             />
           </LegacyStack.Item>
         ) : null}
         {(!findProduct() && !inputAmount()) && !inputCountry() ? (
-          <LegacyStack.Item distribution='fillEvenly'>
+          <LegacyStack.Item fill>
             <TextField
               label="Value"
               type="text"
               id="item_name"
-              value={props.rule.item_name}
+              value={rule.item_name}
               onChange={handleChange}
               autoComplete="off"
-              error={props.itemErrorText}
+              error={itemErrorText}
             />
           </LegacyStack.Item>
         ) : null}

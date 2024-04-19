@@ -2,8 +2,8 @@
 import {useCallback, useEffect} from 'react';
 import { useNavigate } from "@remix-run/react";
 import { Modal } from '@shopify/polaris';
-import {useShopState} from "../contexts/ShopContext";
-import {useAuthenticatedFetch} from "../hooks/index.js";
+import {useShopState} from "~/contexts/ShopContext";
+import {useAuthenticatedFetch} from "~/hooks";
 import {useSelector} from "react-redux";
 import {useEnv} from "../contexts/EnvContext";
 
@@ -21,7 +21,7 @@ const ModalChoosePlan = () => {
       let modal = modalContent.closest('.Polaris-Modal-Dialog__Modal');
 
       if (modal) {
-        let closeButton = modal.querySelector('.Polaris-Modal-CloseButton')
+        let closeButton: HTMLButtonElement | null = modal.querySelector('.Polaris-Modal-CloseButton')
         if (closeButton) {
           closeButton.style.display = 'none';
 
@@ -36,7 +36,10 @@ const ModalChoosePlan = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ shop: shopAndHost.shop })
-      }).then(response => response.json()).then((response) => { setIsSubscriptionUnpaid(response.subscription_not_paid) });
+      }).then(response => response.json()).then((response) => {
+        if (setIsSubscriptionUnpaid) {
+          setIsSubscriptionUnpaid(response.subscription_not_paid)
+        } });
     }
 
   }, [])

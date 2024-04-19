@@ -1,4 +1,4 @@
-declare type JsonVariants = {
+type JsonVariants = {
     "id": number,
     "image_url": string | URL,
     "title": string,
@@ -20,20 +20,29 @@ declare type JsonVariants = {
     "price_is_minor_than_compare_at_price": boolean
 }
 
-declare type ProductDetails = {
-    id: number,
-    offer_id: number,
-    title: string,
-    price: string,
-    url: string,
-    compare_at_price: null,
-    available_json_variants: JsonVariants[],
-    show_single_variant_wrapper: boolean,
-    hide_variants_wrapper: boolean,
-    medium_image_url: string | URL
+type ProductDetails = {
+  variants: any[],
+  id: number,
+  offer_id: number,
+  title: string,
+  price: string,
+  url: string,
+  compare_at_price: null,
+  available_json_variants: JsonVariants[],
+  show_single_variant_wrapper: boolean,
+  hide_variants_wrapper: boolean,
+  medium_image_url: string | URL,
+  image: string,
 }
 
-declare type PlacementSetting = {
+type Product = {
+    id: any,
+    title: string,
+    variants: any[],
+    image: string,
+}
+
+type PlacementSetting = {
     id?: number,
     default_ajax_cart: boolean,
     default_product_page: boolean,
@@ -46,7 +55,7 @@ declare type PlacementSetting = {
     updated_at?: string
 }
 
-declare type AdvancedPlacementSetting = {
+type AdvancedPlacementSetting = {
     id?: number,
     advanced_placement_setting_enabled?: null,
     custom_product_page_dom_selector: string,
@@ -60,7 +69,7 @@ declare type AdvancedPlacementSetting = {
     updated_at?: string
 }
 
-declare type CssOptions = {
+type CssOptions = {
     main?: {
         color: string,
         backgroundColor: string,
@@ -77,8 +86,9 @@ declare type CssOptions = {
 }
 
 // TODO: More changes to be made
-declare type Shop = {
+type Shop = {
     id: number,
+    shop_id: number,
     name: string,
     myshopify_domain: string,
     shopify_id: number,
@@ -219,7 +229,7 @@ declare type Shop = {
     active_offers_count: number,
 }
 
-declare type Plan = {
+type Plan = {
     "id": number,
     "name": string,
     "price_in_cents": number,
@@ -241,7 +251,7 @@ declare type Plan = {
     "internal_name": string
 }
 
-declare type Subscription = {
+type Subscription = {
     id: number,
     plan_id: number,
     shop_id: number,
@@ -271,7 +281,7 @@ declare type Subscription = {
     shopify_charge_status?: any
 }
 
-declare type ThemeAppExtension = {
+type ThemeAppExtension = {
     "id": number,
     "shop_id": number,
     "product_block_added": boolean,
@@ -284,7 +294,7 @@ declare type ThemeAppExtension = {
     "theme_version": string
 }
 
-declare type ShopSettings = {
+type ShopSettings = {
     custom_ajax_dom_selector?: string,
     custom_ajax_dom_action?: string,
     custom_cart_page_dom_selector?: string,
@@ -322,7 +332,7 @@ declare type ShopSettings = {
     offers_limit_reached?: boolean
 }
 
-declare type Offer = {
+type Offer = {
     id?: number,
     rules_json?: Rule,
     text_a: string,
@@ -379,7 +389,7 @@ declare type Offer = {
     custom_field_3_required?: boolean,
     title?: string,
     included_variants: {
-        [key:string]: number[]
+        [key:string]: string[] | number[]
     },
     show_compare_at_price: boolean,
     redirect_to_product?: boolean,
@@ -399,7 +409,7 @@ declare type Offer = {
     excluded_tags?: string
 }
 
-declare type ThemeSetting = {
+type ThemeSetting = {
   id: number,
   theme_name: string,
   page_type: string,
@@ -409,12 +419,12 @@ declare type ThemeSetting = {
   image_url: string
 }
 
-export interface IAutopilotSettingsProps {
+interface IAutopilotSettingsProps {
   autopilotCheck: AutopilotCheck;
   setAutopilotCheck: (autopilotCheck: AutopilotCheck) => void;
 }
 
-export type ShopAndHost = {
+type ShopAndHost = {
   shop: string,
   host: string,
 }
@@ -425,16 +435,23 @@ type AutopilotCheck = {
   autopilot_offer_id: number
 }
 
-// TODO: Shift to global
-export type Product = {
-  id: any,
-  title: string,
-  variants: any,
-}
-// TODO: Shift to global
-export type Rule = { quantity: number, rule_selector: string, item_type: string, item_shopify_id: number, item_name: string }
-
-export type ProductVariants = {
-  [key:string]: number[]
+type Rule = {
+    quantity: number,
+    rule_selector: string,
+    item_type: string,
+    item_shopify_id: number,
+    item_name: string
 }
 
+type ProductVariants = {
+    [key:string]: (string|number)[],
+}
+
+export type { JsonVariants, ProductDetails, PlacementSetting, AdvancedPlacementSetting, CssOptions, Plan, Offer,
+    Shop, ShopSettings, Subscription, ThemeAppExtension, ProductVariants, Product, Rule, IAutopilotSettingsProps, AutopilotCheck, ShopAndHost, ThemeSetting}
+
+declare global {
+    interface Window {
+        ENV: any;
+    }
+}
