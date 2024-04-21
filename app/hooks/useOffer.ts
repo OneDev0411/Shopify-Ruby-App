@@ -5,6 +5,7 @@ import {
 } from "../shared/constants/EditOfferOptions.js";
 import { useAuthenticatedFetch } from "./useAuthenticatedFetch.js";
 import { useSelector } from "react-redux";
+import { IRootState } from "~/store/store.js";
 
 export const useOffer = () => {
   const [isPending, setIsPending] = useState(false);
