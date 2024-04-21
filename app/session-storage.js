@@ -1,11 +1,9 @@
 // @ts-nocheck
-import {useEnv} from "./contexts/EnvContext";
 import {Session} from '@shopify/shopify-api';
-
 
 export class SessionStorage {
   constructor() {
-    this.baseURL = `http://localhost:3000/api/v2/merchant/sessions`;
+    this.baseURL = `${process.env.SERVER_BASE_URL}/api/v2/merchant/sessions`;
   }
 
   async storeSession(session) {
