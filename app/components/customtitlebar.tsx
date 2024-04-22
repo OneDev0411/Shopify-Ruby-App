@@ -2,7 +2,7 @@ import {Button, Text, Grid } from "@shopify/polaris";
 
 interface ICustomTitleBarProps {
 	title: string;
-	image: string;
+	image?: string;
 	buttonText?: string;
 	handleButtonClick?: () => void;
 };

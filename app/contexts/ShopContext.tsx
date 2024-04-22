@@ -14,7 +14,7 @@ type ShopContent = {
     setHasOffers?: (hasOffers: boolean) => void,
     updateShopSettingsAttributes?: (updatedValue: any, ...updatedKey: any[]) => void,
     shopSettings?: ShopSettings,
-    setShopSettings?: (shopSettings: ShopSettings) => void,
+    setShopSettings?: React.Dispatch<React.SetStateAction<ShopSettings>>,
     themeAppExtension?: ThemeAppExtension,
     setThemeAppExtension?: (themeAppExtension: ThemeAppExtension) => void,
     isSubscriptionUnpaid?: boolean,
