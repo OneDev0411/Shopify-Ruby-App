@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { useEffect, useState } from "react";
 import {useSelector} from 'react-redux';
 import {useNavigate} from "@remix-run/react";
@@ -24,11 +23,12 @@ import ABTestBanner from "../components/ABTestBanner.jsx";
 // import { onLCP, onFID, onCLS } from 'web-vitals';
 // import { traceStat } from "../services/firebase/perf.js";
 import { LoadingSpinner } from "../components/atoms/index.js";
+import { IRootState } from "~/store/store";
 
 export default function HomePage() {
   const env = useEnv();
   const app = useAppBridge();
-  const shopAndHost = useSelector(state => state.shopAndHost);
+  const shopAndHost = useSelector((state: IRootState) => state.shopAndHost);
 
   const {
     shop,
@@ -64,6 +64,7 @@ export default function HomePage() {
   }
 
   const notifyIntercom = (icu_shop) => {
+    // @ts-ignore
     window.Intercom('boot', {
       app_id: env?.INTERCOM_APP_ID,
       id: icu_shop.id,
@@ -77,13 +78,14 @@ export default function HomePage() {
       theme: icu_shop.shopify_theme_name,
       currency: icu_shop.currency
     });
+    // @ts-ignore
     window.Intercom('show');
   }
   
   useEffect(() => {
     let redirect = Redirect.create(app);
 
-    if (shop && shop.id) {
+    if (shop?.id) {
       setIsLoading(false)
       return
     }
@@ -93,13 +95,13 @@ export default function HomePage() {
         if (data.redirect_to) {
           redirect.dispatch(Redirect.Action.APP, data.redirect_to);
         } else {
-          setHasOffers(data.has_offers);
-          setThemeAppExtension(data.theme_app_extension);
-          setShop(data.shop);
-          setPlanName(data.plan);
-          setTrialDays(data.days_remaining_in_trial);
-          setIsSubscriptionUnpaid(data.subscription_not_paid)
-          updateShopSettingsAttributes(data.offers_limit_reached, "offers_limit_reached");
+          setHasOffers && setHasOffers(data.has_offers);
+          setThemeAppExtension && setThemeAppExtension(data.theme_app_extension);
+          setShop && setShop(data.shop);
+          setPlanName && setPlanName(data.plan);
+          setTrialDays && setTrialDays(data.days_remaining_in_trial);
+          setIsSubscriptionUnpaid && setIsSubscriptionUnpaid(data.subscription_not_paid)
+          updateShopSettingsAttributes && updateShopSettingsAttributes(data.offers_limit_reached, "offers_limit_reached");
 
           if (data.theme_app_extension) {
             setIsLegacy(data.theme_app_extension.theme_version !== "2.0" || env?.ENABLE_THEME_APP_EXTENSION?.toLowerCase() !== 'true');
@@ -132,7 +134,7 @@ export default function HomePage() {
             handleButtonClick={handleOpenOfferPage}
           />
           <Layout>
-            {isSubscriptionActive(shop?.subscription) && planName!=='free' && trialDays>0 &&
+            {isSubscriptionActive(shop?.subscription) && planName!=='free' && trialDays && trialDays>0 &&
               <Layout.Section>
                 <Banner status="info">
                   <p>{ trialDays } days remaining for the trial period</p>
@@ -157,10 +159,10 @@ export default function HomePage() {
                 <OffersList />
                 {hasOffers && (
                   <Grid>
-                    <Grid.Cell columnSpan={{xs: 6, sm: 3, md: 8, lg: 4, xl: 4}}>
+                    <Grid.Cell columnSpan={{xs: 6, sm: 3, md: 6, lg: 4, xl: 4}}>
                       <TotalSalesData period='monthly' title={true} />
                     </Grid.Cell>
-                    <Grid.Cell columnSpan={{xs: 6, sm: 3, md: 8, lg: 4, xl: 4}}>
+                    <Grid.Cell columnSpan={{xs: 6, sm: 3, md: 6, lg: 4, xl: 4}}>
                       <OrderOverTimeData period='monthly' title={true} />
                     </Grid.Cell>
                   </Grid>
