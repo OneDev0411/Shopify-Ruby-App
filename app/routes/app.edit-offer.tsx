@@ -1,4 +1,3 @@
-// @ts-nocheck
 import {useCallback, useContext, useEffect, useState} from 'react';
 import {useSelector} from "react-redux";
 import {Link, useLocation, useNavigate} from "@remix-run/react";
@@ -13,31 +12,32 @@ import {FourthTab} from "../components/EditOffer/tabs/Fourth";
 import {OfferPreview} from "../components/OfferPreview";
 import "../components/stylesheets/mainstyle.css";
 import {EditOfferTabs, OFFER_DEFAULTS} from '../shared/constants/EditOfferOptions';
-import {OfferContext} from "../contexts/OfferContext";
+import {OfferContent, OfferContext} from "../contexts/OfferContext";
 import {useOffer} from "../hooks/useOffer.js";
 import {useAppBridge} from '@shopify/app-bridge-react';
 import {Toast} from '@shopify/app-bridge/actions';
-import ErrorPage from "../components/ErrorPage.jsx"
+import ErrorPage from "../components/ErrorPage"
 import {useShopSettings} from "../hooks/useShopSettings.js";
 import {useShopState} from "../contexts/ShopContext";
+import { IRootState } from '~/store/store';
 // import { onLCP, onFID, onCLS } from 'web-vitals';
 // import { traceStat } from "../services/firebase/perf.js";
 
 export default function EditPage() {
-    const { offer, setOffer } = useContext(OfferContext);
+    const { offer, setOffer } = useContext(OfferContext) as OfferContent;
     const { shopSettings, setShopSettings, themeAppExtension, setThemeAppExtension } = useShopState();
     const { fetchOffer, saveOffer, createOffer } = useOffer();
     const { fetchShopSettings, updateShopSettings } = useShopSettings();
-    const shopAndHost = useSelector(state => state.shopAndHost);
+    const shopAndHost = useSelector((state: IRootState) => state.shopAndHost);
     const app = useAppBridge();
     const navigateTo = useNavigate();
     const location = useLocation();
     const [error, setError] = useState(null);
 
-    const [enablePublish, setEnablePublish] = useState(false)
+    const [enablePublish, setEnablePublish] = useState<boolean>(false)
 
     // Content section tab data
-    const [selected, setSelected] = useState(0);
+    const [selected, setSelected] = useState<number>(0);
     const [checkKeysValidity, setCheckKeysValidity] = useState({});
     const [initialVariants, setInitialVariants] = useState({});
     const [autopilotCheck, setAutopilotCheck] = useState({
@@ -50,6 +50,7 @@ export default function EditPage() {
     const [updatePreviousAppOffer, setUpdatePreviousAppOffer] = useState(false);
 
     const offerID = location?.state?.offerID;
+    const redirect = Redirect.create(app);
 
     // useEffect(()=> {
     //     onLCP(traceStat, {reportSoftNavs: true});
@@ -59,7 +60,6 @@ export default function EditPage() {
 
     //Call on initial render
     useEffect(() => {
-        let redirect = Redirect.create(app);
         if (location?.state?.offerID == null) {
             // fetching shop settings
             fetchShopSettings({admin: null})
@@ -144,13 +144,13 @@ export default function EditPage() {
             }
         }
 
-        setShopSettings(data.shop_settings);
-        setThemeAppExtension(data.theme_app_extension)
+        setShopSettings && setShopSettings(data.shop_settings);
+        setThemeAppExtension && setThemeAppExtension(data.theme_app_extension)
     }
 
     // TODO: Relocate to offer context
     //Called whenever the checkKeysValidity changes in any child component
-    function updateCheckKeysValidity(updatedKey, updatedValue) {
+    function updateCheckKeysValidity(updatedKey: string, updatedValue: string) {
         setCheckKeysValidity(previousState => {
             return {...previousState, [updatedKey]: updatedValue};
         });
@@ -161,7 +161,7 @@ export default function EditPage() {
         setInitialVariants({...value});
     }
 
-    const save = async (status) =>  {
+    const save = async (status: boolean) =>  {
         if (offer.title === "") {
             const toastNotice = Toast.create(app, {
                 message: 'Offer requires a title',
@@ -184,7 +184,7 @@ export default function EditPage() {
             return
         }
 
-        let shop_uses_ajax_cart;
+        let shop_uses_ajax_cart: boolean;
 
         if(offer.in_product_page && offer.in_cart_page) {
             shop_uses_ajax_cart = offer.in_ajax_cart;
@@ -203,7 +203,7 @@ export default function EditPage() {
         }
 
         setIsLoading(true);
-        setShopSettings(prev => {
+        setShopSettings && setShopSettings(prev => {
             let data = {
                 ...prev, uses_ajax_cart: shop_uses_ajax_cart
             }
@@ -259,15 +259,15 @@ export default function EditPage() {
     }
 
     // Preview section tab data
-    const [selectedPre, setSelectedPre] = useState(0);
-    const handlePreTabChange = useCallback((selectedPreTabIndex) => {
+    const [selectedPre, setSelectedPre] = useState<number>(0);
+    const handlePreTabChange = useCallback((selectedPreTabIndex: number) => {
         setSelectedPre(selectedPreTabIndex);
         if (selectedPreTabIndex == 0) {
-            setShopSettings(previousState => {
+            setShopSettings && setShopSettings(previousState => {
                 return {...previousState, selectedView: 'desktop'};
             });
         } else {
-            setShopSettings(previousState => {
+            setShopSettings && setShopSettings(previousState => {
                 return {...previousState, selectedView: 'mobile'};
             });
         }
@@ -276,22 +276,18 @@ export default function EditPage() {
     const tabsPre = [
         {
             id: 'desktop',
-            content: (
-                <div className='flex-tab'>
+            content: `<div className='flex-tab'>
                     <Icon source={DesktopMajor}/>
                     <p>Desktop</p>
-                </div>
-            ),
+                </div>`,
             panelID: 'desktop',
         },
         {
             id: 'mobile',
-            content: (
-                <div className='flex-tab'>
+            content: `<div className='flex-tab'>
                     <Icon source={MobileMajor}/>
                     <p>Mobile</p>
-                </div>
-            ),
+                </div>`,
             panelID: 'mobile',
         }
     ];
@@ -304,7 +300,7 @@ export default function EditPage() {
         setSelected(selected + 1)
     }
 
-    const enableOrDisablePublish = (enable) => {
+    const enableOrDisablePublish = (enable: boolean) => {
         setEnablePublish(enable);
     };
 
@@ -318,14 +314,13 @@ export default function EditPage() {
             minHeight: '100vh',
         }}>
             {isLoading ? (
-                <Spinner size="large" color="teal"/>
+                <Spinner size="large"/>
             ) : (
                 <Page
                     backAction={{content: 'Offers', url: '/app'}}
                     title="Create new offer"
-                    primaryAction={{content: 'Publish', disabled: enablePublish || shopSettings?.offers_limit_reached, onClick: publishOffer}}
+                    primaryAction={{content: 'Publish', disabled: enablePublish || shopSettings?.offers_limit_reached, onAction: publishOffer}}
                     secondaryActions={[{content: 'Save Draft', disabled: false, onAction: () => saveDraft()}]}
-                    style={{overflow: 'hidden'}}
                 >
                     <Layout>
                         <Layout.Section>

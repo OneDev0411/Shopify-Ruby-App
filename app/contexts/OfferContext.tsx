@@ -1,6 +1,6 @@
 import {createContext, useState} from 'react';
 import {OFFER_DEFAULTS} from "~/shared/constants/EditOfferOptions";
-import {Offer, ProductDetails} from "~/types/global";
+import {Offer, ProductDetails} from "~/types/types";
 
 export type OfferContent = {
     offer: Offer,

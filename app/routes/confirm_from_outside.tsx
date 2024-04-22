@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react';
 import {Redirect} from '@shopify/app-bridge/actions';
 import { useAppBridge } from '@shopify/app-bridge-react';
-import { confirmCharge } from "../services/actions/subscription";
 import { useSelector } from "react-redux";
 import { useAuthenticatedFetch } from "../hooks";
+import { Toast } from '@shopify/app-bridge/actions';
+import { IRootState } from '~/store/store';
 
 const ConfirmFromOutside = () => {
   const urlParams = new URLSearchParams(typeof document !== 'undefined' ? window.location.search : '');
@@ -11,7 +12,7 @@ const ConfirmFromOutside = () => {
   const charge_id = urlParams.get('charge_id');
   const app = useAppBridge();
   const redirect = Redirect.create(app);
-  const shopAndHost = useSelector(state => state.shopAndHost);
+  const shopAndHost = useSelector((state: IRootState) => state.shopAndHost);
   const fetch = useAuthenticatedFetch(shopAndHost.host);
 
   async function renderConfirmCharge(){
@@ -35,12 +36,24 @@ const ConfirmFromOutside = () => {
       }
      })
      .catch((error) => {
+      const toastOptions = {
+        message: 'An error occurred. Please try again later.',
+        duration: 3000,
+        isError: true,
+      };
+      const toastError = Toast.create(app, toastOptions);
+      toastError.dispatch(Toast.Action.SHOW);
       console.log("error", error);
      })
   }
 
-  useEffect(async () => {
-    await renderConfirmCharge();
+  useEffect(() => {
+    const fetchData = async () => {
+      await renderConfirmCharge();
+    }
+
+    fetchData()
+    .catch(console.error)
   }, []);
 
   return <div></div>;

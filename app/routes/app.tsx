@@ -1,4 +1,3 @@
-// @ts-nocheck
 // auto generated file
 
 import React, { useEffect } from "react";
@@ -24,6 +23,7 @@ import { authenticate } from "../shopify.server";
 
 // manually imported provider
 import MyGlobalContext from "~/contexts/global";
+import { LinkLikeComponentProps } from "@shopify/polaris/build/ts/src/utilities/link";
 
 export async function loader({ request }) {
   const { session } = await authenticate.admin(request);
@@ -58,7 +58,7 @@ export default function App() {
     // configured intercom settings
     const moduleScripts = document.head.querySelectorAll("script[type='module']");
     if (moduleScripts.length > 0) {
-      moduleScripts[0].append(intercomSettingsConfig()); 
+      moduleScripts[0].append(intercomSettingsConfig as unknown as (string | Node)); 
     }
   }, []);
 
@@ -107,8 +107,7 @@ export default function App() {
   );
 }
 
-/** @type {any} */
-const RemixPolarisLink = React.forwardRef((/** @type {any} */ props, ref) => (
+const RemixPolarisLink = React.forwardRef<HTMLAnchorElement, LinkLikeComponentProps>((props, ref) => (
   <Link {...props} to={props.url ?? props.to} ref={ref}>
     {props.children}
   </Link>

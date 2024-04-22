@@ -6,12 +6,13 @@ import {woohoo} from "@assets";
 import "../components/stylesheets/mainstyle.css";
 import React from 'react';
 import { useSelector } from 'react-redux';
+import { IRootState } from "~/store/store";
 
 export default function ConfirmCharge() {
     const urlParams = new URLSearchParams(typeof document !== 'undefined' ? window.location.search : '');
-    const shopAndHost = useSelector(state => state.shopAndHost);
+    const shopAndHost = useSelector((state: IRootState) => state.shopAndHost);
     const app = useAppBridge();
-    const success = JSON.parse(urlParams.get('success'));
+    const success = JSON.parse(urlParams.get('success') || '');
     const redirectToHome = ()=>{
       let redirect = Redirect.create(app);
       redirect.dispatch(Redirect.Action.APP, `/?shop=${shopAndHost.shop}&host=${shopAndHost.host}`);
@@ -19,7 +20,7 @@ export default function ConfirmCharge() {
     
   return (
     <Page>
-        <TitleBar></TitleBar>
+        <TitleBar title="Confirm Charge"></TitleBar>
         <div className="auto-height">
           <Layout>
             {success ? (
@@ -28,6 +29,7 @@ export default function ConfirmCharge() {
                   <Stack distribution="center">
                     <Image 
                         source={woohoo}
+                        alt="woohoo"
                     />
                     </Stack>
                     <Stack distribution="center">

@@ -1,5 +1,5 @@
 import {createContext, useContext, useState} from 'react';
-import { Shop, ShopSettings, ThemeAppExtension } from '~/types/global';
+import { Shop, ShopSettings, ThemeAppExtension } from '~/types/types';
 
 const ShopContext = createContext<ShopContent>({});
 
