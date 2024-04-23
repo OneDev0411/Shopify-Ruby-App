@@ -8,7 +8,6 @@ export async function loader({ request }) {
 }
 
 export async function action({ request }) {
-  await authenticate.admin(request);
 
   return null;
 }
