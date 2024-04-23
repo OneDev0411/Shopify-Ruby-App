@@ -1,4 +1,3 @@
-// @ts-nocheck
 import {
   Page,
   AppProvider,
@@ -20,7 +19,7 @@ import AbAnalytics from "../components/abanalytics";
 import "../components/stylesheets/mainstyle.css";
 import { useAppBridge } from '@shopify/app-bridge-react'
 import { Toast } from '@shopify/app-bridge/actions';
-import {OfferContext} from "../contexts/OfferContext";
+import {OfferContent, OfferContext} from "../contexts/OfferContext";
 import {useOffer} from "../hooks/useOffer.js";
 import {
   OFFER_ACTIVATE_URL,
@@ -31,16 +30,16 @@ import {
 } from "../shared/constants/EditOfferOptions.js";
 // import { onLCP, onFID, onCLS } from 'web-vitals';
 // import { traceStat } from "../services/firebase/perf.js";
-import ErrorPage from "../components/ErrorPage.jsx"
+import ErrorPage from "../components/ErrorPage"
+import { IRootState } from "~/store/store";
 
 const EditOfferView = () => {
-  const { offer, setOffer, updateOffer } = useContext(OfferContext);
+  const { offer, setOffer, updateOffer } = useContext(OfferContext) as OfferContent;
   const app = useAppBridge();
   const { fetchOffer } = useOffer();
-  // @ts-ignore
-  const shopAndHost = useSelector((state) => state.shopAndHost);
+
+  const shopAndHost = useSelector((state: IRootState) => state.shopAndHost);
   const [isLoading, setIsLoading] = useState(true);
-  // const offerID = localStorage.getItem('Offer-ID');
   const fetch = useAuthenticatedFetch(shopAndHost.host)
   const [initialOfferableProductDetails, setInitialOfferableProductDetails] = useState();
   const [checkKeysValidity, setCheckKeysValidity] = useState({});
@@ -113,6 +112,7 @@ const EditOfferView = () => {
   }
 
   const handleDeleteOffer = () => {
+    const offerID = localStorage.getItem('Offer-ID');
     fetch(`/api/v2/merchant/offers/${offerID}`, {
       method: 'DELETE',
       headers: {
@@ -185,7 +185,7 @@ const EditOfferView = () => {
                 alignItems: 'center',
                 minHeight: '100vh',
             }}>
-              <Spinner size="large" color="teal"/>
+              <Spinner size="large"/>
             </div>
           ) : (
             <>
@@ -240,7 +240,7 @@ const EditOfferView = () => {
                       <VerticalStack gap="5">
                         <OfferDetails offer={offer} offerableProducts={initialOfferableProductDetails}/>
                         <Summary offerID={offer.id}/>
-                        <AbAnalytics offerId={offer.id}/>
+                        <AbAnalytics offerId={offer.id ?? 0}/>
                       </VerticalStack>
                     </Grid.Cell>
                   </Grid>
