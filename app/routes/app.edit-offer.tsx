@@ -276,18 +276,24 @@ export default function EditPage() {
     const tabsPre = [
         {
             id: 'desktop',
-            content: `<div className='flex-tab'>
+            content: 'Desktop',
+            icon: (
+                <div className='flex-tab'>
                     <Icon source={DesktopMajor}/>
                     <p>Desktop</p>
-                </div>`,
+                </div>
+            ),
             panelID: 'desktop',
         },
         {
             id: 'mobile',
-            content: `<div className='flex-tab'>
+            content: 'Mobile',
+            icon: (
+                <div className='flex-tab'>
                     <Icon source={MobileMajor}/>
                     <p>Mobile</p>
-                </div>`,
+                </div>
+            ),
             panelID: 'mobile',
         }
     ];
