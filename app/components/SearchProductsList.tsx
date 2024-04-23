@@ -1,15 +1,28 @@
 import {ResourceList, ResourceItem, OptionList} from '@shopify/polaris';
+import { OptionDescriptor } from '@shopify/polaris/build/ts/src/types';
 import {useState, useCallback} from 'react';
+import { Product, Variant } from '~/types/types';
 
-export function SearchProductsList(props) {
-  const [selectedItems, setSelectedItems] = useState([]);
+interface ISearchProductsListProps {
+  item_type?: string;
+  shop?: string;
+  productData: Product[];
+  resourceListLoading?: boolean;
+  setResourceListLoading?: React.Dispatch<React.SetStateAction<boolean>>;
+  updateSelectedProduct?: (title?: string, id?: number | string[], selectedVariants?: any) => void;
+  rule: any;
+}
+
+
+export function SearchProductsList(props: ISearchProductsListProps) {
+  const [selectedItems, setSelectedItems] = useState<string[]>([]);
   const [selectedVariants, setSelectedVariants] = useState({})
 
-  function handleSelectedVariant(selectedOptions, id) {
+  function handleSelectedVariant(selectedOptions: string[], id: number) {
     setSelectedVariants(selectedVariants => {
       return { ...selectedVariants, [id]: selectedOptions }
     })
-    props.updateSelectedProduct(id, selectedOptions);
+    props.updateSelectedProduct && props.updateSelectedProduct('', id, selectedOptions);
   }
   
   const resourceName = {
@@ -17,7 +30,7 @@ export function SearchProductsList(props) {
     plural: 'products',
   };
 
-  const items = props.productData;
+  const items = [...props.productData];
 
   return (
     <>
@@ -33,18 +46,17 @@ export function SearchProductsList(props) {
     </>
   );
 
-  function renderItem(item) {
+  function renderItem(item: Product) {
     const {id, title, image, variants} = item
     if(!variants){
       return (
         <ResourceItem
-          id={id}
-          title={title}
+          id={String(id)}
           accessibilityLabel={`View details for ${title}`}
           persistActions
           onClick={() => selectedProduct(item)}
         >
-          <p variant="bodyMd" fontWeight="bold" as="h3">
+          <p>
             <strong>{title}</strong>
           </p>
 
@@ -55,14 +67,12 @@ export function SearchProductsList(props) {
     {
       return (
         <ResourceItem
-          id={id}
-          title={title}
-          image={image}
+          id={String(id)}
           accessibilityLabel={`View details for ${title}`}
           persistActions
           onClick={() => selectedProduct(item)}
         >
-          <p variant="bodyMd" fontWeight="bold" as="h3">
+          <p>
             <strong>{title}</strong>
           </p>
 
@@ -70,22 +80,20 @@ export function SearchProductsList(props) {
       );
     }
     else {
-      const option = variants.map((currentValue) => {
+      const option: OptionDescriptor[] = variants.map((currentValue: Variant) => {
         const label = currentValue.title;
-        const value = currentValue.id;
+        const value = String(currentValue.id);
         return { value, label };
       });
       return (
         <>
         <ResourceItem
-          id={id}
-          title={title}
-          image={image}
+          id={String(id)}
           accessibilityLabel={`View details for ${title}`}
           persistActions
-          onClick={() => selectedProduct(currentValue)}
+          onClick={() => selectedProduct(item)}
         >
-          <p variant="bodyMd" fontWeight="bold" as="h3">
+          <p>
             <strong>{title}</strong>
           </p>
         </ResourceItem>
@@ -102,20 +110,20 @@ export function SearchProductsList(props) {
     }
   }
 
-  function selectedProduct(item) {
+  function selectedProduct(item: Product) {
     if(props.item_type!=="product"){
-      props.updateSelectedProduct(item.title, item.id);
-      props.setResourceListLoading(false);
-      setSelectedItems(item.id);
+      props.updateSelectedProduct && props.updateSelectedProduct(item.title, item.id);
+      props.setResourceListLoading && props.setResourceListLoading(false);
+      setSelectedItems([String(item.id)]);
     }
     else{
-      selectionChange([item.id]);
+      selectionChange([String(item.id)]);
     }
   }
 
-  function selectionChange (id) {
+  function selectionChange (id: string[]) {
     if(selectedItems.length < id.length) {
-      props.setResourceListLoading(true);
+      props.setResourceListLoading && props.setResourceListLoading(true);
       let shopifyId = id[id.length-1]
       let url = `/api/v2/merchant/products/shopify/${shopifyId}?shop=${props.shop}`
 
@@ -129,7 +137,7 @@ export function SearchProductsList(props) {
        .then( (data) => {
         for(var i=0; i<props.productData.length; i++)
         {
-          if(props.productData[i].id == id[id.length-1]) {
+          if(props.productData[i].id == Number(id[id.length-1])) {
             props.productData[i].variants = data.variants;
             break;
           }
@@ -140,8 +148,8 @@ export function SearchProductsList(props) {
         for(var i=0; i<data.variants.length; i++) {
           selectedVariants[id[id.length-1]].push(data.variants[i].id); 
         }
-        props.updateSelectedProduct(data.title, id, selectedVariants);
-        props.setResourceListLoading(false);
+        props.updateSelectedProduct && props.updateSelectedProduct(data.title, id, selectedVariants);
+        props.setResourceListLoading && props.setResourceListLoading(false);
         setSelectedItems(id);
        })
        .catch((error) => {
@@ -149,7 +157,7 @@ export function SearchProductsList(props) {
     }
     else {
       let uncheckedIndex;
-      let tempArray = [];
+      let tempArray: number[] = [];
       for (var i = 0; i < selectedItems.length; i++) {
         if (!id.includes(selectedItems[i])) {
           uncheckedIndex = i;
@@ -158,7 +166,7 @@ export function SearchProductsList(props) {
       }
       for(var i=0; i<props.productData.length; i++)
       {
-        if(props.productData[i].id == selectedItems[uncheckedIndex]) {
+        if(props.productData[i].id == selectedItems[String(uncheckedIndex)]) {
           for(var j=0; j<props.productData[i].variants.length; j++) {
             tempArray[j] = props.productData[i].variants[j].id;
           }
@@ -167,7 +175,7 @@ export function SearchProductsList(props) {
         }
       }
       delete selectedVariants[selectedItems[uncheckedIndex]];
-      props.updateSelectedProduct(id, selectedVariants);
+      props.updateSelectedProduct && props.updateSelectedProduct('', id, selectedVariants);
       setSelectedItems(id);
     }
   }

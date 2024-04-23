@@ -1,4 +1,3 @@
-// @ts-nocheck
 import {Layout, Card, Image, LegacyStack, HorizontalGrid} from "@shopify/polaris";
 import "../components/stylesheets/reviewStyle.css";
 
@@ -15,7 +14,7 @@ export const Reviews = () => {
       </Layout>
       <div className="space-10"></div>
       <HorizontalGrid gap="4" columns={{ xs: 1, sm: 1, md: 1, lg: 3, xl: 3 }}>
-        <Card title="ECOKIND Cleaning" sectioned>
+        <Card>
           <div className="card-content-wrapper">
             <div>
               <p>
@@ -29,11 +28,11 @@ export const Reviews = () => {
               <br />
             </div>
             <LegacyStack distribution="center">
-              <Image source="https://assets.incartupsell.com/images/5-star.png" distribution="center" />
+              <Image source="https://assets.incartupsell.com/images/5-star.png" alt="star" />
             </LegacyStack>
           </div>
         </Card>
-        <Card title="My Gaming Case" sectioned>
+        <Card>
           <div className="card-content-wrapper">
             <div>
               <p>
@@ -48,11 +47,11 @@ export const Reviews = () => {
               <br />
             </div>
             <LegacyStack distribution="center">
-              <Image source="https://assets.incartupsell.com/images/5-star.png" distribution="center" />
+              <Image source="https://assets.incartupsell.com/images/5-star.png" alt='star' />
             </LegacyStack>
           </div>
         </Card>
-        <Card title="Deinhamudi.de" sectioned>
+        <Card>
           <div className="card-content-wrapper">
             <div>
               <p>
@@ -67,7 +66,7 @@ export const Reviews = () => {
               <br />
             </div>
             <LegacyStack distribution="center">
-              <Image source="https://assets.incartupsell.com/images/5-star.png" distribution="center" />
+              <Image source="https://assets.incartupsell.com/images/5-star.png" alt="star" />
             </LegacyStack>
           </div>
         </Card>
