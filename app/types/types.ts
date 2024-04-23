@@ -36,10 +36,15 @@ type ProductDetails = {
 }
 
 type Product = {
-    id: any,
+    id: number,
     title: string,
-    variants: any[],
+    variants: Variant[],
     image: string,
+}
+
+type Variant = {
+    id: number,
+    title: string
 }
 
 type PlacementSetting = {
@@ -448,7 +453,7 @@ type ProductVariants = {
 }
 
 export type { JsonVariants, ProductDetails, PlacementSetting, AdvancedPlacementSetting, CssOptions, Plan, Offer,
-    Shop, ShopSettings, Subscription, ThemeAppExtension, ProductVariants, Product, Rule, IAutopilotSettingsProps, AutopilotCheck, ShopAndHost, ThemeSetting}
+    Shop, ShopSettings, Subscription, ThemeAppExtension, ProductVariants, Product, Variant, Rule, IAutopilotSettingsProps, AutopilotCheck, ShopAndHost, ThemeSetting}
 
 declare global {
     interface Window {
