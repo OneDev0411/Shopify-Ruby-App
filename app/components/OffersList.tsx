@@ -1,4 +1,3 @@
-// @ts-nocheck
 import {
   Button,
   TextField,
@@ -25,19 +24,35 @@ import {
 import {CreateOfferCard} from "./CreateOfferCard.jsx";
 import {Redirect} from '@shopify/app-bridge/actions';
 import { useAppBridge } from "@shopify/app-bridge-react";
-import ErrorPage from "../components/ErrorPage";
+import ErrorPage from "./ErrorPage";
+import { IRootState } from '~/store/store';
 
-export function OffersList({ pageSize }) {
+interface IOffersListProps {
+  pageSize?: number;
+}
+
+type OfferData = {
+  clicks: number;
+  created_at: string;
+  id: number;
+  offerable_type: string;
+  revenue: number;
+  status: boolean;
+  title: string;
+  views: number;
+}
+
+export function OffersList({ pageSize }: IOffersListProps) {
   const app = useAppBridge();
-  const [isLoading, setIsLoading] = useState(true);
-  const [taggedWith, setTaggedWith] = useState('');
-  const [queryValue, setQueryValue] = useState(null);
-  const [offersData, setOffersData] = useState([]);
-  const [sortValue, setSortValue] = useState('today');
-  const [filteredData, setFilteredData] = useState([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [taggedWith, setTaggedWith] = useState<string | null>('');
+  const [queryValue, setQueryValue] = useState<string | null>(null);
+  const [offersData, setOffersData] = useState<OfferData[]>([]);
+  const [sortValue, setSortValue] = useState<string>('today');
+  const [filteredData, setFilteredData] = useState<OfferData[]>([]);
   const [error, setError] = useState(null);
 
-  const shopAndHost = useSelector(state => state.shopAndHost);
+  const shopAndHost = useSelector((state: IRootState) => state.shopAndHost);
   const fetch = useAuthenticatedFetch(shopAndHost.host);
   const [currentPage, setCurrentPage] = useState(1);
   const [modalActive, setModalActive] = useState(false);
@@ -95,24 +110,21 @@ export function OffersList({ pageSize }) {
     (value) => setTaggedWith(value),
     [],
   );
-  const handleSorting = useCallback(() => {
-    console.log('came in handle sorting');
-  });
   const handleTaggedWithRemove = useCallback(() => setTaggedWith(null), []);
   const handleQueryValueChange = useCallback((value) => {
     setFilteredData(offersData.filter((o) => o.title.toLowerCase().includes(value.toLowerCase())));
-  });
+  }, []);
   const handleQueryValueRemove = useCallback(() => setQueryValue(null), []);
   const handleClearAll = useCallback(() => {
     handleTaggedWithRemove();
     handleQueryValueRemove();
   }, [handleQueryValueRemove, handleTaggedWithRemove]);
-  const handleSortChange = useCallback((value) => {
+  const handleSortChange = useCallback((value: string) => {
     if(value == "date_asc") {
-      filteredData.sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+      filteredData.sort((a, b) => new Date(a.created_at).valueOf() - new Date(b.created_at).valueOf());
     }
     else if(value == "date_des") {
-      filteredData.sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+      filteredData.sort((a, b) => new Date(a.created_at).valueOf() - new Date(b.created_at).valueOf());
       filteredData.reverse();
     }
     else if (value == "clicks") {
@@ -125,9 +137,10 @@ export function OffersList({ pageSize }) {
         return b.revenue - a.revenue;
       });
     }
-    setSortValue(value), []});
+    setSortValue(value)
+  }, []);
 
-  const promotedBulkActions = ((selectedResources.length == 1 && paginatedData.find(obj => obj['id'] === selectedResources[0])?.offerable_type == 'auto')) ? 
+  const promotedBulkActions = ((selectedResources.length == 1 && paginatedData.find(obj => obj['id'] === Number(selectedResources[0]))?.offerable_type == 'auto')) ? 
   [
     {
       content: 'Publish',
@@ -139,7 +152,7 @@ export function OffersList({ pageSize }) {
       onAction: () => { createDuplicateOffer();},
     },
   ];
-  const bulkActions = ((selectedResources.length == 1 && paginatedData.find(obj => obj['id'] === selectedResources[0])?.offerable_type == 'auto')) ?
+  const bulkActions = ((selectedResources.length == 1 && paginatedData.find(obj => obj['id'] === Number(selectedResources[0]))?.offerable_type == 'auto')) ?
   [
     {
       content: 'Unpublish',
@@ -171,7 +184,7 @@ export function OffersList({ pageSize }) {
       filter: (
         <TextField
           label="Filter by "
-          value={taggedWith}
+          value={taggedWith || ""}
           onChange={handleTaggedWithChange}
           autoComplete="off"
           labelHidden
@@ -194,9 +207,9 @@ export function OffersList({ pageSize }) {
   const rowMarkup = paginatedData.map(
     ({ id, title, status, clicks, views, revenue }, index) => (
       <IndexTable.Row
-        id={id}
+        id={String(id)}
         key={id}
-        selected={selectedResources.includes(id)}
+        selected={selectedResources.includes(String(id))}
         position={index}
       >
         <IndexTable.Cell>{title}</IndexTable.Cell>
@@ -215,7 +228,7 @@ export function OffersList({ pageSize }) {
 
   function createDuplicateOffer() {
     selectedResources.forEach(function (resource) {
-      if(paginatedData.find(obj => obj['id'] === resource)?.offerable_type != 'auto')
+      if(paginatedData.find(obj => obj['id'] === Number(resource))?.offerable_type != 'auto')
       {
         let url = `/api/v2/merchant/offers/${resource}/duplicate`;
         fetch(url, {
@@ -236,7 +249,7 @@ export function OffersList({ pageSize }) {
         })
       }
       else {
-        setModalActive(paginatedData.find(obj => obj['id'] === resource)?.offerable_type == 'auto');
+        setModalActive(paginatedData.find(obj => obj['id'] === Number(resource))?.offerable_type == 'auto');
         selectedResources.shift();
       }
     });
@@ -276,8 +289,7 @@ export function OffersList({ pageSize }) {
       })
         .then((response) => response.json())
         .then(() => {
-          const dataDup = [...offersData];
-          dataDup.find((o) => o.id == resource).status = true;
+          const dataDup = [...offersData].map((o) => o.id == Number(resource) ? ({...o, status: false}) : (o));
           setOffersData([...dataDup]);
           selectedResources.shift();
         })
@@ -299,8 +311,7 @@ export function OffersList({ pageSize }) {
       })
         .then((response) => response.json())
         .then(() => {
-          const dataDup = [...offersData];
-          dataDup.find((o) => o.id == resource).status = false;
+          const dataDup = [...offersData].map((o) => o.id == Number(resource) ? ({...o, status: false}) : (o));
 
           setOffersData([...dataDup]);
           selectedResources.shift();
@@ -313,8 +324,8 @@ export function OffersList({ pageSize }) {
 
   const navigateTo = useNavigate();
 
-  const handleViewOffer = (offer_id) => {
-    localStorage.setItem('Offer-ID', offer_id);
+  const handleViewOffer = (offer_id: number) => {
+    localStorage.setItem('Offer-ID', String(offer_id));
 
     navigateTo(`/app/edit-offer-view`, { state: { offerID: offer_id } });
   }
@@ -333,7 +344,7 @@ export function OffersList({ pageSize }) {
             minHeight: "100vh",
           }}
         >
-          <Spinner size="large" color="teal" />
+          <Spinner size="large" />
         </div>
       ) : (
         <>
@@ -345,7 +356,7 @@ export function OffersList({ pageSize }) {
             <div style={{ display: 'flex' }}>
                   <div style={{ flex: 1 }}>
                     <Filters
-                      queryValue={queryValue}
+                      queryValue={queryValue ?? ''}
                       filters={filters}
                       appliedFilters={appliedFilters}
                       onQueryChange={handleQueryValueChange}
@@ -364,11 +375,9 @@ export function OffersList({ pageSize }) {
                   </div>
                 </div>
                 <IndexTable
-                  sortOptions={OffersListSortOptions}
                   sortable={[false, false, true, true, true]}
               sortDirection={'descending'}
                   sortColumnIndex={4}
-                  sort={{ handleSorting }}
                   resourceName={OffersResourceName}
                   itemCount={paginatedData.length}
                   selectedItemsCount={
