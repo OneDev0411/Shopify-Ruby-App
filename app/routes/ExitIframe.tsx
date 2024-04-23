@@ -11,13 +11,13 @@ export default function ExitIframe() {
     if (!!app && !!search) {
       const params = new URLSearchParams(search);
       const redirectUri = params.get("redirectUri");
-      const url = new URL(decodeURIComponent(redirectUri));
+      const url = new URL(decodeURIComponent(redirectUri || ''));
 
       if (url.hostname === location.hostname) {
         const redirect = Redirect.create(app);
         redirect.dispatch(
           Redirect.Action.REMOTE,
-          decodeURIComponent(redirectUri)
+          decodeURIComponent(redirectUri || '')
         );
       }
     }
