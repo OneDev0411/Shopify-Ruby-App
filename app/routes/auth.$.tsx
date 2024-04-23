@@ -6,3 +6,9 @@ export async function loader({ request }) {
 
   return null;
 }
+
+export async function action({ request }) {
+  await authenticate.admin(request);
+
+  return null;
+}
