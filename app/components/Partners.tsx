@@ -21,7 +21,7 @@ export function Partners() {
     const fetch = useAuthenticatedFetch(shopAndHost.host);
     const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
     const [partners, setPartners] = useState<Partner[]>([]);
-    const [error, setError] = useState(null);
+    const [error, setError] = useState<Error | null>(null);
 
     let slider;
 
@@ -43,7 +43,7 @@ export function Partners() {
        .then( (data) => {
         setPartners(data.partners);
        })
-       .catch((error) => {
+       .catch((error: Error) => {
         setError(error)
         console.log("error", error);
        })

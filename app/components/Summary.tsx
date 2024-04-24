@@ -30,7 +30,7 @@ const Summary = (props: ISummaryProps) => {
     const [offerStats, setOfferStats] = useState<OfferData>({});
     const [converted, setConverted] = useState<number>(0);
     const [totalDisplayed, setTotalDisplayed] = useState<number>(0);
-    const [error, setError] = useState(null);
+    const [error, setError] = useState<Error | null>(null);
 
     const navigateTo = useNavigate();
 
@@ -52,7 +52,7 @@ const Summary = (props: ISummaryProps) => {
           setConverted(data.orders_through_offers_count);
           setIsLoading(false);
         })
-        .catch((error) => {
+        .catch((error: Error) => {
           setError(error);
           console.log("error", error);
         });
@@ -71,7 +71,7 @@ const Summary = (props: ISummaryProps) => {
                 setOfferStats(data.offer);
                 setIsLoading(false);
             })
-            .catch((error) => {
+            .catch((error: Error) => {
               setError(error);
               console.log("error", error);
             });
