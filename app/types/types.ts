@@ -339,7 +339,7 @@ type ShopSettings = {
 
 type Offer = {
     id?: number,
-    rules_json?: Rule,
+    rules_json?: Rule[],
     text_a: string,
     text_b?: string,
     cta_a: string,
@@ -394,7 +394,7 @@ type Offer = {
     custom_field_3_required?: boolean,
     title?: string,
     included_variants: {
-        [key:string]: string[] | number[]
+        [key:string]: (string | number)[]
     },
     show_compare_at_price: boolean,
     redirect_to_product?: boolean,
@@ -411,7 +411,8 @@ type Offer = {
     offers_limit_reached?: boolean,
     remove_if_no_longer_valid: boolean
     autopilot_quantity?: number,
-    excluded_tags?: string
+    excluded_tags?: string,
+    selectedView?: string
 }
 
 type ThemeSetting = {
@@ -436,7 +437,7 @@ type ShopAndHost = {
 
 type AutopilotCheck = {
   shop_autopilot: boolean,
-  isPending: boolean,
+  isPending: string,
   autopilot_offer_id: number
 }
 
