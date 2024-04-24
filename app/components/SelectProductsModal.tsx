@@ -11,7 +11,7 @@ interface ISelectProductsModalProps {
   selectedProducts: ProductDetails[],
   setSelectedProducts: (prodDetails: ProductDetails[]) => void,
   selectedItems: (number | string)[],
-  setSelectedItems: () => void,
+  setSelectedItems: React.Dispatch<React.SetStateAction<(string | number)[]>>,
   handleProductsModal: () => void,
 }
 

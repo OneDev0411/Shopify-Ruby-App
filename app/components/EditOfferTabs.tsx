@@ -16,7 +16,8 @@ import {
     RadioButton,
     Badge,
     Image,
-    Spinner
+    Spinner,
+    SelectGroup,
 } from "@shopify/polaris";
 import {
     CancelMajor,
@@ -34,8 +35,8 @@ import { elementSearch, productsMulti } from "../services/products/actions/produ
 import { useLocation } from '@remix-run/react';
 import { useAppQuery, useAuthenticatedFetch } from "../hooks";
 import { useNavigate } from "@remix-run/react";
-import SelectProductsModal from "../components/SelectProductsModal";
-import { SelectCollectionsModal } from "../components/SelectCollectionsModal";
+import SelectProductsModal from "./SelectProductsModal";
+import { SelectCollectionsModal } from "./SelectCollectionsModal";
 import customCss from '@assets/custom.css';
 import product_page_image_1 from "@assets/images/product_page_image_1.png";
 import product_page_image_2 from "@assets/images/product_page_image_2.png";
@@ -46,15 +47,34 @@ import cart_page_image_3 from "@assets/images/cart_page_image_3.png";
 import ajax_cart_image_1 from "@assets/images/ajax_cart_image_1.png";
 import ajax_cart_image_2 from "@assets/images/ajax_cart_image_2.png";
 import ajax_cart_image_3 from "@assets/images/ajax_cart_image_3.png";
+import { IRootState } from "~/store/store";
+import { AutopilotCheck, Offer, ProductDetails, Shop } from "~/types/types";
 
-export function EditOfferTabs(props) {
-    const shopAndHost = useSelector(state => state.shopAndHost);
+interface IEditOfferTabsProps {
+    offer: Offer,
+    setOffer: (offer: Offer | ((prevOffer: Offer) => Offer)) => void,
+    updateOffer: (key: string, value: any) => void,
+    updateCheckKeysValidity: (key: string, value: any) => void,
+    updateProductsOfOffer: (productDetails: ProductDetails) => void,
+    updateIncludedVariants: (selectedItem: string | string[], selectedVariants: number[]) => void,
+    updateNestedAttributeOfOffer: (updatedValue: any, ...updatedKey: any[]) => void,
+    initialVariants: string[],
+    updateInitialVariants: (data: {[key: string]: (number | string)[]}) => void,
+    shop: Shop,
+    autopilotCheck: AutopilotCheck,
+    openAutopilotSection: boolean,
+    updateOpenAutopilotSection: (state: boolean) => void,
+    offerSettings: any
+}
+
+export function EditOfferTabs(props: IEditOfferTabsProps) {
+    const shopAndHost = useSelector((state: IRootState) => state.shopAndHost);
     const fetch = useAuthenticatedFetch(shopAndHost.host);
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const [altOfferText, setAltOfferText] = useState("");
     const [altBtnTitle, setAltBtnTitle] = useState("");
-    const [selectedItems, setSelectedItems] = useState(props.offer.offerable_product_shopify_ids);
+    const [selectedItems, setSelectedItems] = useState<(string | number)[]>(props.offer.offerable_product_shopify_ids);
     const handleTitleChange = useCallback((newValue) => props.updateOffer("title", newValue), []);
     const handleTextChange = useCallback((newValue) => {
         props.updateOffer("text_a", newValue);
@@ -100,8 +120,8 @@ export function EditOfferTabs(props) {
     const handleShowNoThanksChange = useCallback((newChecked) => props.updateOffer("show_nothanks", !newChecked), []);
 
     //modal controls
-    const [productModal, setProductModal] = useState(false);
-    const [productData, setProductData] = useState("");
+    const [productModal, setProductModal] = useState<boolean>(false);
+    const [productData, setProductData] = useState<ProductDetails[]>([]);
     const handleModal = useCallback(() => {
         setProductModal(!productModal);
     }, [productModal]);
@@ -188,7 +208,7 @@ export function EditOfferTabs(props) {
     function updateProducts() {
         if (selectedProducts.length == 0) {
             props.updateOffer("included_variants", {});
-            setProductData("");
+            setProductData([]);
             props.updateCheckKeysValidity("text", "Would you like to add a {{ product_title }}?");
         }
         props.updateOffer("offerable_product_details", []);
@@ -203,7 +223,7 @@ export function EditOfferTabs(props) {
                 },
             })
                 .then((response) => { return response.json() })
-                .then((data) => {
+                .then((data: ProductDetails) => {
                     data.available_json_variants = data.available_json_variants.filter((o) => props.offer.included_variants[data.id].includes(o.id))
                     props.updateProductsOfOffer(data);
                     if (responseCount == 0) {
@@ -221,19 +241,24 @@ export function EditOfferTabs(props) {
 
     //For autopilot section
 
-    const [sampleProducts, setSampleProducts] = useState(props.offer.offerable_product_details);
-    const [autopilotButtonText, setAutopilotButtonText] = useState(props.autopilotCheck.isPending);
-    const [autopilotQuantity, setAutopilotQuantity] = useState(props.offer?.autopilot_quantity);
-    const autopilotQuantityOptions = [
-      {label: '1 (recommended)', value: 1},
-      {label: '2', value: 2},
-      {label: '3', value: 3},
-      {label: '4', value: 4},
-      {label: '5', value: 5}
+    const [sampleProducts, setSampleProducts] = useState<ProductDetails[]>(props.offer.offerable_product_details);
+    const [autopilotButtonText, setAutopilotButtonText] = useState<string>(props.autopilotCheck.isPending);
+    const [autopilotQuantity, setAutopilotQuantity] = useState<number | undefined>(props.offer?.autopilot_quantity);
+    const autopilotQuantityOptions: SelectGroup[] = [
+        {
+            title: 'autopilot',
+            options: [
+                {label: '1 (recommended)', value: '1'},
+                {label: '2', value: '2'},
+                {label: '3', value: '3'},
+                {label: '4', value: '4'},
+                {label: '5', value: '5'}
+            ]
+        }
     ];
 
-    // const location = useLocation(); TBD through context
-    const location = {};
+    const location = useLocation();  // TBD through context
+    // const location = {};
 
     useEffect(() => {
         setAutopilotButtonText(
@@ -246,8 +271,8 @@ export function EditOfferTabs(props) {
     }, [props.autopilotCheck])
 
     useEffect(() => {
-        if(props.offer.id == props.autopilotCheck?.autopilot_offer_id) {
-            var tempArray = [];
+        if(props.offer.id == props.autopilotCheck?.autopilot_offer_id && props.offer?.autopilot_quantity) {
+            var tempArray: ProductDetails[] = [];
             for(var i=0; i<props.offer?.autopilot_quantity ; i++) {
                 if(props.offer.offerable_product_details.length > i) {
                     tempArray[i] = props.offer.offerable_product_details[i];
@@ -258,7 +283,7 @@ export function EditOfferTabs(props) {
     }, [props.autopilotCheck?.autopilot_offer_id, props.offer.offerable_product_shopify_ids]);
 
     const handleAutoPilotQuantityChange = useCallback((value) => {
-        var tempArray = [];
+        var tempArray: ProductDetails[] = [];
         for(var i=0; i<parseInt(value) ; i++) {
             if(sampleProducts.length > i) {
                 tempArray[i] = sampleProducts[i];
@@ -345,10 +370,10 @@ export function EditOfferTabs(props) {
 
 
     //Collapsible controls
-    const [open, setOpen] = useState(false);
+    const [open, setOpen] = useState<boolean>(false);
     const handleToggle = useCallback(() => setOpen((open) => !open), []);
-    const [showToolTip, setShowToolTip] = useState(false);
-    const handleShowToolTip = useCallback((value) => {
+    const [showToolTip, setShowToolTip] = useState<boolean>(false);
+    const handleShowToolTip = useCallback((value: boolean) => {
         setShowToolTip(value);
     }, [])
 
@@ -356,7 +381,7 @@ export function EditOfferTabs(props) {
         <div>
             {isLoading ? (
                 <div style={{ overflow: 'hidden', display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', }}>
-                    <Spinner size="large" color="teal"/>
+                    <Spinner size="large" />
                 </div>
             )   :   (
             <>
@@ -368,7 +393,7 @@ export function EditOfferTabs(props) {
                                         <p>What product would you like to have in the offer?</p>
                                         <br/>
                                         <ButtonGroup>
-                                            <Button id={"btnSelectProduct"} onClick={ () => { handleModal(); getProducts(); } } ref={modalRef}>Select product manually</Button>
+                                            <Button id={"btnSelectProduct"} onClick={ () => { handleModal(); getProducts(); } } >Select product manually</Button>
                                             <Button id={"btnLaunchAI"} disabled={!props.autopilotCheck?.shop_autopilot} primary onClick={() => enableAutopilot()}>{autopilotButtonText}</Button>
                                         </ButtonGroup>
                                     </>
@@ -377,7 +402,7 @@ export function EditOfferTabs(props) {
                                         <p>What product would you like to have in the offer?</p>
                                         <br/>
                                         <ButtonGroup>
-                                            <Button id={"btnSelectProduct"} onClick={ () => { handleModal(); getProducts(); } } ref={modalRef}>Select product manually</Button>
+                                            <Button id={"btnSelectProduct"} onClick={ () => { handleModal(); getProducts(); } } >Select product manually</Button>
                                         </ButtonGroup>
                                     </>
                                     ) : (<></>)
@@ -406,7 +431,10 @@ export function EditOfferTabs(props) {
                                 <>
                                     {props.offer.offerable_product_details.map((value, index) => (
                                         <>
-                                            <Badge><p style={{color: 'blue'}}>{props.offer.offerable_product_details[index].title}</p></Badge>
+                                            <Badge>
+                                                {/* @ts-ignore */}
+                                                <p style={{color: 'blue'}}>{props.offer.offerable_product_details[index].title}</p>
+                                            </Badge>
                                         </>
                                     ))}
                                 </>
@@ -424,7 +452,7 @@ export function EditOfferTabs(props) {
                                         label="How many products would you like the customer to be able to choose from in the offer?"
                                         options={autopilotQuantityOptions}
                                         onChange={handleAutoPilotQuantityChange}
-                                        value={autopilotQuantity}
+                                        value={String(autopilotQuantity)}
                                     />
                                 </LegacyStack>
                             </LegacyCard.Section>
@@ -449,6 +477,7 @@ export function EditOfferTabs(props) {
                                         helpText="Autopilot will not suggest any product with this tag."
                                         value={props.offer?.excluded_tags}
                                         onChange={handleAutopilotExcludedTags}
+                                        autoComplete="off"
                                     />
                                 </LegacyStack>
                             </LegacyCard.Section>
@@ -575,7 +604,7 @@ export function EditOfferTabs(props) {
                 </LegacyCard>
                 <div className="space-4"></div>
                 <LegacyStack distribution="center">
-                    <Button id={"btnAddProduct"} onClick={handleModal} ref={modalRef}>Add product</Button>
+                    <Button id={"btnAddProduct"} onClick={handleModal} >Add product</Button>
                 </LegacyStack>
 
                 <div className="space-10"></div>
@@ -591,7 +620,7 @@ export function EditOfferTabs(props) {
                     }}
                 >
                     <Modal.Section>
-                        <ModalAddProduct selectedItems={selectedItems} setSelectedItems={setSelectedItems} offer={props.offer} updateQuery={updateQuery} shop_id={props.shop.shop_id} productData={productData} resourceListLoading={resourceListLoading} updateSelectedProduct={updateSelectedProduct} />
+                        <ModalAddProduct selectedItems={selectedItems} setSelectedItems={setSelectedItems} offer={props.offer} updateQuery={updateQuery} shop_id={props.shop.shop_id} productData={productData} resourceListLoading={resourceListLoading} updateSelectedProduct={updateSelectedProduct} setResourceListLoading={setResourceListLoading} />
                     </Modal.Section>
                 </Modal>
             </>
@@ -601,21 +630,21 @@ export function EditOfferTabs(props) {
 }
 
 export function SecondTab(props) {
-    const shopAndHost = useSelector(state => state.shopAndHost);
+    const shopAndHost = useSelector((state: IRootState) => state.shopAndHost);
     const fetch = useAuthenticatedFetch(shopAndHost.host);
 
-    const [selected, setSelected] = useState('cartpage');
+    const [selected, setSelected] = useState<string>('cartpage');
     const [rule, setRule] = useState({ quantity: null, rule_selector: 'cart_at_least', item_type: 'product', item_shopify_id: null, item_name: null });
-    const [quantityErrorText, setQuantityErrorText] = useState(null);
-    const [itemErrorText, setItemErrorText] = useState(null);
+    const [quantityErrorText, setQuantityErrorText] = useState<string>('');
+    const [itemErrorText, setItemErrorText] = useState<string>('');
     const quantityArray = ['cart_at_least', 'cart_at_most', 'cart_exactly'];
     const orderArray = ['total_at_least', 'total_at_most'];
-    const [selectedItems, setSelectedItems] = useState([]);
-    const [defaultSetting, setDefaultSetting] = useState(false);
-    const [useTemplate, setUseTemplate] = useState(false);
-    const [defaultSettingSecond, setDefaultSettingSecond] = useState(false);
-    const [useTemplateSecond, setUseTemplateSecond] = useState(false);
-    const [multipleDefaultSettings, setMultipleDefaultSettings] = useState(false);
+    const [selectedItems, setSelectedItems] = useState<(string | number)[]>([]);
+    const [defaultSetting, setDefaultSetting] = useState<boolean>(false);
+    const [useTemplate, setUseTemplate] = useState<boolean>(false);
+    const [defaultSettingSecond, setDefaultSettingSecond] = useState<boolean>(false);
+    const [useTemplateSecond, setUseTemplateSecond] = useState<boolean>(false);
+    const [multipleDefaultSettings, setMultipleDefaultSettings] = useState<boolean>(false);
     const [defaultTemplateSettings, setDefaultTemplateSettings] = useState({
         defaultSettingsForProductPage: false,
         defaultSettingsForAjaxCart: false,
@@ -624,13 +653,13 @@ export function SecondTab(props) {
         templateForAjaxCart: false,
         templateForCartPage: false,
     });
-    const [insertedImage1, setInsertedImage1] = useState(null);
-    const [insertedImage2, setInsertedImage2] = useState(null);
-    const [insertedImage3, setInsertedImage3] = useState(null);
+    const [insertedImage1, setInsertedImage1] = useState<string | null>(null);
+    const [insertedImage2, setInsertedImage2] = useState<string | null>(null);
+    const [insertedImage3, setInsertedImage3] = useState<string | null>(null);
 
-    const [productIsClicked, setProductIsClicked] = useState([false, false, false]);
-    const [cartIsClicked, setCartIsClicked] = useState([false, false, false]);
-    const [ajaxIsClicked, setAjaxIsClicked] = useState([false, false, false]);
+    const [productIsClicked, setProductIsClicked] = useState<boolean[]>([false, false, false]);
+    const [cartIsClicked, setCartIsClicked] = useState<boolean[]>([false, false, false]);
+    const [ajaxIsClicked, setAjaxIsClicked] = useState<boolean[]>([false, false, false]);
 
     const defaultSettingsToDisplayOffer = {
         Dawn: {
@@ -1085,7 +1114,7 @@ export function SecondTab(props) {
                 setDefaultSetting(value);
             }
         }
-    });
+    }, []);
 
 
     const handleUseTemplateChange = useCallback((value, selectedPage) => {
@@ -1169,7 +1198,7 @@ export function SecondTab(props) {
                 setUseTemplate(value);
             }
         }
-    });
+    }, []);
 
     const handleDefaultSettingSecondChange = useCallback((value, selectedPage) => {
         if(value) {
@@ -1282,7 +1311,7 @@ export function SecondTab(props) {
                 props.updateShop(value, "default_template_settings", "defaultSettingsForAjaxCart");
             }
         }
-    });
+    }, []);
 
     const handleUseTemplateSecondChange = useCallback((value, selectedPage) => {
         if(value) {
@@ -1311,7 +1340,7 @@ export function SecondTab(props) {
                 }
             }
         }
-    });
+    }, []);
 
     const handleImageClick = useCallback((pageName, clickedImageNum) => {
         if(pageName === 'product_page') {
@@ -1374,22 +1403,22 @@ export function SecondTab(props) {
             props.updateShop(useTemplatesToDisplayOffer[props.shopifyThemeName].ajax_cart_selector[clickedImageNum-1], "custom_ajax_dom_selector");
             props.updateShop(useTemplatesToDisplayOffer[props.shopifyThemeName].ajax_cart_action[clickedImageNum-1], "custom_ajax_dom_action");
         }
-    });
+    }, []);
 
     const handleDisableCheckoutBtn = useCallback((newChecked) => props.updateOffer("must_accept", newChecked), []);
     const handleRemoveItiem = useCallback((newChecked) => props.updateOffer("remove_if_no_longer_valid", newChecked), []);
     //Modal controllers
-    const [conditionModal, setConditionModal] = useState(false);
+    const [conditionModal, setConditionModal] = useState<boolean>(false);
     const handleConditionModal = useCallback(() => {
         setConditionModal(!conditionModal), [conditionModal]
         setDefaultRule();
-    });
+    }, []);
     const modalCon = useRef(null);
     const activatorCon = modalCon;
 
-    const [productModal, setProductModal] = useState(false);
-    const [productData, setProductData] = useState("");
-    const [selectedProducts, setSelectedProducts] = useState([]);
+    const [productModal, setProductModal] = useState<boolean>(false);
+    const [productData, setProductData] = useState<string>("");
+    const [selectedProducts, setSelectedProducts] = useState<ProductDetails[]>([]);
 
     const handleProductsModal = () => {
         setProductModal(prev => !prev);
@@ -1401,9 +1430,9 @@ export function SecondTab(props) {
     }
     const modalProd = useRef(null);
 
-    const [collectionModal, setCollectionModal] = useState(false);
-    const [collectionData, setCollectionData] = useState("");
-    const [selectedCollections, setSelectedCollections] = useState([]);
+    const [collectionModal, setCollectionModal] = useState<boolean>(false);
+    const [collectionData, setCollectionData] = useState<string>("");
+    const [selectedCollections, setSelectedCollections] = useState<ProductDetails[]>([]);
 
     const handleCollectionsModal = useCallback(() => {
         setCollectionModal(!collectionModal);
@@ -1485,8 +1514,8 @@ export function SecondTab(props) {
 
     const setDefaultRule = () => {
         setRule({ quantity: null, rule_selector: 'cart_at_least', item_type: 'product', item_shopify_id: null, item_name: null });
-        setQuantityErrorText(null);
-        setItemErrorText(null);
+        setQuantityErrorText('');
+        setItemErrorText('');
     }
 
     const condition_options = [
@@ -1533,13 +1562,13 @@ export function SecondTab(props) {
                                 options={options}
                                 onChange={handleSelectChange}
                                 value={selected}
-                            />
+                                label />
                         </Grid.Cell>
                     </Grid>
                     {props.offer.id != props.autopilotCheck?.autopilot_offer_id && (
                     <>
                         <div className="space-4"></div>
-                        <Button onClick={handleSelectProductsModal} ref={modalProd} >Select Product</Button>
+                        <Button onClick={handleSelectProductsModal} >Select Product</Button>
                     </>
                     )}
                     <Modal
@@ -1557,7 +1586,7 @@ export function SecondTab(props) {
                     {props.offer.id != props.autopilotCheck?.autopilot_offer_id && (
                     <>
                         <div className="space-4"></div>
-                        <Button onClick={handleSelectCollectionsModal} ref={modalColl}>Select Collection</Button>
+                        <Button onClick={handleSelectCollectionsModal} >Select Collection</Button>
                     </>
                     )}
                     <Modal
@@ -1784,21 +1813,21 @@ export function SecondTab(props) {
                     {useTemplate && (
                         <>
                             <Image
-                                source={insertedImage1}
+                                source={insertedImage1 || ''}
                                 alt="Sample Image 1"
                                 style={{marginRight : '10px', marginTop: '10px', height: '150px', width: '165px'}}
                                 className={ props.offer.in_cart_page ? (cartIsClicked[0] ? 'editOfferTabs_image_clicked' : 'editOfferTabs_image_tag') : (props.offer.in_product_page ? (productIsClicked[0] ? 'editOfferTabs_image_clicked' : 'editOfferTabs_image_tag') : (props.offer.in_ajax_cart ? (ajaxIsClicked[0] ? 'editOfferTabs_image_clicked' : 'editOfferTabs_image_tag') : 'editOfferTabs_image_tag')) }
                                 onClick={() => handleImageClick(null, 1)}
                             />
                             <Image
-                                source={insertedImage2}
+                                source={insertedImage2 || ''}
                                 alt="Sample Image 2"
                                 style={{marginLeft : '10px', marginRight : '10px', height: '150px', width: '165px'}}
                                 className={ props.offer.in_cart_page ? (cartIsClicked[1] ? 'editOfferTabs_image_clicked' : 'editOfferTabs_image_tag') : (props.offer.in_product_page ? (productIsClicked[1] ? 'editOfferTabs_image_clicked' : 'editOfferTabs_image_tag') : (props.offer.in_ajax_cart ? (ajaxIsClicked[1] ? 'editOfferTabs_image_clicked' : 'editOfferTabs_image_tag') : 'editOfferTabs_image_tag')) }
                                 onClick={() => handleImageClick(null, 2)}
                             />
                             <Image
-                                source={insertedImage3}
+                                source={insertedImage3 || ''}
                                 alt="Sample Image 3"
                                 style={{marginLeft : '10px', height: '150px', width: '165px'}}
                                 className={ props.offer.in_cart_page ? (cartIsClicked[2] ? 'editOfferTabs_image_clicked' : 'editOfferTabs_image_tag') : (props.offer.in_product_page ? (productIsClicked[2] ? 'editOfferTabs_image_clicked' : 'editOfferTabs_image_tag') : (props.offer.in_ajax_cart ? (ajaxIsClicked[2] ? 'editOfferTabs_image_clicked' : 'editOfferTabs_image_tag') : 'editOfferTabs_image_tag')) }
@@ -1825,7 +1854,7 @@ export function SecondTab(props) {
                                 ))}</>
                             )}
                             <br />
-                            <Button onClick={handleConditionModal} ref={modalCon}>Add condition</Button>
+                            <Button onClick={handleConditionModal} >Add condition</Button>
                         </LegacyCard.Section>
                         <LegacyCard.Section title="Condition options">
                             <LegacyStack vertical>
@@ -1847,7 +1876,7 @@ export function SecondTab(props) {
                 )}
             <div className="space-4"></div>
             <LegacyStack distribution="center">
-                <Button disabled="true">Continue to Appearance</Button>
+                <Button disabled={true}>Continue to Appearance</Button>
             </LegacyStack>
             <div className="space-10"></div>
             <Modal
@@ -2036,8 +2065,9 @@ export function ThirdTab(props) {
                                 label="Space above offer"
                                 type="number"
                                 onChange={handleAboveSpace}
-                                value={parseInt(props.shop.css_options.main.marginTop)}
+                                value={props.shop.css_options.main.marginTop}
                                 suffix="px"
+                                autoComplete="off"
                             />
                         </Grid.Cell>
                         <Grid.Cell columnSpan={{ xs: 6, sm: 3, md: 3, lg: 6, xl: 6 }}>
@@ -2045,8 +2075,9 @@ export function ThirdTab(props) {
                                 label="Space below offer"
                                 type="number"
                                 onChange={handleBelowSpace}
-                                value={parseInt(props.shop.css_options.main.marginBottom)}
+                                value={props.shop.css_options.main.marginBottom}
                                 suffix="px"
+                                autoComplete=""
                             />
                         </Grid.Cell>
                     </Grid>
@@ -2064,8 +2095,9 @@ export function ThirdTab(props) {
                                 label="Border width"
                                 type="number"
                                 onChange={handleBorderWidth}
-                                value={parseInt(props.shop.css_options.main.borderWidth)}
+                                value={props.shop.css_options.main.borderWidth}
                                 suffix="px"
+                                autoComplete="off"
                             />
                         </Grid.Cell>
                     </Grid>
@@ -2105,7 +2137,7 @@ export function ThirdTab(props) {
                     </Stack>
                 </LegacyCard.Section>
             </LegacyCard>
-            <LegacyCard title="Offer text" className="input-box" sectioned>
+            <LegacyCard title="Offer text" sectioned>
                 <LegacyCard.Section>
                     <Grid>
                         <Grid.Cell columnSpan={{ xs: 6, sm: 3, md: 3, lg: 6, xl: 6 }}>
@@ -2123,7 +2155,7 @@ export function ThirdTab(props) {
                                 suffix="px"
                                 autoComplete="off"
                                 onChange={handleFontWeight}
-                                value={parseInt(props.shop.css_options.text.fontWeightInPixel)}
+                                value={props.shop.css_options.text.fontWeightInPixel}
                             />
                         </Grid.Cell>
                         <Grid.Cell columnSpan={{ xs: 6, sm: 3, md: 3, lg: 6, xl: 6 }}>
@@ -2133,7 +2165,7 @@ export function ThirdTab(props) {
                                 suffix="px"
                                 autoComplete="off"
                                 onChange={handleFontSize}
-                                value={parseInt(props.shop.css_options.text.fontSize)}
+                                value={props.shop.css_options.text.fontSize}
                             />
                         </Grid.Cell>
                     </Grid>
@@ -2155,7 +2187,7 @@ export function ThirdTab(props) {
                                 suffix="px"
                                 autoComplete="off"
                                 onChange={handleBtnWeight}
-                                value={parseInt(props.shop.css_options.button.fontWeightInPixel)}
+                                value={props.shop.css_options.button.fontWeightInPixel}
                             />
                         </Grid.Cell>
                         <Grid.Cell columnSpan={{ xs: 6, sm: 3, md: 3, lg: 6, xl: 6 }}>
@@ -2165,7 +2197,7 @@ export function ThirdTab(props) {
                                 suffix="px"
                                 autoComplete="off"
                                 onChange={handleBtnSize}
-                                value={parseInt(props.shop.css_options.button.fontSize)}
+                                value={props.shop.css_options.button.fontSize}
                             />
                         </Grid.Cell>
                     </Grid>
@@ -2212,20 +2244,20 @@ export function FourthTab(props) {
         <>
             <LegacyCard sectioned title="Offer placement - advanced settings" actions={[{ content: 'View help doc' }]}>
                 <LegacyCard.Section title="Product page">
-                    <TextField label="DOM Selector" value={props.shop.custom_product_page_dom_selector} onChange={handleProductDomSelector} type="text"></TextField>
-                    <TextField label="DOM Action" value={props.shop.custom_product_page_dom_action} onChange={handleProductDomAction}></TextField>
+                    <TextField label="DOM Selector" value={props.shop.custom_product_page_dom_selector} onChange={handleProductDomSelector} type="text" autoComplete="off"></TextField>
+                    <TextField label="DOM Action" value={props.shop.custom_product_page_dom_action} onChange={handleProductDomAction} autoComplete="off"></TextField>
                 </LegacyCard.Section>
                 <LegacyCard.Section title="Cart page">
-                    <TextField label="DOM Selector" value={props.shop.custom_cart_page_dom_selector} onChange={handleCartDomSelector}></TextField>
-                    <TextField label="DOM Action" value={props.shop.custom_cart_page_dom_action} onChange={handleCartDomAction}></TextField>
+                    <TextField label="DOM Selector" value={props.shop.custom_cart_page_dom_selector} onChange={handleCartDomSelector} autoComplete="off" ></TextField>
+                    <TextField label="DOM Action" value={props.shop.custom_cart_page_dom_action} onChange={handleCartDomAction} autoComplete="off"></TextField>
                 </LegacyCard.Section>
                 <LegacyCard.Section title="AJAX/Slider cart">
-                    <TextField label="DOM Selector" value={props.shop.custom_ajax_dom_selector} onChange={handleAjaxDomSelector}></TextField>
-                    <TextField label="DOM Action" value={props.shop.custom_ajax_dom_action} onChange={handleAjaxDomAction}></TextField>
-                    <TextField label="AJAX refresh code" value={props.shop.ajax_refresh_code} onChange={handleAjaxRefreshCode} multiline={6}></TextField>
+                    <TextField label="DOM Selector" value={props.shop.custom_ajax_dom_selector} onChange={handleAjaxDomSelector} autoComplete="off"></TextField>
+                    <TextField label="DOM Action" value={props.shop.custom_ajax_dom_action} onChange={handleAjaxDomAction} autoComplete="off"></TextField>
+                    <TextField label="AJAX refresh code" value={props.shop.ajax_refresh_code} onChange={handleAjaxRefreshCode} multiline={6} autoComplete="off"></TextField>
                 </LegacyCard.Section>
                 <LegacyCard.Section title="Custom CSS">
-                    <TextField value={props.shop.offer_css} onChange={handleOfferCss} multiline={6}></TextField>
+                    <TextField label="OFFER Css" value={props.shop.offer_css} onChange={handleOfferCss} multiline={6} autoComplete="off"></TextField>
                     <br />
                     <Checkbox
                         label="Save as default settings"

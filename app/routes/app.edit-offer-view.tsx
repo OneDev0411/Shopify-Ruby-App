@@ -32,6 +32,7 @@ import {
 // import { traceStat } from "../services/firebase/perf.js";
 import ErrorPage from "../components/ErrorPage"
 import { IRootState } from "~/store/store";
+import { ProductDetails } from "~/types/types";
 
 const EditOfferView = () => {
   const { offer, setOffer, updateOffer } = useContext(OfferContext) as OfferContent;
@@ -41,7 +42,7 @@ const EditOfferView = () => {
   const shopAndHost = useSelector((state: IRootState) => state.shopAndHost);
   const [isLoading, setIsLoading] = useState(true);
   const fetch = useAuthenticatedFetch(shopAndHost.host)
-  const [initialOfferableProductDetails, setInitialOfferableProductDetails] = useState();
+  const [initialOfferableProductDetails, setInitialOfferableProductDetails] = useState<ProductDetails[]>([]);
   const [checkKeysValidity, setCheckKeysValidity] = useState({});
   const navigateTo = useNavigate();
 

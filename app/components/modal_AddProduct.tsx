@@ -8,6 +8,7 @@ import {
 import {useState, useCallback} from 'react';
 import {useSelector} from 'react-redux';
 import {useAuthenticatedFetch} from '~/hooks';
+import { IRootState } from '~/store/store';
 import {Offer, Product, ProductDetails, ProductVariants} from "~/types/types";
 
 interface IModalAddProductProps {
@@ -16,8 +17,8 @@ interface IModalAddProductProps {
   isCollection?: boolean,
   productData: ProductDetails[],
   selectedItems: (string | number)[],
-  setSelectedItems: (items: (string | number)[]) => void,
-  resourceListLoading: boolean,
+  setSelectedItems: React.Dispatch<React.SetStateAction<(string | number)[]>>,
+  resourceListLoading?: boolean,
   updateSelectedProduct?: (selectedProduct: ProductDetails, variants: ProductVariants) => void,
   updateSelectedProducts?: (p: { id: any; title: any }, selectedVariants: ProductVariants) => void
   updateSelectedCollection?: (selectedItem?: ProductDetails, uncheck?: boolean) => void,
@@ -231,7 +232,6 @@ export function ModalAddProduct({
             }
             selectedVariants[id[id.length - 1]] = [];
             for (let i = 0; i < data.variants?.length; i++) {
-              // @ts-ignore
               selectedVariants[id[id.length - 1]].push(data.variants[i].id);
             }
             if (updateSelectedProduct) {

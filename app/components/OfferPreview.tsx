@@ -1,4 +1,3 @@
-// @ts-nocheck
 import {useState, useEffect, useContext} from "react";
 import { 
 	LegacyCard, TextContainer ,SkeletonBodyText
@@ -9,16 +8,17 @@ import Carousel from './layouts/template_multi_carousel';
 import Flex from './layouts/template_multi_flex';
 import {useAuthenticatedFetch} from "../hooks/index.js";
 import {useSelector} from "react-redux";
-import ErrorPage from "../components/ErrorPage";
-import {OfferContext} from "../contexts/OfferContext";
+import ErrorPage from "./ErrorPage";
+import {OfferContent, OfferContext} from "../contexts/OfferContext";
 import {useShopState} from "../contexts/ShopContext";
+import { IRootState } from "~/store/store";
 
 export function OfferPreview(props) {
-	const { offer, updateOffer, updateNestedAttributeOfOffer } = useContext(OfferContext);
+	const { offer, updateOffer, updateNestedAttributeOfOffer } = useContext(OfferContext) as OfferContent;
 	const { shopSettings } = useShopState();
-	const shopAndHost = useSelector(state => state.shopAndHost);
+	const shopAndHost = useSelector((state: IRootState) => state.shopAndHost);
 	const [error, setError] = useState(null);
-	const [carouselLoading, setCarouselLoading] = useState(false);
+	const [carouselLoading, setCarouselLoading] = useState<boolean>(false);
 	
 	const fetch = useAuthenticatedFetch(shopAndHost.host);
 
@@ -42,7 +42,7 @@ export function OfferPreview(props) {
 					let offerSettings = {...data};
 
 					if(Object.keys(offer.css_options).length == 0) {
-						updateOffer("css_options", shopSettings.css_options)
+						updateOffer("css_options", shopSettings?.css_options)
 					}
 					if(!offer.placement_setting) {
 						updateNestedAttributeOfOffer(true, "placement_setting", "default_product_page");
