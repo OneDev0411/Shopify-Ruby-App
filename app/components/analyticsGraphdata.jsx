@@ -1,6 +1,6 @@
 // @ts-nocheck
 import {
-    HorizontalStack,
+    InlineStack,
     LegacyCard,
     BlockStack,
     Text,
@@ -319,14 +319,14 @@ export function TopPerformingOffersData(props) {
                                 <div key={idx}>
                                     <Divider />
                                     <div style={{ padding: '16px 0' }}>
-                                        <HorizontalStack align="space-between">
+                                        <InlineStack align="space-between">
                                             <Text as="p">{item.
                                             title}</Text>
                                             <Text as="p">{item.
                                             clicks} clicks</Text>
                                             <Text as="p">$ {item.
                                             revenue}</Text>
-                                        </HorizontalStack>
+                                        </InlineStack>
                                     </div>
                                 </div>
                             )
