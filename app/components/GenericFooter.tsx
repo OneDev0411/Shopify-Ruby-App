@@ -1,5 +1,5 @@
 import { Text, Icon, Link, LegacyStack } from "@shopify/polaris";
-import { AlertCircleIcon, ExternalSmallMinor } from '@shopify/polaris-icons';
+import { AlertCircleIcon, ExternalSmallIcon } from '@shopify/polaris-icons';
 
 interface IGenericFooterProps {
 	text: string;
@@ -29,7 +29,7 @@ export const GenericFooter = ({text, linkText, linkUrl}: IGenericFooterProps) =>
             {linkText ? (
               <Link url={linkUrl} target="_blank">{linkText}.
                 <Icon
-                  source={ExternalSmallMinor}
+                  source={ExternalSmallIcon}
                   color="base"
                 />
               </Link>
