@@ -20,7 +20,7 @@ import {
     TextField
 } from "@shopify/polaris";
 
-import {InfoMinor} from '@shopify/polaris-icons';
+import {InfoIcon} from '@shopify/polaris-icons';
 import {ModalAddProduct} from "./../../modal_AddProduct";
 import {useAuthenticatedFetch} from "../../../hooks";
 import { AutopilotQuantityOptions } from "../../../shared/constants/EditOfferOptions";
@@ -429,7 +429,7 @@ export function FirstTab(props) {
                                     <>
                                         <div>
                                             <div style={{display: 'flex'}}>
-                                                <Icon source={InfoMinor} color="base"/>
+                                                <Icon source={InfoIcon} color="base"/>
                                                 <Link to="/subscription" style={{marginLeft: '5px'}}>
                                                     Autopilot is available on the Paid Plan.
                                                 </Link>

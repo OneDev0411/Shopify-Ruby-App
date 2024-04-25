@@ -17,7 +17,7 @@ import {
     TextField
 } from "@shopify/polaris";
 
-import {InfoMinor} from '@shopify/polaris-icons';
+import {InfoIcon} from '@shopify/polaris-icons';
 import { ModalAddProduct } from "~/components";
 import { useAuthenticatedFetch } from "~/hooks";
 import { AutopilotQuantityOptionsNew } from "~/shared/constants/EditOfferOptions";
@@ -363,7 +363,7 @@ const OfferProduct = (props: IOfferProductProps) => {
                             <>
                                 <div>
                                     <div style={{display: 'flex'}}>
-                                        <Icon source={InfoMinor} color="base"/>
+                                        <Icon source={InfoIcon} color="base"/>
                                         <Link to="/subscription" style={{marginLeft: '5px'}}>
                                             Autopilot is available on the Paid Plan.
                                         </Link>

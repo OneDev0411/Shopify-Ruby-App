@@ -20,7 +20,7 @@ import {
 } from "@shopify/polaris";
 import {
     CancelMajor,
-    InfoMinor
+    InfoIcon
   } from '@shopify/polaris-icons';
 import {ModalAddProduct} from "./modal_AddProduct";
 import {ModalAddConditions} from "./modal_AddConditions";
@@ -391,12 +391,12 @@ export function EditOfferTabs(props) {
                                     >
                                     {showToolTip ? (
                                         <div style={{display: 'flex'}}>
-                                            <Icon source={InfoMinor} color="base"/>
+                                            <Icon source={InfoIcon} color="base"/>
                                             <Link to="/subscription" style={{ marginLeft: '5px' }}>
                                                 Autopilot is available on the Paid Plane.
                                             </Link>
                                         </div>
-                                        ) : (<><Icon source={InfoMinor} color="base"/></>)}
+                                        ) : (<><Icon source={InfoIcon} color="base"/></>)}
                                     </div>
                                 </>
                                 ) : (<></>)}
