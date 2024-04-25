@@ -14,7 +14,7 @@ import {
     Select,
     Text
 } from "@shopify/polaris";
-import { CancelMinor  } from '@shopify/polaris-icons';
+import { XIcon  } from '@shopify/polaris-icons';
 import { ModalAddConditions } from "./../../modal_AddConditions";
 import { useState, useCallback, useRef, useEffect, useContext } from "react";
 import { useSelector } from 'react-redux';
@@ -1153,7 +1153,7 @@ export function SecondTab(props) {
                                                 <p style={{color: 'blue', marginRight: '3px'}}><b>{rule.item_name}</b>
                                                 </p>
                                                 <p style={{cursor: 'pointer'}} onClick={() => deleteRule(index)}>
-                                                    <Icon source={CancelMinor} color="critical"/>
+                                                    <Icon source={XIcon} color="critical"/>
                                                 </p>
                                             </div>
                                         </Badge>
