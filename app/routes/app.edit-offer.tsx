@@ -3,7 +3,7 @@ import {useSelector} from "react-redux";
 import {Link, useLocation, useNavigate} from "@remix-run/react";
 
 import {Banner, Icon, Layout, Page, Spinner, Tabs} from '@shopify/polaris';
-import {DesktopIcon, MobileMajor} from '@shopify/polaris-icons';
+import {DesktopIcon, MobileIcon} from '@shopify/polaris-icons';
 import {Redirect} from '@shopify/app-bridge/actions';
 import {FirstTab} from "../components/EditOffer/tabs/First";
 import {SecondTab} from "../components/EditOffer/tabs/Second";
@@ -290,7 +290,7 @@ export default function EditPage() {
             content: 'Mobile',
             icon: (
                 <div className='flex-tab'>
-                    <Icon source={MobileMajor}/>
+                    <Icon source={MobileIcon}/>
                     <p>Mobile</p>
                 </div>
             ),

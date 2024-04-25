@@ -1,6 +1,6 @@
 import {Link,Icon,Modal, LegacyCard, Page, Layout, Image, LegacyStack, Grid, List} from "@shopify/polaris";
 import { helpImage } from "@assets/index";
-import {HintMajor} from '@shopify/polaris-icons';
+import {LightbulbIcon} from '@shopify/polaris-icons';
 import {useRef, useState, useCallback} from 'react';
 import "../components/stylesheets/mainstyle.css";
 import { CustomTitleBar } from "../components/customtitlebar";
@@ -35,7 +35,7 @@ export default function HelpPage() {
                     {/* card for image and text */}
                     <LegacyCard title={
                         <LegacyStack>
-                            <Icon source={HintMajor} />
+                            <Icon source={LightbulbIcon} />
                             <p><strong>Here is a list of relevant articles you may find helpful</strong></p>
                         </LegacyStack>
                         } sectioned>
