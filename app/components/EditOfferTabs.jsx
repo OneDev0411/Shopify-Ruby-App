@@ -19,7 +19,7 @@ import {
     Spinner
 } from "@shopify/polaris";
 import {
-    CancelMajor,
+    XIcon,
     InfoIcon
   } from '@shopify/polaris-icons';
 import {ModalAddProduct} from "./modal_AddProduct";
@@ -1819,7 +1819,7 @@ export function SecondTab(props) {
                                 <>{Array.isArray(props.offer.rules_json) && props.offer.rules_json.map((rule, index) => (
                                     <li key={index} style={{ display: 'flex', alignItems: 'center' }}>{getLabelFromValue(rule.rule_selector)} {rule.quantity} <b>{rule.item_name}</b>
                                         <p onClick={() => deleteRule(index)}>
-                                            <Icon source={CancelMajor} color="critical" />
+                                            <Icon source={XIcon} color="critical" />
                                         </p>
                                     </li>
                                 ))}</>
