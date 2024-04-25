@@ -48,7 +48,7 @@ const OfferDetails = (props: IOfferDetailsProps) => {
             <span><Link onClick={() => handleEditOffer(props.offer.id)} removeUnderline>Edit</Link></span>
           </div>
           <Box>
-            <Text as="span">Placement: {checkPlacement()}</Text>
+            <Text as="p">Placement: {checkPlacement()}</Text>
           </Box>
           <Box>
             <Text as='p'>Product offered: 
