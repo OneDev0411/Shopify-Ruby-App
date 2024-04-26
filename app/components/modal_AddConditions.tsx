@@ -14,11 +14,11 @@ interface IModalAddConditionsProps {
   setRule: (thing: any) => void,
   itemErrorText: string,
   quantityErrorText: string
-  condition_options?: {
+  condition_options: {
     label: string;
     value: string;
   }[],
-  updateOffer?: (key: string, value: any) => void
+  updateOffer: (key: string, value: any) => void
 }
 
 export function ModalAddConditions({ rule, setRule, itemErrorText, quantityErrorText, condition_options }: IModalAddConditionsProps) {
