@@ -15,7 +15,7 @@ import ModalChoosePlan from '../components/modal_ChoosePlan'
 import ErrorPage from "../components/ErrorPage.jsx"
 import {useShopState} from "../contexts/ShopContext.jsx";
 import { IRootState } from "~/store/store";
-import { ShopSettings } from "~/types/global";
+import { ShopSettings } from "~/types/types";
 
 interface IFormData {
     productDomSelector?: string;

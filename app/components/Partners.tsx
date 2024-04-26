@@ -1,4 +1,3 @@
-// @ts-nocheck
 import {VerticalStack, LegacyCard, Image, Button, Grid, Pagination} from '@shopify/polaris';
 import {useState, useCallback, useEffect} from 'react';
 import Slider from "react-slick";
@@ -7,14 +6,22 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useAuthenticatedFetch } from "../hooks";
 import { PartnersSliderSettings } from '../shared/constants/PartnersSliderSettings';
-import ErrorPage from "../components/ErrorPage";
+import ErrorPage from "./ErrorPage";
+import { IRootState } from '~/store/store';
+
+type Partner = {
+  name: string;
+  image: string;
+  description: string;
+  app_url: string;
+}
 
 export function Partners() {
-    const shopAndHost = useSelector(state => state.shopAndHost);
+    const shopAndHost = useSelector((state: IRootState) => state.shopAndHost);
     const fetch = useAuthenticatedFetch(shopAndHost.host);
-    const [expandedIndex, setExpandedIndex] = useState(null);
-    const [partners, setPartners] = useState(null);
-    const [error, setError] = useState(null);
+    const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
+    const [partners, setPartners] = useState<Partner[]>([]);
+    const [error, setError] = useState<Error | null>(null);
 
     let slider;
 
@@ -36,13 +43,13 @@ export function Partners() {
        .then( (data) => {
         setPartners(data.partners);
        })
-       .catch((error) => {
+       .catch((error: Error) => {
         setError(error)
         console.log("error", error);
        })
      }, [])
 
-    const handleToggleDescription = (index) => {
+    const handleToggleDescription = (index: number) => {
       setExpandedIndex(index === expandedIndex ? null : index);
     };
 
@@ -53,17 +60,17 @@ export function Partners() {
     // if (error) { return < ErrorPage />; }
 
     return(<>
-      <LegacyCard sectioned title="Recommended Apps" id={"LegacyCardYpadding"}>
+      <LegacyCard sectioned title="Recommended Apps">
         <p>Check out our partners below.</p>
         <div className="space-4"></div>
           <Grid >
-            <Grid.Cell columnSpan={{ xs: 6, sm: 6, md: 12, lg: 12, xl: 12}}>
+            <Grid.Cell columnSpan={{ xs: 6, sm: 6, md: 6, lg: 12, xl: 12}}>
                 <Slider ref={c => (slider = c)} {...PartnersSliderSettings}>
                   {partners && partners.map((partner, index) => (
                     <Grid key={index}>
-                      <Grid.Cell columnSpan={{ xs: 6, sm: 6, md: 12, lg: 12, xl: 12}}>
+                      <Grid.Cell columnSpan={{ xs: 6, sm: 6, md: 6, lg: 12, xl: 12}}>
                         <div style={{margin: '10px'}}>
-                            <LegacyCard sectioned columnSpan={{ xs: 6, sm: 6, md: 12, lg: 12, xl: 12}}>
+                            <LegacyCard sectioned>
                             <div style={{ width: '200px', height: '200px', margin: 'auto', display: 'flex'}} >
                               <Image
                                 alt=""
@@ -74,7 +81,7 @@ export function Partners() {
                                 objectFit: 'cover',
                                 objectPosition: 'center',
                                 }}
-                                src={partner.image}
+                                source={partner.image}
                               />
                             </div>
                             <br/>
@@ -90,15 +97,16 @@ export function Partners() {
                               {partner.description}
                             </p>
                             <br/>
-                            <VerticalStack distribution="start">
+                            <VerticalStack>
                             <Image
                               style={{
                               width:'60%',
                               marginBottom:'15px',
                               }}
                               source="https://assets.incartupsell.com/images/5-star.png"
+                              alt='star'
                             />
-                            <Button url={partner.app_url} target="blank">View on Shopify App Store</Button>
+                            <Button url={partner.app_url} target="_blank">View on Shopify App Store</Button>
                             </VerticalStack>
                           </LegacyCard>
                         </div>

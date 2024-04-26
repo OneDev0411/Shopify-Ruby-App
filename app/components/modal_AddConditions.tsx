@@ -7,6 +7,7 @@ import { useAuthenticatedFetch } from "~/hooks";
 import { CartItemOptions } from '~/shared/constants/Others';
 import ErrorPage from "../components/ErrorPage";
 import {IRootState} from "~/store/store";
+import { Product } from '~/types/types';
 
 interface IModalAddConditionsProps {
   rule: any,
@@ -21,7 +22,7 @@ export function ModalAddConditions({ rule, setRule, itemErrorText, quantityError
   const fetch = useAuthenticatedFetch(shopAndHost.host);
 
   const [queryValue, setQueryValue] = useState<string>("");
-  const [productData, setProductData] = useState<string>("");
+  const [productData, setProductData] = useState<Product[]>([]);
   const [item, setItem] = useState<string>("product");
   const [resourceListLoading, setResourceListLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
@@ -68,7 +69,6 @@ export function ModalAddConditions({ rule, setRule, itemErrorText, quantityError
   }
 
   const handleQueryValueChange = useCallback((value) => {
-    debugger;
     setQueryValue(value);
     updateQuery(value);
   }, [item],
@@ -140,7 +140,7 @@ export function ModalAddConditions({ rule, setRule, itemErrorText, quantityError
             </LegacyStack.Item>
             {productData ? (
               <LegacyStack.Item>
-                <SearchProductsList item_type={item} shop={shopAndHost.shop} updateQuery={updateQuery} productData={productData} resourceListLoading={resourceListLoading} setResourceListLoading={setResourceListLoading} updateSelectedProduct={updateSelectedProduct} rule={rule}/>
+                <SearchProductsList item_type={item} shop={shopAndHost.shop} productData={productData} resourceListLoading={resourceListLoading} setResourceListLoading={setResourceListLoading} updateSelectedProduct={updateSelectedProduct} rule={rule}/>
               </LegacyStack.Item>
             ) : null
             }

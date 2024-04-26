@@ -7,12 +7,19 @@ import {
 import { Toast } from "@shopify/app-bridge-react";
 import { useAppQuery, useAuthenticatedFetch } from "../hooks";
 import { useSelector } from 'react-redux';
+import { IRootState } from "~/store/store";
+
+type ToastType = {
+  content: string;
+  error?: boolean;
+}
+
 export function EditOffer() {""}
 export function ProductsCard() {
-  const emptyToastProps = { content: null };
-  const [isLoading, setIsLoading] = useState(true);
-  const [toastProps, setToastProps] = useState(emptyToastProps);
-  const shopAndHost = useSelector(state => state.shopAndHost);
+  const emptyToastProps: ToastType = { content: '' };
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [toastProps, setToastProps] = useState<ToastType>(emptyToastProps);
+  const shopAndHost = useSelector((state: IRootState) => state.shopAndHost);
   const fetch = useAuthenticatedFetch(shopAndHost.host);
 
   const {
@@ -52,15 +59,7 @@ export function ProductsCard() {
   return (
     <>
       {toastMarkup}
-      <Card
-        title="Product Counter"
-        sectioned
-        primaryFooterAction={{
-          content: "Populate 5 products",
-          onAction: handlePopulate,
-          loading: isLoading,
-        }}
-      >
+      <Card>
         <VerticalStack gap="5">
           <p>
             Sample products are created with a default title and price. You can
