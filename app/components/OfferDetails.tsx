@@ -9,7 +9,7 @@ import translations from "@shopify/polaris/locales/en.json";
 
 interface IOfferDetailsProps {
   offer: Offer;
-  offerableProducts?: ProductDetails[];
+  offerableProducts: ProductDetails[];
 }
 
 const OfferDetails = (props: IOfferDetailsProps) => {

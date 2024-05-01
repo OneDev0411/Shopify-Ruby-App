@@ -18,7 +18,7 @@ interface IModalAddProductProps {
   productData: ProductDetails[],
   selectedItems: (string | number)[],
   setSelectedItems: React.Dispatch<React.SetStateAction<(string | number)[]>>,
-  resourceListLoading?: boolean,
+  resourceListLoading: boolean,
   updateSelectedProduct?: (selectedProduct: ProductDetails, variants: ProductVariants) => void,
   updateSelectedProducts?: (p: { id: any; title: any }, selectedVariants: ProductVariants) => void
   updateSelectedCollection?: (selectedItem?: ProductDetails, uncheck?: boolean) => void,
