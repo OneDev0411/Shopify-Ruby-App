@@ -13,7 +13,6 @@ import {
 } from '@shopify/polaris';
 
 import { useState, useCallback, useEffect } from 'react';
-import React from 'react';
 import { useNavigate } from "@remix-run/react";
 import { useAuthenticatedFetch } from "../hooks";
 import { useSelector } from "react-redux";

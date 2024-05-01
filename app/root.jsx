@@ -11,7 +11,7 @@ import {
 import polarisStyles from "@shopify/polaris/build/esm/styles.css";
 import {themeCss} from "@assets";
 
-export const links = () => [{ rel: "stylesheet", href: polarisStyles}, { rel: "stylesheet", href: themeCss  }];
+export const links = () => [{ rel: "stylesheet", href: polarisStyles}, { rel: "stylesheet", href: themeCss }];
 
 export default function App() {
   return (

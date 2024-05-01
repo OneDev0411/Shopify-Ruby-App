@@ -6,7 +6,7 @@ import {
     Text,
     Divider,
 } from '@shopify/polaris';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { PolarisVizProvider, StackedAreaChart } from '@shopify/polaris-viz';
 import { useAuthenticatedFetch } from "../hooks";
 import { useSelector } from 'react-redux';
@@ -67,26 +67,31 @@ export function TotalSalesData(props) {
                 }
             }}
         >
-            <Card title={`${props.title ? `${props.period[0].toUpperCase()}${props.period.substring(1)} ` : ''} Total Sales`} sectioned>
-                {salesData ? (<h3 className="report-money"><strong>${salesTotal}</strong></h3>) : null}
-                <div className="space-4"></div>
-                <p>SALES OVER TIME</p><br />
-                {loading ? "Loading..." : salesData ? (<StackedAreaChart
-                    isAnimated={true}
-                    comparisonMetric={{
-                        accessibilityLabel: 'trending up 6%',
-                        metric: '6%',
-                        trend: 'positive'
-                    }}
-                    data={[
-                        {
-                            "name": "Revenue",
-                            "data": salesData
-                        },
-                    ]}
-                    legendPosition="left"
-                    theme='Light'
-                />) : null}
+            <Card>
+                <BlockStack gap="400">
+                    <Text variant="headingMd" as="h5"> 
+                        {`${props.title ? `${props.period[0].toUpperCase()}${props.period.substring(1)} ` : ''} Total Sales`} 
+                    </Text>
+                        <div className="space-4"></div>
+                        {salesData ? (<h3 className="report-money"><strong>${salesTotal}</strong></h3>) : null}
+                        <p>SALES OVER TIME</p><br />
+                        {loading ? "Loading..." : salesData ? (<StackedAreaChart
+                            isAnimated={true}
+                            comparisonMetric={{
+                                accessibilityLabel: 'trending up 6%',
+                                metric: '6%',
+                                trend: 'positive'
+                            }}
+                            data={[
+                                {
+                                    "name": "Revenue",
+                                    "data": salesData
+                                },
+                            ]}
+                            legendPosition="left"
+                            theme='Light'
+                        />) : null}
+                </BlockStack >
             </Card>
         </PolarisVizProvider>
     );
@@ -236,25 +241,30 @@ export function OrderOverTimeData(props) {
                 }
             }}
         >
-            <Card title={`${props.title ? `${props.period[0].toUpperCase()}${props.period.substring(1)} ` : ''} Total Orders`} sectioned>
-                {ordersData ? (<h3 className="report-money"><strong>{ordersTotal}</strong></h3>) : null}
-                <div className="space-4"></div>
-                <p>ORDERS OVER TIME</p><br />
-                <div className="space-5"></div>
-                {loading ? "Loading..." : ordersData ? (<StackedAreaChart
-                
-                    comparisonMetric={{
-                        accessibilityLabel: 'trending up 6%',
-                        metric: '6%',
-                        trend: 'positive'
-                    }}
-                    data={[{
-                        "name": "Orders",
-                        "data": ordersData
-                    }]}
-                    legendPosition="left"
-                    theme='Light'
-                />) : null}
+            <Card>
+                <BlockStack gap="400">
+                    
+                    <Text variant="headingMd" as="h5"> 
+                    {`${props.title ? `${props.period[0].toUpperCase()}${props.period.substring(1)} ` : ''} Total Orders`} 
+                    </Text>
+                    <div className="space-5"></div>
+                    {ordersData ? (<h3 className="report-money"><strong>{ordersTotal}</strong></h3>) : null}
+                    <p>ORDERS OVER TIME</p><br />
+                    {loading ? "Loading..." : ordersData ? (<StackedAreaChart
+                    
+                        comparisonMetric={{
+                            accessibilityLabel: 'trending up 6%',
+                            metric: '6%',
+                            trend: 'positive'
+                        }}
+                        data={[{
+                            "name": "Orders",
+                            "data": ordersData
+                        }]}
+                        legendPosition="left"
+                        theme='Light'
+                    />) : null}
+                </BlockStack >
             </Card>
         </PolarisVizProvider>
     );
