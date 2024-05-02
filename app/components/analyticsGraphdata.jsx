@@ -72,9 +72,8 @@ export function TotalSalesData(props) {
                     <Text variant="headingMd" as="h5"> 
                         {`${props.title ? `${props.period[0].toUpperCase()}${props.period.substring(1)} ` : ''} Total Sales`} 
                     </Text>
-                        <div className="space-4"></div>
                         {salesData ? (<h3 className="report-money"><strong>${salesTotal}</strong></h3>) : null}
-                        <p>SALES OVER TIME</p><br />
+                        <p>SALES OVER TIME</p>
                         {loading ? "Loading..." : salesData ? (<StackedAreaChart
                             isAnimated={true}
                             comparisonMetric={{

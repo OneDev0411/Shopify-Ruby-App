@@ -1007,13 +1007,12 @@ h1{
   margin-bottom: var(--p-space-3);
 }
 .space-4{
-  margin-bottom: var(--p-space-4);
+  margin-bottom: 1rem;
 }
 .space-10{
   margin-bottom: 2.5rem;
 }
 .report-money{
-  margin-top: -15px;
   font-size: 1.5em;
 }
 .mx-width{
@@ -1079,6 +1078,23 @@ h1{
     padding-right: 16px;
     float: right;
     margin-bottom: 10px;
+}
+.Polaris-Banner--withinPage {
+  border-color: rgba(109, 211, 222, 1);
+  background-color: rgba(222, 245, 247, 1);
+  padding: 0.4rem;
+  box-shadow: none;
+}
+.Polaris-Banner--textInfoOnBgFill {
+  --pc-box-background: rgba(222, 245, 247, 1) !important;
+}
+
+.Polaris-Banner--textInfoOnBgFill.Polaris-Banner--textInfoOnBgFill.Polaris-Banner--textInfoOnBgFill svg, .Polaris-Banner--textInfoOnBgFill.Polaris-Banner--textInfoOnBgFill.Polaris-Banner--textInfoOnBgFill path {
+  fill: rgba(42, 172, 187, 1);
+}
+.Polaris-InlineStack.Polaris-Box{
+  --pc-box-background: rgba(222, 245, 247, 1) !important;
+
 }
 
 @media (max-width: 489px) {
