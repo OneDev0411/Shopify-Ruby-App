@@ -792,7 +792,6 @@ export function SecondTab(props) {
                         <Modal.Section>
                             <SelectCollectionsModal selectedItems={selectedItems} setSelectedItems={setSelectedItems}
                                                     offer={offer} shop={shopSettings}
-                                                    handleCollectionsModal={handleCollectionsModal}
                                                     selectedCollections={selectedCollections}
                                                     setSelectedCollections={setSelectedCollections}/>
                         </Modal.Section>
@@ -1227,8 +1226,7 @@ export function SecondTab(props) {
             >
                 <Modal.Section>
                     <ModalAddConditions quantityErrorText={quantityErrorText} itemErrorText={itemErrorText}
-                                        condition_options={condition_options} updateOffer={updateOffer}
-                                        rule={rule} setRule={setRule}/>
+                                        condition_options={condition_options} rule={rule} setRule={setRule}/>
                 </Modal.Section>
             </Modal>
         </div>

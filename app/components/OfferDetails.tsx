@@ -52,7 +52,7 @@ const OfferDetails = (props: IOfferDetailsProps) => {
           </Box>
           <Box>
             <Text as='p'>Product offered: 
-                {props.offerableProducts?.map((offerableProduct, index)=> (
+                {props.offerableProducts.map((offerableProduct, index)=> (
                     <p key={index}>{offerableProduct.title}</p>
                 ))}
             </Text>

@@ -11,8 +11,7 @@ interface ISelectCollectionsModalProps {
   selectedCollections: ProductDetails[],
   setSelectedItems: React.Dispatch<React.SetStateAction<(string | number)[]>>,
   selectedItems: (number | string)[],
-  shop: Shop,
-  handleCollectionsModal?: () => void,
+  shop: Shop
 }
 
 export function SelectCollectionsModal({ offer, setSelectedCollections, selectedCollections,
