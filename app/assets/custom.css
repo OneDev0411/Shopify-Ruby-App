@@ -18,18 +18,18 @@
 }
 
 .recommended-current {
-  top: 18px;
-  position: absolute;
+  margin-bottom: 10px;
   color: #8C9196;
 }
 
 .subscription-subtitle {
-  margin-top: -8px;
+  margin-top: 15px;
   line-height: 18px;
 }
 
 .my-24 {
-  margin-top: 24px;
+  color: #e0e0e0;
+  margin-top: 10px;
   margin-bottom: 24px;
 }
 

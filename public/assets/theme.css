@@ -1021,7 +1021,13 @@ h1{
 .min-width{
   min-width: 100px;
 }
-
+.gap-top {
+  margin-top: 25px;
+}
+.content-justify 
+{
+  justify-content: center;
+}
 #appearance input[type=number]{
   max-width: 100px;
 }

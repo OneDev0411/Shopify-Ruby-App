@@ -1,4 +1,4 @@
-import {Card, Page, Layout, Image, BlockStack, Banner} from "@shopify/polaris";
+import {Card, Page, Layout, Image, BlockStack, Banner, Text, InlineStack, Button, ButtonGroup} from "@shopify/polaris";
 import { useAppBridge } from '@shopify/app-bridge-react'
 import {Redirect, Toast} from '@shopify/app-bridge/actions';
 import { Reviews } from "../components";
@@ -142,10 +142,7 @@ export default function Subscription() {
                   Choose a Plan
                 </Layout.Section>
                 <Layout.Section>
-                  <Card title="In Cart Upsell & Cross-sell Unlimited - Paid Subscription"
-                              primaryFooterAction={(planName==='flex' && isSubscriptionActive(currentSubscription)) && !isSubscriptionUnpaid ? undefined : {content: 'Upgrade', onAction: () => handlePlanChange('plan_based_billing')}}
-                              sectioned
-                  >
+                  <Card>
                     <BlockStack>
                       <BlockStack>
                         <div className="recommended-current">
@@ -155,8 +152,9 @@ export default function Subscription() {
                             <p><small>Recommended</small></p>
                           )}
                         </div>
+                        <Text variant="headingMd" as="h6">IN CART UPSELL & CROSS-SELL UNLIMITED - Paid Subscription</Text>
                         <p className="subscription-subtitle">Upgrade now on our 30-DAY FREE TRIAL!</p>
-                        <hr className="my-24" />
+                        <p className="my-24">________________________________________________________________________</p>
                         <div className="pl-10">
                           <p className="bold space-4">Features</p>
                           <div className="features-grid">
@@ -185,7 +183,7 @@ export default function Subscription() {
                             />
                           </div>
                         </div>
-                        <hr className="my-24" />
+                        <p className="my-24">________________________________________________________________________</p>
                         <div className="pl-10">
                           <p className="bold space-4">Pricing</p>
                           <p className="mb-16">Paid app subscription plan pricing is based on your Shopify store’s subscription</p>
@@ -203,13 +201,24 @@ export default function Subscription() {
                             <p className="mt-14">$99.99/mo</p>
                           </div>
                         </div>
-
                       </BlockStack>
                     </BlockStack>
+                    <InlineStack align="end">
+                    <ButtonGroup>
+                      <Button
+                        variant="primary"
+                        onClick={() => {(planName==='flex' && isSubscriptionActive(currentSubscription)) && !isSubscriptionUnpaid ? undefined : handlePlanChange('plan_based_billing')}}
+                        accessibilityLabel="Upgrade"
+                      >
+                      Upgrade
+                      </Button>
+                    </ButtonGroup>
+                  </InlineStack>
                   </Card>
                 </Layout.Section>
-                <Layout.Section secondary>
-                  <Card title="Free" sectioned primaryFooterAction={(planName==='free' || planName === "trial" && isSubscriptionActive(currentSubscription)) ? undefined : {content: 'Downgrade', onAction: () => handlePlanChange('free_plan'), id: 'btnf'}}>
+                <Layout.Section variant="oneThird">
+                  <Card>
+
                     <div className="recommended-current">
                       {(planName==='free' && isSubscriptionActive(currentSubscription)) ? (
                         <p><small>Current Plan</small></p>
@@ -217,11 +226,23 @@ export default function Subscription() {
                         <p><small>Not Recommended</small></p>
                       )}
                     </div>
+                    <Text variant="headingMd" as="h6">Free</Text>
                     <p className="subscription-subtitle">1 branded upsell offer</p>
                     <div className="mt-28">
                       <p><b>1 upsell offer only</b></p>
                       <p>with “Powered by In Cart Upsell” watermark at bottom of offer block</p>
                     </div>
+                    <InlineStack align="end">
+                    <ButtonGroup>
+                      <Button
+                        variant="primary"
+                        onClick={() => {(planName==='free' || planName === "trial" && isSubscriptionActive(currentSubscription)) ? undefined : handlePlanChange('plan_based_billing')}}
+                        accessibilityLabel="Downgrade"
+                      >
+                      Downgrade
+                      </Button>
+                    </ButtonGroup>
+                  </InlineStack>
                   </Card>
                 </Layout.Section>
               </Layout>
@@ -230,7 +251,7 @@ export default function Subscription() {
             <div className="space-10"></div>
             <Layout>
               <Layout.Section>
-                <Card sectioned>
+                <Card>
                   <p>Need help, have some questions, or just want to say hi? We're available for a live chat 7 days a week from 5 AM EST - 9 PM EST.</p>
                   <br/>
                   <p>Not anything urgent? Fire us an email, we usually respond with 24 hours Monday to Friday</p>

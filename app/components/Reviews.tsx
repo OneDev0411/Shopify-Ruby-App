@@ -1,5 +1,5 @@
 // @ts-nocheck
-import {Layout, Card, Image, BlockStack, InlineGrid} from "@shopify/polaris";
+import {Layout, Card, Image, BlockStack, InlineGrid, Text} from "@shopify/polaris";
 import "../components/stylesheets/reviewStyle.css";
 
 export const Reviews = () => {
@@ -14,10 +14,10 @@ export const Reviews = () => {
         </Layout.Section>
       </Layout>
       <div className="space-10"></div>
-      <InlineGrid gap="4" columns={{ xs: 1, sm: 1, md: 1, lg: 3, xl: 3 }}>
-        <Card title="ECOKIND Cleaning" sectioned>
-          <div className="card-content-wrapper">
-            <div>
+      <InlineGrid gap="300" columns={{ xs: 1, sm: 1, md: 1, lg: 3, xl: 3 }}>
+        <Card>
+            <Text variant="headingMd" as="h2">ECOKIND Cleaning</Text>
+            <div className="gap-top"></div>
               <p>
                 <strong>Canada</strong>
               </p>
@@ -27,15 +27,15 @@ export const Reviews = () => {
                 very good too!
               </p>
               <br />
-            </div>
-            <BlockStack distribution="center">
-              <Image source="https://assets.incartupsell.com/images/5-star.png" distribution="center" />
-            </BlockStack>
-          </div>
+              <BlockStack distribution="center">
+                  <img alt="5 stars Image" width="40%" src="https://assets.incartupsell.com/images/5-star.png"/>
+              </BlockStack>
+
         </Card>
         <Card>
           <div className="card-content-wrapper">
-            <div>
+           <Text variant="headingMd" as="h2">My Gaming Case</Text>
+            <div className="gap-top">
               <p>
                 <strong>United States</strong>
               </p>
@@ -48,13 +48,14 @@ export const Reviews = () => {
               <br />
             </div>
             <BlockStack distribution="center">
-              <Image source="https://assets.incartupsell.com/images/5-star.png" distribution="center" />
+              <img alt="5 stars Image" width="40%" src="https://assets.incartupsell.com/images/5-star.png"/>
             </BlockStack>
           </div>
         </Card>
         <Card>
           <div className="card-content-wrapper">
-            <div>
+            <Text variant="headingMd" as="h2">Deinhamudi.de</Text>
+            <div className="gap-top">
               <p>
                 <strong>Germany</strong>
               </p>
@@ -67,8 +68,8 @@ export const Reviews = () => {
               <br />
             </div>
             <BlockStack distribution="center">
-              <Image source="https://assets.incartupsell.com/images/5-star.png" distribution="center" />
-            </BlockStack>
+                  <img alt="5 stars Image" width="40%" src="https://assets.incartupsell.com/images/5-star.png"/>
+              </BlockStack>
           </div>
         </Card>
       </InlineGrid>
