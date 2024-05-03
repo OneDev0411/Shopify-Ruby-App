@@ -9,9 +9,9 @@ interface ISelectCollectionsModalProps {
   offer: Offer,
   setSelectedCollections: (selectedColl: ProductDetails[]) => void,
   selectedCollections: ProductDetails[],
-  setSelectedItems: (selectedItems: (number | string)[]) => void,
+  setSelectedItems: React.Dispatch<React.SetStateAction<(string | number)[]>>,
   selectedItems: (number | string)[],
-  shop: Shop,
+  shop: Shop
 }
 
 export function SelectCollectionsModal({ offer, setSelectedCollections, selectedCollections,

@@ -1,12 +1,18 @@
-// @ts-nocheck
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import { useNavigate } from "@remix-run/react";
 import { Card, Box, AppProvider, Link, Text, Badge } from '@shopify/polaris';
 import { condition_options } from "../shared/constants/ConditionOptions";
 import { getLabelFromValue } from "../shared/helpers/commonHelpers";
 import "../components/stylesheets/editOfferStyle.css";
+import { Offer, ProductDetails } from "~/types/types";
+import translations from "@shopify/polaris/locales/en.json";
 
-const OfferDetails = (props) => {
+interface IOfferDetailsProps {
+  offer: Offer;
+  offerableProducts: ProductDetails[];
+}
+
+const OfferDetails = (props: IOfferDetailsProps) => {
   const navigateTo = useNavigate();
   const checkPlacement = useCallback(() => {
     if(props.offer.in_product_page && props.offer.in_cart_page) {
@@ -35,24 +41,24 @@ const OfferDetails = (props) => {
 
   return (
     <>
-      <AppProvider>
+      <AppProvider i18n={translations}>
         <Card>
           <div className="comp-cont">
             <span className="text-decor">Offer Details</span>
             <span><Link onClick={() => handleEditOffer(props.offer.id)} removeUnderline>Edit</Link></span>
           </div>
           <Box>
-            <Text>Placement: {checkPlacement()}</Text>
+            <Text as="p">Placement: {checkPlacement()}</Text>
           </Box>
           <Box>
-            <Text>Product offered: 
-                {props.offerableProducts?.map((offerableProduct, index)=> (
+            <Text as='p'>Product offered: 
+                {props.offerableProducts.map((offerableProduct, index)=> (
                     <p key={index}>{offerableProduct.title}</p>
                 ))}
             </Text>
           </Box>
           <Box>
-            <Text>
+            <Text as="p">
               Display conditions: 
               {props.offer.rules_json?.length === 0 ? (
                     <p style={{color: '#6D7175'}}>None selected (show offer to all customer)</p>
@@ -62,10 +68,11 @@ const OfferDetails = (props) => {
                           <div style={{marginRight: '10px', display: "inline-block"}}>
                               {getLabelFromValue(condition_options, rule.rule_selector)}: &nbsp;
                               <Badge>
+                                  {/* @ts-ignore */}
                                   <div style={{display: 'flex', alignItems: 'center'}}>
                                       {rule.quantity && <p style={{color: 'blue', marginRight: '3px'}}>{rule.quantity} &nbsp; - &nbsp;</p> }
                                       <p style={{color: 'blue', marginRight: '3px'}}><b>{rule.item_name}</b></p>
-                                  </div>
+                                  </div> 
                               </Badge>
                           </div>
                       </li>

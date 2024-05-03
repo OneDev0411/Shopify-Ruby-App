@@ -17,7 +17,7 @@ import { getLabelFromValue } from "~/shared/helpers/commonHelpers";
 import { QuantityArray, OrderArray } from "~/shared/constants/EditOfferOptions";
 
 import {OfferContent, OfferContext} from "~/contexts/OfferContext";
-import {IAutopilotSettingsProps, Offer} from "~/types/global";
+import {IAutopilotSettingsProps, Offer} from "~/types/types";
 
 type Rule = {
     quantity: number,
@@ -193,8 +193,7 @@ const DisplayConditions = ({ autopilotCheck } : IDisplayConditionsProps) => {
             >
                 <Modal.Section>
                     <ModalAddConditions quantityErrorText={quantityErrorText} itemErrorText={itemErrorText}
-                                        condition_options={condition_options} updateOffer={updateOffer}
-                                        rule={rule} setRule={setRule}/>
+                                        condition_options={condition_options} rule={rule} setRule={setRule}/>
                 </Modal.Section>
             </Modal>
         </>

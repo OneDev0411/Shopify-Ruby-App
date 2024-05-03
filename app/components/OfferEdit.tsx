@@ -3,13 +3,15 @@ import { LegacyCard,Tabs} from "@shopify/polaris";
 
 import { Toast } from "@shopify/app-bridge-react";
 import { useAppQuery, useAuthenticatedFetch } from "../hooks";
+import { useSelector } from "react-redux";
+import { IRootState } from "~/store/store";
 
 export function OfferEdit() {
 
-  const shopAndHost = useSelector(state => state.shopAndHost);
+  const shopAndHost = useSelector((state: IRootState) => state.shopAndHost);
   const fetch = useAuthenticatedFetch(shopAndHost.host);
-  const [isLoading, setIsLoading]   = useState(true);
-  const [selected, setSelected] = useState(0);
+  const [isLoading, setIsLoading]   = useState<boolean>(true);
+  const [selected, setSelected] = useState<number>(0);
 
   const handleTabChange = useCallback(
     (selectedTabIndex) => setSelected(selectedTabIndex),

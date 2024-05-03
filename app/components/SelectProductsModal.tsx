@@ -11,12 +11,11 @@ interface ISelectProductsModalProps {
   selectedProducts: ProductDetails[],
   setSelectedProducts: (prodDetails: ProductDetails[]) => void,
   selectedItems: (number | string)[],
-  setSelectedItems: () => void,
-  handleProductsModal: () => void,
+  setSelectedItems: React.Dispatch<React.SetStateAction<(string | number)[]>>,
 }
 
 export function SelectProductsModal({
-                                      offer, selectedProducts, setSelectedProducts, handleProductsModal,
+                                      offer, selectedProducts, setSelectedProducts,
                                       setSelectedItems, selectedItems, shop
                                     }: ISelectProductsModalProps) {
 
