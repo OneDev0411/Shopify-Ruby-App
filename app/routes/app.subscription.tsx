@@ -154,7 +154,6 @@ export default function Subscription() {
                         </div>
                         <Text variant="headingMd" as="h6">IN CART UPSELL & CROSS-SELL UNLIMITED - Paid Subscription</Text>
                         <p className="subscription-subtitle">Upgrade now on our 30-DAY FREE TRIAL!</p>
-                        <p className="my-24">________________________________________________________________________</p>
                         <div className="pl-10">
                           <p className="bold space-4">Features</p>
                           <div className="features-grid">
@@ -183,7 +182,6 @@ export default function Subscription() {
                             />
                           </div>
                         </div>
-                        <p className="my-24">________________________________________________________________________</p>
                         <div className="pl-10">
                           <p className="bold space-4">Pricing</p>
                           <p className="mb-16">Paid app subscription plan pricing is based on your Shopify store’s subscription</p>
