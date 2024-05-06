@@ -395,254 +395,252 @@ export function FirstTab(props) {
                 </div>
             ) : (
                 <>
-                    {/* <Card title="Offer Product" actions={[{content: 'Learn about Autopilot'}]} sectioned> */}
-                    <Card title="Offer Product" sectioned>
-                        <BlockStack spacing="loose" vertical>
-                            {(props.autopilotCheck?.autopilot_offer_id != offer.id || !props.autopilotCheck?.autopilot_offer_id) && (
-                                <p style={{color: '#6D7175'}}>What product would you like to have in the offer?</p>
-                            )}
+                    <BlockStack gap={"500"}>
+                        <BlockStack gap={"500"}>
+                            <Card>
+                                <BlockStack gap={"500"}>
+                                    <Text variant="headingMd" as="h6">Offer Product</Text>
+                                    {(props.autopilotCheck?.autopilot_offer_id != offer.id || !props.autopilotCheck?.autopilot_offer_id) && (
+                                        <p style={{color: '#6D7175'}}>What product would you like to have in the offer?3</p>
+                                    )}
 
-                            {offer.id == null && !props.autopilotCheck?.autopilot_offer_id && shopSettings.has_pro_features ? (
-                                <>
-                                    <div style={{marginBottom: '20px'}}>
-                                        <Button id={"btnLaunchAI"}
-                                                primary
-                                                onClick={() => enableAutopilot()}>{autopilotButtonText}</Button>
-                                    </div>
-
-                                    <Button id={"btnSelectProduct"} onClick={() => {
-                                        handleModal();
-                                        getProducts();
-                                    }} ref={modalRef}>Select product manually</Button>
-                                </>
-                            ) : (offer?.id != props.autopilotCheck?.autopilot_offer_id || !props.autopilotCheck?.autopilot_offer_id) && (
-                                <div>
-                                    <Button id={"btnSelectProduct"} onClick={() => {
-                                        handleModal();
-                                        getProducts();
-                                    }} ref={modalRef}>Select product manually</Button>
-                                </div>
-                            )}
-
-                            {(!shopSettings.has_pro_features) && (
-                                <ButtonGroup>
-                                    <>
-                                        <div>
-                                            <div style={{display: 'flex'}}>
-                                                <Icon source={InfoIcon} color="base"/>
-                                                <Link to="/subscription" style={{marginLeft: '5px'}}>
-                                                    Autopilot is available on the Paid Plan.
-                                                </Link>
+                                    {offer.id == null && !props.autopilotCheck?.autopilot_offer_id && shopSettings.has_pro_features ? (
+                                        <>
+                                            <div style={{marginBottom: '20px'}}>
+                                                <Button id={"btnLaunchAI"}
+                                                        primary
+                                                        onClick={() => enableAutopilot()}>{autopilotButtonText}</Button>
                                             </div>
+
+                                            <Button id={"btnSelectProduct"} onClick={() => {
+                                                handleModal();
+                                                getProducts();
+                                            }} ref={modalRef}>Select product manually</Button>
+                                        </>
+                                    ) : (offer?.id != props.autopilotCheck?.autopilot_offer_id || !props.autopilotCheck?.autopilot_offer_id) && (
+                                        <div>
+                                            <Button id={"btnSelectProduct"} onClick={() => {
+                                                handleModal();
+                                                getProducts();
+                                            }} ref={modalRef}>Select product manually</Button>
                                         </div>
-                                    </>
-                                </ButtonGroup>
-                            )}
+                                    )}
 
-                            {offer.offerable_product_details.length > 0 && (
-                                <b>Selected Products:
-                                    <br/>
-                                    <div className="space-2" />
-                                    {offer.offerable_product_details.map((value, index) => (
-                                        <div style={{marginRight: '10px', display: "inline-block"}}>
-                                            <Badge>
-                                                <p style={{color: 'blue'}}>{offer.offerable_product_details[index].title}</p>
-                                            </Badge>
-                                        </div>
-                                    ))}
-                                </b>
-                            )}
+                                    {(!shopSettings.has_pro_features) && (
+                                        <ButtonGroup>
+                                            <>
+                                                <div>
+                                                    <div style={{display: 'flex'}}>
+                                                        <Icon source={InfoIcon} color="base"/>
+                                                        <Link to="/app/subscription" style={{marginLeft: '5px'}}>
+                                                            Autopilot is available on the Paid Plan.
+                                                        </Link>
+                                                    </div>
+                                                </div>
+                                            </>
+                                        </ButtonGroup>
+                                    )}
 
-                        </BlockStack>
-                        {(openAutopilotSection || (offer.id != null && props.autopilotCheck?.autopilot_offer_id == offer.id)) && (
-                            <>
-                                <BlockStack spacing="loose" vertical>
-                                    <Select
-                                        label="How many products would you like the customer to be able to choose from in the offer?"
-                                        options={AutopilotQuantityOptions}
-                                        onChange={handleAutoPilotQuantityChange}
-                                        value={autopilotQuantity}
-                                    />
-                                </BlockStack>
-                                <BlockStack vertical>
-                                    <RadioButton
-                                        label="Stack"
-                                        checked={offer.multi_layout === 'stack'}
-                                        onChange={() => handleLayoutRadioClicked('stack')}
-                                    />
-                                    <RadioButton
-                                        label="Carousel"
-                                        checked={offer.multi_layout === 'carousel'}
-                                        onChange={() => handleLayoutRadioClicked('carousel')}
-                                    />
-                                </BlockStack>
-                                <BlockStack spacing="loose" vertical>
-                                    <TextField
-                                        label="Exclude products with a tag"
-                                        helpText="Autopilot will not suggest any product with this tag."
-                                        value={offer?.excluded_tags}
-                                        onChange={handleAutopilotExcludedTags}
-                                    />
-                                </BlockStack>
-                            </>
-                        )}
-                    </Card>
-                    <div className="space-10" />
+                                    {offer.offerable_product_details.length > 0 && (
+                                        <b>Selected Products:
+                                            <br/>
+                                            <div className="space-2" />
+                                            {offer.offerable_product_details.map((value, index) => (
+                                                <div style={{marginRight: '10px', display: "inline-block"}}>
+                                                    <Badge>
+                                                        <p style={{color: 'blue'}}>{offer.offerable_product_details[index].title}</p>
+                                                    </Badge>
+                                                </div>
+                                            ))}
+                                        </b>
+                                    )}
 
-                    <Card title="Text" sectioned>
-                        <BlockStack spacing="loose" vertical>
-                            {(offer.id == null || offer.id != props.autopilotCheck?.autopilot_offer_id) && (
-                                <>
-                                    <TextField
-                                        label="Offer title"
-                                        placeholder='Offer #1'
-                                        value={offer.title}
-                                        onChange={handleTitleChange}
-                                        autoComplete="off"
-                                        helpText="This title will only be visible to you so you can reference it internally"
-                                    />
-                                </>
-                            )}
-                            <TextField
-                                label="Offer text"
-                                placeholder='Take advantage of this limited offer'
-                                autoComplete="off"
-                                value={offer.text_a}
-                                onChange={handleTextChange}
-                            />
-                            <TextField
-                                label="Button text"
-                                placeholder='Add to cart'
-                                value={offer.cta_a}
-                                onChange={handleBtnChange}
-                                autoComplete="off"
-                            />
-                            {offer.uses_ab_test && <hr className="legacy-card-hr legacy-card-hr-t20-b15" />}
-                            <Checkbox id={"abTesting"}
-                                label="Enable A/B testing"
-                                checked={offer.uses_ab_test}
-                                onChange={handleAbChange}
-                            />
-                            <Collapsible
-                                open={offer.uses_ab_test}
-                                id="basic-collapsible"
-                                transition={{ duration: '500ms', timingFunction: 'ease-in-out' }}
-                            >
-                                {!shopSettings.has_pro_features ? (
-                                    <div style={{maxWidth: '476px', marginTop: '10px'}}>
-                                        <Text as="p" variant="headingSm" fontWeight="regular">
-                                            A/B testing is available on our Paid plan. Please <Link
-                                            to="/subscription">upgrade your subscription</Link> to enable it.
-                                        </Text>
-                                    </div>
-                                ) : (
+                                </BlockStack>
+                                {(openAutopilotSection || (offer.id != null && props.autopilotCheck?.autopilot_offer_id == offer.id)) && (
                                     <>
-                                        <TextField
-                                            label="Alternative offer text"
-                                            placeholder='Take advantage of this limited offer'
-                                            autoComplete="off"
-                                            value={offer.text_b}
-                                            onChange={handleAltTextChange}
-                                        />
-
-                                        <div className="space-4" />
-
-                                        <TextField
-                                            label="Alternative button text"
-                                            placeholder='Add to cart'
-                                            autoComplete="off"
-                                            value={offer.cta_b}
-                                            onChange={handleAltBtnChange}
-                                        />
+                                        <BlockStack spacing="loose" vertical>
+                                            <Select
+                                                label="How many products would you like the customer to be able to choose from in the offer?"
+                                                options={AutopilotQuantityOptions}
+                                                onChange={handleAutoPilotQuantityChange}
+                                                value={autopilotQuantity}
+                                            />
+                                        </BlockStack>
+                                        <BlockStack vertical>
+                                            <RadioButton
+                                                label="Stack"
+                                                checked={offer.multi_layout === 'stack'}
+                                                onChange={() => handleLayoutRadioClicked('stack')}
+                                            />
+                                            <RadioButton
+                                                label="Carousel"
+                                                checked={offer.multi_layout === 'carousel'}
+                                                onChange={() => handleLayoutRadioClicked('carousel')}
+                                            />
+                                        </BlockStack>
+                                        <BlockStack spacing="loose" vertical>
+                                            <TextField
+                                                label="Exclude products with a tag"
+                                                helpText="Autopilot will not suggest any product with this tag."
+                                                value={offer?.excluded_tags}
+                                                onChange={handleAutopilotExcludedTags}
+                                            />
+                                        </BlockStack>
                                     </>
                                 )}
-                               <Collapsible
-                                    open = {(offer.cta_b === '' && offer.text_b != '') || (offer.cta_b != '' && offer.text_b === '')}
-                                    transition={{ duration: '500ms', timingFunction: 'ease-in-out' }}
-                                    expandOnPrint
-                                >
-                                    <br/>
-                                    <Text color="critical">
-                                        If you are A/B testing, you must have a B version of both the Offer Text and the Button Text.
-                                    </Text>
-                                </Collapsible>                                
-                            </Collapsible>
-                        </BlockStack>
-                    </Card>
-                    <div className="space-10"/>
-
-                    <Card title="Display options" sectioned>
-                        <BlockStack spacing="baseTight" vertical>
-                            <Checkbox id={"removeImg"}
-                                      checked={!offer.show_product_image}
-                                      onChange={handleImageChange}
-                                      label="Remove product image"
-                            />
-                            <Checkbox id={"removePrice"}
-                                      checked={!offer.show_product_price}
-                                      onChange={handlePriceChange}
-                                      label="Remove price"
-                            />
-                            <Checkbox id={"removeComparePrice"}
-                                      checked={!offer.show_compare_at_price}
-                                      onChange={handleCompareChange}
-                                      label="Remove compare at price"
-                            />
-                            <Checkbox id={"removeProductPage"}
-                                      checked={!offer.link_to_product}
-                                      onChange={handleProductPageChange}
-                                      label="Remove link to product page"
-                            />
-                            <Checkbox id={"autoDiscount"}
-                                      label="Automatically apply discount code"
-                                      checked={offer.discount_target_type == "code"}
-                                      onChange={handleDiscountChange}
-                            />
-                            {offer.discount_target_type == "code" && (
-                                <div>
+                            </Card>
+                            <Card>
+                                <BlockStack gap={"500"}>
+                                    <Text variant="headingMd" as="h6">Text</Text>
+                                    {(offer.id == null || offer.id != props.autopilotCheck?.autopilot_offer_id) && (
+                                        <>
+                                            <TextField
+                                                label="Offer title"
+                                                placeholder='Offer #1'
+                                                value={offer.title}
+                                                onChange={handleTitleChange}
+                                                autoComplete="off"
+                                                helpText="This title will only be visible to you so you can reference it internally"
+                                            />
+                                        </>
+                                    )}
                                     <TextField
-                                        label="Discount Code"
-                                        value={offer.discount_code}
-                                        onChange={handleDiscountCodeChange}
+                                        label="Offer text"
+                                        placeholder='Take advantage of this limited offer'
+                                        autoComplete="off"
+                                        value={offer.text_a}
+                                        onChange={handleTextChange}
+                                    />
+                                    <TextField
+                                        label="Button text"
+                                        placeholder='Add to cart'
+                                        value={offer.cta_a}
+                                        onChange={handleBtnChange}
                                         autoComplete="off"
                                     />
-                                    <p>Make sure you have already set up this discount code in your <Link
-                                        to={`https://admin.shopify.com/store/${shopAndHost.shop.replace(/\.myshopify\.com$/, '')}/discounts`}
-                                        target="blank">discount code</Link> section.
-                                        The discount will apply automatically at checkout
-                                    </p>
-                                </div>
-                            )}
-                            <Checkbox id={"removeQtySelector"}
-                                      checked={!offer.show_quantity_selector}
-                                      onChange={handleQtySelectorChange}
-                                      label="Remove quantity selector"
-                            />
-                            <Checkbox id={"addCustomtext"}
-                                      checked={offer.show_custom_field}
-                                      onChange={handleCustomTextChange}
-                                      label="Add custom textbox"
-                            />
-                            <Checkbox id={"showNoThanks"}
-                                      checked={!offer.show_nothanks}
-                                      onChange={handleShowNoThanksChange}
-                                      label="Customer can't dismiss offer"
-                            />
-                            {shopSettings.has_redirect_to_product == true && (
-                                <Checkbox id={"redirectToProduct"}
-                                      checked={offer.redirect_to_product}
-                                      onChange={handleRedirectedToProductChange}
-                                      label="Offer button sends shopper to product page instead of adding to the cart (not recommended)"
-                                />
-                            )}
-                        </BlockStack>
-                    </Card>
-                    <div className="space-10"/>
+                                    {offer.uses_ab_test && <hr className="legacy-card-hr legacy-card-hr-t20-b15" />}
+                                    <Checkbox id={"abTesting"}
+                                        label="Enable A/B testing"
+                                        checked={offer.uses_ab_test}
+                                        onChange={handleAbChange}
+                                    />
+                                    <Collapsible
+                                        open={offer.uses_ab_test}
+                                        id="basic-collapsible"
+                                        transition={{ duration: '500ms', timingFunction: 'ease-in-out' }}
+                                    >
+                                        {!shopSettings.has_pro_features ? (
+                                            <div style={{maxWidth: '476px', marginTop: '10px'}}>
+                                                <Text as="p" variant="headingSm" fontWeight="regular">
+                                                    A/B testing is available on our Paid plan. Please <Link
+                                                    to="/app/subscription">upgrade your subscription</Link> to enable it.
+                                                </Text>
+                                            </div>
+                                        ) : (
+                                            <>
+                                                <TextField
+                                                    label="Alternative offer text"
+                                                    placeholder='Take advantage of this limited offer'
+                                                    autoComplete="off"
+                                                    value={offer.text_b}
+                                                    onChange={handleAltTextChange}
+                                                />
 
-                    <div className="space-4"/>
-                    <BlockStack distribution="center">
-                        <Button onClick={props.handleTabChange}>Continue To Placement</Button>
-                    </BlockStack>
+                                                <div className="space-4" />
+
+                                                <TextField
+                                                    label="Alternative button text"
+                                                    placeholder='Add to cart'
+                                                    autoComplete="off"
+                                                    value={offer.cta_b}
+                                                    onChange={handleAltBtnChange}
+                                                />
+                                            </>
+                                        )}
+                                    <Collapsible
+                                            open = {(offer.cta_b === '' && offer.text_b != '') || (offer.cta_b != '' && offer.text_b === '')}
+                                            transition={{ duration: '500ms', timingFunction: 'ease-in-out' }}
+                                            expandOnPrint
+                                        >
+                                            <br/>
+                                            <Text tone="critical">
+                                                If you are A/B testing, you must have a B version of both the Offer Text and the Button Text.
+                                            </Text>
+                                        </Collapsible>                                
+                                    </Collapsible>
+                                </BlockStack>
+                            </Card>
+                            <Card title="Display options" sectioned>
+                                <BlockStack spacing="baseTight" vertical>
+                                    <Checkbox id={"removeImg"}
+                                            checked={!offer.show_product_image}
+                                            onChange={handleImageChange}
+                                            label="Remove product image"
+                                    />
+                                    <Checkbox id={"removePrice"}
+                                            checked={!offer.show_product_price}
+                                            onChange={handlePriceChange}
+                                            label="Remove price"
+                                    />
+                                    <Checkbox id={"removeComparePrice"}
+                                            checked={!offer.show_compare_at_price}
+                                            onChange={handleCompareChange}
+                                            label="Remove compare at price"
+                                    />
+                                    <Checkbox id={"removeProductPage"}
+                                            checked={!offer.link_to_product}
+                                            onChange={handleProductPageChange}
+                                            label="Remove link to product page"
+                                    />
+                                    <Checkbox id={"autoDiscount"}
+                                            label="Automatically apply discount code"
+                                            checked={offer.discount_target_type == "code"}
+                                            onChange={handleDiscountChange}
+                                    />
+                                    {offer.discount_target_type == "code" && (
+                                        <div>
+                                            <TextField
+                                                label="Discount Code"
+                                                value={offer.discount_code}
+                                                onChange={handleDiscountCodeChange}
+                                                autoComplete="off"
+                                            />
+                                            <p>Make sure you have already set up this discount code in your <Link
+                                                to={`https://admin.shopify.com/store/${shopAndHost.shop.replace(/\.myshopify\.com$/, '')}/discounts`}
+                                                target="blank">discount code</Link> section.
+                                                The discount will apply automatically at checkout
+                                            </p>
+                                        </div>
+                                    )}
+                                    <Checkbox id={"removeQtySelector"}
+                                            checked={!offer.show_quantity_selector}
+                                            onChange={handleQtySelectorChange}
+                                            label="Remove quantity selector"
+                                    />
+                                    <Checkbox id={"addCustomtext"}
+                                            checked={offer.show_custom_field}
+                                            onChange={handleCustomTextChange}
+                                            label="Add custom textbox"
+                                    />
+                                    <Checkbox id={"showNoThanks"}
+                                            checked={!offer.show_nothanks}
+                                            onChange={handleShowNoThanksChange}
+                                            label="Customer can't dismiss offer"
+                                    />
+                                    {shopSettings.has_redirect_to_product == true && (
+                                        <Checkbox id={"redirectToProduct"}
+                                            checked={offer.redirect_to_product}
+                                            onChange={handleRedirectedToProductChange}
+                                            label="Offer button sends shopper to product page instead of adding to the cart (not recommended)"
+                                        />
+                                    )}
+                                </BlockStack>
+                            </Card>
+                        </BlockStack>
+                        <BlockStack distribution="center">
+                            <Button onClick={props.handleTabChange}>Continue To Placement</Button>
+                        </BlockStack>
+                    </BlockStack>             
 
                     <div className="space-10"></div>
                     {/* Modal */}

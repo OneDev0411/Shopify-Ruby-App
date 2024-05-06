@@ -30,7 +30,7 @@ export const Reviews = () => {
             </div>
             <div className='space-16'></div>
             </BlockStack>
-            <span className="display-ruby" >
+            <span className="align-center" >
               <img alt="5 stars Image" width="40%" src="https://assets.incartupsell.com/images/5-star.png"/>
             </span>
         </Card>
@@ -49,7 +49,7 @@ export const Reviews = () => {
               </p>
               <br />
             </div>
-            <span className="display-ruby" >
+            <span className="align-center" >
               <img alt="5 stars Image" width="40%" src="https://assets.incartupsell.com/images/5-star.png"/>
             </span>
           </div>
@@ -70,7 +70,7 @@ export const Reviews = () => {
             </div>
             <div className='space-16 margin-63'></div>
             </BlockStack>
-            <span className="display-ruby" >
+            <span className="align-center" >
               <img alt="5 stars Image" width="40%" src="https://assets.incartupsell.com/images/5-star.png"/>
             </span>
         </Card>

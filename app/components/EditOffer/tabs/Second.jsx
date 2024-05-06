@@ -722,9 +722,8 @@ export function SecondTab(props) {
             )}
 
             <Card title="Choose placement" sectioned>
-                <p style={{color: '#6D7175', marginTop: '-20px', marginBottom: '23px'}}>Where would you like your offer
-                    to appear?</p>
-
+                <Text variant="headingMd" as="h6">Offer Product</Text>
+                <Text variant="bodyMd" as="p">Where would you like your offer to appear?</Text>
                 <BlockStack spacing="loose" vertical>
                     <Grid>
                         <Grid.Cell columnSpan={{xs: 6, sm: 3, md: 3, lg: 6, xl: 6}}>
@@ -757,8 +756,9 @@ export function SecondTab(props) {
                         <div style={{marginBottom: '20px', marginTop: '16px'}}>
                             <Button onClick={handleSelectProductsModal} ref={modalProd}>Select Product</Button>
                         </div>
-
-                        <Button onClick={handleSelectCollectionsModal} ref={modalColl}>Select Collection</Button>
+                        <div style={{marginBottom: '20px', marginTop: '16px'}}>
+                            <Button onClick={handleSelectCollectionsModal} ref={modalColl}>Select Collection</Button>
+                        </div>
                     </>
                 )}
                     <Modal

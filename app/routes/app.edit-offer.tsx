@@ -375,7 +375,7 @@ export default function EditPage() {
                                 </Tabs>
                             </div>
                         </Layout.Section>
-                        <Layout.Section secondary>
+                        <Layout.Section variant="oneThird">
                             <div className="offer-tabs-no-padding">
                                 <Tabs
                                     tabs={tabsPre}

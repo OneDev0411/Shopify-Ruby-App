@@ -1058,8 +1058,9 @@ h1{
   margin: 30px 0px 30px 0;
   width: 85%;
 }
-.display-ruby {
-  display: ruby-text;
+.align-center {
+  display: flex;
+  justify-content: center;
 }
 .margin-63 {
   margin-top: 63px;
