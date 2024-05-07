@@ -1154,8 +1154,11 @@ h1{
 .Polaris-Banner--textInfoOnBgFill {
   --pc-box-background: rgba(222, 245, 247, 1) !important;
 }
-
-
+.color-box {
+  width: 30px;
+  height: 28px;
+  border: solid 1px darkgrey;
+}
 .Polaris-Banner--textInfoOnBgFill.Polaris-Banner--textInfoOnBgFill.Polaris-Banner--textInfoOnBgFill svg, .Polaris-Banner--textInfoOnBgFill.Polaris-Banner--textInfoOnBgFill.Polaris-Banner--textInfoOnBgFill path {
   fill: rgba(42, 172, 187, 1);
 }

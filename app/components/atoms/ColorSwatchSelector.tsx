@@ -11,7 +11,7 @@ interface IColorSwatchSelectorProps {
 const ColorSwatchSelector = ({ onClick, backgroundColor, ariaExpanded, ariaControls }: IColorSwatchSelectorProps) => {
   return (
     <button
-      className='custom-button-style'
+      className='custom-button-style color-box'
       style={{ backgroundColor }}
       onClick={onClick}
       aria-expanded={ariaExpanded}
