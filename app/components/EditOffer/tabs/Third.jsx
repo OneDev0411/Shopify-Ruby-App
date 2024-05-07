@@ -191,6 +191,8 @@ export function ThirdTab(props) {
     return (
         <div id="appearance-offers">
             <Card title="Offer box" sectioned>
+                <BlockStack gap={"300"}>
+                    <Text variant="headingSm" as="h2">Offer box</Text>
                     {(offer.id != null && props.autopilotCheck?.autopilot_offer_id == offer.id) ? (
                         <>
                         </>
@@ -210,60 +212,61 @@ export function ThirdTab(props) {
                         </>
                         )
                     }
-                    <Grid>
-                        <Grid.Cell columnSpan={{ xs: 6, sm: 3, md: 3, lg: 4, xl: 4 }}>
-                            <TextField
-                                label="Space above offer"
-                                type="number"
-                                onChange={handleAboveSpace}
-                                value={parseInt(offer.css_options?.main?.marginTop)}
-                                suffix="px"
-                                placeholder="1-100px"
+                </BlockStack>
+                <Grid>
+                    <Grid.Cell columnSpan={{ xs: 6, sm: 3, md: 3, lg: 4, xl: 4 }}>
+                        <TextField
+                            label="Space above offer"
+                            type="number"
+                            onChange={handleAboveSpace}
+                            value={parseInt(offer.css_options?.main?.marginTop)}
+                            suffix="px"
+                            placeholder="1-100px"
+                        />
+                    </Grid.Cell>
+                    <Grid.Cell columnSpan={{ xs: 6, sm: 3, md: 3, lg: 4, xl: 4 }}>
+                        <TextField
+                            label="Space below offer"
+                            type="number"
+                            onChange={handleBelowSpace}
+                            value={parseInt(offer.css_options?.main?.marginBottom)}
+                            suffix="px"
+                            placeholder="1-100px"
+                        />
+                    </Grid.Cell>
+                </Grid>
+                <br />
+                <Grid>
+                    <Grid.Cell columnSpan={{ xs: 6, sm: 3, md: 3, lg: 4, xl: 4 }}>
+                        <Select label="Border style"
+                            options={OfferBorderOptions}
+                            onChange={handleBorderStyle}
+                            value={offer?.css_options?.main?.borderStyle}
+                        />
+                    </Grid.Cell>
+                    <Grid.Cell columnSpan={{ xs: 6, sm: 3, md: 3, lg: 4, xl: 4 }}>
+                        <TextField
+                            label="Border width"
+                            type="number"
+                            onChange={handleBorderWidth}
+                            value={parseInt(offer.css_options?.main?.borderWidth)}
+                            suffix="px"
+                            placeholder="0-10px"
+                        />
+                    </Grid.Cell>
+                    <Grid.Cell columnSpan={{ xs: 6, sm: 3, md: 3, lg: 4, xl: 4 }}>
+                        <div className="range-slider-container">
+                            <RangeSlider
+                                label="Corner Radius"
+                                value={parseInt(offer.css_options?.main?.borderRadius)}
+                                min={0}
+                                max={50}
+                                onChange={handlesetBorderRange}
+                                output
                             />
-                        </Grid.Cell>
-                        <Grid.Cell columnSpan={{ xs: 6, sm: 3, md: 3, lg: 4, xl: 4 }}>
-                            <TextField
-                                label="Space below offer"
-                                type="number"
-                                onChange={handleBelowSpace}
-                                value={parseInt(offer.css_options?.main?.marginBottom)}
-                                suffix="px"
-                                placeholder="1-100px"
-                            />
-                        </Grid.Cell>
-                    </Grid>
-                    <br />
-                    <Grid>
-                        <Grid.Cell columnSpan={{ xs: 6, sm: 3, md: 3, lg: 4, xl: 4 }}>
-                            <Select label="Border style"
-                                options={OfferBorderOptions}
-                                onChange={handleBorderStyle}
-                                value={offer?.css_options?.main?.borderStyle}
-                            />
-                        </Grid.Cell>
-                        <Grid.Cell columnSpan={{ xs: 6, sm: 3, md: 3, lg: 4, xl: 4 }}>
-                            <TextField
-                                label="Border width"
-                                type="number"
-                                onChange={handleBorderWidth}
-                                value={parseInt(offer.css_options?.main?.borderWidth)}
-                                suffix="px"
-                                placeholder="0-10px"
-                            />
-                        </Grid.Cell>
-                        <Grid.Cell columnSpan={{ xs: 6, sm: 3, md: 3, lg: 4, xl: 4 }}>
-                            <div className="range-slider-container">
-                                <RangeSlider
-                                    label="Corner Radius"
-                                    value={parseInt(offer.css_options?.main?.borderRadius)}
-                                    min={0}
-                                    max={50}
-                                    onChange={handlesetBorderRange}
-                                    output
-                                />
-                            </div>
-                        </Grid.Cell>
-                    </Grid>
+                        </div>
+                    </Grid.Cell>
+                </Grid>
             </Card>
             <div className="space-10" />
 

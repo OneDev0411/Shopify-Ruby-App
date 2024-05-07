@@ -811,7 +811,7 @@ export function SecondTab(props) {
                             (multipleDefaultSettings ? (
                                 (offer.in_product_page && offer.in_cart_page) ? (
                                     <>
-                                        <hr className="legacy-card-hr legacy-card-hr-t20-b15"/>
+                                        <hr className="legacy-card-hr legacy-card-hr-t20-b15 placement-hr"/>
                                         <div style={{paddingBottom: '12px'}}>
                                             <Text variant="headingSm" as="h2">Where on this page would you like the offer to
                                                 appear?</Text>
@@ -874,7 +874,7 @@ export function SecondTab(props) {
                                                 />
                                             </>
                                         )}
-                                        <hr className="legacy-card-hr legacy-card-hr-t20-b15"/>
+                                        <hr className="legacy-card-hr legacy-card-hr-t20-b15 placement-hr"/>
                                         <div style={{paddingBottom: '12px'}}>
                                             <Text variant="headingSm" as="h2">Where on this page would you like the offer to
                                                 appear?</Text>

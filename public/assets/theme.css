@@ -1163,6 +1163,18 @@ h1{
   --pc-box-background: rgba(222, 245, 247, 1) !important;
 
 }
+.Polaris-TextField__Spinner {
+  visibility: unset;
+}
+.placement-hr {
+  width: 110%;
+  margin-left: -16px;
+  margin-top: 20px;
+}
+.Polaris-Connected__Item--primary {
+  flex: 0.86;
+}
+
 
 @media (max-width: 489px) {
   .title-bar-button {
