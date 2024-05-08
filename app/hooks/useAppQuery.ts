@@ -1,6 +1,8 @@
 import { useAuthenticatedFetch } from "./useAuthenticatedFetch";
 import { useMemo } from "react";
 import { useQuery } from "react-query";
+import { useSelector } from "react-redux";
+import { IRootState } from "~/store/store";
 
 /**
  * A hook for querying your custom app data.
@@ -14,14 +16,24 @@ import { useQuery } from "react-query";
  *
  * @returns Return value of useQuery.  See: https://react-query.tanstack.com/reference/useQuery.
  */
-export const useAppQuery = ({ url, fetchInit = {}, reactQueryOptions }) => {
-  const authenticatedFetch = useAuthenticatedFetch();
+
+interface IUseAppQueryProps {
+  url: string,
+  options?: RequestInit,
+  reactQueryOptions: {
+    onSuccess: () => void
+  }
+}
+
+export const useAppQuery = ({ url, options = {}, reactQueryOptions }: IUseAppQueryProps) => {
+  const shopAndHost = useSelector((state: IRootState) => state.shopAndHost);
+  const authenticatedFetch = useAuthenticatedFetch(shopAndHost.host);
   const fetch = useMemo(() => {
     return async () => {
-      const response = await authenticatedFetch(url, fetchInit);
+      const response = await authenticatedFetch(url, options);
       return response.json();
     };
-  }, [url, JSON.stringify(fetchInit)]);
+  }, [url, JSON.stringify(options)]);
 
   return useQuery(url, fetch, {
     ...reactQueryOptions,
