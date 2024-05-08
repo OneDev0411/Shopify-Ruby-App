@@ -1045,9 +1045,6 @@ h1{
 .Polaris-Spinner--sizeLarge svg {
   fill:#00bd9b;
 }
-#appearance input[type=number]{
-  max-width: 100px;
-}
 .hr-custom {
   border-bottom: 1px solid #cacaca;
   width: 115%;
@@ -1174,9 +1171,7 @@ h1{
   margin-left: -16px;
   margin-top: 20px;
 }
-.Polaris-Connected__Item--primary {
-  flex: 0.86;
-}
+
 
 
 @media (max-width: 489px) {
