@@ -1,4 +1,4 @@
-import {LegacyCard, Page, Layout, Image, BlockStack, Banner} from "@shopify/polaris";
+import {Card, Page, Layout, Image, BlockStack, Banner} from "@shopify/polaris";
 import { useAppBridge } from '@shopify/app-bridge-react'
 import {Redirect, Toast} from '@shopify/app-bridge/actions';
 import { Reviews } from "../components";
@@ -142,12 +142,12 @@ export default function Subscription() {
                   Choose a Plan
                 </Layout.Section>
                 <Layout.Section>
-                  <LegacyCard title="In Cart Upsell & Cross-sell Unlimited - Paid Subscription"
+                  <Card title="In Cart Upsell & Cross-sell Unlimited - Paid Subscription"
                               primaryFooterAction={(planName==='flex' && isSubscriptionActive(currentSubscription)) && !isSubscriptionUnpaid ? undefined : {content: 'Upgrade', onAction: () => handlePlanChange('plan_based_billing')}}
                               sectioned
                   >
                     <BlockStack>
-                      <BlockStack.Item>
+                      <BlockStack>
                         <div className="recommended-current">
                           {(planName==='flex' && isSubscriptionActive(currentSubscription)) ? (
                             <p><small>Current Plan</small></p>
@@ -204,12 +204,12 @@ export default function Subscription() {
                           </div>
                         </div>
 
-                      </BlockStack.Item>
+                      </BlockStack>
                     </BlockStack>
-                  </LegacyCard>
+                  </Card>
                 </Layout.Section>
                 <Layout.Section secondary>
-                  <LegacyCard title="Free" sectioned primaryFooterAction={(planName==='free' || planName === "trial" && isSubscriptionActive(currentSubscription)) ? undefined : {content: 'Downgrade', onAction: () => handlePlanChange('free_plan'), id: 'btnf'}}>
+                  <Card title="Free" sectioned primaryFooterAction={(planName==='free' || planName === "trial" && isSubscriptionActive(currentSubscription)) ? undefined : {content: 'Downgrade', onAction: () => handlePlanChange('free_plan'), id: 'btnf'}}>
                     <div className="recommended-current">
                       {(planName==='free' && isSubscriptionActive(currentSubscription)) ? (
                         <p><small>Current Plan</small></p>
@@ -222,7 +222,7 @@ export default function Subscription() {
                       <p><b>1 upsell offer only</b></p>
                       <p>with “Powered by In Cart Upsell” watermark at bottom of offer block</p>
                     </div>
-                  </LegacyCard>
+                  </Card>
                 </Layout.Section>
               </Layout>
             </div>
@@ -230,11 +230,11 @@ export default function Subscription() {
             <div className="space-10"></div>
             <Layout>
               <Layout.Section>
-                <LegacyCard sectioned>
+                <Card sectioned>
                   <p>Need help, have some questions, or just want to say hi? We're available for a live chat 7 days a week from 5 AM EST - 9 PM EST.</p>
                   <br/>
                   <p>Not anything urgent? Fire us an email, we usually respond with 24 hours Monday to Friday</p>
-                </LegacyCard>
+                </Card>
               </Layout.Section>
             </Layout>
             <div className="space-10"></div>

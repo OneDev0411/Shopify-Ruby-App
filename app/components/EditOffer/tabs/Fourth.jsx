@@ -1,6 +1,6 @@
 // @ts-nocheck
 import {
-    LegacyCard,
+    Card,
     BlockStack,
     ButtonGroup,
     Button,
@@ -87,8 +87,8 @@ export function FourthTab(props) {
               )
             }
 
-            {/* <LegacyCard sectioned title="Offer placement - advanced settings" actions={[{ content: 'View help doc' }]}> */}
-            <LegacyCard sectioned title="Offer placement - advanced settings">
+            {/* <Card sectioned title="Offer placement - advanced settings" actions={[{ content: 'View help doc' }]}> */}
+            <Card sectioned title="Offer placement - advanced settings">
                 {(!offer?.advanced_placement_setting?.advanced_placement_setting_enabled) && (
                     <>
                         <b>To edit Advanced settings, enable "Advanced Placement Settings" option on the Placement tab.</b>
@@ -187,7 +187,7 @@ export function FourthTab(props) {
                     onChange={handleChange}
                     disabled={!offer?.advanced_placement_setting?.advanced_placement_setting_enabled}
                 />
-            </LegacyCard>
+            </Card>
             <div className="space-10"></div>
             <BlockStack distribution="center">
                 <ButtonGroup>

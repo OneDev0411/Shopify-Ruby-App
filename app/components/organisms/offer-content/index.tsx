@@ -3,7 +3,7 @@ import { Link } from '@remix-run/react';
 import {OfferContent, OfferContext} from "~/contexts/OfferContext";
 import { useShopState } from "~/contexts/ShopContext";
 
-import { Checkbox, Collapsible, LegacyCard, BlockStack, Text, TextField } from "@shopify/polaris";
+import { Checkbox, Collapsible, Card, BlockStack, Text, TextField } from "@shopify/polaris";
 import {IAutopilotSettingsProps} from "~/types/global";
 
 interface IOfferContentProps extends IAutopilotSettingsProps{
@@ -34,7 +34,7 @@ const OfferContent = ({ updateCheckKeysValidity, autopilotCheck }: IOfferContent
     const handleAbChange = useCallback((newChecked: boolean) => updateOffer("uses_ab_test", newChecked), []);
 
     return (
-        <LegacyCard title="Text" sectioned>
+        <Card title="Text" sectioned>
             <BlockStack spacing="loose" vertical>
                 {(offer.id == null || offer.id != autopilotCheck?.autopilot_offer_id) && (
                     <>
@@ -113,7 +113,7 @@ const OfferContent = ({ updateCheckKeysValidity, autopilotCheck }: IOfferContent
                     </Collapsible>
                 </Collapsible>
             </BlockStack>
-        </LegacyCard>
+        </Card>
     );
 }
 

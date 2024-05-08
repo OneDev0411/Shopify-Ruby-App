@@ -1,5 +1,6 @@
+// @ts-nocheck
 import {
-    LegacyCard,
+    Card,
     BlockStack,
     ButtonGroup,
     Button,
@@ -25,17 +26,11 @@ import {ModalAddProduct} from "./modal_AddProduct";
 import {ModalAddConditions} from "./modal_AddConditions";
 import { useState, useCallback, useRef, useEffect } from "react";
 import { SketchPicker } from 'react-color';
-import React from "react";
-import tinycolor from "tinycolor2";
 import { Link } from '@remix-run/react';
 import { useSelector } from 'react-redux';
-import { elementSearch, productsMulti } from "../services/products/actions/product";
-import { useLocation } from '@remix-run/react';
-import { useAppQuery, useAuthenticatedFetch } from "../hooks";
-import { useNavigate } from "@remix-run/react";
+import { useAuthenticatedFetch } from "../hooks";
 import SelectProductsModal from "../components/SelectProductsModal";
 import { SelectCollectionsModal } from "../components/SelectCollectionsModal";
-import customCss from '@assets/custom.css';
 import product_page_image_1 from "@assets/images/product_page_image_1.png";
 import product_page_image_2 from "@assets/images/product_page_image_2.png";
 import product_page_image_3 from "@assets/images/product_page_image_3.png";
@@ -359,8 +354,8 @@ export function EditOfferTabs(props) {
                 </div>
             )   :   (
             <>
-                <LegacyCard title="Offer Product" actions={[{content: 'Learn about Autopilot'}]} sectioned >
-                    <LegacyCard.Section>
+                <Card title="Offer Product" actions={[{content: 'Learn about Autopilot'}]} sectioned >
+                    <Card.Section>
                         <BlockStack spacing="loose" vertical>
                                 {props.offer.id == null ? (
                                     <>
@@ -414,10 +409,10 @@ export function EditOfferTabs(props) {
                                 )}
                             </b>
                         </BlockStack>
-                    </LegacyCard.Section>
+                    </Card.Section>
                     {props.openAutopilotSection || (props.offer.id != null && props.autopilotCheck?.autopilot_offer_id == props.offer.id) ? (
                         <>
-                            <LegacyCard.Section title="Number of recommended products">
+                            <Card.Section title="Number of recommended products">
                                 <BlockStack spacing="loose" vertical>
                                     <Select
                                         label="How many products would you like the customer to be able to choose from in the offer?"
@@ -426,8 +421,8 @@ export function EditOfferTabs(props) {
                                         value={autopilotQuantity}
                                     />
                                 </BlockStack>
-                            </LegacyCard.Section>
-                            <LegacyCard.Section title="Layout">
+                            </Card.Section>
+                            <Card.Section title="Layout">
                                 <BlockStack vertical>
                                     <RadioButton
                                         label="Stack"
@@ -440,8 +435,8 @@ export function EditOfferTabs(props) {
                                         onChange={() => handleLayoutRadioClicked('carousel')}
                                     />
                                 </BlockStack>
-                            </LegacyCard.Section>
-                            <LegacyCard.Section>
+                            </Card.Section>
+                            <Card.Section>
                                 <BlockStack spacing="loose" vertical>
                                     <TextField
                                         label="Exclude products with a tag"
@@ -450,12 +445,12 @@ export function EditOfferTabs(props) {
                                         onChange={handleAutopilotExcludedTags}
                                     />
                                 </BlockStack>
-                            </LegacyCard.Section>
+                            </Card.Section>
                         </>
                     ) : (<></>)}
-                </LegacyCard>
-                <LegacyCard title="Text" sectioned >
-                    <LegacyCard.Section>
+                </Card>
+                <Card title="Text" sectioned >
+                    <Card.Section>
                         <BlockStack spacing="loose" vertical>
                             {(props.offer.id != props.autopilotCheck?.autopilot_offer_id) && (
                                 <>
@@ -529,10 +524,10 @@ export function EditOfferTabs(props) {
                                 </Collapsible>
                             </Collapsible>
                         </BlockStack>
-                    </LegacyCard.Section>
-                </LegacyCard>
-                <LegacyCard title="Display options" sectioned>
-                    <LegacyCard.Section>
+                    </Card.Section>
+                </Card>
+                <Card title="Display options" sectioned>
+                    <Card.Section>
                         <BlockStack vertical>
                             <Checkbox id={"removeImg"}
                                 checked={!props.offer.show_product_image}
@@ -570,8 +565,8 @@ export function EditOfferTabs(props) {
                                 label="Add custom textbox"
                             />
                         </BlockStack>
-                    </LegacyCard.Section>
-                </LegacyCard>
+                    </Card.Section>
+                </Card>
                 <div className="space-4"></div>
                 <BlockStack distribution="center">
                     <Button id={"btnAddProduct"} onClick={handleModal} ref={modalRef}>Add product</Button>
@@ -1524,8 +1519,8 @@ export function SecondTab(props) {
 
     return (
         <div>
-            <LegacyCard title="Choose placement" sectioned>
-                <LegacyCard.Section>
+            <Card title="Choose placement" sectioned>
+                <Card.Section>
                     <Grid>
                         <Grid.Cell columnSpan={{ xs: 6, sm: 3, md: 3, lg: 6, xl: 6 }}>
                             <Select
@@ -1571,11 +1566,11 @@ export function SecondTab(props) {
                             <SelectCollectionsModal selectedItems={selectedItems} setSelectedItems={setSelectedItems} offer={props.offer} shop={props.shop} handleCollectionsModal={handleCollectionsModal} selectedCollections={selectedCollections} setSelectedCollections={setSelectedCollections}/>
                         </Modal.Section>
                     </Modal>
-                </LegacyCard.Section>
+                </Card.Section>
                 {multipleDefaultSettings ? (
                     (props.offer.in_product_page && props.offer.in_cart_page) ? (
                         <>
-                            <LegacyCard.Section title="Where on this page would you like the offer to appear?">
+                            <Card.Section title="Where on this page would you like the offer to appear?">
                             <Grid>
                                 <Grid.Cell columnSpan={{xs: 6, sm: 3, md: 3, lg: 6, xl: 6}}>
                                     <Checkbox
@@ -1619,8 +1614,8 @@ export function SecondTab(props) {
                                     />
                                 </>
                             )}
-                            </LegacyCard.Section>
-                            <LegacyCard.Section title="Where on this page would you like the offer to appear?">
+                            </Card.Section>
+                            <Card.Section title="Where on this page would you like the offer to appear?">
                             <Grid>
                                 <Grid.Cell columnSpan={{xs: 6, sm: 3, md: 3, lg: 6, xl: 6}}>
                                     <Checkbox
@@ -1664,11 +1659,11 @@ export function SecondTab(props) {
                                     />
                                 </>
                             )}
-                            </LegacyCard.Section>
+                            </Card.Section>
                         </>
                         ) : (
                         <>
-                            <LegacyCard.Section title="Where on this page would you like the offer to appear?">
+                            <Card.Section title="Where on this page would you like the offer to appear?">
                             <Grid>
                                 <Grid.Cell columnSpan={{xs: 6, sm: 3, md: 3, lg: 6, xl: 6}}>
                                     <Checkbox
@@ -1712,8 +1707,8 @@ export function SecondTab(props) {
                                     />
                                 </>
                             )}
-                            </LegacyCard.Section>
-                            <LegacyCard.Section title="Where on this page would you like the offer to appear?">
+                            </Card.Section>
+                            <Card.Section title="Where on this page would you like the offer to appear?">
                             <Grid>
                                 <Grid.Cell columnSpan={{xs: 6, sm: 3, md: 3, lg: 6, xl: 6}}>
                                     <Checkbox
@@ -1757,11 +1752,11 @@ export function SecondTab(props) {
                                     />
                                 </>
                             )}
-                            </LegacyCard.Section>
+                            </Card.Section>
                         </>
                     )
                     ) : (
-                    <LegacyCard.Section title="Where on this page would you like the offer to appear?">
+                    <Card.Section title="Where on this page would you like the offer to appear?">
                     <Grid>
                         <Grid.Cell columnSpan={{xs: 6, sm: 3, md: 3, lg: 6, xl: 6}}>
                             <Checkbox
@@ -1805,13 +1800,13 @@ export function SecondTab(props) {
                             />
                         </>
                     )}
-                    </LegacyCard.Section>
+                    </Card.Section>
                 )}
-            </LegacyCard>
+            </Card>
             {props.offer.id != props.autopilotCheck?.autopilot_offer_id && (
                 <>
-                    <LegacyCard title="Display Conditions" sectioned>
-                        <LegacyCard.Section>
+                    <Card title="Display Conditions" sectioned>
+                        <Card.Section>
                             {props.offer?.rules_json?.length===0 ? (
                                 <p>None selected (show offer to all customer)</p>
                             ) : (
@@ -1825,8 +1820,8 @@ export function SecondTab(props) {
                             )}
                             <br />
                             <Button onClick={handleConditionModal} ref={modalCon}>Add condition</Button>
-                        </LegacyCard.Section>
-                        <LegacyCard.Section title="Condition options">
+                        </Card.Section>
+                        <Card.Section title="Condition options">
                             <BlockStack vertical>
                                 <Checkbox
                                     label="Disable checkout button until offer is accepted"
@@ -1840,8 +1835,8 @@ export function SecondTab(props) {
                                     onChange={handleRemoveItiem}
                                 />
                             </BlockStack>
-                        </LegacyCard.Section>
-                    </LegacyCard>
+                        </Card.Section>
+                    </Card>
                 </>
                 )}
             <div className="space-4"></div>
@@ -2008,8 +2003,8 @@ export function ThirdTab(props) {
 
     return (
         <div>
-            <LegacyCard title="Offer box" sectioned>
-                <LegacyCard.Section>
+            <Card title="Offer box" sectioned>
+                <Card.Section>
                     {(props.offer.id != null && props.autopilotCheck?.autopilot_offer_id == props.offer.id) ? (
                         <>
                         </>
@@ -2079,10 +2074,10 @@ export function ThirdTab(props) {
                             />
                         </Grid.Cell>
                     </Grid>
-                </LegacyCard.Section>
-            </LegacyCard>
-            <LegacyCard title="Color" sectioned>
-                <LegacyCard.Section>
+                </Card.Section>
+            </Card>
+            <Card title="Color" sectioned>
+                <Card.Section>
                     <ButtonGroup>
                         <Button
                             onClick={handleToggle}
@@ -2102,10 +2097,10 @@ export function ThirdTab(props) {
                             {/*<br/><SketchPicker onChange={handleOfferBackgroundColor} color={props.shop.css_options.main.backgroundColor} />*/}
                         </Collapsible>
                     </Stack>
-                </LegacyCard.Section>
-            </LegacyCard>
-            <LegacyCard title="Offer text" className="input-box" sectioned>
-                <LegacyCard.Section>
+                </Card.Section>
+            </Card>
+            <Card title="Offer text" className="input-box" sectioned>
+                <Card.Section>
                     <Grid>
                         <Grid.Cell columnSpan={{ xs: 6, sm: 3, md: 3, lg: 6, xl: 6 }}>
                             <Select
@@ -2136,8 +2131,8 @@ export function ThirdTab(props) {
                             />
                         </Grid.Cell>
                     </Grid>
-                </LegacyCard.Section>
-                <LegacyCard.Section title="Button text">
+                </Card.Section>
+                <Card.Section title="Button text">
                     <Grid>
                         <Grid.Cell columnSpan={{ xs: 6, sm: 3, md: 3, lg: 6, xl: 6 }}>
                             <Select
@@ -2179,8 +2174,8 @@ export function ThirdTab(props) {
                             />
                         </Grid.Cell>
                     </Grid>
-                </LegacyCard.Section>
-            </LegacyCard>
+                </Card.Section>
+            </Card>
             <div className="space-4"></div>
             <BlockStack distribution="center">
                 <ButtonGroup>
@@ -2209,21 +2204,21 @@ export function FourthTab(props) {
 
     return (
         <>
-            <LegacyCard sectioned title="Offer placement - advanced settings" actions={[{ content: 'View help doc' }]}>
-                <LegacyCard.Section title="Product page">
+            <Card sectioned title="Offer placement - advanced settings" actions={[{ content: 'View help doc' }]}>
+                <Card.Section title="Product page">
                     <TextField label="DOM Selector" value={props.shop.custom_product_page_dom_selector} onChange={handleProductDomSelector} type="text"></TextField>
                     <TextField label="DOM Action" value={props.shop.custom_product_page_dom_action} onChange={handleProductDomAction}></TextField>
-                </LegacyCard.Section>
-                <LegacyCard.Section title="Cart page">
+                </Card.Section>
+                <Card.Section title="Cart page">
                     <TextField label="DOM Selector" value={props.shop.custom_cart_page_dom_selector} onChange={handleCartDomSelector}></TextField>
                     <TextField label="DOM Action" value={props.shop.custom_cart_page_dom_action} onChange={handleCartDomAction}></TextField>
-                </LegacyCard.Section>
-                <LegacyCard.Section title="AJAX/Slider cart">
+                </Card.Section>
+                <Card.Section title="AJAX/Slider cart">
                     <TextField label="DOM Selector" value={props.shop.custom_ajax_dom_selector} onChange={handleAjaxDomSelector}></TextField>
                     <TextField label="DOM Action" value={props.shop.custom_ajax_dom_action} onChange={handleAjaxDomAction}></TextField>
                     <TextField label="AJAX refresh code" value={props.shop.ajax_refresh_code} onChange={handleAjaxRefreshCode} multiline={6}></TextField>
-                </LegacyCard.Section>
-                <LegacyCard.Section title="Custom CSS">
+                </Card.Section>
+                <Card.Section title="Custom CSS">
                     <TextField value={props.shop.offer_css} onChange={handleOfferCss} multiline={6}></TextField>
                     <br />
                     <Checkbox
@@ -2233,8 +2228,8 @@ export function FourthTab(props) {
                         checked={checked}
                         onChange={handleChange}
                     />
-                </LegacyCard.Section>
-            </LegacyCard>
+                </Card.Section>
+            </Card>
             <div className="space-4"></div>
             <BlockStack distribution="center">
                 <ButtonGroup>

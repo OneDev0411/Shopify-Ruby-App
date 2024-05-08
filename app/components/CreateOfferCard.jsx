@@ -9,7 +9,7 @@ import {
   Modal,
   Text,
   BlockStack,
-  VideoThumbnail, Tabs, LegacyCard, Layout, Banner,
+  VideoThumbnail, Tabs, Layout, Banner,
 } from "@shopify/polaris";
 import { homeImage } from "../assets/index.js";
 import {useLocation, useNavigate} from "@remix-run/react";
@@ -334,9 +334,9 @@ export function ThemeAppCard({ shopData, themeAppExtension}) {
         <Card>
           <div className="offer-tabs-no-padding">
             <Tabs tabs={availableTabs} selected={selected} onSelect={handleTabChange} fitted>
-              <LegacyCard.Section>
+              <Card.Section>
                 {contentInfo(availableTabs[selected])}
-              </LegacyCard.Section>
+              </Card.Section>
             </Tabs>
           </div>
         </Card>

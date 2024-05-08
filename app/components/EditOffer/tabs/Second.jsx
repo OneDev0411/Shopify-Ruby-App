@@ -7,7 +7,7 @@ import {
     Grid,
     Icon,
     Image,
-    LegacyCard,
+    Card,
     BlockStack,
     Modal,
     RadioButton,
@@ -721,7 +721,7 @@ export function SecondTab(props) {
               </div>
             )}
 
-            <LegacyCard title="Choose placement" sectioned>
+            <Card title="Choose placement" sectioned>
                 <p style={{color: '#6D7175', marginTop: '-20px', marginBottom: '23px'}}>Where would you like your offer
                     to appear?</p>
 
@@ -1129,12 +1129,12 @@ export function SecondTab(props) {
                     ))
                 }
 
-            </LegacyCard>
+            </Card>
             <div className="space-10"/>
 
             {(offer.id == null || offer.id != props.autopilotCheck?.autopilot_offer_id) && (
                 <>
-                    <LegacyCard title="Display Conditions" sectioned>
+                    <Card title="Display Conditions" sectioned>
 
                         {offer?.rules_json?.length === 0 ? (
                             <p style={{color: '#6D7175', marginTop: '-10px', marginBottom: '14px'}}>None selected (show
@@ -1204,7 +1204,7 @@ export function SecondTab(props) {
                                 onChange={handleStopShowingAfterAccepted}
                             />
                         </BlockStack>
-                    </LegacyCard>
+                    </Card>
                 </>
             )}
             <div className="space-10"/>

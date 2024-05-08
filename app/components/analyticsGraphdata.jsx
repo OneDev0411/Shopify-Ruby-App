@@ -1,7 +1,7 @@
 // @ts-nocheck
 import {
     InlineStack,
-    LegacyCard,
+    Card,
     BlockStack,
     Text,
     Divider,
@@ -67,7 +67,7 @@ export function TotalSalesData(props) {
                 }
             }}
         >
-            <LegacyCard title={`${props.title ? `${props.period[0].toUpperCase()}${props.period.substring(1)} ` : ''} Total Sales`} sectioned>
+            <Card title={`${props.title ? `${props.period[0].toUpperCase()}${props.period.substring(1)} ` : ''} Total Sales`} sectioned>
                 {salesData ? (<h3 className="report-money"><strong>${salesTotal}</strong></h3>) : null}
                 <div className="space-4"></div>
                 <p>SALES OVER TIME</p><br />
@@ -87,7 +87,7 @@ export function TotalSalesData(props) {
                     legendPosition="left"
                     theme='Light'
                 />) : null}
-            </LegacyCard>
+            </Card>
         </PolarisVizProvider>
     );
 }
@@ -158,7 +158,7 @@ export function ConversionRate(props) {
     }, [props.period])
 
     return (
-        <LegacyCard title={`${props.title ? `${props.period[0].toUpperCase()}${props.period.substring(1)} ` : ''} Conversion Rate`} sectioned>
+        <Card title={`${props.title ? `${props.period[0].toUpperCase()}${props.period.substring(1)} ` : ''} Conversion Rate`} sectioned>
             <h3 className="report-money"><strong>{totalDisplayed > 0 ? ((converted / totalDisplayed) * 100).toFixed(2) : 0}%</strong></h3>
             <div className="space-4"></div>
             <p>CONVERSION FUNNEL</p><br />
@@ -179,7 +179,7 @@ export function ConversionRate(props) {
                     <div style={{ color: 'grey' }}>{converted >= 0 ? converted : 0} sessions</div>
                 </div>
             </BlockStack>
-        </LegacyCard>
+        </Card>
     );
 }
 
@@ -236,7 +236,7 @@ export function OrderOverTimeData(props) {
                 }
             }}
         >
-            <LegacyCard title={`${props.title ? `${props.period[0].toUpperCase()}${props.period.substring(1)} ` : ''} Total Orders`} sectioned>
+            <Card title={`${props.title ? `${props.period[0].toUpperCase()}${props.period.substring(1)} ` : ''} Total Orders`} sectioned>
                 {ordersData ? (<h3 className="report-money"><strong>{ordersTotal}</strong></h3>) : null}
                 <div className="space-4"></div>
                 <p>ORDERS OVER TIME</p><br />
@@ -255,7 +255,7 @@ export function OrderOverTimeData(props) {
                     legendPosition="left"
                     theme='Light'
                 />) : null}
-            </LegacyCard>
+            </Card>
         </PolarisVizProvider>
     );
 
@@ -310,7 +310,7 @@ export function TopPerformingOffersData(props) {
                 }
             }}
         >
-            <LegacyCard title={`${props.title ? `${props.period[0].toUpperCase()}${props.period.substring(1)} ` : ''} Top performing offers`} sectioned>
+            <Card title={`${props.title ? `${props.period[0].toUpperCase()}${props.period.substring(1)} ` : ''} Top performing offers`} sectioned>
                 <div className="space-4"></div>
                 <BlockStack align='center'>
                     {
@@ -333,7 +333,7 @@ export function TopPerformingOffersData(props) {
                         })
                     }
                 </BlockStack>
-            </LegacyCard>
+            </Card>
         </PolarisVizProvider>
     )
 }
@@ -391,7 +391,7 @@ export function AbTestingData(props) {
                 }
             }}
         >
-            <LegacyCard title={`${props.title ? `${props.period[0].toUpperCase()}${props.period.substring(1)} ` : ''} A/B testing`} sectioned>
+            <Card title={`${props.title ? `${props.period[0].toUpperCase()}${props.period.substring(1)} ` : ''} A/B testing`} sectioned>
                 {salesData ? (<h3 className="report-money"><strong>${salesTotal}</strong></h3>) : null}
                 <div className="space-4"></div>
                 <p>SALES OVER TIME</p><br />
@@ -412,7 +412,7 @@ export function AbTestingData(props) {
                     legendPosition="left"
                     theme='Light'
                 />) : null}
-            </LegacyCard>
+            </Card>
         </PolarisVizProvider>
     );
 
@@ -469,7 +469,7 @@ export function ClickThroughtRateData(props) {
                 }
             }}
         >
-            <LegacyCard title={`${props.title ? `${props.period[0].toUpperCase()}${props.period.substring(1)} ` : ''} Click through rate`} sectioned>
+            <Card title={`${props.title ? `${props.period[0].toUpperCase()}${props.period.substring(1)} ` : ''} Click through rate`} sectioned>
                 {clicksData ? (<h3 className="report-money"><strong>{clicksTotal}</strong></h3>) : null}
                 <div className="space-4"></div>
                 <p>Clicks through rate over time</p><br />
@@ -488,7 +488,7 @@ export function ClickThroughtRateData(props) {
                     legendPosition="left"
                     theme='Light'
                 />) : null}
-            </LegacyCard>
+            </Card>
         </PolarisVizProvider>
     );
 }

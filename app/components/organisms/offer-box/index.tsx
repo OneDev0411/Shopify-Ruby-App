@@ -1,5 +1,5 @@
 import {
-    LegacyCard,
+    Card,
     TextField,
     Select,
     RangeSlider,
@@ -62,7 +62,7 @@ const OfferBox = ({ autopilotCheck }: IOfferBoxProp) => {
     const handlesetBorderRange = useCallback((newValue: string) => updateNestedAttributeOfOffer(parseInt(newValue), "css_options", "main", "borderRadius"), []);
 
     return (
-        <LegacyCard title="Offer box" sectioned>
+        <Card title="Offer box" sectioned>
             {(offer.id != null && autopilotCheck?.autopilot_offer_id == offer.id) ? (
                 <>
                 </>
@@ -140,7 +140,7 @@ const OfferBox = ({ autopilotCheck }: IOfferBoxProp) => {
                     </div>
                 </Grid.Cell>
             </Grid>
-        </LegacyCard>
+        </Card>
     );
 }
 

@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import {OfferContent, OfferContext} from "~/contexts/OfferContext";
 import { useShopState } from "~/contexts/ShopContext";
 
-import { Checkbox, LegacyCard, BlockStack, TextField } from "@shopify/polaris";
+import { Checkbox, Card, BlockStack, TextField } from "@shopify/polaris";
 import {ShopAndHost} from "~/types/global";
 
 const DisplayOptions = () => {
@@ -30,7 +30,7 @@ const DisplayOptions = () => {
     const handleRedirectedToProductChange = useCallback((newChecked: boolean) => updateOffer("redirect_to_product", newChecked), []);
 
     return (
-        <LegacyCard title="Display options" sectioned>
+        <Card title="Display options" sectioned>
             <BlockStack spacing="baseTight" vertical>
                 <Checkbox id={"removeImg"}
                           checked={!offer.show_product_image}
@@ -95,7 +95,7 @@ const DisplayOptions = () => {
                     />
                 )}
             </BlockStack>
-        </LegacyCard>
+        </Card>
     );
 }
 

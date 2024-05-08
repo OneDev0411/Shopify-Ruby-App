@@ -1,4 +1,4 @@
-import {Link,Icon,Modal, LegacyCard, Page, Layout, Image, BlockStack, Grid, List} from "@shopify/polaris";
+import {Link,Icon,Modal, Card, Page, Layout, Image, BlockStack, Grid, List} from "@shopify/polaris";
 import { helpImage } from "@assets/index";
 import {LightbulbIcon} from '@shopify/polaris-icons';
 import {useRef, useState, useCallback} from 'react';
@@ -33,7 +33,7 @@ export default function HelpPage() {
             <Layout>
                 <Layout.Section>
                     {/* card for image and text */}
-                    <LegacyCard title={
+                    <Card title={
                         <BlockStack>
                             <Icon source={LightbulbIcon} />
                             <p><strong>Here is a list of relevant articles you may find helpful</strong></p>
@@ -59,7 +59,7 @@ export default function HelpPage() {
                                 />
                             </Grid.Cell>
                         </Grid>
-                    </LegacyCard>
+                    </Card>
                     <Modal
                         activator={activator}
                         open={active}

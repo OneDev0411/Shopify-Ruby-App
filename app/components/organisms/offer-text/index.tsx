@@ -1,5 +1,5 @@
 import {
-    LegacyCard,
+    Card,
     TextField,
     Select,
     RangeSlider,
@@ -49,7 +49,7 @@ const OfferText = () => {
     }, []);
 
     return (
-        <LegacyCard title="Offer text" sectioned>
+        <Card title="Offer text" sectioned>
 
             <Grid>
                 <Grid.Cell columnSpan={{ xs: 6, sm: 3, md: 3, lg: 6, xl: 6 }}>
@@ -127,7 +127,7 @@ const OfferText = () => {
                     />
                 </Grid.Cell>
             </Grid>
-        </LegacyCard>
+        </Card>
     );
 }
 

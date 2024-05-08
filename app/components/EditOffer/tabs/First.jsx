@@ -10,7 +10,7 @@ import {
     ButtonGroup,
     Checkbox, Collapsible,
     Icon,
-    LegacyCard,
+    Card,
     BlockStack,
     Modal,
     RadioButton,
@@ -395,8 +395,8 @@ export function FirstTab(props) {
                 </div>
             ) : (
                 <>
-                    {/* <LegacyCard title="Offer Product" actions={[{content: 'Learn about Autopilot'}]} sectioned> */}
-                    <LegacyCard title="Offer Product" sectioned>
+                    {/* <Card title="Offer Product" actions={[{content: 'Learn about Autopilot'}]} sectioned> */}
+                    <Card title="Offer Product" sectioned>
                         <BlockStack spacing="loose" vertical>
                             {(props.autopilotCheck?.autopilot_offer_id != offer.id || !props.autopilotCheck?.autopilot_offer_id) && (
                                 <p style={{color: '#6D7175'}}>What product would you like to have in the offer?</p>
@@ -486,10 +486,10 @@ export function FirstTab(props) {
                                 </BlockStack>
                             </>
                         )}
-                    </LegacyCard>
+                    </Card>
                     <div className="space-10" />
 
-                    <LegacyCard title="Text" sectioned>
+                    <Card title="Text" sectioned>
                         <BlockStack spacing="loose" vertical>
                             {(offer.id == null || offer.id != props.autopilotCheck?.autopilot_offer_id) && (
                                 <>
@@ -568,10 +568,10 @@ export function FirstTab(props) {
                                 </Collapsible>                                
                             </Collapsible>
                         </BlockStack>
-                    </LegacyCard>
+                    </Card>
                     <div className="space-10"/>
 
-                    <LegacyCard title="Display options" sectioned>
+                    <Card title="Display options" sectioned>
                         <BlockStack spacing="baseTight" vertical>
                             <Checkbox id={"removeImg"}
                                       checked={!offer.show_product_image}
@@ -636,7 +636,7 @@ export function FirstTab(props) {
                                 />
                             )}
                         </BlockStack>
-                    </LegacyCard>
+                    </Card>
                     <div className="space-10"/>
 
                     <div className="space-4"/>

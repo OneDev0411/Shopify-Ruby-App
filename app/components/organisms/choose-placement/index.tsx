@@ -2,7 +2,7 @@ import {
     Button,
     Checkbox,
     Grid,
-    LegacyCard,
+    Card,
     BlockStack,
     Modal,
     Select,
@@ -651,7 +651,7 @@ const ChoosePlacement = ({ enableOrDisablePublish, autopilotCheck}: IChoosePlace
                 </BannerContainer>
             )}
 
-            <LegacyCard title="Choose placement" sectioned>
+            <Card title="Choose placement" sectioned>
                 <p style={{color: '#6D7175', marginTop: '-20px', marginBottom: '23px'}}>Where would you like your offer
                     to appear?</p>
 
@@ -808,7 +808,7 @@ const ChoosePlacement = ({ enableOrDisablePublish, autopilotCheck}: IChoosePlace
                     ))
                 }
 
-            </LegacyCard>
+            </Card>
         </>
     );
 }

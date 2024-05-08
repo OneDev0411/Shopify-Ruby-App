@@ -1,6 +1,6 @@
 // @ts-nocheck
 import {
-    LegacyCard,
+    Card,
     BlockStack,
     ButtonGroup,
     Button,
@@ -190,7 +190,7 @@ export function ThirdTab(props) {
 
     return (
         <div id="appearance-offers">
-            <LegacyCard title="Offer box" sectioned>
+            <Card title="Offer box" sectioned>
                     {(offer.id != null && props.autopilotCheck?.autopilot_offer_id == offer.id) ? (
                         <>
                         </>
@@ -264,10 +264,10 @@ export function ThirdTab(props) {
                             </div>
                         </Grid.Cell>
                     </Grid>
-            </LegacyCard>
+            </Card>
             <div className="space-10" />
 
-            <LegacyCard title="Color" sectioned>
+            <Card title="Color" sectioned>
                 <BlockStack vertical>
                     {/*<Button>Choose Template</Button>*/}
                     <Button
@@ -437,10 +437,10 @@ export function ThirdTab(props) {
                         </Grid>
                     </Collapsible>
                 </BlockStack>
-            </LegacyCard>
+            </Card>
             <div className="space-10" />
 
-            <LegacyCard title="Offer text" className="input-box" sectioned>
+            <Card title="Offer text" className="input-box" sectioned>
 
                 <Grid>
                     <Grid.Cell columnSpan={{ xs: 6, sm: 3, md: 3, lg: 6, xl: 6 }}>
@@ -517,7 +517,7 @@ export function ThirdTab(props) {
                             />
                         </Grid.Cell>
                 </Grid>
-            </LegacyCard>
+            </Card>
             <div className="space-10"></div>
             {(offer?.advanced_placement_setting?.advanced_placement_setting_enabled) ? (
                 <>

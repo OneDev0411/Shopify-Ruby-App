@@ -1,5 +1,5 @@
 // @ts-nocheck
-import {BlockStack, LegacyCard, Image, Button, Grid, Pagination} from '@shopify/polaris';
+import {BlockStack, Card, Image, Button, Grid, Pagination} from '@shopify/polaris';
 import {useState, useCallback, useEffect} from 'react';
 import Slider from "react-slick";
 import { useSelector } from 'react-redux';
@@ -61,7 +61,7 @@ export function Partners() {
     // if (error) { return < ErrorPage />; }
 
     return(<>
-      <LegacyCard sectioned title="Recommended Apps">
+      <Card sectioned title="Recommended Apps" id={"CardYpadding"}>
         <p>Check out our partners below.</p>
         <div className="space-4"></div>
           <Grid >
@@ -71,7 +71,7 @@ export function Partners() {
                     <Grid key={index}>
                       <Grid.Cell columnSpan={{ xs: 6, sm: 6, md: 6, lg: 12, xl: 12}}>
                         <div style={{margin: '10px'}}>
-                            <LegacyCard sectioned>
+                            <Card sectioned columnSpan={{ xs: 6, sm: 6, md: 12, lg: 12, xl: 12}}>
                             <div style={{ width: '200px', height: '200px', margin: 'auto', display: 'flex'}} >
                               <Image
                                 alt=""
@@ -109,7 +109,7 @@ export function Partners() {
                             />
                             <Button url={partner.app_url} target="blank">View on Shopify App Store</Button>
                             </BlockStack>
-                          </LegacyCard>
+                          </Card>
                         </div>
                       </Grid.Cell>
                     </Grid>
@@ -124,6 +124,6 @@ export function Partners() {
             hasNext
             onNext={next}
         />
-    </LegacyCard>
+    </Card>
   </>);
 }

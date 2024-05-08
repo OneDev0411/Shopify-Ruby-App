@@ -3,7 +3,7 @@ import {
     Button,
     Checkbox,
     Icon,
-    LegacyCard,
+    Card,
     BlockStack,
     Modal,
     Select,
@@ -102,7 +102,7 @@ const DisplayConditions = ({ autopilotCheck } : IDisplayConditionsProps) => {
         <>
             {(offer.id == null || offer.id != autopilotCheck?.autopilot_offer_id) && (
                 <>
-                    <LegacyCard title="Display Conditions" sectioned>
+                    <Card title="Display Conditions" sectioned>
 
                         {offer?.rules_json ? (
                             <p style={{color: '#6D7175', marginTop: '-10px', marginBottom: '14px'}}>None selected (show
@@ -179,7 +179,7 @@ const DisplayConditions = ({ autopilotCheck } : IDisplayConditionsProps) => {
                                 onChange={handleStopShowingAfterAccepted}
                             />
                         </BlockStack>
-                    </LegacyCard>
+                    </Card>
                 </>
             )}
             <Modal

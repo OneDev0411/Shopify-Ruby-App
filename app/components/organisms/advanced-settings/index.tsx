@@ -1,5 +1,5 @@
 import {
-    LegacyCard,
+    Card,
     TextField,
     Checkbox,
     Text,
@@ -22,8 +22,8 @@ const AdvancedSettings = () => {
 
     return (
         <>
-            {/* <LegacyCard sectioned title="Offer placement - advanced settings" actions={[{ content: 'View help doc' }]}> */}
-            <LegacyCard sectioned title="Offer placement - advanced settings">
+            {/* <Card sectioned title="Offer placement - advanced settings" actions={[{ content: 'View help doc' }]}> */}
+            <Card sectioned title="Offer placement - advanced settings">
                 {(!offer?.advanced_placement_setting?.advanced_placement_setting_enabled) && (
                     <>
                         <b>To edit Advanced settings, enable "Advanced Placement Settings" option on the Placement tab.</b>
@@ -84,7 +84,7 @@ const AdvancedSettings = () => {
                     onChange={handleChange}
                     disabled={!offer?.advanced_placement_setting?.advanced_placement_setting_enabled}
                 />
-            </LegacyCard>
+            </Card>
         </>
     );
 }

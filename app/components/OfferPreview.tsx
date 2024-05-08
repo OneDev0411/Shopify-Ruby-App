@@ -1,6 +1,6 @@
 import {useState, useEffect, useContext} from "react";
 import { 
-	LegacyCard, TextContainer ,SkeletonBodyText
+	Card, TextContainer ,SkeletonBodyText
 } from '@shopify/polaris';
 import Compact from './layouts/template_single_compact';
 import Stack from './layouts/template_multi_stack';
@@ -213,11 +213,11 @@ export function OfferPreview(props) {
 					<Stack offer={offer} checkKeysValidity={props.checkKeysValidity}/>
 				) : offer.multi_layout == "carousel" ? (
 					carouselLoading ? (
-						<LegacyCard sectioned>
+						<Card sectioned>
 							<TextContainer>
 								<SkeletonBodyText lines={6} />
 							</TextContainer>
-						</LegacyCard>
+						</Card>
 					) : (
 						<Carousel offer={offer} checkKeysValidity={props.checkKeysValidity} updateCheckKeysValidity={props.updateCheckKeysValidity}/>
 					)

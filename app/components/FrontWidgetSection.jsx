@@ -1,10 +1,10 @@
 // @ts-nocheck
 import React from 'react';
-import { LegacyCard, Grid, Button } from '@shopify/polaris';
+import { Card, Grid, Button } from '@shopify/polaris';
 
 const FrontWidgetSection = ({ isStatusActive, toggleActivation }) => {
   return (
-    <LegacyCard sectioned>
+    <Card sectioned>
         <Grid>
           <Grid.Cell columnSpan={{ xs: 6, sm: 3, md: 8, lg: 10, xl: 4 }}>
             <p>The store front widget is {isStatusActive ? 'Activated' : 'Deactivated'}</p>
@@ -17,7 +17,7 @@ const FrontWidgetSection = ({ isStatusActive, toggleActivation }) => {
             </div>
           </Grid.Cell>
         </Grid>
-    </LegacyCard>
+    </Card>
   );
 };
 

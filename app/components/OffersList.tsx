@@ -7,7 +7,7 @@ import {
   Badge,
   Pagination,
   Select,
-  LegacyCard,
+  Card,
   Modal,
   Spinner
 } from '@shopify/polaris';
@@ -352,7 +352,7 @@ export function OffersList({ pageSize }: IOffersListProps) {
             <CreateOfferCard />
           ) : (
             <>
-              <LegacyCard sectioned>
+              <Card sectioned>
             <div style={{ display: 'flex' }}>
                   <div style={{ flex: 1 }}>
                     <Filters
@@ -420,7 +420,7 @@ export function OffersList({ pageSize }: IOffersListProps) {
                     onNext={() => handlePageChange(currentPage + 1)}
                   />
                 </div>
-              </LegacyCard>
+              </Card>
             </>
           )}
         </>

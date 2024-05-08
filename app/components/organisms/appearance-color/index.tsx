@@ -1,5 +1,5 @@
 import {
-    LegacyCard,
+    Card,
     Button,
     Collapsible,
     Grid,
@@ -91,7 +91,7 @@ const AppearanceColor = () => {
     }, []);
 
     return (
-        <LegacyCard title="Color" sectioned>
+        <Card title="Color" sectioned>
             <BlockStack vertical>
                 {/*<Button>Choose Template</Button>*/}
                 <Button
@@ -184,7 +184,7 @@ const AppearanceColor = () => {
                     </Grid>
                 </Collapsible>
             </BlockStack>
-        </LegacyCard>
+        </Card>
     );
 }
 

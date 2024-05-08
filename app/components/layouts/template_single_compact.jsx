@@ -1,7 +1,7 @@
 import { forwardRef, useState, useEffect, useRef } from "react";
 import {
 	Text,
-	LegacyCard,
+	Card,
 	Grid
 } from '@shopify/polaris';
 import TemplateComponent from 'react-mustache-template-component';

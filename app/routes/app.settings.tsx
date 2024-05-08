@@ -1,4 +1,4 @@
-import { LegacyCard, Grid, Button, Page } from "@shopify/polaris";
+import { Card, Grid, Button, Page } from "@shopify/polaris";
 import { useAppBridge } from '@shopify/app-bridge-react'
 import { useSelector } from 'react-redux';
 import { useState, useEffect, useCallback } from "react";
@@ -153,7 +153,7 @@ export default function Settings() {
             <Page>
                 <ModalChoosePlan />
                 <CustomTitleBar title='Settings' buttonText='Save' handleButtonClick={handleSave} />
-                <LegacyCard sectioned>
+                <Card sectioned>
                     {(shopSettings?.activated) ? (
                         <Grid>
                             <Grid.Cell columnSpan={{ xs: 6, sm: 3, md: 6, lg: 10, xl: 4 }}>
@@ -176,23 +176,23 @@ export default function Settings() {
                             </Grid.Cell>
                         </Grid>
                     )}
-                </LegacyCard>
+                </Card>
                 <div className="space-4"></div>
                 <Grid>
                     <Grid.Cell columnSpan={{ xs: 6, sm: 6, md: 6, lg: 6, xl: 6 }}>
-                        <div id="no-bg-LegacyCard">
-                            <LegacyCard sectioned>
+                        <div id="no-bg-Card">
+                            <Card sectioned>
                                 <h2><strong>Default offer placement settings</strong></h2>
                                 <br />
                                 <p>Only edit these settings if you know HTML.</p>
-                            </LegacyCard>
+                            </Card>
                         </div>
                     </Grid.Cell>
                     <Grid.Cell columnSpan={{ xs: 6, sm: 6, md: 6, lg: 6, xl: 6 }}>
-                        <LegacyCard sectioned>
+                        <Card sectioned>
                             {/* Tabs */}
                             {shopSettings ? <SettingTabs formData={formData} currentShop={shopSettings} updateShop={updateShopSettingsAttributes} handleFormChange={handleFormChange} /> : 'Loading...'}
-                        </LegacyCard>
+                        </Card>
                     </Grid.Cell>
                 </Grid>
                 <div className="space-4"></div>
