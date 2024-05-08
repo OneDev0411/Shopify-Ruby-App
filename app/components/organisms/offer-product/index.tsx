@@ -10,7 +10,7 @@ import {
     ButtonGroup,
     Icon,
     LegacyCard,
-    LegacyStack,
+    BlockStack,
     Modal,
     RadioButton,
     Select,
@@ -331,7 +331,7 @@ const OfferProduct = (props: IOfferProductProps) => {
         <>
             {/* <LegacyCard title="Offer Product" actions={[{content: 'Learn about Autopilot'}]} sectioned> */}
             <LegacyCard title="Offer Product" sectioned>
-                <LegacyStack spacing="loose" vertical>
+                <BlockStack spacing="loose" vertical>
                     {(props.autopilotCheck?.autopilot_offer_id != offer.id || !props.autopilotCheck?.autopilot_offer_id) && (
                         <p style={{color: '#6D7175'}}>What product would you like to have in the offer?</p>
                     )}
@@ -389,18 +389,18 @@ const OfferProduct = (props: IOfferProductProps) => {
                         </b>
                     )}
 
-                </LegacyStack>
+                </BlockStack>
                 {(openAutopilotSection || (offer.id != null && props.autopilotCheck?.autopilot_offer_id == offer.id)) && (
                     <>
-                        <LegacyStack spacing="loose" vertical>
+                        <BlockStack spacing="loose" vertical>
                             <Select
                                 label="How many products would you like the customer to be able to choose from in the offer?"
                                 options={AutopilotQuantityOptionsNew}
                                 onChange={(selected) => handleAutoPilotQuantityChange(parseInt(selected))}
                                 value={autopilotQuantity.toString()}
                             />
-                        </LegacyStack>
-                        <LegacyStack vertical>
+                        </BlockStack>
+                        <BlockStack vertical>
                             <RadioButton
                                 label="Stack"
                                 checked={offer.multi_layout === 'stack'}
@@ -411,8 +411,8 @@ const OfferProduct = (props: IOfferProductProps) => {
                                 checked={offer.multi_layout === 'carousel'}
                                 onChange={() => handleLayoutRadioClicked('carousel')}
                             />
-                        </LegacyStack>
-                        <LegacyStack spacing="loose" vertical>
+                        </BlockStack>
+                        <BlockStack spacing="loose" vertical>
                             <TextField
                                 label="Exclude products with a tag"
                                 helpText="Autopilot will not suggest any product with this tag."
@@ -420,7 +420,7 @@ const OfferProduct = (props: IOfferProductProps) => {
                                 onChange={handleAutopilotExcludedTags}
                                 autoComplete="off"
                             />
-                        </LegacyStack>
+                        </BlockStack>
                     </>
                 )}
             </LegacyCard>

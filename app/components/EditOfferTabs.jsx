@@ -1,7 +1,6 @@
 import {
-    BlockStack,
     LegacyCard,
-    LegacyStack,
+    BlockStack,
     ButtonGroup,
     Button,
     TextField,
@@ -11,7 +10,7 @@ import {
     Collapsible,
     Modal,
     Grid,
-    LegacyStack as Stack,
+    BlockStack as Stack,
     Icon,
     RadioButton,
     Badge,
@@ -362,7 +361,7 @@ export function EditOfferTabs(props) {
             <>
                 <LegacyCard title="Offer Product" actions={[{content: 'Learn about Autopilot'}]} sectioned >
                     <LegacyCard.Section>
-                        <LegacyStack spacing="loose" vertical>
+                        <BlockStack spacing="loose" vertical>
                                 {props.offer.id == null ? (
                                     <>
                                         <p>What product would you like to have in the offer?</p>
@@ -414,22 +413,22 @@ export function EditOfferTabs(props) {
                                     <></>
                                 )}
                             </b>
-                        </LegacyStack>
+                        </BlockStack>
                     </LegacyCard.Section>
                     {props.openAutopilotSection || (props.offer.id != null && props.autopilotCheck?.autopilot_offer_id == props.offer.id) ? (
                         <>
                             <LegacyCard.Section title="Number of recommended products">
-                                <LegacyStack spacing="loose" vertical>
+                                <BlockStack spacing="loose" vertical>
                                     <Select
                                         label="How many products would you like the customer to be able to choose from in the offer?"
                                         options={autopilotQuantityOptions}
                                         onChange={handleAutoPilotQuantityChange}
                                         value={autopilotQuantity}
                                     />
-                                </LegacyStack>
+                                </BlockStack>
                             </LegacyCard.Section>
                             <LegacyCard.Section title="Layout">
-                                <LegacyStack vertical>
+                                <BlockStack vertical>
                                     <RadioButton
                                         label="Stack"
                                         checked={props.offer.multi_layout === 'stack'}
@@ -440,24 +439,24 @@ export function EditOfferTabs(props) {
                                         checked={props.offer.multi_layout === 'carousel'}
                                         onChange={() => handleLayoutRadioClicked('carousel')}
                                     />
-                                </LegacyStack>
+                                </BlockStack>
                             </LegacyCard.Section>
                             <LegacyCard.Section>
-                                <LegacyStack spacing="loose" vertical>
+                                <BlockStack spacing="loose" vertical>
                                     <TextField
                                         label="Exclude products with a tag"
                                         helpText="Autopilot will not suggest any product with this tag."
                                         value={props.offer?.excluded_tags}
                                         onChange={handleAutopilotExcludedTags}
                                     />
-                                </LegacyStack>
+                                </BlockStack>
                             </LegacyCard.Section>
                         </>
                     ) : (<></>)}
                 </LegacyCard>
                 <LegacyCard title="Text" sectioned >
                     <LegacyCard.Section>
-                        <LegacyStack spacing="loose" vertical>
+                        <BlockStack spacing="loose" vertical>
                             {(props.offer.id != props.autopilotCheck?.autopilot_offer_id) && (
                                 <>
                                 <TextField
@@ -529,12 +528,12 @@ export function EditOfferTabs(props) {
                                     />
                                 </Collapsible>
                             </Collapsible>
-                        </LegacyStack>
+                        </BlockStack>
                     </LegacyCard.Section>
                 </LegacyCard>
                 <LegacyCard title="Display options" sectioned>
                     <LegacyCard.Section>
-                        <LegacyStack vertical>
+                        <BlockStack vertical>
                             <Checkbox id={"removeImg"}
                                 checked={!props.offer.show_product_image}
                                 onChange={handleImageChange}
@@ -570,13 +569,13 @@ export function EditOfferTabs(props) {
                                 onChange={handleCustomTextChange}
                                 label="Add custom textbox"
                             />
-                        </LegacyStack>
+                        </BlockStack>
                     </LegacyCard.Section>
                 </LegacyCard>
                 <div className="space-4"></div>
-                <LegacyStack distribution="center">
+                <BlockStack distribution="center">
                     <Button id={"btnAddProduct"} onClick={handleModal} ref={modalRef}>Add product</Button>
-                </LegacyStack>
+                </BlockStack>
 
                 <div className="space-10"></div>
                 {/* Modal */}
@@ -1828,7 +1827,7 @@ export function SecondTab(props) {
                             <Button onClick={handleConditionModal} ref={modalCon}>Add condition</Button>
                         </LegacyCard.Section>
                         <LegacyCard.Section title="Condition options">
-                            <LegacyStack vertical>
+                            <BlockStack vertical>
                                 <Checkbox
                                     label="Disable checkout button until offer is accepted"
                                     helpText="This is useful for products that can only be purchased in pairs."
@@ -1840,15 +1839,15 @@ export function SecondTab(props) {
                                     checked={props.offer.remove_if_no_longer_valid}
                                     onChange={handleRemoveItiem}
                                 />
-                            </LegacyStack>
+                            </BlockStack>
                         </LegacyCard.Section>
                     </LegacyCard>
                 </>
                 )}
             <div className="space-4"></div>
-            <LegacyStack distribution="center">
+            <BlockStack distribution="center">
                 <Button disabled="true">Continue to Appearance</Button>
-            </LegacyStack>
+            </BlockStack>
             <div className="space-10"></div>
             <Modal
                 activator={activatorCon}
@@ -2183,12 +2182,12 @@ export function ThirdTab(props) {
                 </LegacyCard.Section>
             </LegacyCard>
             <div className="space-4"></div>
-            <LegacyStack distribution="center">
+            <BlockStack distribution="center">
                 <ButtonGroup>
                     <Button onClick={() => props.saveDraft()}>Save Draft</Button>
                     <Button primary onClick={() => props.publishOffer()}>Publish</Button>
                 </ButtonGroup>
-            </LegacyStack>
+            </BlockStack>
             <div className="space-10"></div>
         </div>
     );
@@ -2237,12 +2236,12 @@ export function FourthTab(props) {
                 </LegacyCard.Section>
             </LegacyCard>
             <div className="space-4"></div>
-            <LegacyStack distribution="center">
+            <BlockStack distribution="center">
                 <ButtonGroup>
                     <Button>Save draft</Button>
                     <Button primary>Publish</Button>
                 </ButtonGroup>
-            </LegacyStack>
+            </BlockStack>
             <div className="space-10"></div>
         </>
     );

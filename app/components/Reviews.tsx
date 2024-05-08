@@ -1,5 +1,5 @@
 // @ts-nocheck
-import {Layout, Card, Image, LegacyStack, InlineGrid} from "@shopify/polaris";
+import {Layout, Card, Image, BlockStack, InlineGrid} from "@shopify/polaris";
 import "../components/stylesheets/reviewStyle.css";
 
 export const Reviews = () => {
@@ -8,9 +8,9 @@ export const Reviews = () => {
     <div className="review-section">
       <Layout>
         <Layout.Section>
-          <LegacyStack distribution="center">
+          <BlockStack distribution="center">
             <p style={{textAlign:'center'}}><strong>750+ 5 star reviews<br/>Trusted by over a thousand Shopify merchants</strong></p>
-          </LegacyStack>
+          </BlockStack>
         </Layout.Section>
       </Layout>
       <div className="space-10"></div>
@@ -28,9 +28,9 @@ export const Reviews = () => {
               </p>
               <br />
             </div>
-            <LegacyStack distribution="center">
-              <Image source="https://assets.incartupsell.com/images/5-star.png" alt="star" />
-            </LegacyStack>
+            <BlockStack distribution="center">
+              <Image source="https://assets.incartupsell.com/images/5-star.png" distribution="center" />
+            </BlockStack>
           </div>
         </Card>
         <Card>
@@ -47,9 +47,9 @@ export const Reviews = () => {
               </p>
               <br />
             </div>
-            <LegacyStack distribution="center">
-              <Image source="https://assets.incartupsell.com/images/5-star.png" alt='star' />
-            </LegacyStack>
+            <BlockStack distribution="center">
+              <Image source="https://assets.incartupsell.com/images/5-star.png" distribution="center" />
+            </BlockStack>
           </div>
         </Card>
         <Card>
@@ -66,9 +66,9 @@ export const Reviews = () => {
               </p>
               <br />
             </div>
-            <LegacyStack distribution="center">
-              <Image source="https://assets.incartupsell.com/images/5-star.png" alt="star" />
-            </LegacyStack>
+            <BlockStack distribution="center">
+              <Image source="https://assets.incartupsell.com/images/5-star.png" distribution="center" />
+            </BlockStack>
           </div>
         </Card>
       </InlineGrid>

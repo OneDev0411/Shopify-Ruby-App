@@ -1,4 +1,4 @@
-import { Text, Icon, Link, LegacyStack } from "@shopify/polaris";
+import { Text, Icon, Link, BlockStack } from "@shopify/polaris";
 import { AlertCircleIcon, ExternalSmallIcon } from '@shopify/polaris-icons';
 
 interface IGenericFooterProps {
@@ -19,7 +19,7 @@ export const GenericFooter = ({text, linkText, linkUrl}: IGenericFooterProps) =>
     </style>
     <div style={{ marginTop: '60px'}}></div>
 		<div style={{display: 'flex', justifyContent: 'center'}}> 
-			<LegacyStack>
+			<BlockStack>
           <Icon
             source={AlertCircleIcon}
             color="base"
@@ -35,7 +35,7 @@ export const GenericFooter = ({text, linkText, linkUrl}: IGenericFooterProps) =>
               </Link>
             ): null}
           </Text>
-      </LegacyStack>
+      </BlockStack>
 			<div className="space-10"></div>
     </div>
 		</>

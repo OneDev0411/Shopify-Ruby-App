@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import {OfferContent, OfferContext} from "~/contexts/OfferContext";
 import { useShopState } from "~/contexts/ShopContext";
 
-import { Checkbox, LegacyCard, LegacyStack, TextField } from "@shopify/polaris";
+import { Checkbox, LegacyCard, BlockStack, TextField } from "@shopify/polaris";
 import {ShopAndHost} from "~/types/global";
 
 const DisplayOptions = () => {
@@ -31,7 +31,7 @@ const DisplayOptions = () => {
 
     return (
         <LegacyCard title="Display options" sectioned>
-            <LegacyStack spacing="baseTight" vertical>
+            <BlockStack spacing="baseTight" vertical>
                 <Checkbox id={"removeImg"}
                           checked={!offer.show_product_image}
                           onChange={handleImageChange}
@@ -94,7 +94,7 @@ const DisplayOptions = () => {
                               label="Offer button sends shopper to product page instead of adding to the cart (not recommended)"
                     />
                 )}
-            </LegacyStack>
+            </BlockStack>
         </LegacyCard>
     );
 }

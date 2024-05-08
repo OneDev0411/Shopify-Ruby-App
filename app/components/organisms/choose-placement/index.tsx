@@ -3,7 +3,7 @@ import {
     Checkbox,
     Grid,
     LegacyCard,
-    LegacyStack,
+    BlockStack,
     Modal,
     Select,
 } from "@shopify/polaris";
@@ -655,7 +655,7 @@ const ChoosePlacement = ({ enableOrDisablePublish, autopilotCheck}: IChoosePlace
                 <p style={{color: '#6D7175', marginTop: '-20px', marginBottom: '23px'}}>Where would you like your offer
                     to appear?</p>
 
-                <LegacyStack spacing="loose" vertical>
+                <BlockStack spacing="loose" vertical>
                     <Grid>
                         <Grid.Cell columnSpan={{xs: 6, sm: 3, md: 3, lg: 6, xl: 6}}>
                             {/*Select requires a styled dropdown*/}
@@ -730,7 +730,7 @@ const ChoosePlacement = ({ enableOrDisablePublish, autopilotCheck}: IChoosePlace
                                                     setSelectedCollections={setSelectedCollections}/>
                         </Modal.Section>
                     </Modal>
-                </LegacyStack>
+                </BlockStack>
                 { isLegacy &&
                     (multipleDefaultSettings ? (
                         <>

@@ -1,7 +1,7 @@
 // @ts-nocheck
 import {
     LegacyCard,
-    LegacyStack,
+    BlockStack,
     ButtonGroup,
     Button,
     TextField,
@@ -189,12 +189,12 @@ export function FourthTab(props) {
                 />
             </LegacyCard>
             <div className="space-10"></div>
-            <LegacyStack distribution="center">
+            <BlockStack distribution="center">
                 <ButtonGroup>
                     <Button onClick={() => props.saveDraft()}>Save Draft</Button>
                     <Button primary disabled={props.enablePublish} onClick={() => props.publishOffer()}>Publish</Button>
                 </ButtonGroup>
-            </LegacyStack>
+            </BlockStack>
             <div className="space-10"></div>
         </>
     );

@@ -1,4 +1,4 @@
-import {Link,Icon,Modal, LegacyCard, Page, Layout, Image, LegacyStack, Grid, List} from "@shopify/polaris";
+import {Link,Icon,Modal, LegacyCard, Page, Layout, Image, BlockStack, Grid, List} from "@shopify/polaris";
 import { helpImage } from "@assets/index";
 import {LightbulbIcon} from '@shopify/polaris-icons';
 import {useRef, useState, useCallback} from 'react';
@@ -34,10 +34,10 @@ export default function HelpPage() {
                 <Layout.Section>
                     {/* card for image and text */}
                     <LegacyCard title={
-                        <LegacyStack>
+                        <BlockStack>
                             <Icon source={LightbulbIcon} />
                             <p><strong>Here is a list of relevant articles you may find helpful</strong></p>
-                        </LegacyStack>
+                        </BlockStack>
                         } sectioned>
                         <p>There are more help articles in our <Link url="https://help.incartupsell.com/en/collections/6780837-help-articles-for-new-ui" external target="_blank">Help Docs</Link> page</p>
                         <div className="space-4"></div>

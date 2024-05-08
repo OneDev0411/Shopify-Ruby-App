@@ -3,7 +3,7 @@ import {
     Button,
     Collapsible,
     Grid,
-    LegacyStack,
+    BlockStack,
 } from "@shopify/polaris";
 import { useState, useCallback, useRef, useEffect, useContext } from "react";
 import tinycolor from "tinycolor2";
@@ -92,7 +92,7 @@ const AppearanceColor = () => {
 
     return (
         <LegacyCard title="Color" sectioned>
-            <LegacyStack vertical>
+            <BlockStack vertical>
                 {/*<Button>Choose Template</Button>*/}
                 <Button
                     onClick={handleMenuToggle}
@@ -183,7 +183,7 @@ const AppearanceColor = () => {
                         </Grid.Cell>
                     </Grid>
                 </Collapsible>
-            </LegacyStack>
+            </BlockStack>
         </LegacyCard>
     );
 }

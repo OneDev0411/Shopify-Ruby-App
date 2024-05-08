@@ -1,4 +1,4 @@
-import {LegacyCard, Page, Layout, Image, LegacyStack, Banner} from "@shopify/polaris";
+import {LegacyCard, Page, Layout, Image, BlockStack, Banner} from "@shopify/polaris";
 import { useAppBridge } from '@shopify/app-bridge-react'
 import {Redirect, Toast} from '@shopify/app-bridge/actions';
 import { Reviews } from "../components";
@@ -146,8 +146,8 @@ export default function Subscription() {
                               primaryFooterAction={(planName==='flex' && isSubscriptionActive(currentSubscription)) && !isSubscriptionUnpaid ? undefined : {content: 'Upgrade', onAction: () => handlePlanChange('plan_based_billing')}}
                               sectioned
                   >
-                    <LegacyStack>
-                      <LegacyStack.Item>
+                    <BlockStack>
+                      <BlockStack.Item>
                         <div className="recommended-current">
                           {(planName==='flex' && isSubscriptionActive(currentSubscription)) ? (
                             <p><small>Current Plan</small></p>
@@ -204,8 +204,8 @@ export default function Subscription() {
                           </div>
                         </div>
 
-                      </LegacyStack.Item>
-                    </LegacyStack>
+                      </BlockStack.Item>
+                    </BlockStack>
                   </LegacyCard>
                 </Layout.Section>
                 <Layout.Section secondary>

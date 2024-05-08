@@ -4,7 +4,7 @@ import {
     Checkbox,
     Icon,
     LegacyCard,
-    LegacyStack,
+    BlockStack,
     Modal,
     Select,
 } from "@shopify/polaris";
@@ -161,7 +161,7 @@ const DisplayConditions = ({ autopilotCheck } : IDisplayConditionsProps) => {
                         </p>
 
                         <hr className="legacy-card-hr legacy-card-hr-t20-b15"/>
-                        <LegacyStack vertical>
+                        <BlockStack vertical>
                             <Checkbox
                                 label="Disable checkout button until offer is accepted"
                                 helpText="This is useful for products that can only be purchased in pairs."
@@ -178,7 +178,7 @@ const DisplayConditions = ({ autopilotCheck } : IDisplayConditionsProps) => {
                                 checked={offer.stop_showing_after_accepted}
                                 onChange={handleStopShowingAfterAccepted}
                             />
-                        </LegacyStack>
+                        </BlockStack>
                     </LegacyCard>
                 </>
             )}

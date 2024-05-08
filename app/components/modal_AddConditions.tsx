@@ -1,4 +1,4 @@
-import { Select, TextField, LegacyStack } from '@shopify/polaris';
+import { Select, TextField, BlockStack } from '@shopify/polaris';
 import { useState, useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import { SearchProductsList } from './SearchProductsList';
@@ -94,8 +94,8 @@ export function ModalAddConditions({ rule, setRule, itemErrorText, quantityError
 
   return (
     <>
-      <LegacyStack distribution={'fillEvenly'}>
-        <LegacyStack.Item>
+      <BlockStack distribution={'fillEvenly'}>
+        <BlockStack>
           <Select
             label="Condition"
             options={condition_options}
@@ -103,9 +103,9 @@ export function ModalAddConditions({ rule, setRule, itemErrorText, quantityError
             onChange={handleChange}
             value={rule.rule_selector}
           />
-        </LegacyStack.Item>
+        </BlockStack>
         {rule.rule_selector === 'cart_at_least' || rule.rule_selector === 'cart_at_most' || rule.rule_selector === 'cart_exactly' ? (
-          <LegacyStack.Item fill>
+          <BlockStack fill>
             <TextField
               label="Quantity"
               type="number"
@@ -116,10 +116,10 @@ export function ModalAddConditions({ rule, setRule, itemErrorText, quantityError
               min={0}
               error={quantityErrorText}
             />
-          </LegacyStack.Item>
+          </BlockStack>
         ) : null}
         {rule.rule_selector === 'cart_at_least' || rule.rule_selector === 'cart_at_most' || rule.rule_selector === 'cart_exactly' || rule.rule_selector === 'cart_does_not_contain' || rule.rule_selector === 'on_product_this_product_or_in_collection' || rule.rule_selector === 'on_product_not_this_product_or_not_in_collection' ? (
-          <LegacyStack.Item fill>
+          <BlockStack fill>
             <Select
               label="Item"
               options={CartItemOptions}
@@ -127,11 +127,11 @@ export function ModalAddConditions({ rule, setRule, itemErrorText, quantityError
               onChange={handleItemChange}
               value={item}
             />
-          </LegacyStack.Item>
+          </BlockStack>
         ) : null}
         {findProduct() ? (
           <>
-            <LegacyStack.Item fill>
+            <BlockStack fill>
               <TextField
                 label="Select product or collection"
                 value={queryValue}
@@ -140,17 +140,17 @@ export function ModalAddConditions({ rule, setRule, itemErrorText, quantityError
                 placeholder='Search product or collection'
                 error={itemErrorText}
               />
-            </LegacyStack.Item>
+            </BlockStack>
             {productData ? (
-              <LegacyStack.Item>
-                <SearchProductsList item_type={item} shop={shopAndHost.shop} productData={productData} resourceListLoading={resourceListLoading} setResourceListLoading={setResourceListLoading} updateSelectedProduct={updateSelectedProduct} rule={rule}/>
-              </LegacyStack.Item>
+              <BlockStack>
+                <SearchProductsList item_type={item} shop={shopAndHost.shop} updateQuery={updateQuery} productData={productData} resourceListLoading={resourceListLoading} setResourceListLoading={setResourceListLoading} updateSelectedProduct={updateSelectedProduct} rule={rule}/>
+              </BlockStack>
             ) : null
             }
           </>
         ) : null}
         {inputAmount() ? (
-          <LegacyStack.Item fill>
+          <BlockStack fill>
             <TextField
               label="Enter the amount in cents (or your local equivalent)"
               type="number"
@@ -160,10 +160,10 @@ export function ModalAddConditions({ rule, setRule, itemErrorText, quantityError
               autoComplete="off"
               error={itemErrorText}
             />
-          </LegacyStack.Item>
+          </BlockStack>
         ) : null}
         {inputCountry() ? (
-          <LegacyStack.Item>
+          <BlockStack>
             <Select
               label="Select a country"
               options={countryOptions()}
@@ -172,10 +172,10 @@ export function ModalAddConditions({ rule, setRule, itemErrorText, quantityError
               value={rule.item_name}
               error={itemErrorText}
             />
-          </LegacyStack.Item>
+          </BlockStack>
         ) : null}
         {(!findProduct() && !inputAmount()) && !inputCountry() ? (
-          <LegacyStack.Item fill>
+          <BlockStack fill>
             <TextField
               label="Value"
               type="text"
@@ -185,9 +185,9 @@ export function ModalAddConditions({ rule, setRule, itemErrorText, quantityError
               autoComplete="off"
               error={itemErrorText}
             />
-          </LegacyStack.Item>
+          </BlockStack>
         ) : null}
-      </LegacyStack>
+      </BlockStack>
     </>
   );
 }

@@ -11,7 +11,7 @@ import {
     Checkbox, Collapsible,
     Icon,
     LegacyCard,
-    LegacyStack,
+    BlockStack,
     Modal,
     RadioButton,
     Select,
@@ -397,7 +397,7 @@ export function FirstTab(props) {
                 <>
                     {/* <LegacyCard title="Offer Product" actions={[{content: 'Learn about Autopilot'}]} sectioned> */}
                     <LegacyCard title="Offer Product" sectioned>
-                        <LegacyStack spacing="loose" vertical>
+                        <BlockStack spacing="loose" vertical>
                             {(props.autopilotCheck?.autopilot_offer_id != offer.id || !props.autopilotCheck?.autopilot_offer_id) && (
                                 <p style={{color: '#6D7175'}}>What product would you like to have in the offer?</p>
                             )}
@@ -453,18 +453,18 @@ export function FirstTab(props) {
                                 </b>
                             )}
 
-                        </LegacyStack>
+                        </BlockStack>
                         {(openAutopilotSection || (offer.id != null && props.autopilotCheck?.autopilot_offer_id == offer.id)) && (
                             <>
-                                <LegacyStack spacing="loose" vertical>
+                                <BlockStack spacing="loose" vertical>
                                     <Select
                                         label="How many products would you like the customer to be able to choose from in the offer?"
                                         options={AutopilotQuantityOptions}
                                         onChange={handleAutoPilotQuantityChange}
                                         value={autopilotQuantity}
                                     />
-                                </LegacyStack>
-                                <LegacyStack vertical>
+                                </BlockStack>
+                                <BlockStack vertical>
                                     <RadioButton
                                         label="Stack"
                                         checked={offer.multi_layout === 'stack'}
@@ -475,22 +475,22 @@ export function FirstTab(props) {
                                         checked={offer.multi_layout === 'carousel'}
                                         onChange={() => handleLayoutRadioClicked('carousel')}
                                     />
-                                </LegacyStack>
-                                <LegacyStack spacing="loose" vertical>
+                                </BlockStack>
+                                <BlockStack spacing="loose" vertical>
                                     <TextField
                                         label="Exclude products with a tag"
                                         helpText="Autopilot will not suggest any product with this tag."
                                         value={offer?.excluded_tags}
                                         onChange={handleAutopilotExcludedTags}
                                     />
-                                </LegacyStack>
+                                </BlockStack>
                             </>
                         )}
                     </LegacyCard>
                     <div className="space-10" />
 
                     <LegacyCard title="Text" sectioned>
-                        <LegacyStack spacing="loose" vertical>
+                        <BlockStack spacing="loose" vertical>
                             {(offer.id == null || offer.id != props.autopilotCheck?.autopilot_offer_id) && (
                                 <>
                                     <TextField
@@ -567,12 +567,12 @@ export function FirstTab(props) {
                                     </Text>
                                 </Collapsible>                                
                             </Collapsible>
-                        </LegacyStack>
+                        </BlockStack>
                     </LegacyCard>
                     <div className="space-10"/>
 
                     <LegacyCard title="Display options" sectioned>
-                        <LegacyStack spacing="baseTight" vertical>
+                        <BlockStack spacing="baseTight" vertical>
                             <Checkbox id={"removeImg"}
                                       checked={!offer.show_product_image}
                                       onChange={handleImageChange}
@@ -635,14 +635,14 @@ export function FirstTab(props) {
                                       label="Offer button sends shopper to product page instead of adding to the cart (not recommended)"
                                 />
                             )}
-                        </LegacyStack>
+                        </BlockStack>
                     </LegacyCard>
                     <div className="space-10"/>
 
                     <div className="space-4"/>
-                    <LegacyStack distribution="center">
+                    <BlockStack distribution="center">
                         <Button onClick={props.handleTabChange}>Continue To Placement</Button>
-                    </LegacyStack>
+                    </BlockStack>
 
                     <div className="space-10"></div>
                     {/* Modal */}

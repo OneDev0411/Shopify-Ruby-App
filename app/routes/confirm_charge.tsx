@@ -1,4 +1,4 @@
-import {Page, Layout, Card, LegacyStack as Stack, Image} from "@shopify/polaris";
+import {Page, Layout, Card, BlockStack as Stack, Image} from "@shopify/polaris";
 import { TitleBar } from "@shopify/app-bridge-react";
 import {Redirect, Toast} from '@shopify/app-bridge/actions';
 import { useAppBridge } from '@shopify/app-bridge-react'

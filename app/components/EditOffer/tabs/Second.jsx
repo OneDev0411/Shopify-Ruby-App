@@ -8,7 +8,7 @@ import {
     Icon,
     Image,
     LegacyCard,
-    LegacyStack,
+    BlockStack,
     Modal,
     RadioButton,
     Select,
@@ -725,7 +725,7 @@ export function SecondTab(props) {
                 <p style={{color: '#6D7175', marginTop: '-20px', marginBottom: '23px'}}>Where would you like your offer
                     to appear?</p>
 
-                <LegacyStack spacing="loose" vertical>
+                <BlockStack spacing="loose" vertical>
                     <Grid>
                         <Grid.Cell columnSpan={{xs: 6, sm: 3, md: 3, lg: 6, xl: 6}}>
                             {/*Select requires a styled dropdown*/}
@@ -796,7 +796,7 @@ export function SecondTab(props) {
                                                     setSelectedCollections={setSelectedCollections}/>
                         </Modal.Section>
                     </Modal>
-                </LegacyStack>
+                </BlockStack>
                 { isLegacy &&
                     (multipleDefaultSettings ? (
                         (offer.in_product_page && offer.in_cart_page) ? (
@@ -1186,7 +1186,7 @@ export function SecondTab(props) {
                         </p>
 
                         <hr className="legacy-card-hr legacy-card-hr-t20-b15"/>
-                        <LegacyStack vertical>
+                        <BlockStack vertical>
                             <Checkbox
                                 label="Disable checkout button until offer is accepted"
                                 helpText="This is useful for products that can only be purchased in pairs."
@@ -1203,16 +1203,16 @@ export function SecondTab(props) {
                                 checked={offer.stop_showing_after_accepted}
                                 onChange={handleStopShowingAfterAccepted}
                             />
-                        </LegacyStack>
+                        </BlockStack>
                     </LegacyCard>
                 </>
             )}
             <div className="space-10"/>
 
             <div className="space-4"></div>
-            <LegacyStack distribution="center">
+            <BlockStack distribution="center">
                 <Button onClick={props.handleTabChange}>Continue to Appearance</Button>
-            </LegacyStack>
+            </BlockStack>
             <div className="space-10"></div>
             <Modal
                 activator={activatorCon}

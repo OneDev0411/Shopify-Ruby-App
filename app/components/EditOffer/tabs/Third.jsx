@@ -1,7 +1,7 @@
 // @ts-nocheck
 import {
     LegacyCard,
-    LegacyStack,
+    BlockStack,
     ButtonGroup,
     Button,
     TextField,
@@ -268,7 +268,7 @@ export function ThirdTab(props) {
             <div className="space-10" />
 
             <LegacyCard title="Color" sectioned>
-                <LegacyStack vertical>
+                <BlockStack vertical>
                     {/*<Button>Choose Template</Button>*/}
                     <Button
                         onClick={handleMenuToggle}
@@ -436,7 +436,7 @@ export function ThirdTab(props) {
                             </Grid.Cell>
                         </Grid>
                     </Collapsible>
-                </LegacyStack>
+                </BlockStack>
             </LegacyCard>
             <div className="space-10" />
 
@@ -521,16 +521,16 @@ export function ThirdTab(props) {
             <div className="space-10"></div>
             {(offer?.advanced_placement_setting?.advanced_placement_setting_enabled) ? (
                 <>
-                    <LegacyStack distribution="center">
+                    <BlockStack distribution="center">
                         <Button onClick={props.handleTabChange}>Continue to Advanced</Button>
-                    </LegacyStack>
+                    </BlockStack>
                 </>) : (
-                <LegacyStack distribution="center">
+                <BlockStack distribution="center">
                     <ButtonGroup>
                         <Button onClick={() => props.saveDraft()}>Save Draft</Button>
                         <Button primary disabled={props.enablePublish} onClick={() => props.publishOffer()}>Publish</Button>
                     </ButtonGroup>
-                </LegacyStack>
+                </BlockStack>
                 )}
             <div className="space-10"></div>
         </div>
