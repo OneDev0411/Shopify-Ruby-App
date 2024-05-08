@@ -40,6 +40,8 @@ export function ModalAddProduct({
 
   let timer: string | number | NodeJS.Timeout | undefined;
 
+  const p = Array.isArray(productData) ? productData : [] 
+
   const handleQueryValueChange = useCallback((value: string) => {
     updateQuery(value);
   }, []);
@@ -102,7 +104,7 @@ export function ModalAddProduct({
     <div id="right-align-polaris">
       <ResourceList
         resourceName={resourceName}
-        items={productData}
+        items={p}
         renderItem={renderItem}
         selectedItems={selectedItems as string[]}
         onSelectionChange={selectionChange}
