@@ -1,4 +1,4 @@
-import {Link,Icon,Modal, Card, Page, Layout, Image, BlockStack, Grid, List} from "@shopify/polaris";
+import {Link,Icon,Modal, Card, Page, Layout, Image, ExceptionList,Grid, List, BlockStack} from "@shopify/polaris";
 import { helpImage } from "@assets/index";
 import {LightbulbIcon} from '@shopify/polaris-icons';
 import {useRef, useState, useCallback} from 'react';
@@ -33,32 +33,37 @@ export default function HelpPage() {
             <Layout>
                 <Layout.Section>
                     {/* card for image and text */}
-                    <Card title={
-                        <BlockStack>
-                            <Icon source={LightbulbIcon} />
-                            <p><strong>Here is a list of relevant articles you may find helpful</strong></p>
+                    <Card>
+                        <BlockStack gap={"300"}>
+                            <ExceptionList
+                                items={[
+                                    {
+                                    icon: LightbulbIcon,
+                                    description:
+                                        'Here is a list of relevant articles you may find helpful',
+                                    },
+                                ]}
+                            />
+                            <p>There are more help articles in our <Link url="https://help.incartupsell.com/en/collections/6780837-help-articles-for-new-ui" external target="_blank">Help Docs</Link> page</p>
+                            <Grid>
+                                <Grid.Cell columnSpan={{xs: 6, sm: 3, md: 6, lg: 8, xl: 6}}>
+                                    <div className={"help-articles"}>
+                                        <List>
+                                            {HelpLinks.map((helpLink)=> {
+                                            return <List.Item><Link url={helpLink.link} external removeUnderline target="_blank">{helpLink.title}</Link></List.Item>
+                                            })}
+                                        </List>
+                                    </div>
+                                </Grid.Cell>
+                                <Grid.Cell columnSpan={{xs: 6, sm: 3, md: 4, lg: 4, xl: 6}}>
+                                    <Image
+                                        source={helpImage}
+                                        alt="ICU Help Center"
+                                        width={300}
+                                    />
+                                </Grid.Cell>
+                            </Grid>
                         </BlockStack>
-                        } sectioned>
-                        <p>There are more help articles in our <Link url="https://help.incartupsell.com/en/collections/6780837-help-articles-for-new-ui" external target="_blank">Help Docs</Link> page</p>
-                        <div className="space-4"></div>
-                        <Grid>
-                            <Grid.Cell columnSpan={{xs: 6, sm: 3, md: 6, lg: 8, xl: 6}}>
-                                <div className={"help-articles"}>
-                                    <List>
-                                        {HelpLinks.map((helpLink)=> {
-                                        return <List.Item><Link url={helpLink.link} external removeUnderline target="_blank">{helpLink.title}</Link></List.Item>
-                                        })}
-                                    </List>
-                                </div>
-                            </Grid.Cell>
-                            <Grid.Cell columnSpan={{xs: 6, sm: 3, md: 4, lg: 4, xl: 6}}>
-                                <Image
-                                    source={helpImage}
-                                    alt="ICU Help Center"
-                                    width={300}
-                                />
-                            </Grid.Cell>
-                        </Grid>
                     </Card>
                     <Modal
                         activator={activator}
