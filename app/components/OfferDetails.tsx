@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from "react";
 import { useNavigate } from "@remix-run/react";
-import { Card, Box, AppProvider, Link, Text, Badge } from '@shopify/polaris';
+import { Card, Box, BlockStack, AppProvider, Link, Text, Badge, InlineGrid } from '@shopify/polaris';
 import { condition_options } from "../shared/constants/ConditionOptions";
 import { getLabelFromValue } from "../shared/helpers/commonHelpers";
 import "../components/stylesheets/editOfferStyle.css";
@@ -43,13 +43,15 @@ const OfferDetails = (props: IOfferDetailsProps) => {
     <>
       <AppProvider i18n={translations}>
         <Card>
-          <div className="comp-cont">
-            <span className="text-decor">Offer Details</span>
-            <span><Link onClick={() => handleEditOffer(props.offer.id)} removeUnderline>Edit</Link></span>
-          </div>
-          <Box>
+        <BlockStack gap={"600"}>
+          <InlineGrid columns={2}>
+            <Text variant="headingMd" as="h6">Offer Details</Text>
+            <span className='justify-right'><Link onClick={() => handleEditOffer(props.offer.id)} removeUnderline>Edit</Link></span>
+          </InlineGrid>
+         <Box>
             <Text as="p">Placement: {checkPlacement()}</Text>
           </Box>
+          <div className="hr-custom"></div>
           <Box>
             <Text as='p'>Product offered: 
                 {props.offerableProducts.map((offerableProduct, index)=> (
@@ -57,6 +59,7 @@ const OfferDetails = (props: IOfferDetailsProps) => {
                 ))}
             </Text>
           </Box>
+          <div className="hr-custom"></div>
           <Box>
             <Text as="p">
               Display conditions: 
@@ -80,6 +83,7 @@ const OfferDetails = (props: IOfferDetailsProps) => {
               )}
             </Text>
           </Box>
+        </BlockStack>
         </Card>
       </AppProvider>
     </>

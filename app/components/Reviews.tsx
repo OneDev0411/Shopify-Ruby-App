@@ -16,8 +16,9 @@ export const Reviews = () => {
       <div className="space-10"></div>
       <InlineGrid gap="300" columns={{ xs: 1, sm: 1, md: 1, lg: 3, xl: 3 }}>
         <Card>
+            <BlockStack gap={"500"}>
             <Text variant="headingMd" as="h2">ECOKIND Cleaning</Text>
-            <div className="gap-top"></div>
+            <div>
               <p>
                 <strong>Canada</strong>
               </p>
@@ -26,11 +27,12 @@ export const Reviews = () => {
                 month and see results. We like how it's customizable. Support is
                 very good too!
               </p>
-              <br />
-              <BlockStack distribution="center">
-                  <img alt="5 stars Image" width="40%" src="https://assets.incartupsell.com/images/5-star.png"/>
-              </BlockStack>
-
+            </div>
+            <div className='space-16'></div>
+            </BlockStack>
+            <span className="display-ruby" >
+              <img alt="5 stars Image" width="40%" src="https://assets.incartupsell.com/images/5-star.png"/>
+            </span>
         </Card>
         <Card>
           <div className="card-content-wrapper">
@@ -47,15 +49,15 @@ export const Reviews = () => {
               </p>
               <br />
             </div>
-            <BlockStack distribution="center">
+            <span className="display-ruby" >
               <img alt="5 stars Image" width="40%" src="https://assets.incartupsell.com/images/5-star.png"/>
-            </BlockStack>
+            </span>
           </div>
         </Card>
         <Card>
-          <div className="card-content-wrapper">
+            <BlockStack gap={"500"}>
             <Text variant="headingMd" as="h2">Deinhamudi.de</Text>
-            <div className="gap-top">
+            <div>
               <p>
                 <strong>Germany</strong>
               </p>
@@ -65,12 +67,12 @@ export const Reviews = () => {
                 Everything works fluently and I could 3x my conversion rate.
                 Very helpful.
               </p>
-              <br />
             </div>
-            <BlockStack distribution="center">
-                  <img alt="5 stars Image" width="40%" src="https://assets.incartupsell.com/images/5-star.png"/>
-              </BlockStack>
-          </div>
+            <div className='space-16 margin-63'></div>
+            </BlockStack>
+            <span className="display-ruby" >
+              <img alt="5 stars Image" width="40%" src="https://assets.incartupsell.com/images/5-star.png"/>
+            </span>
         </Card>
       </InlineGrid>
     </div>

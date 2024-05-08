@@ -238,7 +238,7 @@ const EditOfferView = () => {
                       </div>
                     </Grid.Cell>
                     <Grid.Cell columnSpan={{xs: 6, sm: 6, md: 6, lg: 4, xl: 4}}>
-                      <BlockStack gap="5">
+                      <BlockStack gap="500">
                         <OfferDetails offer={offer} offerableProducts={initialOfferableProductDetails}/>
                         <Summary offerID={offer.id}/>
                         <AbAnalytics offerId={offer.id ?? 0}/>

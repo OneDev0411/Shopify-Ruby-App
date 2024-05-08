@@ -70,6 +70,7 @@ const AbAnalytics = ({ offerId }: IAbAnalyticsProps) => {
                     </Grid.Cell>
                 </Grid>
             </div>
+            <div className='space-14'></div>
             <div className="card-space">
                 {ABTestingOptions.map((option, index) => (
                     <Grid key={index}>

@@ -1012,6 +1012,16 @@ h1{
 .space-10{
   margin-bottom: 2.5rem;
 }
+.space-15 {
+  margin-top: 2.2rem;
+}
+.space-14 {
+  margin-top: 2rem;
+}
+.space-16 {
+  margin-top: 2.5rem;
+}
+
 .report-money{
   font-size: 1.5em;
 }
@@ -1028,8 +1038,34 @@ h1{
 {
   justify-content: center;
 }
+.justify-right {
+  justify-content: right;
+  display: flex;
+}
+.Polaris-Spinner--sizeLarge svg {
+  fill:#00bd9b;
+}
 #appearance input[type=number]{
   max-width: 100px;
+}
+.hr-custom {
+  border-bottom: 1px solid #cacaca;
+  width: 115%;
+  margin-left: -16px;
+}
+.sub-hr-custom {
+  border-bottom: 1px solid #939393;
+  margin: 30px 0px 30px 0;
+  width: 85%;
+}
+.display-ruby {
+  display: ruby-text;
+}
+.margin-63 {
+  margin-top: 63px;
+}
+.width-146 {
+  width: 146px;
 }
 
 .flex-tab{
