@@ -1085,7 +1085,9 @@ h1{
   height: 24px;
   margin-top: 6px;
 }
-
+.padding-fit {
+  padding: 11px 22px;
+}
 .settings-card-heading {
   height: 33px;
 }
@@ -1096,6 +1098,9 @@ h1{
   box-shadow: 0px -1px 0px 0px rgba(0, 0, 0, 0.20) inset, 0px 1px 0px 0px rgba(0, 0, 0, 0.08)  !important;
 }
 
+.Polaris-Tabs--fitted {
+  width: 70%;
+}
 .Polaris-Button--variantPrimary {
   background-color: #3049CD !important;
 }
@@ -1122,15 +1127,34 @@ h1{
     float: right;
     margin-bottom: 10px;
 }
-.Polaris-Banner--withinPage {
+.Polaris-Banner {
+  background-color: unset; 
+}
+.info-banner {
   border-color: rgba(109, 211, 222, 1);
   background-color: rgba(222, 245, 247, 1);
-  padding: 0.4rem;
+  border-radius: 15px;
   box-shadow: none;
+}
+.warning-banner {
+  border-color: rgba(245, 196, 82, 1);
+  background-color:rgba(250, 229, 178, 1);
+  border-radius: 15px;
+  box-shadow: none;
+}
+.theme-warning-banner {
+  border-color: rgba(245, 196, 82, 1);
+  background-color:  #fff1b894;
+  border-radius: 15px;
+  box-shadow: none;
+}
+.Polaris-Banner--textWarningOnBgFill {
+  --pc-box-background: unset;
 }
 .Polaris-Banner--textInfoOnBgFill {
   --pc-box-background: rgba(222, 245, 247, 1) !important;
 }
+
 
 .Polaris-Banner--textInfoOnBgFill.Polaris-Banner--textInfoOnBgFill.Polaris-Banner--textInfoOnBgFill svg, .Polaris-Banner--textInfoOnBgFill.Polaris-Banner--textInfoOnBgFill.Polaris-Banner--textInfoOnBgFill path {
   fill: rgba(42, 172, 187, 1);

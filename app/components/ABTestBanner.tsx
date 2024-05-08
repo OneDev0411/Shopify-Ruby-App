@@ -69,17 +69,19 @@ const ABTestBanner = () => {
   return (
     <>
       {openBanner() && (
-        <Banner status="info">
-          <p>
-            You're currently on the Free plan, and limited to one published
-            offer at a time.{" "}
-            <a href="#" onClick={handleOnClickBanner}>
-              Click here
-            </a>{" "}
-            to upgrade your plan to get access to more features, and unlimited
-            offers!
-          </p>
-        </Banner>
+        <div className='info-banner'>
+          <Banner tone="info">
+            <p>
+              You're currently on the Free plan, and limited to one published
+              offer at a time.{" "}
+              <a href="#" onClick={handleOnClickBanner}>
+                Click here
+              </a>{" "}
+              to upgrade your plan to get access to more features, and unlimited
+              offers!
+            </p>
+          </Banner>
+        </div>
       )}
     </>
   );

@@ -148,23 +148,23 @@ export function FirstTab(props) {
             },
             body: JSON.stringify({product: {query: query, type: 'product'}, shop: shopAndHost.shop}),
         })
-            .then((response) => {
-                return response.json()
-            })
-            .then((data) => {
-                for (var i = 0; i < data.length; i++) {
-                    if (!Object.keys(offer.included_variants).includes(data[i].id.toString())) {
-                        data[i].variants = [];
-                    }
+        .then((response) => {
+            return response.json()
+        })
+        .then((data) => {
+            for (var i = 0; i < data.length; i++) {
+                if (!Object.keys(offer.included_variants).includes(data[i].id.toString())) {
+                    data[i].variants = [];
                 }
-                setProductData(data);
-                setSelectedItems(offer.offerable_product_shopify_ids);
-                setSelectedProducts(offer.offerable_product_shopify_ids)
-                setResourceListLoading(false);
-            })
-            .catch((error) => {
-                console.log("# Error getProducts > ", JSON.stringify(error));
-            })
+            }
+            setProductData(data);
+            setSelectedItems(offer.offerable_product_shopify_ids);
+            setSelectedProducts(offer.offerable_product_shopify_ids)
+            setResourceListLoading(false);
+        })
+        .catch((error) => {
+            console.log("# Error getProducts > ", JSON.stringify(error));
+        })
     }
 
     //Called when the save button of popup modal is clicked
@@ -637,8 +637,10 @@ export function FirstTab(props) {
                                 </BlockStack>
                             </Card>
                         </BlockStack>
-                        <BlockStack distribution="center">
-                            <Button onClick={props.handleTabChange}>Continue To Placement</Button>
+                        <BlockStack>
+                            <div className="align-center">
+                                <span className="padding-fit"><Button onClick={props.handleTabChange}>Continue To Placement</Button></span>
+                            </div>
                         </BlockStack>
                     </BlockStack>             
 
