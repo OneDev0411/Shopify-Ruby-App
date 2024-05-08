@@ -1,4 +1,5 @@
-import {Layout, Card, Image, LegacyStack, HorizontalGrid} from "@shopify/polaris";
+// @ts-nocheck
+import {Layout, Card, Image, LegacyStack, InlineGrid} from "@shopify/polaris";
 import "../components/stylesheets/reviewStyle.css";
 
 export const Reviews = () => {
@@ -13,8 +14,8 @@ export const Reviews = () => {
         </Layout.Section>
       </Layout>
       <div className="space-10"></div>
-      <HorizontalGrid gap="4" columns={{ xs: 1, sm: 1, md: 1, lg: 3, xl: 3 }}>
-        <Card>
+      <InlineGrid gap="4" columns={{ xs: 1, sm: 1, md: 1, lg: 3, xl: 3 }}>
+        <Card title="ECOKIND Cleaning" sectioned>
           <div className="card-content-wrapper">
             <div>
               <p>
@@ -70,7 +71,7 @@ export const Reviews = () => {
             </LegacyStack>
           </div>
         </Card>
-      </HorizontalGrid>
+      </InlineGrid>
     </div>
   );
 }
