@@ -1,7 +1,7 @@
 import { useState } from "react";
 import {
   Card,
-  VerticalStack,
+  BlockStack,
   Text,
 } from "@shopify/polaris";
 import { Toast } from "@shopify/app-bridge-react";
@@ -59,8 +59,16 @@ export function ProductsCard() {
   return (
     <>
       {toastMarkup}
-      <Card>
-        <VerticalStack gap="5">
+      <Card
+        title="Product Counter"
+        sectioned
+        primaryFooterAction={{
+          content: "Populate 5 products",
+          onAction: handlePopulate,
+          loading: isLoading,
+        }}
+      >
+        <BlockStack gap="500">
           <p>
             Sample products are created with a default title and price. You can
             remove them at any time.
@@ -73,7 +81,7 @@ export function ProductsCard() {
               </Text>
             </Text>
           </Text>
-        </VerticalStack>
+        </BlockStack>
       </Card>
     </>
   );

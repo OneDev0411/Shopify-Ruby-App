@@ -3,7 +3,7 @@ import {
   AppProvider,
   Badge,
   Grid,
-  VerticalStack,
+  BlockStack,
   Spinner,
 } from "@shopify/polaris";
 import "@shopify/polaris/build/esm/styles.css";
@@ -238,11 +238,11 @@ const EditOfferView = () => {
                       </div>
                     </Grid.Cell>
                     <Grid.Cell columnSpan={{xs: 6, sm: 6, md: 6, lg: 4, xl: 4}}>
-                      <VerticalStack gap="5">
+                      <BlockStack gap="5">
                         <OfferDetails offer={offer} offerableProducts={initialOfferableProductDetails}/>
                         <Summary offerID={offer.id}/>
                         <AbAnalytics offerId={offer.id ?? 0}/>
-                      </VerticalStack>
+                      </BlockStack>
                     </Grid.Cell>
                   </Grid>
                 </div>

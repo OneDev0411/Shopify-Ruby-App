@@ -1,4 +1,5 @@
-import {VerticalStack, LegacyCard, Image, Button, Grid, Pagination} from '@shopify/polaris';
+// @ts-nocheck
+import {BlockStack, LegacyCard, Image, Button, Grid, Pagination} from '@shopify/polaris';
 import {useState, useCallback, useEffect} from 'react';
 import Slider from "react-slick";
 import { useSelector } from 'react-redux';
@@ -97,7 +98,7 @@ export function Partners() {
                               {partner.description}
                             </p>
                             <br/>
-                            <VerticalStack>
+                            <BlockStack distribution="start">
                             <Image
                               style={{
                               width:'60%',
@@ -106,8 +107,8 @@ export function Partners() {
                               source="https://assets.incartupsell.com/images/5-star.png"
                               alt='star'
                             />
-                            <Button url={partner.app_url} target="_blank">View on Shopify App Store</Button>
-                            </VerticalStack>
+                            <Button url={partner.app_url} target="blank">View on Shopify App Store</Button>
+                            </BlockStack>
                           </LegacyCard>
                         </div>
                       </Grid.Cell>

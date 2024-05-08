@@ -8,7 +8,7 @@ import {
   MediaCard,
   Modal,
   Text,
-  VerticalStack,
+  BlockStack,
   VideoThumbnail, Tabs, LegacyCard, Layout, Banner,
 } from "@shopify/polaris";
 import { homeImage } from "../assets/index.js";
@@ -95,7 +95,7 @@ export function CreateOfferCard({hasOffers = false}) {
 function OfferCard({ handleCreateOffer, isOffers }) {
   return (
     <Card>
-      <VerticalStack inlineAlign="center">
+      <BlockStack inlineAlign="center">
         <div className="center-content">
           <Image
             source={ homeImage }
@@ -131,7 +131,7 @@ function OfferCard({ handleCreateOffer, isOffers }) {
             </ButtonGroup>
           </div>
         </div>
-      </VerticalStack>
+      </BlockStack>
     </Card>
   );
 }
@@ -221,7 +221,7 @@ export function ThemeAppCard({ shopData, themeAppExtension}) {
   }, [])
 
   const contentInfo = (tab) => {
-    return  <VerticalStack inlineAlign="center">
+    return  <BlockStack inlineAlign="center">
       <div className="leadin-card">
         <div style={{marginBottom: '11px'}} className="center-content">
           <Text variant="headingLg" as="h2" fontWeight="regular">
@@ -280,7 +280,7 @@ export function ThemeAppCard({ shopData, themeAppExtension}) {
           </ButtonGroup>
         </div>
       </div>
-    </VerticalStack>
+    </BlockStack>
   }
 
   const [selected, setSelected] = useState(0);
