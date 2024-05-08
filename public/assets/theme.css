@@ -1171,7 +1171,9 @@ h1{
   margin-left: -16px;
   margin-top: 20px;
 }
-
+.Polaris-Label__Text {
+  color:#212121;
+}
 
 
 @media (max-width: 489px) {

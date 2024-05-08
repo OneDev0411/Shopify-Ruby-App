@@ -197,7 +197,7 @@ const EditOfferView = () => {
                 title={offer.title}
                 titleMetadata={
                   offer.publish_status === "published" ? (
-                    <Badge status="success">Published</Badge>
+                    <Badge tone="success">Published</Badge>
                   ) : (
                     <Badge>Unpublished</Badge>
                   )

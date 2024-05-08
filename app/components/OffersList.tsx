@@ -212,7 +212,7 @@ export function OffersList({ pageSize }: IOffersListProps) {
         position={index}
       >
         <IndexTable.Cell>{title}</IndexTable.Cell>
-        <IndexTable.Cell>{status ? (<Badge status="success">Published</Badge>) : (<Badge>Unpublished</Badge>)}</IndexTable.Cell>
+        <IndexTable.Cell>{status ? (<Badge tone="success">Published</Badge>) : (<Badge>Unpublished</Badge>)}</IndexTable.Cell>
         <IndexTable.Cell>{clicks}</IndexTable.Cell>
         <IndexTable.Cell>{views}</IndexTable.Cell>
         <IndexTable.Cell>{`$${revenue}`}</IndexTable.Cell>
