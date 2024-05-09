@@ -335,7 +335,7 @@ type ShopSettings = {
     has_redirect_to_product?: boolean,
     theme_version?: string,
     offers_limit_reached?: boolean,
-    has_recharge?: boolean,
+    has_recharge: boolean,
     admin?: boolean | null
 }
 

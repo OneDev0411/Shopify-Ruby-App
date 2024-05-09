@@ -30,7 +30,7 @@ export const useOffer = () => {
 
   const saveOffer = async (offer: Offer, location: Location, shop: ShopSettings, status: boolean) => {
 
-    let ots = populateOTS(offer, shop?.has_recharge || false, status)
+    let ots = populateOTS(offer, shop.has_recharge, status)
     let responseData
 
     try {
@@ -140,7 +140,7 @@ export const useOffer = () => {
   const createOffer = async (offer: Offer, shop: ShopSettings, status: boolean) => {
     let responseData;
 
-    let ots = populateOTS(offer, shop?.has_recharge || false, status)
+    let ots = populateOTS(offer, shop.has_recharge, status)
 
     try {
       const response = await authFetch(`${OFFER_CREATE_URL}${shop?.shop_id}`, {
