@@ -1175,6 +1175,11 @@ h1{
   color:#212121;
 }
 
+.Polaris-ExceptionList__Description {
+  color: black;
+  font-weight: 700;
+  margin-left: 10px;
+}
 
 @media (max-width: 489px) {
   .title-bar-button {
