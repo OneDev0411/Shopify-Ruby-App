@@ -1,7 +1,11 @@
 import {createContext, useContext, useState} from 'react';
 import { Shop, ShopSettings, ThemeAppExtension } from '~/types/types';
 
-const ShopContext = createContext<ShopContent>({});
+const ShopContext = createContext<ShopContent>({
+    shopSettings: {
+        css_options: {}
+    }
+});
 
 type ShopContent = {
     shop?: Shop
@@ -13,7 +17,7 @@ type ShopContent = {
     hasOffers?: boolean,
     setHasOffers?: (hasOffers: boolean) => void,
     updateShopSettingsAttributes?: (updatedValue: any, ...updatedKey: string[]) => void,
-    shopSettings?: ShopSettings,
+    shopSettings: ShopSettings,
     setShopSettings?: React.Dispatch<React.SetStateAction<ShopSettings>>,
     themeAppExtension?: ThemeAppExtension,
     setThemeAppExtension?: React.Dispatch<React.SetStateAction<ThemeAppExtension | undefined>>,

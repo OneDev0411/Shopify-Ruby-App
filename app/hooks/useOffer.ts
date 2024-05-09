@@ -28,9 +28,9 @@ export const useOffer = () => {
     return response;
   };
 
-  const saveOffer = async (offer: Offer, location: Location, shop: ShopSettings | undefined, status: boolean) => {
+  const saveOffer = async (offer: Offer, location: Location, shop: ShopSettings, status: boolean) => {
 
-    let ots = populateOTS(offer, shop?.has_recharge, status)
+    let ots = populateOTS(offer, shop?.has_recharge || false, status)
     let responseData
 
     try {
@@ -52,7 +52,7 @@ export const useOffer = () => {
     return responseData;
   };
 
-  const populateOTS = (offer: Offer, hasRecharge: boolean | undefined, status: boolean) => {
+  const populateOTS = (offer: Offer, hasRecharge: boolean, status: boolean) => {
 
     let placement_setting;
     let save_as_default_setting;
@@ -137,8 +137,10 @@ export const useOffer = () => {
 
     return new_ots
   }
-  const createOffer = async (offer: Offer, shop: ShopSettings | undefined, status: boolean) => {
-    let ots = populateOTS(offer, shop?.has_recharge, status)
+  const createOffer = async (offer: Offer, shop: ShopSettings, status: boolean) => {
+    let responseData;
+
+    let ots = populateOTS(offer, shop?.has_recharge || false, status)
 
     try {
       const response = await authFetch(`${OFFER_CREATE_URL}${shop?.shop_id}`, {
@@ -148,11 +150,12 @@ export const useOffer = () => {
         },
         body: JSON.stringify({offer: ots})
       });
-      let responseData = await response.json();
-      return responseData
+      responseData = await response.json();
     } catch (error) {
       console.log('Error:', error);
     }
+
+    return responseData;
   }
 
   return { fetchOffer, saveOffer, createOffer, isPending }

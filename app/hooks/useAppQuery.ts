@@ -28,12 +28,13 @@ interface IUseAppQueryProps {
 export const useAppQuery = ({ url, options = {}, reactQueryOptions }: IUseAppQueryProps) => {
   const shopAndHost = useSelector((state: IRootState) => state.shopAndHost);
   const authenticatedFetch = useAuthenticatedFetch(shopAndHost.host);
+  const fetchOptions = JSON.stringify(options);
   const fetch = useMemo(() => {
     return async () => {
       const response = await authenticatedFetch(url, options);
       return response.json();
     };
-  }, [url, JSON.stringify(options)]);
+  }, [url, fetchOptions]);
 
   return useQuery(url, fetch, {
     ...reactQueryOptions,
