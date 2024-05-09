@@ -2,12 +2,12 @@ import { useState } from "react";
 import {
   OFFER_CREATE_URL,
   OFFER_DETAILS_URL
-} from "../shared/constants/EditOfferOptions.js";
+} from "../shared/constants/EditOfferOptions";
 import { Location } from "@remix-run/router";
-import { useAuthenticatedFetch } from "./useAuthenticatedFetch.js";
+import { useAuthenticatedFetch } from "./useAuthenticatedFetch";
 import { useSelector } from "react-redux";
-import { IRootState } from "~/store/store.js";
-import { Offer, PlacementSetting, ShopSettings } from "~/types/types.js";
+import { IRootState } from "~/store/store";
+import { Offer, PlacementSetting, ShopSettings } from "~/types/types";
 
 export const useOffer = () => {
   const [isPending, setIsPending] = useState<boolean>(false);

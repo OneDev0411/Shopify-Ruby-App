@@ -1,7 +1,7 @@
-import { IRootState } from "~/store/store.js";
-import { useAuthenticatedFetch } from "./useAuthenticatedFetch.js";
+import { IRootState } from "~/store/store";
+import { useAuthenticatedFetch } from "./useAuthenticatedFetch";
 import { useSelector } from "react-redux";
-import { ShopSettings } from "~/types/types.js";
+import { ShopSettings } from "~/types/types";
 
 export const useShopSettings = () => {
   const shopAndHost = useSelector((state: IRootState) => state.shopAndHost);
