@@ -88,112 +88,111 @@ export function FourthTab(props) {
             }
 
             {/* <Card sectioned title="Offer placement - advanced settings" actions={[{ content: 'View help doc' }]}> */}
-            <Card sectioned title="Offer placement - advanced settings">
-                {(!offer?.advanced_placement_setting?.advanced_placement_setting_enabled) && (
-                    <>
-                        <b>To edit Advanced settings, enable "Advanced Placement Settings" option on the Placement tab.</b>
-                        <br/><br/><br/>
-                    </>
-                )}
-                <div>
-                    <div style={{paddingBottom: '10px'}}>
-                        <Text variant="headingSm" as="h2">Product page</Text>
+
+            <BlockStack gap={"300"}>
+                <Card>
+                    <BlockStack gap={"300"}>
+                        <BlockStack gap={"300"}>
+                            <Text variant="headingMd" as="h6">Offer placement - advanced settings</Text>
+                            {(!offer?.advanced_placement_setting?.advanced_placement_setting_enabled) && (
+                                <>
+                                    <b>To edit Advanced settings, enable "Advanced Placement Settings" option on the Placement tab.</b>
+                                </>
+                            )}
+                        </BlockStack>
+                        <div>
+                            <BlockStack gap={"300"}>
+                                <Text variant="headingSm" as="h2">Product page</Text>
+                                    <TextField
+                                        label="DOM Selector" 
+                                        value={offer?.advanced_placement_setting?.custom_product_page_dom_selector}
+                                        onChange={handleProductDomSelector} type="text" 
+                                        disabled={!offer?.advanced_placement_setting?.advanced_placement_setting_enabled}
+                                    />
+                                    <Select
+                                        label="DOM action"
+                                        id="productDomAction"
+                                        options={DOMActionOptions}
+                                        onChange={handleProductDomAction}
+                                        value={offer?.advanced_placement_setting?.custom_product_page_dom_action}
+                                        disabled={!offer?.advanced_placement_setting?.advanced_placement_setting_enabled}
+                                    />
+                            </BlockStack>
+                        </div>
+                    </BlockStack>
+
+                    <div>
+                        <BlockStack gap={"300"}>
+                            <hr className="legacy-card-hr placement-hr" />
+                            <Text variant="headingSm" as="h2">Cart page</Text>
+                            <TextField
+                                label="DOM Selector" 
+                                value={offer?.advanced_placement_setting?.custom_cart_page_dom_selector}
+                                onChange={handleCartDomSelector} 
+                                disabled={!offer?.advanced_placement_setting?.advanced_placement_setting_enabled}
+                            />
+                            <Select
+                                label="DOM action"
+                                id="productDomAction"
+                                options={DOMActionOptions}
+                                onChange={handleCartDomAction}
+                                value={offer?.advanced_placement_setting?.custom_cart_page_dom_action}
+                                disabled={!offer?.advanced_placement_setting?.advanced_placement_setting_enabled}
+                            />
+                        </BlockStack>
                     </div>
-                    <TextField
-                        label="DOM Selector" 
-                        value={offer?.advanced_placement_setting?.custom_product_page_dom_selector}
-                        onChange={handleProductDomSelector} type="text" 
-                        disabled={!offer?.advanced_placement_setting?.advanced_placement_setting_enabled}
-                    />
-                    <div className="space-4"/>
+                    <div>
+                        <BlockStack gap={"300"}>
+                            <hr className="legacy-card-hr placement-hr" />
+                            <Text variant="headingSm" as="h2">AJAX/Slider cart</Text>
+                                <TextField
+                                    label="DOM Selector" 
+                                    value={offer?.advanced_placement_setting?.custom_ajax_dom_selector}
+                                    onChange={handleAjaxDomSelector} 
+                                    disabled={!offer?.advanced_placement_setting?.advanced_placement_setting_enabled}
+                                />
+                                <Select
+                                    label="DOM action"
+                                    id="productDomAction"
+                                    options={DOMActionOptions}
+                                    onChange={handleAjaxDomAction}
+                                    value={offer?.advanced_placement_setting?.custom_ajax_dom_action}
+                                    disabled={!offer?.advanced_placement_setting?.advanced_placement_setting_enabled}
+                                />
 
-                    <Select
-                        label="DOM action"
-                        id="productDomAction"
-                        options={DOMActionOptions}
-                        onChange={handleProductDomAction}
-                        value={offer?.advanced_placement_setting?.custom_product_page_dom_action}
-                        disabled={!offer?.advanced_placement_setting?.advanced_placement_setting_enabled}
-                    />
-                </div>
-                <hr className="legacy-card-hr" />
-
-                <div>
-                    <div style={{paddingBottom: '10px'}}>
-                        <Text variant="headingSm" as="h2">Cart page</Text>
+                        </BlockStack>
                     </div>
-                    <TextField
-                        label="DOM Selector" 
-                        value={offer?.advanced_placement_setting?.custom_cart_page_dom_selector}
-                        onChange={handleCartDomSelector} 
-                        disabled={!offer?.advanced_placement_setting?.advanced_placement_setting_enabled}
-                    />
-                    <div className="space-4"/>
-                    <Select
-                        label="DOM action"
-                        id="productDomAction"
-                        options={DOMActionOptions}
-                        onChange={handleCartDomAction}
-                        value={offer?.advanced_placement_setting?.custom_cart_page_dom_action}
-                        disabled={!offer?.advanced_placement_setting?.advanced_placement_setting_enabled}
-                    />
-
-                </div>
-                <hr className="legacy-card-hr" />
-
-                <div>
-                    <div style={{paddingBottom: '10px'}}>
-                        <Text variant="headingSm" as="h2">AJAX/Slider cart</Text>
+                    <div>
+                        <BlockStack gap={"300"}>
+                            <hr className="legacy-card-hr placement-hr" />
+                            <Text variant="headingSm" as="h2">Custom CSS</Text>
+                                <TextField
+                                    value={offer?.custom_css}
+                                    onChange={handleOfferCss}
+                                    multiline={6}
+                                />
+                        </BlockStack>
                     </div>
-                    <TextField
-                        label="DOM Selector" 
-                        value={offer?.advanced_placement_setting?.custom_ajax_dom_selector}
-                        onChange={handleAjaxDomSelector} 
-                        disabled={!offer?.advanced_placement_setting?.advanced_placement_setting_enabled}
-                    />
-                    <div className="space-4"/>
-
-                    <Select
-                        label="DOM action"
-                        id="productDomAction"
-                        options={DOMActionOptions}
-                        onChange={handleAjaxDomAction}
-                        value={offer?.advanced_placement_setting?.custom_ajax_dom_action}
-                        disabled={!offer?.advanced_placement_setting?.advanced_placement_setting_enabled}
-                    />
-                    <div className="space-4"/>
-                </div>
-
-                <hr className="legacy-card-hr" />
-
-                <div>
-                    <div style={{paddingBottom: '10px'}}>
-                        <Text variant="headingSm" as="h2">Custom CSS</Text>
+                        <br/>
+                        <Checkbox
+                            label="Save as default settings"
+                            helpText="This placement will apply to all offers created in the future.
+                            They can be edited in the Settings section."
+                            checked={offer?.save_as_default_setting}
+                            onChange={handleChange}
+                            disabled={!offer?.advanced_placement_setting?.advanced_placement_setting_enabled}
+                        />
+                </Card>
+                <BlockStack>
+                    <div className="align-center">
+                        <span className="padding-fit">
+                            <ButtonGroup>
+                                <Button onClick={() => props.saveDraft()}>Save Draft</Button>
+                                <Button primary disabled={props.enablePublish} onClick={() => props.publishOffer()}>Publish</Button>
+                            </ButtonGroup>
+                        </span>
                     </div>
-
-                    <TextField
-                        value={offer?.custom_css}
-                        onChange={handleOfferCss}
-                        multiline={6}
-                    />
-                </div>
-                <br/>
-
-                <Checkbox
-                    label="Save as default settings"
-                    helpText="This placement will apply to all offers created in the future.
-                     They can be edited in the Settings section."
-                    checked={offer?.save_as_default_setting}
-                    onChange={handleChange}
-                    disabled={!offer?.advanced_placement_setting?.advanced_placement_setting_enabled}
-                />
-            </Card>
-            <div className="space-10"></div>
-            <BlockStack distribution="center">
-                <ButtonGroup>
-                    <Button onClick={() => props.saveDraft()}>Save Draft</Button>
-                    <Button primary disabled={props.enablePublish} onClick={() => props.publishOffer()}>Publish</Button>
-                </ButtonGroup>
+                </BlockStack>
             </BlockStack>
             <div className="space-10"></div>
         </>

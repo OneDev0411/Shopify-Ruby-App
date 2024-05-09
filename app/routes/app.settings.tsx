@@ -153,7 +153,7 @@ export default function Settings() {
             <Page>
                 <ModalChoosePlan />
                 <CustomTitleBar title='Settings' buttonText='Save' handleButtonClick={handleSave} />
-                <Card sectioned>
+                <Card>
                     {(shopSettings?.activated) ? (
                         <Grid>
                             <Grid.Cell columnSpan={{ xs: 6, sm: 3, md: 6, lg: 10, xl: 4 }}>
@@ -181,7 +181,7 @@ export default function Settings() {
                 <Grid>
                     <Grid.Cell columnSpan={{ xs: 6, sm: 6, md: 6, lg: 6, xl: 6 }}>
                         <div id="no-bg-Card">
-                            <Card sectioned>
+                            <Card>
                                 <h2><strong>Default offer placement settings</strong></h2>
                                 <br />
                                 <p>Only edit these settings if you know HTML.</p>
@@ -189,7 +189,7 @@ export default function Settings() {
                         </div>
                     </Grid.Cell>
                     <Grid.Cell columnSpan={{ xs: 6, sm: 6, md: 6, lg: 6, xl: 6 }}>
-                        <Card sectioned>
+                        <Card>
                             {/* Tabs */}
                             {shopSettings ? <SettingTabs formData={formData} currentShop={shopSettings} updateShop={updateShopSettingsAttributes} handleFormChange={handleFormChange} /> : 'Loading...'}
                         </Card>
