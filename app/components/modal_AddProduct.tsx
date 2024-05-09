@@ -23,7 +23,7 @@ interface IModalAddProductProps {
   updateSelectedProducts?: (p: { id: any; title: any }, selectedVariants: ProductVariants) => void
   updateSelectedCollection?: (selectedItem?: ProductDetails, uncheck?: boolean) => void,
   setResourceListLoading: (resListLoading: boolean) => void,
-  shop_id: number,
+  shop_id: number | undefined,
 }
 
 export function ModalAddProduct({
@@ -212,6 +212,9 @@ export function ModalAddProduct({
 
   // Called on every selection of popup modal products after first selected product
   function selectionChange(id) {
+    if (shop_id === undefined) {
+      return; // Return early if shop_id is undefined
+    }
     if (!isCollection) {
       if (selectedItems.length < id.length) {
         setResourceListLoading(true);

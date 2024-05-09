@@ -430,6 +430,10 @@ interface IAutopilotSettingsProps {
   setAutopilotCheck: (autopilotCheck: AutopilotCheck) => void;
 }
 
+interface UpdateCheckKeysValidityFunc { 
+  (updatedKey: string, updatedValue: string | boolean): void;
+}
+  
 type ShopAndHost = {
   shop: string,
   host: string,
@@ -454,7 +458,8 @@ type ProductVariants = {
 }
 
 export type { JsonVariants, ProductDetails, PlacementSetting, AdvancedPlacementSetting, CssOptions, Plan, Offer,
-    Shop, ShopSettings, Subscription, ThemeAppExtension, ProductVariants, Product, Variant, Rule, IAutopilotSettingsProps, AutopilotCheck, ShopAndHost, ThemeSetting}
+	Shop, ShopSettings, Subscription, ThemeAppExtension, ProductVariants, Product, Variant, Rule, IAutopilotSettingsProps, AutopilotCheck, ShopAndHost, ThemeSetting, UpdateCheckKeysValidityFunc
+}
 
 declare global {
     interface Window {

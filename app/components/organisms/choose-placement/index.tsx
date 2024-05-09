@@ -18,10 +18,11 @@ import {OfferContent, OfferContext} from "~/contexts/OfferContext";
 import {useShopState} from "../../../contexts/ShopContext";
 import { OfferPlacement } from "../../molecules/index.js";
 import { BannerContainer } from "../../atoms/index.js";
-import {IAutopilotSettingsProps, Product, Rule, ShopAndHost, ThemeSetting} from "~/types/global";
+import {AutopilotCheck, IAutopilotSettingsProps, Product, Rule, ShopAndHost, ThemeSetting} from "~/types/types";
 import {useEnv} from "../../../contexts/EnvContext";
 interface IChoosePlacementProps extends IAutopilotSettingsProps{
     enableOrDisablePublish: any
+    autopilotCheck: AutopilotCheck
 }
 
 const ChoosePlacement = ({ enableOrDisablePublish, autopilotCheck}: IChoosePlacementProps) => {
@@ -49,7 +50,7 @@ const ChoosePlacement = ({ enableOrDisablePublish, autopilotCheck}: IChoosePlace
     const [templateImagesURL, setTemplateImagesURL] = useState<any>({});
     const [storedThemeNames, setStoredThemeName] = useState<string[]>([]);
     const env = useEnv();
-    const isLegacy = themeAppExtension.theme_version !== '2.0' || env?.ENABLE_THEME_APP_EXTENSION?.toLowerCase() !== 'true';
+    const isLegacy = themeAppExtension?.theme_version !== '2.0' || env?.ENABLE_THEME_APP_EXTENSION?.toLowerCase() !== 'true';
 
     useEffect(() => {
         fetch(`/api/v2/merchant/active_theme_for_dafault_template?shop=${shopAndHost.shop}`, {
@@ -77,7 +78,7 @@ const ChoosePlacement = ({ enableOrDisablePublish, autopilotCheck}: IChoosePlace
                         }
                         else if(value.page_type == "ajax") {
                             setTemplateImagesURL(previousState => {
-                                return { ...previousState, ["ajax_cart_image_".concat(value.position)]: value.image_url};
+                                return { ...previousState, ["ajax_cart_image_".concat(value.position)]: value.image_url};      
                             });
                         }
                     });

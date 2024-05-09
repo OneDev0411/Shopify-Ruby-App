@@ -4,10 +4,10 @@ import {OfferContent, OfferContext} from "~/contexts/OfferContext";
 import { useShopState } from "~/contexts/ShopContext";
 
 import { Checkbox, Collapsible, Card, BlockStack, Text, TextField } from "@shopify/polaris";
-import {IAutopilotSettingsProps} from "~/types/global";
+import { IAutopilotSettingsProps, UpdateCheckKeysValidityFunc } from "~/types/types";
 
 interface IOfferContentProps extends IAutopilotSettingsProps{
-  updateCheckKeysValidity: (key: string, value: string) => void;
+  updateCheckKeysValidity: UpdateCheckKeysValidityFunc,
 }
 
 const OfferContent = ({ updateCheckKeysValidity, autopilotCheck }: IOfferContentProps) => {

@@ -43,7 +43,7 @@ const EditOfferView = () => {
   const [isLoading, setIsLoading] = useState(true);
   const fetch = useAuthenticatedFetch(shopAndHost.host)
   const [initialOfferableProductDetails, setInitialOfferableProductDetails] = useState<ProductDetails[]>([]);
-  const [checkKeysValidity, setCheckKeysValidity] = useState({});
+  const [checkKeysValidity, setCheckKeysValidity] = useState<Record<string, string | boolean>>({});
   const navigateTo = useNavigate();
 
   // useEffect(()=> {
@@ -168,7 +168,7 @@ const EditOfferView = () => {
     };
   },[]);
 
-  function updateCheckKeysValidity(updatedKey, updatedValue) {
+  function updateCheckKeysValidity(updatedKey: string, updatedValue: string | boolean) {
     setCheckKeysValidity(previousState => {
         return {...previousState, [updatedKey]: updatedValue};
     });

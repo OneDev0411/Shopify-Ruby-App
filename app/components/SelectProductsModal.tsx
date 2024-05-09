@@ -2,27 +2,27 @@ import {useState, useEffect, memo} from 'react';
 import {useSelector} from 'react-redux';
 import {ModalAddProduct} from './modal_AddProduct';
 import {useAuthenticatedFetch} from "~/hooks";
-import { Offer, ProductDetails, Shop } from "~/types/types";
+import { Offer, Product, ShopSettings } from "~/types/types";
 import {IRootState} from "~/store/store";
 
 interface ISelectProductsModalProps {
   offer: Offer,
-  shop: Shop,
-  selectedProducts: ProductDetails[],
-  setSelectedProducts: (prodDetails: ProductDetails[]) => void,
+  shopSettings: ShopSettings,
+  selectedProducts: Product[],
+  setSelectedProducts: (prodDetails: Product[]) => void,
   selectedItems: (number | string)[],
   setSelectedItems: React.Dispatch<React.SetStateAction<(string | number)[]>>,
 }
 
 export function SelectProductsModal({
                                       offer, selectedProducts, setSelectedProducts,
-                                      setSelectedItems, selectedItems, shop
+                                      setSelectedItems, selectedItems, shopSettings
                                     }: ISelectProductsModalProps) {
 
   const shopAndHost = useSelector((state: IRootState) => state.shopAndHost);
   const fetch = useAuthenticatedFetch(shopAndHost.host);
 
-  const [productData, setProductData] = useState<ProductDetails[]>([]);
+  const [productData, setProductData] = useState<Product[]>([]);
   const [resourceListLoading, setResourceListLoading] = useState<boolean>(true);
   const [query, setQuery] = useState<string>("");
 
@@ -66,7 +66,7 @@ export function SelectProductsModal({
       .then((response: Response) => {
         return response.json()
       })
-      .then((data: ProductDetails[]) => {
+      .then((data: Product[]) => {
         for (let i = 0; i < data.length; i++) {
           if (!Object.keys(offer.included_variants).includes(data[i].id.toString())) {
             data[i].variants = [];
@@ -81,7 +81,7 @@ export function SelectProductsModal({
       })
   }
 
-  function updateSelectedProducts(selectedItem: ProductDetails) {
+  function updateSelectedProducts(selectedItem: Product) {
     if (selectedItem.id) {
       selectedProducts.push(selectedItem);
     } else {
@@ -98,7 +98,7 @@ export function SelectProductsModal({
   return (
     <>
       <ModalAddProduct selectedItems={selectedItems} setSelectedItems={setSelectedItems} offer={offer}
-                       updateQuery={updateQuery} shop_id={shop.shop_id} productData={productData}
+                       updateQuery={updateQuery} shop_id={shopSettings?.shop_id} productData={productData}
                        resourceListLoading={resourceListLoading} setResourceListLoading={setResourceListLoading}
                        updateSelectedProduct={updateSelectedProducts}/>
     </>

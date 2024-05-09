@@ -21,11 +21,11 @@ import {InfoIcon} from '@shopify/polaris-icons';
 import { ModalAddProduct } from "~/components";
 import { useAuthenticatedFetch } from "~/hooks";
 import { AutopilotQuantityOptionsNew } from "~/shared/constants/EditOfferOptions";
-import {IAutopilotSettingsProps, Offer, Product, ProductDetails, ProductVariants, ShopAndHost} from "~/types/global";
+import { IAutopilotSettingsProps, Offer, Product, ProductDetails, ProductVariants, ShopAndHost, UpdateCheckKeysValidityFunc } from "~/types/types";
 
 interface IOfferProductProps extends IAutopilotSettingsProps {
   initialVariants: ProductVariants;
-  updateCheckKeysValidity: (key: string, value: string) => void;
+  updateCheckKeysValidity: UpdateCheckKeysValidityFunc,
   updateInitialVariants: (selectedItem: string | string[] | Offer['included_variants'], selectedVariants?: number[]) => void;
   initialOfferableProductDetails: ProductDetails[];
   setIsLoading: (b: boolean) => void

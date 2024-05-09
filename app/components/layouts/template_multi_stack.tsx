@@ -7,9 +7,16 @@ import {
 import TemplateComponent from 'react-mustache-template-component';
 import themeCss from '@assets/theme.css';
 import { useSelector } from 'react-redux';
+import { IRootState } from "~/store/store";
+import { Offer } from "~/types/types";
 
-export default function Stack(props) {
-	const shopAndHost = useSelector(state => state.shopAndHost);
+interface IStackProps {
+	offer: Offer,
+	checkKeysValidity: Record<string, string | boolean>,
+}
+
+export default function Stack(props: IStackProps) {
+	const shopAndHost = useSelector((state: IRootState) => state.shopAndHost);
 
 	const template = `<div id="nudge-offer-{{ id }}" style="background-color: {{ css_options.main.backgroundColor }}; color: {{ css_options.main.color}}; {{#mainMarginTop }} margin-top: {{css_options.main.marginTop}}; {{/mainMarginTop}} {{#mainMarginBottom }} margin-bottom: {{css_options.main.marginBottom}}; {{/mainMarginBottom}} {{#mainBorderWidth}} border: {{css_options.main.borderWidth}}px {{css_options.main.borderStyle}}; {{/mainBorderWidth}} {{#mainBorderRadius}} border-radius: {{css_options.main.borderRadius}}px; {{/mainBorderRadius}} {{ #mobileViewWidth }} width: 320px {{/ mobileViewWidth}}" class="nudge-offer {{ theme }}{{#show_product_image}} with-image {{/show_product_image}} multi {{ multi_layout }} {{shop.extra_css_classes}}"
      data-offerid="{{ id }}">
@@ -129,6 +136,6 @@ export default function Stack(props) {
 
 
 	return(
-		<TemplateComponent template={template} data={({...props.offer, ...props.shop, ...props.checkKeysValidity})} sanitize={false}/>
+		<TemplateComponent template={template} data={({...props.offer, ...props.checkKeysValidity})} sanitize={false}/>
 	);
 }

@@ -9,7 +9,7 @@ interface IOfferPlacementProps {
     radioName: string;
     onChangeDefault: (newValue: boolean, id: string) => void;
     onChangeTemplate: (newValue: boolean, id: string) => void;
-    disabled: boolean;
+    disabled?: boolean;
     showImages: boolean;
     images: string[];
     onClickImage: (position: number) => void;

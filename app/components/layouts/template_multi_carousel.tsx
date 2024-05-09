@@ -3,11 +3,20 @@ import TemplateComponent from 'react-mustache-template-component';
 import themeCss from '@assets/theme.css';
 import Siema from 'siema';
 import { useSelector } from 'react-redux';
+import { Offer } from "~/types/types";
+import { IRootState } from "~/store/store";
+import { UpdateCheckKeysValidityFunc } from "~/types/types";
 
-export default function Carousel(props) {
+interface ICarouselProps {
+	offer: Offer,
+	checkKeysValidity: Record<string, string | boolean>;
+	updateCheckKeysValidity: UpdateCheckKeysValidityFunc;
+}
+
+export default function Carousel(props: ICarouselProps) {
 
 	let mySiema, prev, next;
-	const shopAndHost = useSelector(state => state.shopAndHost);
+	const shopAndHost = useSelector((state: IRootState) => state.shopAndHost);
 
 	const template = useRef(`<div id="nudge-offer-{{ id }}" style="background-color: {{ css_options.main.backgroundColor }}; color: {{ css_options.main.color}}; {{#mainMarginTop }} margin-top: {{css_options.main.marginTop}}; {{/mainMarginTop}} {{#mainMarginBottom }} margin-bottom: {{css_options.main.marginBottom}}; {{/mainMarginBottom}} {{#mainBorderWidth}} border: {{css_options.main.borderWidth}}px {{css_options.main.borderStyle}}; {{/mainBorderWidth}} {{#mainBorderRadius}} border-radius: {{css_options.main.borderRadius}}px; {{/mainBorderRadius}} {{ #mobileViewWidth }} width: 320px {{/ mobileViewWidth}}" class="nudge-offer {{ theme }} {{#show_product_image}} with-image {{/show_product_image}} multi {{ multi_layout }} {{shop.extra_css_classes}}"
      data-offerid="{{ id }}">
@@ -145,7 +154,7 @@ export default function Carousel(props) {
 		    selector: '.offer-collection',
 		    loop: true
 		  })
-		  if(!props.checkKeysValidity.selectedCarouselWidth) {
+		  if(!props.checkKeysValidity?.selectedCarouselWidth) {
 		  	props.updateCheckKeysValidity("carouselWidth", mySiema.selectorWidth);
 	  		props.updateCheckKeysValidity("selectedCarouselWidth", true);
 		  }
@@ -154,12 +163,12 @@ export default function Carousel(props) {
 		  next = document.querySelector('.js-next');
 		  next.addEventListener('click', function () { mySiema.next() });
 		}
-	}, [props.checkKeysValidity.selectedCarouselWidth])
+	}, [props.checkKeysValidity?.selectedCarouselWidth])
 
 
 	return(
 		<>
-				<TemplateComponent template={template.current} data={({...props.offer, ...props.shop, ...props.checkKeysValidity})} sanitize={false}/>
+				<TemplateComponent template={template.current} data={({...props.offer, ...props.checkKeysValidity})} sanitize={false}/>
 		</>
 	);
 }

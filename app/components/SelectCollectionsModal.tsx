@@ -2,27 +2,27 @@ import {useState, useEffect} from 'react';
 import {useSelector} from 'react-redux';
 import {ModalAddProduct} from './modal_AddProduct';
 import {useAuthenticatedFetch} from "~/hooks";
-import {Offer, ProductDetails, Shop} from "~/types/types";
+import { Offer, Product, ShopSettings } from "~/types/types";
 import {IRootState} from "~/store/store";
 
 interface ISelectCollectionsModalProps {
   offer: Offer,
-  setSelectedCollections: (selectedColl: ProductDetails[]) => void,
-  selectedCollections: ProductDetails[],
+  setSelectedCollections: (selectedColl: Product[]) => void,
+  selectedCollections: Product[],
   setSelectedItems: React.Dispatch<React.SetStateAction<(string | number)[]>>,
   selectedItems: (number | string)[],
-  shop: Shop
+  shopSettings: ShopSettings,
 }
 
 export function SelectCollectionsModal({ offer, setSelectedCollections, selectedCollections,
-                                         setSelectedItems, selectedItems, shop
+                                         setSelectedItems, selectedItems, shopSettings
                                        }: ISelectCollectionsModalProps) {
 
 
   const shopAndHost = useSelector((state: IRootState) => state.shopAndHost);
   const fetch = useAuthenticatedFetch(shopAndHost.host);
 
-  const [collectionData, setCollectionData] = useState<ProductDetails[]>({} as ProductDetails[]);
+  const [collectionData, setCollectionData] = useState<Product[]>([]);
   const [resourceListLoading, setResourceListLoading] = useState<boolean>(false);
   const [query, setQuery] = useState<string>("");
 
@@ -68,7 +68,7 @@ export function SelectCollectionsModal({ offer, setSelectedCollections, selected
       })
   }
 
-  function updateSelectedCollection(selectedItem: ProductDetails | undefined, uncheck: boolean = false) {
+  function updateSelectedCollection(selectedItem?: Product, uncheck: boolean = false) {
     if (selectedItem == null) {
       setSelectedCollections([]);
       return;
@@ -98,7 +98,7 @@ export function SelectCollectionsModal({ offer, setSelectedCollections, selected
   return (
     <>
       <ModalAddProduct selectedItems={selectedItems} setSelectedItems={setSelectedItems}
-                       isCollection={true} offer={offer} updateQuery={updateQuery} shop_id={shop.shop_id}
+                       isCollection={true} offer={offer} updateQuery={updateQuery} shop_id={shopSettings?.shop_id}
                        productData={collectionData} resourceListLoading={resourceListLoading}
                        updateSelectedCollection={updateSelectedCollection}
                        setResourceListLoading={setResourceListLoading}/>

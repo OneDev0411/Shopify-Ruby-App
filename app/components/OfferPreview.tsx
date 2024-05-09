@@ -13,11 +13,20 @@ import {OfferContent, OfferContext} from "../contexts/OfferContext";
 import {useShopState} from "../contexts/ShopContext";
 import { IRootState } from "~/store/store";
 
-export function OfferPreview(props) {
+interface IOfferPreviewProps {
+	checkKeysValidity: {
+		[key: string]: string | boolean
+	},
+	updateCheckKeysValidity: (updatedKey: string, updatedValue: string | boolean) => void,
+	previewMode?: boolean,
+	updatePreviousAppOffer?: boolean
+}
+
+export function OfferPreview(props: IOfferPreviewProps) {
 	const { offer, updateOffer, updateNestedAttributeOfOffer } = useContext(OfferContext) as OfferContent;
 	const { shopSettings } = useShopState();
 	const shopAndHost = useSelector((state: IRootState) => state.shopAndHost);
-	const [error, setError] = useState(null);
+	const [error, setError] = useState<Error | null>(null);
 	const [carouselLoading, setCarouselLoading] = useState<boolean>(false);
 	
 	const fetch = useAuthenticatedFetch(shopAndHost.host);
