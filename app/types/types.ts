@@ -62,7 +62,7 @@ type PlacementSetting = {
 
 type AdvancedPlacementSetting = {
     id?: number,
-    advanced_placement_setting_enabled?: null,
+    advanced_placement_setting_enabled?: boolean,
     custom_product_page_dom_selector: string,
     custom_product_page_dom_action: string,
     custom_cart_page_dom_selector: string,
@@ -287,16 +287,16 @@ type Subscription = {
 }
 
 type ThemeAppExtension = {
-    "id": number,
-    "shop_id": number,
-    "product_block_added": boolean,
-    "cart_block_added": boolean,
-    "collection_block_added": boolean,
-    "theme_app_embed": boolean,
-    "theme_app_complete": boolean,
-    "created_at": string,
-    "updated_at": string,
-    "theme_version": string
+    id: number,
+    shop_id: number,
+    product_block_added: boolean,
+    cart_block_added: boolean,
+    collection_block_added: boolean,
+    theme_app_embed: boolean,
+    theme_app_complete: boolean,
+    created_at: string,
+    updated_at: string,
+    theme_version: string
 }
 
 type ShopSettings = {
@@ -342,6 +342,7 @@ type ShopSettings = {
 type Offer = {
     id?: number,
     rules_json?: Rule[],
+    active?: boolean,
     text_a: string,
     text_b?: string,
     cta_a: string,
@@ -360,7 +361,7 @@ type Offer = {
         path_to_cart: string,
         extra_css_classes: null,
         css_options: CssOptions,
-        offer_css: null
+        offer_css: string
     },
     show_nothanks: boolean,
     calculated_image_url: string | URL | null,
@@ -445,13 +446,13 @@ type ShopAndHost = {
 }
 
 type AutopilotCheck = {
-  shop_autopilot: boolean,
-  isPending: string,
-  autopilot_offer_id: number
+  shop_autopilot?: boolean,
+  isPending?: string,
+  autopilot_offer_id?: number
 }
 
 type Rule = {
-    quantity: number,
+    quantity: number | null,
     rule_selector: string,
     item_type: string,
     item_shopify_id: number,
@@ -478,8 +479,10 @@ type ProductVariants = {
     [key:string]: (string|number)[],
 }
 
-export type { JsonVariants, ProductDetails, PlacementSetting, AdvancedPlacementSetting, CssOptions, Plan, Offer,
-    Shop, ShopSettings, Subscription, ThemeAppExtension, ProductVariants, Product, Variant, Rule, IAutopilotSettingsProps, AutopilotCheck, ShopAndHost, ThemeSetting, IVideoModalProps, IEnvContext}
+export type {
+    JsonVariants, ProductDetails, PlacementSetting, AdvancedPlacementSetting, CssOptions, Plan, Offer,
+    Shop, ShopSettings, Subscription, ThemeAppExtension, ProductVariants, Product, Variant, Rule, IAutopilotSettingsProps, AutopilotCheck, ShopAndHost, ThemeSetting, IVideoModalProps, IEnvContext, UpdateCheckKeysValidityFunc
+}
 
 declare global {
     interface Window {

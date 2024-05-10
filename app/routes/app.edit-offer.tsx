@@ -20,6 +20,7 @@ import ErrorPage from "../components/ErrorPage"
 import {useShopSettings} from "../hooks/useShopSettings.js";
 import {useShopState} from "../contexts/ShopContext";
 import { IRootState } from '~/store/store';
+import { AutopilotCheck, ProductDetails, ShopSettings } from '~/types/types';
 // import { onLCP, onFID, onCLS } from 'web-vitals';
 // import { traceStat } from "../services/firebase/perf.js";
 
@@ -32,22 +33,22 @@ export default function EditPage() {
     const app = useAppBridge();
     const navigateTo = useNavigate();
     const location = useLocation();
-    const [error, setError] = useState(null);
+    const [error, setError] = useState<Error | null>(null);
 
     const [enablePublish, setEnablePublish] = useState<boolean>(false)
 
     // Content section tab data
     const [selected, setSelected] = useState<number>(0);
-    const [checkKeysValidity, setCheckKeysValidity] = useState({});
-    const [initialVariants, setInitialVariants] = useState({});
-    const [autopilotCheck, setAutopilotCheck] = useState({
+    const [checkKeysValidity, setCheckKeysValidity] = useState<Record<string, string | boolean>>({});
+    const [initialVariants, setInitialVariants] = useState<Record<string, (string | number)[]>>({});
+    const [autopilotCheck, setAutopilotCheck] = useState<AutopilotCheck>({
         isPending: "Launch Autopilot",
     });
-    const [initialOfferableProductDetails, setInitialOfferableProductDetails] = useState({});
+    const [initialOfferableProductDetails, setInitialOfferableProductDetails] = useState<ProductDetails[]>([]);
 
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
-    const [updatePreviousAppOffer, setUpdatePreviousAppOffer] = useState(false);
+    const [updatePreviousAppOffer, setUpdatePreviousAppOffer] = useState<boolean>(false);
 
     const offerID = location?.state?.offerID;
     const redirect = Redirect.create(app);
@@ -150,7 +151,7 @@ export default function EditPage() {
 
     // TODO: Relocate to offer context
     //Called whenever the checkKeysValidity changes in any child component
-    function updateCheckKeysValidity(updatedKey: string, updatedValue: string) {
+    function updateCheckKeysValidity(updatedKey: string, updatedValue: string | number | boolean) {
         setCheckKeysValidity(previousState => {
             return {...previousState, [updatedKey]: updatedValue};
         });
@@ -221,7 +222,7 @@ export default function EditPage() {
 
         if (location.state != null && location.state?.offerID == null) {
             try {
-                let responseData = await createOffer(offer, shopSettings, status)
+                let responseData = await createOffer(offer, shopSettings as ShopSettings, status)
                 location.state.offerID = responseData.offer.id
                 setIsLoading(false);
             } catch (error) {

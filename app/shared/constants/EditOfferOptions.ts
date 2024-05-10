@@ -138,7 +138,7 @@ export const OFFER_DEFAULTS = {
   powered_by_text_color: undefined,
   powered_by_link_color: undefined,
   remove_if_no_longer_valid: false,
-  rules_json: undefined,
+  rules_json: [],
   ruleset_type: 'and',
   redirect_to_product: undefined,
   shop: undefined,

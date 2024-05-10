@@ -1,7 +1,7 @@
 import { AxiosResponse } from "axios";
 import { api } from "../api";
 import { CURRENT_SHOP, UPDATE_ACTIVATION, UPDATE_SHOP_SETTINGS, SHOP_OFFERS_STATS } from "../endpoints/shop";
-import { Shop, ThemeAppExtension } from "~/types/global";
+import { Shop, ThemeAppExtension } from "~/types/types";
 
 export function getShop(shopify_domain) {
   return api.get(CURRENT_SHOP, {

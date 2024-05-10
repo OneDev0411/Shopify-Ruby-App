@@ -17,19 +17,12 @@ import { getLabelFromValue } from "~/shared/helpers/commonHelpers";
 import { QuantityArray, OrderArray } from "~/shared/constants/EditOfferOptions";
 
 import {OfferContent, OfferContext} from "~/contexts/OfferContext";
-import {IAutopilotSettingsProps, Offer} from "~/types/types";
+import { Rule, AutopilotCheck, Offer } from "~/types/types";
 
-type Rule = {
-    quantity: number,
-    rule_selector: string,
-    item_type: string,
-    item_shopify_id: number,
-    item_name: string,
-}
+const RULE_DEFAULTS: Rule = { quantity: null, rule_selector: 'cart_at_least', item_type: 'product', item_shopify_id: 0, item_name: "" }
 
-const RULE_DEFAULTS: Rule = { quantity: 0, rule_selector: 'cart_at_least', item_type: 'product', item_shopify_id: 0, item_name: "" }
-
-interface IDisplayConditionsProps extends  IAutopilotSettingsProps{
+interface IDisplayConditionsProps {
+    autopilotCheck: AutopilotCheck,
 }
 
 const DisplayConditions = ({ autopilotCheck } : IDisplayConditionsProps) => {

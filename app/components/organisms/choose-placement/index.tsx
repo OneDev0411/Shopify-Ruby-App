@@ -18,11 +18,11 @@ import {OfferContent, OfferContext} from "~/contexts/OfferContext";
 import {useShopState} from "../../../contexts/ShopContext";
 import { OfferPlacement } from "../../molecules/index.js";
 import { BannerContainer } from "../../atoms/index.js";
-import {AutopilotCheck, IAutopilotSettingsProps, Product, Rule, ShopAndHost, ThemeSetting} from "~/types/types";
+import { AutopilotCheck, Product, Rule, ShopAndHost, ThemeSetting } from "~/types/types";
 import {useEnv} from "../../../contexts/EnvContext";
-interface IChoosePlacementProps extends IAutopilotSettingsProps{
-    enableOrDisablePublish: any
-    autopilotCheck: AutopilotCheck
+interface IChoosePlacementProps {
+    enableOrDisablePublish: (enable: boolean) => void,
+    autopilotCheck: AutopilotCheck,
 }
 
 const ChoosePlacement = ({ enableOrDisablePublish, autopilotCheck}: IChoosePlacementProps) => {
@@ -33,7 +33,7 @@ const ChoosePlacement = ({ enableOrDisablePublish, autopilotCheck}: IChoosePlace
     const fetch = useAuthenticatedFetch(shopAndHost.host);
 
     const [selected, setSelected] = useState('cartpage');
-    const [selectedItems, setSelectedItems] = useState<string[]>([]);
+    const [selectedItems, setSelectedItems] = useState<(string | number)[]>([]);
     const [defaultSetting, setDefaultSetting] = useState<boolean>(false);
     const [useTemplate, setUseTemplate] = useState<boolean>(false);
     const [multipleDefaultSettings, setMultipleDefaultSettings] = useState<boolean>(false);
@@ -576,7 +576,7 @@ const ChoosePlacement = ({ enableOrDisablePublish, autopilotCheck}: IChoosePlace
             .then((response) => { return response.json() })
             .then(data => {
                 const offerRulesIds: string[] = [];
-                const offerRules: Rule[] = [...offer.rules_json];
+                const offerRules: Rule[] = offer.rules_json as Rule[];
                 offerRules.forEach ((value: Rule) => {
                     offerRulesIds.push(String(value.item_shopify_id));
                 });
@@ -586,18 +586,18 @@ const ChoosePlacement = ({ enableOrDisablePublish, autopilotCheck}: IChoosePlace
     }
 
     function addProductsRule() {
-        if (Array.isArray(selectedProducts)) {
+        if (Array.isArray(selectedProducts) && offer.rules_json) {
             var offerRules = [...offer.rules_json];
             for (var i = 0; i < selectedProducts.length; i++) {
                 if(selectedProducts[i].id && !offerRules.some(hash => hash?.item_shopify_id == selectedProducts[i].id)){
                     const offer_rule = { quantity: null, rule_selector: "on_product_this_product_or_in_collection", item_type: "product", item_shopify_id: selectedProducts[i].id, item_name: selectedProducts[i].title }
-                    offerRules.push(offer_rule);
+                    offer_rule && offerRules.push(offer_rule);
                 }
             }
             if(selectedProducts.length == 0) {
                 var tempOfferRules = offerRules;
                 tempOfferRules.forEach ((value) => {
-                    if(!selectedItems.includes(value.item_shopify_id)) {
+                    if(!selectedItems.includes(String(value.item_shopify_id))) {
                         offerRules = offerRules.filter(item => item.item_shopify_id !== value.item_shopify_id);
                     }
                 });
@@ -610,11 +610,11 @@ const ChoosePlacement = ({ enableOrDisablePublish, autopilotCheck}: IChoosePlace
     }
 
     function addCollectionsRule() {
-        const offerRules = [...offer.rules_json];
+        const offerRules = offer.rules_json ? [...offer.rules_json] : [];
         if (Array.isArray(selectedCollections)) {
             for (let i = 0; i < selectedCollections.length; i++) {
                 const offer_rule = { quantity: null, rule_selector: "on_product_this_product_or_in_collection", item_type: "collection", item_shopify_id: selectedCollections[i].id, item_name: selectedCollections[i].title }
-                offerRules.push(offer_rule);
+                offerRules?.push(offer_rule);
             }
             updateOffer('rules_json', offerRules);
             updateOffer('ruleset_type', "or");
@@ -647,7 +647,7 @@ const ChoosePlacement = ({ enableOrDisablePublish, autopilotCheck}: IChoosePlace
                     tone="warning">
                     <p>In order to show the offer in the Ajax Cart, you need to enable it in the Theme Editor.</p><br/>
                     <p><Link
-                        to={`https://${shopSettings.shopify_domain}/admin/themes/current/editor?context=apps&template=product&activateAppId=${import.meta.env.VITE_SHOPIFY_ICU_EXTENSION_APP_ID}/ajax_cart_app_block`}
+                        to={`https://${shopSettings?.shopify_domain}/admin/themes/current/editor?context=apps&template=product&activateAppId=${import.meta.env.VITE_SHOPIFY_ICU_EXTENSION_APP_ID}/ajax_cart_app_block`}
                         target="_blank">Click here</Link> to go to the theme editor</p>
                 </BannerContainer>
             )}
@@ -708,7 +708,7 @@ const ChoosePlacement = ({ enableOrDisablePublish, autopilotCheck}: IChoosePlace
                         }}>
                         <Modal.Section>
                             <SelectProductsModal selectedItems={selectedItems} setSelectedItems={setSelectedItems}
-                                                 offer={offer} shop={shopSettings}
+                                                 offer={offer} shopSettings={shopSettings}
                                                  handleProductsModal={handleProductsModal}
                                                  selectedProducts={selectedProducts}
                                                  setSelectedProducts={setSelectedProducts}/>
@@ -726,7 +726,7 @@ const ChoosePlacement = ({ enableOrDisablePublish, autopilotCheck}: IChoosePlace
                         }}>
                         <Modal.Section>
                             <SelectCollectionsModal selectedItems={selectedItems} setSelectedItems={setSelectedItems}
-                                                    offer={offer} shop={shopSettings}
+                                                    offer={offer} shopSettings={shopSettings}
                                                     selectedCollections={selectedCollections}
                                                     setSelectedCollections={setSelectedCollections}/>
                         </Modal.Section>

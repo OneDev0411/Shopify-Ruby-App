@@ -5,7 +5,7 @@ import {OfferContent, OfferContext} from "~/contexts/OfferContext";
 import { useShopState } from "~/contexts/ShopContext";
 
 import { Checkbox, Card, BlockStack, TextField } from "@shopify/polaris";
-import {ShopAndHost} from "~/types/global";
+import { ShopAndHost } from "~/types/types";
 
 const DisplayOptions = () => {
     const { offer, updateOffer } = useContext(OfferContext) as OfferContent;
@@ -87,7 +87,7 @@ const DisplayOptions = () => {
                           onChange={handleShowNoThanksChange}
                           label="Customer can't dismiss offer"
                 />
-                {shopSettings.has_redirect_to_product == true && (
+                {shopSettings?.has_redirect_to_product == true && (
                     <Checkbox id={"redirectToProduct"}
                               checked={offer.redirect_to_product}
                               onChange={handleRedirectedToProductChange}

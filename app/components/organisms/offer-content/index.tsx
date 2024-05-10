@@ -1,17 +1,18 @@
 import React, {useCallback, useContext} from "react";
 import { Link } from '@remix-run/react';
-import {OfferContent, OfferContext} from "~/contexts/OfferContext";
+import {OfferContent as OfferContentType, OfferContext} from "~/contexts/OfferContext";
 import { useShopState } from "~/contexts/ShopContext";
 
 import { Checkbox, Collapsible, Card, BlockStack, Text, TextField } from "@shopify/polaris";
-import { IAutopilotSettingsProps, UpdateCheckKeysValidityFunc } from "~/types/types";
+import { AutopilotCheck, UpdateCheckKeysValidityFunc } from "~/types/types";
 
-interface IOfferContentProps extends IAutopilotSettingsProps{
-  updateCheckKeysValidity: UpdateCheckKeysValidityFunc,
+interface IOfferContentProps {
+  updateCheckKeysValidity: UpdateCheckKeysValidityFunc;
+  autopilotCheck: AutopilotCheck;
 }
 
 const OfferContent = ({ updateCheckKeysValidity, autopilotCheck }: IOfferContentProps) => {
-    const { offer, updateOffer } = useContext(OfferContext) as OfferContent;
+    const { offer, updateOffer } = useContext(OfferContext) as OfferContentType;
     const { shopSettings } = useShopState();
 
     const handleTitleChange = useCallback((newValue: string) => updateOffer("title", newValue), []);
@@ -73,7 +74,7 @@ const OfferContent = ({ updateCheckKeysValidity, autopilotCheck }: IOfferContent
                     id="basic-collapsible"
                     transition={{ duration: '500ms', timingFunction: 'ease-in-out' }}
                 >
-                    {!shopSettings.has_pro_features ? (
+                    {!shopSettings?.has_pro_features ? (
                         <div style={{maxWidth: '476px', marginTop: '10px'}}>
                             <Text as="p" variant="headingSm" fontWeight="regular">
                                 A/B testing is available on our Paid plan. Please <Link

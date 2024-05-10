@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState, useContext } from "react";
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from "@remix-run/react";
 import { useSelector } from 'react-redux';
 import {OfferContent, OfferContext} from "~/contexts/OfferContext";
 import {useShopState} from "~/contexts/ShopContext";
@@ -37,11 +37,11 @@ const OfferProduct = (props: IOfferProductProps) => {
     const shopAndHost = useSelector<{ shopAndHost: ShopAndHost}, ShopAndHost>(state => state.shopAndHost);
     const fetch = useAuthenticatedFetch(shopAndHost.host);
 
-    const [selectedItems, setSelectedItems] = useState<number[]>([]);
+    const [selectedItems, setSelectedItems] = useState<(string | number)[]>([]);
     const [selectedProducts, setSelectedProducts] = useState<number[]>([]);
 
     //modal controls
-    const [productModal, setProductModal] = useState(false);
+    const [productModal, setProductModal] = useState<boolean>(false);
     const [productData, setProductData] = useState<Product[]>([]);
 
     //For autopilot section
@@ -152,8 +152,11 @@ const OfferProduct = (props: IOfferProductProps) => {
         updateOffer("offerable_product_shopify_ids", []);
         props.updateInitialVariants(offer.included_variants);
         let responseCount = 0;
+        if (!shopSettings?.shop_id) {
+            return
+        }
         const promises = selectedProducts.map((productId) =>
-            fetch(`/api/v2/merchant/products/multi/${productId}?shop_id=${shopSettings.shop_id}&shop=${shopAndHost.shop}`, {
+            fetch(`/api/v2/merchant/products/multi/${productId}?shop_id=${shopSettings?.shop_id}&shop=${shopAndHost.shop}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -273,13 +276,16 @@ const OfferProduct = (props: IOfferProductProps) => {
                     })
             }
         } else if (autopilotButtonText === "Launch Autopilot") {
+            if (!shopSettings?.shop_id) {
+                return
+            }
             props.setIsLoading(true);
             fetch(`/api/v2/merchant/enable_autopilot`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({shop_id: shopSettings.shop_id, shop: shopAndHost.shop}),
+                body: JSON.stringify({shop_id: shopSettings?.shop_id, shop: shopAndHost.shop}),
             })
                 .then((response) => {
                     return response.json()
@@ -296,7 +302,10 @@ const OfferProduct = (props: IOfferProductProps) => {
 
 
     function checkAutopilotStatus() {
-        fetch(`/api/v2/merchant/enable_autopilot_status?shop_id=${shopSettings.shop_id}&shop=${shopAndHost.shop}`, {
+        if (!shopSettings?.shop_id) {
+            return
+        }
+        fetch(`/api/v2/merchant/enable_autopilot_status?shop_id=${shopSettings?.shop_id}&shop=${shopAndHost.shop}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -336,7 +345,7 @@ const OfferProduct = (props: IOfferProductProps) => {
                         <p style={{color: '#6D7175'}}>What product would you like to have in the offer?</p>
                     )}
 
-                    {offer.id == null && !props.autopilotCheck?.autopilot_offer_id && shopSettings.has_pro_features ? (
+                    {offer.id == null && !props.autopilotCheck?.autopilot_offer_id && shopSettings?.has_pro_features ? (
                         <>
                             <div style={{marginBottom: '20px'}}>
                                 <Button id={"btnLaunchAI"}
@@ -358,7 +367,7 @@ const OfferProduct = (props: IOfferProductProps) => {
                         </div>
                     )}
 
-                    {(!shopSettings.has_pro_features) && (
+                    {(!shopSettings?.has_pro_features) && (
                         <ButtonGroup>
                             <>
                                 <div>
@@ -436,7 +445,7 @@ const OfferProduct = (props: IOfferProductProps) => {
                 }}
             >
                 <ModalAddProduct selectedItems={selectedItems} setSelectedItems={setSelectedItems}
-                                 offer={offer} updateQuery={updateQuery} shop_id={shopSettings.shop_id}
+                                 offer={offer} updateQuery={updateQuery} shop_id={shopSettings?.shop_id}
                                  productData={productData} resourceListLoading={resourceListLoading}
                                  setResourceListLoading={setResourceListLoading}
                                  updateSelectedProduct={updateSelectedProduct}/>

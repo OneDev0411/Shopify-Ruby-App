@@ -9,9 +9,10 @@ import { useCallback, useContext } from "react";
 import React from "react";
 import { OfferStyleOptions, OfferBorderOptions } from "~/shared/constants/EditOfferOptions";
 import {OfferContent, OfferContext} from "~/contexts/OfferContext";
-import {IAutopilotSettingsProps} from "~/types/global";
+import { AutopilotCheck } from "~/types/types";
 
-interface IOfferBoxProp extends IAutopilotSettingsProps {
+interface IOfferBoxProp {
+    autopilotCheck: AutopilotCheck;
 }
 
 const OfferBox = ({ autopilotCheck }: IOfferBoxProp) => {
@@ -63,7 +64,7 @@ const OfferBox = ({ autopilotCheck }: IOfferBoxProp) => {
 
     return (
         <Card title="Offer box" sectioned>
-            {(offer.id != null && autopilotCheck?.autopilot_offer_id == offer.id) ? (
+            {(offer.id != null && autopilotCheck.autopilot_offer_id == offer.id) ? (
                 <>
                 </>
             ) : (
