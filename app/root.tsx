@@ -8,11 +8,22 @@ import {
   Scripts,
   ScrollRestoration,
 } from "@remix-run/react";
+import { cssBundleHref } from "@remix-run/css-bundle";
 import polarisStyles from "@shopify/polaris/build/esm/styles.css";
 import {themeCss} from "@assets";
+import type { LinksFunction } from "@remix-run/node";
+import slick from "slick-carousel/slick/slick.css"
+import slickTheme from "slick-carousel/slick/slick-theme.css"
 
-export const links = () => [{ rel: "stylesheet", href: polarisStyles}, { rel: "stylesheet", href: themeCss }];
-
+export const links: LinksFunction = () => [
+  ...(cssBundleHref
+    ? [{ rel: "stylesheet", href: cssBundleHref }]
+    : []),
+    { rel: "stylesheet", href: polarisStyles},
+    { rel: "stylesheet", href: themeCss },
+    {rel: "stylesheet", href: slick},
+    {rel: "stylesheet", href: slickTheme}
+]
 export default function App() {
   return (
     <html>

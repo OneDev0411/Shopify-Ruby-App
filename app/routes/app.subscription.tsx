@@ -123,17 +123,17 @@ export default function Subscription() {
               <Layout>
                 <Layout.Section>
                   {(isSubscriptionActive(currentSubscription) && planName!=='free' && trialDays && trialDays>0) ? (
-                    <Banner icon='none' status="info">
+                    <Banner icon='none' tone="info">
                       <p>{ trialDays } days remaining for the trial period</p>
                     </Banner>) : null
                   }
                   {!isSubscriptionActive(currentSubscription) ? (
-                    <Banner icon='none' status="info">
+                    <Banner icon='none' tone="info">
                       <p>Your Subscription Is Not Active: please confirm it on this page</p>
                     </Banner> ) : null
                   }
                   {(planName==='trial' && (unpublishedOfferIds?.length>0 || activeOffersCount)) ? (
-                    <Banner icon='none' status="info">
+                    <Banner icon='none' tone="info">
                       <p>If you choose free plan after trial, offers will be unpublished</p>
                     </Banner>) : null
                   }

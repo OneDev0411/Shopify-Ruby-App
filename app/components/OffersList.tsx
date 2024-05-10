@@ -351,10 +351,12 @@ export function OffersList({ pageSize }: IOffersListProps) {
             <CreateOfferCard />
           ) : (
             <>
-              <Card sectioned>
-            <div style={{ display: 'flex' }}>
+              <Card>
+                
+                <div style={{ display: 'flex' }}>
                   <div style={{ flex: 1 }}>
                     <Filters
+                      queryPlaceholder="Filter Items"
                       queryValue={queryValue ?? ''}
                       filters={filters}
                       appliedFilters={appliedFilters}
@@ -363,7 +365,7 @@ export function OffersList({ pageSize }: IOffersListProps) {
                       onClearAll={handleClearAll}
                     />
                   </div>
-              <div style={{ paddingLeft: '0.25rem' }}>
+                  <div style={{ paddingLeft: '0.25rem' }}>
                     <Select
                       labelInline
                       label="Sort"
@@ -375,23 +377,22 @@ export function OffersList({ pageSize }: IOffersListProps) {
                 </div>
                 <IndexTable
                   sortable={[false, false, true, true, true]}
-              sortDirection={'descending'}
+                  sortDirection={'descending'}
                   sortColumnIndex={4}
                   resourceName={OffersResourceName}
                   itemCount={paginatedData.length}
-                  selectedItemsCount={
-                allResourcesSelected ? 'All' : selectedResources.length
-                  }
+                  selectedItemsCount={allResourcesSelected ? 'All' : selectedResources.length}
                   onSelectionChange={handleSelectionChange}
                   hasZebraStriping
                   bulkActions={bulkActions}
                   promotedBulkActions={promotedBulkActions}
                   headings={[
-                { title: 'Offer' },
-                { title: 'Status' },
-                { title: 'Clicks' },
-                { title: 'Views' },
-                { title: 'Revenue', hidden: false },
+                    { title: 'Offer' },
+                    { title: 'Status' },
+                    { title: 'Clicks' },
+                    { title: 'Views' },
+                    { title: 'Revenue', hidden: false },
+                    { title: '', hidden: false }
                   ]}
                 >
                   {rowMarkup}
