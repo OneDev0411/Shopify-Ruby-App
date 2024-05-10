@@ -1,4 +1,3 @@
-// @ts-nocheck
 import React from 'react';
 import { Card, Grid, Button } from '@shopify/polaris';
 
@@ -11,7 +10,7 @@ const FrontWidgetSection = ({ isStatusActive, toggleActivation }) => {
           </Grid.Cell>
           <Grid.Cell columnSpan={{ xs: 6, sm: 3, md: 8, lg: 2, xl: 4 }}>
             <div style={{ display: 'flex', justifyContent: 'end' }}>
-              <Button onClick={toggleActivation}> 
+              <Button onClick={toggleActivation}>
                 {isStatusActive ? 'Deactivate' : 'Activate'}
               </Button>
             </div>

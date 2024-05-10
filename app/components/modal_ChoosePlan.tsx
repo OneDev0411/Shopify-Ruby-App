@@ -1,19 +1,18 @@
-// @ts-nocheck
-import {useCallback, useEffect, useState} from 'react';
+import {useCallback, useEffect} from 'react';
 import { useNavigate } from "@remix-run/react";
 import { Modal } from '@shopify/polaris';
 import {useShopState} from "~/contexts/ShopContext";
 import {useAuthenticatedFetch} from "~/hooks";
 import {useSelector} from "react-redux";
 import {useEnv} from "../contexts/EnvContext";
+import { IRootState } from '~/store/store';
 
 const ModalChoosePlan = () => {
   const env = useEnv();
   const navigateTo = useNavigate();
-  const shopAndHost = useSelector((state) => state.shopAndHost);
+  const shopAndHost = useSelector((state: IRootState) => state.shopAndHost);
   const fetch = useAuthenticatedFetch(shopAndHost.host);
   const { isSubscriptionUnpaid, setIsSubscriptionUnpaid } = useShopState();
-  const [modalOpen, setModalOpen] = useState(false);
 
   useEffect(() => {
     const modalContent = document.getElementById('not-dismissable-modal');
@@ -54,10 +53,9 @@ const ModalChoosePlan = () => {
   };
 
   return (
-  <Modal
-      open={isSubscriptionUnpaid && modalOpen}
+    <Modal
+      open={isSubscriptionUnpaid}
       onClose={handleModalClose}
-      title="Choose Plan"
       primaryAction={{
         content: 'Choose Plan',
         onAction: handleChoosePlan,

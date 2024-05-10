@@ -16,7 +16,7 @@ const AbAnalytics = ({ offerId }: IAbAnalyticsProps) => {
     const shopAndHost = useSelector((state: IRootState) => state.shopAndHost);
     const [aAnalytics, setAAnalytics] = useState<string>("");
     const [bAnalytics, setBAnalytics] = useState<string>("");
-    const [error, setError] = useState(null);
+    const [error, setError] = useState<Error | null>(null);
 
     const fetch = useAuthenticatedFetch(shopAndHost.host);
 
@@ -43,7 +43,7 @@ const AbAnalytics = ({ offerId }: IAbAnalyticsProps) => {
             setError(error);
             console.log('An error occurred while making the API call:', error);
         })
-    }, []); 
+    }, []);
 
     useEffect(() => {
         getAbAnalytics(offerId, shopAndHost.shop, 'a', setAAnalytics)

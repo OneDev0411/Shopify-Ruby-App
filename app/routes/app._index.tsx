@@ -8,7 +8,7 @@ import { isSubscriptionActive } from "../services/actions/subscription";
 import { fetchShopData } from "../services/actions/shop";
 
 import { OffersList, OrderOverTimeData, TotalSalesData } from "../components";
-import { CustomTitleBar } from '../components/customtitlebar' 
+import { CustomTitleBar } from '../components/customtitlebar'
 
 import "../components/stylesheets/mainstyle.css";
 import {ThemeAppCard} from "../components/CreateOfferCard.jsx";
@@ -64,7 +64,6 @@ export default function HomePage() {
   }
 
   const notifyIntercom = (icu_shop) => {
-    // @ts-ignore
     window.Intercom('boot', {
       app_id: env?.INTERCOM_APP_ID,
       id: icu_shop.id,
@@ -78,10 +77,9 @@ export default function HomePage() {
       theme: icu_shop.shopify_theme_name,
       currency: icu_shop.currency
     });
-    // @ts-ignore
     window.Intercom('show');
   }
-  
+
   useEffect(() => {
     let redirect = Redirect.create(app);
 

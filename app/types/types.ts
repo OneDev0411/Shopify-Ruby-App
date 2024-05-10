@@ -458,16 +458,32 @@ type Rule = {
     item_name: string
 }
 
+interface IEnvContext {
+  SHOPIFY_ICU_EXTENSION_APP_ID?: string;
+  ENABLE_THEME_APP_EXTENSION?: string
+  INTERCOM_APP_ID?: string
+  CHOOSE_PLAN_MODAL_CONTENT?: string
+  ERROR_IMG_URL?: string
+  ERROR_TITLE?: string
+  ERROR_CONTENT?: string
+  CHAT_APP_ID?: string;
+}
+
+interface IVideoModalProps {
+  active: boolean,
+  handleClose: () => void
+}
+
 type ProductVariants = {
     [key:string]: (string|number)[],
 }
 
 export type { JsonVariants, ProductDetails, PlacementSetting, AdvancedPlacementSetting, CssOptions, Plan, Offer,
-	Shop, ShopSettings, Subscription, ThemeAppExtension, ProductVariants, Product, Variant, Rule, IAutopilotSettingsProps, AutopilotCheck, ShopAndHost, ThemeSetting, UpdateCheckKeysValidityFunc
-}
+    Shop, ShopSettings, Subscription, ThemeAppExtension, ProductVariants, Product, Variant, Rule, IAutopilotSettingsProps, AutopilotCheck, ShopAndHost, ThemeSetting, IVideoModalProps, IEnvContext}
 
 declare global {
     interface Window {
-        ENV: any;
+        ENV: IEnvContext;
+        Intercom: any;
     }
 }
