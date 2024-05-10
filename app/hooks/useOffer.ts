@@ -2,18 +2,20 @@ import { useState } from "react";
 import {
   OFFER_CREATE_URL,
   OFFER_DETAILS_URL
-} from "../shared/constants/EditOfferOptions.js";
-import { useAuthenticatedFetch } from "./useAuthenticatedFetch.js";
+} from "../shared/constants/EditOfferOptions";
+import { Location } from "@remix-run/router";
+import { useAuthenticatedFetch } from "./useAuthenticatedFetch";
 import { useSelector } from "react-redux";
-import { IRootState } from "~/store/store.js";
+import { IRootState } from "~/store/store";
+import { Offer, PlacementSetting, ShopSettings } from "~/types/types";
 
 export const useOffer = () => {
-  const [isPending, setIsPending] = useState(false);
-  const [error, setError] = useState(false);
+  const [isPending, setIsPending] = useState<boolean>(false);
+  const [error, setError] = useState<Error | null>(null);
   const shopAndHost = useSelector((state: IRootState) => state.shopAndHost);
   const authFetch = useAuthenticatedFetch(shopAndHost.host);
 
-  const fetchOffer = async (offerID, shop) => {
+  const fetchOffer = async (offerID: string, shop: string) => {
     setIsPending(true)
     const response = await authFetch(OFFER_DETAILS_URL, {
       method: 'POST',
@@ -26,13 +28,13 @@ export const useOffer = () => {
     return response;
   };
 
-  const saveOffer = async (offer, location, shop, status) => {
+  const saveOffer = async (offer: Offer, location: Location, shop: ShopSettings, status: boolean) => {
 
     let ots = populateOTS(offer, shop.has_recharge, status)
     let responseData
 
     try {
-      const response = await authFetch(`/api/v2/offers/${offer.id}/update/${shop.shop_id}`, {
+      const response = await authFetch(`/api/v2/offers/${offer.id}/update/${shop?.shop_id}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json'
@@ -50,7 +52,7 @@ export const useOffer = () => {
     return responseData;
   };
 
-  const populateOTS = (offer, hasRecharge, status) => {
+  const populateOTS = (offer: Offer, hasRecharge: boolean, status: boolean) => {
 
     let placement_setting;
     let save_as_default_setting;
@@ -113,7 +115,7 @@ export const useOffer = () => {
     }
 
     let {css, cta_a, text_a, uses_ab_test, cta_b, text_b, advanced_placement_setting, ...ots} = offer
-    ots = {
+    let new_ots = {
       ...ots,
       active: status,
       publish_status: status ? "published" : "draft", // Modify 'publish_status' based on 'status'
@@ -128,15 +130,15 @@ export const useOffer = () => {
     };
 
     if (hasRecharge && offer.recharge_subscription_id) {
-      ots.recharge_subscription_id = offer.recharge_subscription_id;
-      ots.interval_unit = offer.interval_unit;
-      ots.interval_frequency = offer.interval_frequency;
+      new_ots.recharge_subscription_id = offer.recharge_subscription_id;
+      new_ots.interval_unit = offer.interval_unit;
+      new_ots.interval_frequency = offer.interval_frequency;
     }
 
-    return ots
+    return new_ots
   }
-  const createOffer = async (offer, shop, status) => {
-    let responseData = {};
+  const createOffer = async (offer: Offer, shop: ShopSettings, status: boolean) => {
+    let responseData;
 
     let ots = populateOTS(offer, shop.has_recharge, status)
 
@@ -153,7 +155,7 @@ export const useOffer = () => {
       console.log('Error:', error);
     }
 
-    return responseData
+    return responseData;
   }
 
   return { fetchOffer, saveOffer, createOffer, isPending }

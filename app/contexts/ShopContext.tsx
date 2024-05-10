@@ -1,7 +1,16 @@
 import {createContext, useContext, useState} from 'react';
 import { Shop, ShopSettings, ThemeAppExtension } from '~/types/types';
 
-const ShopContext = createContext<ShopContent>({});
+export const SETTINGS_DEFAULTS = {
+    shop_id: undefined,
+    offer_css: '',
+    css_options: {},
+    has_recharge: false
+}
+
+const ShopContext = createContext<ShopContent>({
+    shopSettings: SETTINGS_DEFAULTS
+});
 
 type ShopContent = {
     shop?: Shop
@@ -13,17 +22,12 @@ type ShopContent = {
     hasOffers?: boolean,
     setHasOffers?: (hasOffers: boolean) => void,
     updateShopSettingsAttributes?: (updatedValue: any, ...updatedKey: string[]) => void,
-    shopSettings?: ShopSettings,
+    shopSettings: ShopSettings,
     setShopSettings?: React.Dispatch<React.SetStateAction<ShopSettings>>,
     themeAppExtension?: ThemeAppExtension,
     setThemeAppExtension?: React.Dispatch<React.SetStateAction<ThemeAppExtension | undefined>>,
     isSubscriptionUnpaid?: boolean,
     setIsSubscriptionUnpaid?: (isSubscriptionUnpaid: boolean) => void,
-}
-export const SETTINGS_DEFAULTS = {
-    shop_id: undefined,
-    offer_css: '',
-    css_options: {}
 }
 
 export default function ShopProvider({ children }) {

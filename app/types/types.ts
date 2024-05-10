@@ -334,7 +334,9 @@ type ShopSettings = {
     default_template_settings?: any,
     has_redirect_to_product?: boolean,
     theme_version?: string,
-    offers_limit_reached?: boolean
+    offers_limit_reached?: boolean,
+    has_recharge: boolean,
+    admin?: boolean | null
 }
 
 type Offer = {
@@ -412,7 +414,10 @@ type Offer = {
     remove_if_no_longer_valid: boolean
     autopilot_quantity?: number,
     excluded_tags?: string,
-    selectedView?: string
+    selectedView?: string,
+    recharge_subscription_id?: number,
+    interval_unit?: string,
+    interval_frequency?: number
 }
 
 type ThemeSetting = {
