@@ -3,7 +3,7 @@ import { HSBAColor, TextField } from "@shopify/polaris";
 import tinycolor from "tinycolor2";
 import CollapsibleColorPicker from "../atoms/CollapsibleColorPicker";
 import ColorSwatchSelector from "../atoms/ColorSwatchSelector";
-import "../../stylesheets/colorPickerStyles.css";
+import "../stylesheets/colorPickerStyles.css";
 
 interface IColorPickerProps {
     label: string;
@@ -27,7 +27,7 @@ const hexToHsba = (hexColor: string) => {
         alpha: alpha,
     };
 };
-  
+
 const ColorPicker = ({
     label,
     onChangeTextFiled,

@@ -1,6 +1,6 @@
 import {
   InlineStack,
-  LegacyCard,
+  Card,
   BlockStack,
   Text,
   Divider,
@@ -148,11 +148,12 @@ export function ConversionRate({title, period, onError}: IAnalyticsGraphProps) {
   }, [period])
 
   return (
-    <LegacyCard title={`${title ? `${period[0].toUpperCase()}${period.substring(1)} ` : ''} Conversion Rate`} sectioned>
+    <Card>
+      <Text variant="headingMd" as="h6">{`${title ? `${period[0].toUpperCase()}${period.substring(1)} ` : ''} Conversion Rate`}</Text>
       <h3 className="report-money"><strong>{totalDisplayed > 0 ? ((converted / totalDisplayed) * 100).toFixed(2) : 0}%</strong></h3>
       <div className="space-4"></div>
       <p>CONVERSION FUNNEL</p><br />
-      <VerticalStack gap={"6"}>
+      <BlockStack gap={"300"}>
         <div style={{height: "50px"}}>
           <span>Added to cart</span><span style={{ float: 'right' }}>{totalDisplayed > 0 ? ((addedToCart / totalDisplayed) * 100).toFixed(2) : 0}%</span>
           <div style={{ color: 'grey' }}>{addedToCart >= 0 ? addedToCart : 0} sessions</div>
@@ -165,8 +166,8 @@ export function ConversionRate({title, period, onError}: IAnalyticsGraphProps) {
           <span>Sessions converted</span><span style={{ float: 'right' }}>{totalDisplayed > 0 ? ((converted / totalDisplayed) * 100).toFixed(2) : 0}%</span>
           <div style={{ color: 'grey' }}>{converted >= 0 ? converted : 0} sessions</div>
         </div>
-      </VerticalStack>
-    </LegacyCard>
+      </BlockStack>
+    </Card>
   );
 }
 
@@ -295,30 +296,31 @@ export function TopPerformingOffersData({title, period, onError}: IAnalyticsGrap
         }
       }}
     >
-      <LegacyCard title={`${title ? `${period[0].toUpperCase()}${period.substring(1)} ` : ''} Top performing offers`} sectioned>
+      <Card>
+        <Text variant="headingMd" as="h6">{`${title ? `${period[0].toUpperCase()}${period.substring(1)} ` : ''} Top performing offers`}</Text>
         <div className="space-4"></div>
-        <VerticalStack align='center'>
+        <BlockStack align='center'>
           {
             offersData.map((item, idx) => {
               return (
                 <div key={idx}>
                   <Divider />
                   <div style={{ padding: '16px 0' }}>
-                    <HorizontalStack align="space-between">
+                    <InlineStack align="space-between">
                       <Text as="p">{item.
                         title}</Text>
                       <Text as="p">{item.
                         clicks} clicks</Text>
                       <Text as="p">$ {item.
                         revenue}</Text>
-                    </HorizontalStack>
+                    </InlineStack>
                   </div>
                 </div>
               )
             })
           }
-        </VerticalStack>
-      </LegacyCard>
+        </BlockStack>
+      </Card>
     </PolarisVizProvider>
   )
 }

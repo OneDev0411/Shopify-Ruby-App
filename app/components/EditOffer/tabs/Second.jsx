@@ -48,7 +48,7 @@ export function SecondTab(props) {
     const [defaultSetting, setDefaultSetting] = useState(false);
     const [useTemplate, setUseTemplate] = useState(false);
     const [multipleDefaultSettings, setMultipleDefaultSettings] = useState(false);
-    
+
     const [insertedImage1, setInsertedImage1] = useState(null);
     const [insertedImage2, setInsertedImage2] = useState(null);
     const [insertedImage3, setInsertedImage3] = useState(null);
@@ -138,7 +138,7 @@ export function SecondTab(props) {
         else if (offer.in_cart_page) {
             setMultipleDefaultSettings(false);
             if(offer.placement_setting && offer.placement_setting?.default_cart_page) {
-                setDefaultSetting(true);   
+                setDefaultSetting(true);
             }
             else if(offer.placement_setting && !offer.placement_setting?.default_cart_page) {
                 setUseTemplate(true);
@@ -150,7 +150,7 @@ export function SecondTab(props) {
         else if (offer.in_product_page) {
             setMultipleDefaultSettings(false);
             if(offer.placement_setting && offer.placement_setting?.default_product_page) {
-                setDefaultSetting(true);   
+                setDefaultSetting(true);
             }
             else if(offer.placement_setting && !offer.placement_setting?.default_product_page) {
                 setUseTemplate(true);
@@ -324,7 +324,7 @@ export function SecondTab(props) {
             }
         }
     });
-    
+
 
     const handleUseTemplateChange = useCallback((value, selectedPage) => {
         if(value) {
@@ -368,7 +368,7 @@ export function SecondTab(props) {
                 setInsertedImage1(templateImagesURL.ajax_cart_image_1);
                 setInsertedImage2(templateImagesURL.ajax_cart_image_2);
                 setInsertedImage3(templateImagesURL.ajax_cart_image_3);
-                
+
             }
         }
         else {
@@ -697,10 +697,10 @@ export function SecondTab(props) {
     return (
         <div id="polaris-placement-cards">
             {(!storedThemeNames?.includes(shopifyThemeName) && openBanner && isLegacy) && (
-                <div style={{marginBottom: "10px"}} className="theme-warning-banner">     
+                <div style={{marginBottom: "10px"}} className="theme-warning-banner">
                     <Banner tone="warning" onDismiss={() => {
                         setOpenBanner(!openBanner)
-                    }} tone='warning'>
+                    }}>
                         <p>Templates and default settings are unavailable for your theme.</p><br/>
                         <p>Please follow <Link
                             to="https://help.incartupsell.com/en/articles/8558593-how-to-manually-setup-an-offer-new-ui"
@@ -720,7 +720,7 @@ export function SecondTab(props) {
               </div>
             )}
 
-            <BlockStack gap={"500"}>                
+            <BlockStack gap={"500"}>
                 <BlockStack gap={"500"}>
                     <Card title="Choose placement" sectioned>
                         <Text variant="headingMd" as="h6">Choose placement</Text>
@@ -756,20 +756,20 @@ export function SecondTab(props) {
                                 {((offer.id == null || offer.id != props.autopilotCheck?.autopilot_offer_id) && isLegacy) && (
                                     <BlockStack gap="300">
                                             <span>
-                                                <Button 
+                                                <Button
                                                     onClick={handleSelectProductsModal}
                                                     ref={modalProd}>Select Product
                                                 </Button>
                                             </span>
                                             <span>
-                                                <Button 
+                                                <Button
                                                     onClick={handleSelectCollectionsModal}
                                                     ref={modalColl}>Select Collection
                                                 </Button>
                                             </span>
-                                    </BlockStack>                                  
+                                    </BlockStack>
                                 )}
-                            </BlockStack>                                  
+                            </BlockStack>
                             <Modal
                                 open={productModal}
                                 onClose={handleProductsModal}
@@ -1189,7 +1189,7 @@ export function SecondTab(props) {
                                 </BlockStack>
                             </Card>
                         </>
-                    )}              
+                    )}
                 </BlockStack>
                 <BlockStack>
                     <div className="align-center">

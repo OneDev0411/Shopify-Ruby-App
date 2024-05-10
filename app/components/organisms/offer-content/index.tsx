@@ -11,8 +11,8 @@ interface IOfferContentProps {
   autopilotCheck: AutopilotCheck;
 }
 
-const OfferContent = ({ updateCheckKeysValidity, autopilotCheck }: IOfferContentProps) => {
-    const { offer, updateOffer } = useContext(OfferContext) as OfferContentType;
+const OfferTitleDetails = ({ updateCheckKeysValidity, autopilotCheck }: IOfferContentProps) => {
+    const { offer, updateOffer } = useContext(OfferContext) as OfferContent;
     const { shopSettings } = useShopState();
 
     const handleTitleChange = useCallback((newValue: string) => updateOffer("title", newValue), []);
@@ -118,4 +118,4 @@ const OfferContent = ({ updateCheckKeysValidity, autopilotCheck }: IOfferContent
     );
 }
 
-export default OfferContent;
+export default OfferTitleDetails;
