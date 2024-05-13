@@ -13,7 +13,7 @@ import { ModalAddConditions } from "~/components";
 import { useState, useCallback, useRef, useContext } from "react";
 
 import { condition_options } from "~/shared/constants/ConditionOptions";
-import { getLabelFromValue } from "~/shared/helpers/commonHelpers";
+import { getKeyFromValue } from "~/shared/helpers/commonHelpers";
 import { QuantityArray, OrderArray } from "~/shared/constants/EditOfferOptions";
 
 import {OfferContent, OfferContext} from "~/contexts/OfferContext";
@@ -104,7 +104,7 @@ const DisplayConditions = ({ autopilotCheck } : IDisplayConditionsProps) => {
                             <>{Array.isArray(offer.rules_json) && offer.rules_json.map((rule, index) => (
                                 <li key={index} style={{display: 'flex', alignItems: 'center', marginBottom: '10px'}}>
                                     <div style={{marginRight: '10px', display: "inline-block"}}>
-                                        {getLabelFromValue(condition_options, rule.rule_selector)}: &nbsp;
+                                        {getKeyFromValue(condition_options, rule.rule_selector)}: &nbsp;
                                         {/*TODO: Needs refactoring, badge only accepts string as a child*/}
                                         <Badge>
                                             "Needs Refactoring"
@@ -124,7 +124,7 @@ const DisplayConditions = ({ autopilotCheck } : IDisplayConditionsProps) => {
                                             {/*</div>*/}
                                         </Badge>
                                     </div>
-                                    {getLabelFromValue(rule.rule_selector)}: &nbsp; {rule.quantity} <b>{rule.item_name}</b>
+                                    {getKeyFromValue(rule.rule_selector)}: &nbsp; {rule.quantity} <b>{rule.item_name}</b>
                                 </li>
                             ))}</>
                         )}

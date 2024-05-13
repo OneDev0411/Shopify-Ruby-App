@@ -1,7 +1,6 @@
 import { useState, useCallback } from 'react';
 import { Page ,Grid, Select, Banner } from '@shopify/polaris';
 import { GenericFooter } from '../components/GenericFooter';
-import { DateRangeOptions } from '../shared/constants/AnalyticsOptions';
 import "../components/stylesheets/mainstyle.css";
 import {
   TotalSalesData,
@@ -12,15 +11,16 @@ import {
   ClickThroughtRateData
 } from "../components/analyticsGraphdata";
 
-import { CustomTitleBar } from '../components/customtitlebar' 
+import { CustomTitleBar } from '../components/customtitlebar'
 
 import ModalChoosePlan from '../components/modal_ChoosePlan';
+import {DateRangeOptions} from "~/components/shared/constants/AnalyticsOptions";
 // import { onLCP, onFID, onCLS } from 'web-vitals';
 
 export default function AnalyticsOffers() {
   const [period, setPeriod] = useState<string>('daily');
   const [error, setError] = useState<string | null>(null);
-  const [showBanner, setShowBanner] = useState<boolean>(false); 
+  const [showBanner, setShowBanner] = useState<boolean>(false);
   const setTimePeriod = useCallback((val: string) => {
     setPeriod(val)
   }, []);
@@ -41,7 +41,7 @@ export default function AnalyticsOffers() {
   //   onFID(traceStat, {reportSoftNavs: true});
   //   onCLS(traceStat, {reportSoftNavs: true});
   // }, []);
-  
+
   return (
     <Page>
       <ModalChoosePlan />

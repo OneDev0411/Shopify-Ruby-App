@@ -2,7 +2,7 @@ import { useCallback, useEffect } from "react";
 import { useNavigate } from "@remix-run/react";
 import { Card, Box, BlockStack, AppProvider, Link, Text, Badge, InlineGrid } from '@shopify/polaris';
 import { condition_options } from "../shared/constants/ConditionOptions";
-import { getLabelFromValue } from "../shared/helpers/commonHelpers";
+import { getKeyFromValue } from "../shared/helpers/commonHelpers";
 import "../components/stylesheets/editOfferStyle.css";
 import { Offer, ProductDetails } from "~/types/types";
 import translations from "@shopify/polaris/locales/en.json";
@@ -53,7 +53,7 @@ const OfferDetails = (props: IOfferDetailsProps) => {
           </Box>
           <div className="hr-custom"></div>
           <Box>
-            <Text as='p'>Product offered: 
+            <Text as='p'>Product offered:
                 {props.offerableProducts.map((offerableProduct, index)=> (
                     <p key={index}>{offerableProduct.title}</p>
                 ))}
@@ -62,20 +62,20 @@ const OfferDetails = (props: IOfferDetailsProps) => {
           <div className="hr-custom"></div>
           <Box>
             <Text as="p">
-              Display conditions: 
+              Display conditions:
               {props.offer.rules_json?.length === 0 ? (
                     <p style={{color: '#6D7175'}}>None selected (show offer to all customer)</p>
-                ) : ( 
+                ) : (
                   <>{Array.isArray(props.offer.rules_json) && props.offer.rules_json.map((rule, index) => (
                       <li key={index} style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
                           <div style={{marginRight: '10px', display: "inline-block"}}>
-                              {getLabelFromValue(condition_options, rule.rule_selector)}: &nbsp;
+                              {getKeyFromValue(condition_options, rule.rule_selector)}: &nbsp;
                               <Badge>
                                   {/* @ts-ignore */}
                                   <div style={{display: 'flex', alignItems: 'center'}}>
                                       {rule.quantity && <p style={{color: 'blue', marginRight: '3px'}}>{rule.quantity} &nbsp; - &nbsp;</p> }
                                       <p style={{color: 'blue', marginRight: '3px'}}><b>{rule.item_name}</b></p>
-                                  </div> 
+                                  </div>
                               </Badge>
                           </div>
                       </li>

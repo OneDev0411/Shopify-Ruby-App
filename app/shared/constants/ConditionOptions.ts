@@ -1,4 +1,8 @@
-export const condition_options = [
+type ConditionOption = {
+  label: string;
+  value: string;
+}
+export const condition_options: ConditionOption[] = [
   { label: 'Cart contains at least', value: 'cart_at_least' },
   { label: 'Cart contains at most', value: 'cart_at_most' },
   { label: 'Cart contains exactly', value: 'cart_exactly' },
