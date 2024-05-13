@@ -80,6 +80,7 @@ const CREATE_PRODUCTS_MUTATION = `
   }
 `;
 
+
 export default async function productCreator(
   admin,
   count = DEFAULT_PRODUCTS_COUNT

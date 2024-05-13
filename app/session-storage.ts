@@ -1,12 +1,14 @@
-// @ts-nocheck
 import {Session} from '@shopify/shopify-api';
+import {SessionData} from "~/types/types";
 
 export class SessionStorage {
+  baseURL: string
   constructor() {
     this.baseURL = `${process.env.SERVER_BASE_URL}/api/v2/merchant/sessions`;
   }
 
-  async storeSession(session) {
+  // Needs rework
+  async storeSession(session: SessionData) {
     try {
       const sessionObject = { ...session };
       const convertedSessionObject = {
@@ -26,20 +28,20 @@ export class SessionStorage {
         body: JSON.stringify(convertedSessionObject),
       });
       return response.ok
-    } 
+    }
     catch (error) {
       console.log('Error storing session:', error);
       return false;
     }
   };
 
-  async loadSession(sessionId) {
+  async loadSession(sessionId: string) {
     try {
       const response = await fetch(`${this.baseURL}/load_session?session_id=${sessionId}`, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' }
       });
-      const sessionData = await response.json();
+      const sessionData: SessionData = await response.json();
       if (response.ok) {
         console.log('Session Found:', sessionData);
         return Session.fromPropertyArray(
@@ -55,20 +57,21 @@ export class SessionStorage {
     }
   };
 
-  async deleteSession(sessionId) {
+  async deleteSession(sessionId: string) {
     try {
       const response = await fetch(`${this.baseURL}/delete_session?session_id=${sessionId}`, {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' }
       });
       return response.ok
-    } 
+    }
     catch (error) {
       console.error('Error deleting session:', error);
+      return false
     }
   };
 
-  async deleteSessions(sessionIds) {
+  async deleteSessions(sessionIds: string[]) {
     try {
       const response = await fetch(`${this.baseURL}/delete_sessions`, {
         method: 'DELETE',
@@ -78,13 +81,14 @@ export class SessionStorage {
         body: JSON.stringify({ ids: sessionIds }),
       });
       return response.ok
-    } 
+    }
     catch (error) {
       console.log('Error deleting sessions:', error);
+      return false
     }
   };
 
-  async findSessionsByShop(ShopDomain) {
+  async findSessionsByShop(ShopDomain: string) {
     try {
       const response = await fetch(`${this.baseURL}/find_by_shop?domain=${ShopDomain}`, {
         method: 'GET',
@@ -106,7 +110,7 @@ export class SessionStorage {
     }
   };
 
-  convertToSessionArray(data) {
+  convertToSessionArray(data: SessionData) {
     return [
       ["id", data.session_id.toString()],
       ["shop", data.shop_domain],
@@ -115,6 +119,6 @@ export class SessionStorage {
       ["scope", data.scope],
       ["expires", data.expires],
       ["accessToken", data.access_token],
-    ];
+    ] as [string, string | number | boolean][];
   }
 }

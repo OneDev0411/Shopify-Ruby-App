@@ -436,10 +436,10 @@ interface IAutopilotSettingsProps {
   setAutopilotCheck: (autopilotCheck: AutopilotCheck) => void;
 }
 
-interface UpdateCheckKeysValidityFunc { 
+interface UpdateCheckKeysValidityFunc {
   (updatedKey: string, updatedValue: string | boolean): void;
 }
-  
+
 type ShopAndHost = {
   shop: string,
   host: string,
@@ -479,9 +479,50 @@ type ProductVariants = {
     [key:string]: (string|number)[],
 }
 
+type ShopifySession = {
+    id: number,
+    shop: string,
+    isOnline: boolean,
+    accessToken: string
+}
+
+interface SessionData extends ShopifySession {
+  id: number,
+  session_id: string,
+  shop_domain: string,
+  state: string,
+  is_online: boolean,
+  access_token: string,
+  scope: string,
+  expires: string,
+  created_at: string,
+  updated_at: string
+}
+
+interface IAnalyticsGraphProps {
+  title?: boolean;
+  period: string;
+  onError: () => void;
+}
+
+type AnalyticsData = {
+  key: string;
+  value: number;
+}
+
+type ShopSalesStats = {
+  sales_stats: {
+    results: AnalyticsData[];
+    sales_total: number;
+  },
+  redirect_to: string;
+}
+
 export type {
     JsonVariants, ProductDetails, PlacementSetting, AdvancedPlacementSetting, CssOptions, Plan, Offer,
-    Shop, ShopSettings, Subscription, ThemeAppExtension, ProductVariants, Product, Variant, Rule, IAutopilotSettingsProps, AutopilotCheck, ShopAndHost, ThemeSetting, IVideoModalProps, IEnvContext, UpdateCheckKeysValidityFunc
+    Shop, ShopSettings, SessionData, Subscription, ThemeAppExtension, ProductVariants, Product, Variant, Rule,
+  IAutopilotSettingsProps, AutopilotCheck, ShopAndHost, ThemeSetting, IVideoModalProps, IEnvContext,
+  UpdateCheckKeysValidityFunc, IAnalyticsGraphProps, AnalyticsData, ShopSalesStats
 }
 
 declare global {

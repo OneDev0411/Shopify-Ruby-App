@@ -13,10 +13,10 @@ import '@shopify/polaris-viz/build/esm/styles.css';
 import { Redirect } from '@shopify/app-bridge/actions';
 import { useAppBridge } from "@shopify/app-bridge-react";
 import { IRootState } from '~/store/store';
-import { IAnalyticsGraphProps, AnalyticsData, ShopSalesStats } from '~/types/types';
 import { AnalyticsGraphCard } from './organisms';
+import {AnalyticsData, IAnalyticsGraphProps, ShopSalesStats} from "~/types/types";
 
-export function TotalSalesData({title, period, onError}: IAnalyticsGraphProps) {
+export function TotalSalesData({ title, period, onError }: IAnalyticsGraphProps) {
   const app = useAppBridge();
 
   const shopAndHost = useSelector((state: IRootState) => state.shopAndHost);
