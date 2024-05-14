@@ -31,6 +31,7 @@ import {
 // import { onLCP, onFID, onCLS } from 'web-vitals';
 // import { traceStat } from "../services/firebase/perf.js";
 import ErrorPage from "../components/ErrorPage"
+import UpgradeSubscriptionModal from "../components/UpgradeSubscriptionModal";
 import { IRootState } from "~/store/store";
 import { ProductDetails } from "~/types/types";
 
@@ -45,6 +46,7 @@ const EditOfferView = () => {
   const [initialOfferableProductDetails, setInitialOfferableProductDetails] = useState<ProductDetails[]>([]);
   const [checkKeysValidity, setCheckKeysValidity] = useState<Record<string, string | boolean>>({});
   const navigateTo = useNavigate();
+  const [openModal, setOpenModal] = useState<boolean>(false);
 
   // useEffect(()=> {
   //   onLCP(traceStat, {reportSoftNavs: true});
@@ -59,31 +61,34 @@ const EditOfferView = () => {
 
 
   const toggleOfferActivation = async (activate) => {
-
-    await fetch(activate ? OFFER_ACTIVATE_URL : OFFER_DEACTIVATE_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ offer: { offer_id: "offerID" }, shop: shopAndHost.shop })
-    }).then((response) => {
-      if ([200,204].includes(response.status)) {
-        updateOffer("publish_status", activate ? OFFER_PUBLISH : OFFER_DRAFT)
-        updateOffer("active", activate)
-      } else {
-        // TODO: send out an error message here
-        console.log("there was an issue deactivating the offer")
-      }
-    }).catch((error) => {
-      const toastOptions = {
-        message: 'An error occurred. Please try again later.',
-        duration: 3000,
-        isError: true,
-      };
-      const toastError = Toast.create(app, toastOptions);
-      toastError.dispatch(Toast.Action.SHOW);
-      console.log("Error:", error);
-    })
+    if (activate && offer.offers_limit_reached) {
+      setOpenModal(true)
+    } else {
+      await fetch(activate ? OFFER_ACTIVATE_URL : OFFER_DEACTIVATE_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ offer: { offer_id: "offerID" }, shop: shopAndHost.shop })
+      }).then((response) => {
+        if ([200,204].includes(response.status)) {
+          updateOffer("publish_status", activate ? OFFER_PUBLISH : OFFER_DRAFT)
+          updateOffer("active", activate)
+        } else {
+          // TODO: send out an error message here
+          console.log("there was an issue deactivating the offer")
+        }
+      }).catch((error) => {
+        const toastOptions = {
+          message: 'An error occurred. Please try again later.',
+          duration: 3000,
+          isError: true,
+        };
+        const toastError = Toast.create(app, toastOptions);
+        toastError.dispatch(Toast.Action.SHOW);
+        console.log("Error:", error);
+      })
+    }
   }
 
   const handleDuplicateOffer = () => {
@@ -251,6 +256,7 @@ const EditOfferView = () => {
             </>
           )}
         </div>
+        <UpgradeSubscriptionModal openModal={openModal} setOpenModal={setOpenModal} />
       </AppProvider>
     );
   }

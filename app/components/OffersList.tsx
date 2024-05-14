@@ -24,6 +24,7 @@ import {CreateOfferCard} from "./CreateOfferCard.jsx";
 import {Redirect} from '@shopify/app-bridge/actions';
 import { useAppBridge } from "@shopify/app-bridge-react";
 import ErrorPage from "./ErrorPage";
+import UpgradeSubscriptionModal from "./UpgradeSubscriptionModal";
 import { IRootState } from '~/store/store';
 
 interface IOffersListProps {
@@ -49,12 +50,16 @@ export function OffersList({ pageSize }: IOffersListProps) {
   const [offersData, setOffersData] = useState<OfferData[]>([]);
   const [sortValue, setSortValue] = useState<string>('today');
   const [filteredData, setFilteredData] = useState<OfferData[]>([]);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<Error | null>(null);
 
   const shopAndHost = useSelector((state: IRootState) => state.shopAndHost);
   const fetch = useAuthenticatedFetch(shopAndHost.host);
   const [currentPage, setCurrentPage] = useState(1);
   const [modalActive, setModalActive] = useState(false);
+
+  const [offersLimitReached, setOffersLimitReached] = useState<boolean>(false);
+  const [offersLimit, setOffersLimit] = useState<number>();
+  const [openOffersModal, setOpenOffersModal] = useState<boolean>(false);
 
   const toggleModal = useCallback(() => {
     setModalActive(!modalActive)
@@ -83,6 +88,8 @@ export function OffersList({ pageSize }: IOffersListProps) {
         // localStorage.setItem('icushopify_domain', data.shopify_domain);
         setOffersData(data.offers);
         setFilteredData(data.offers);
+        setOffersLimitReached(data.offers_limit_reached);
+        setOffersLimit(data.offers_limit);
         setIsLoading(false);
       }}).catch((error) => {
         setError(error);
@@ -139,7 +146,8 @@ export function OffersList({ pageSize }: IOffersListProps) {
     setSortValue(value)
   }, []);
 
-  const promotedBulkActions = ((selectedResources.length == 1 && paginatedData.find(obj => obj['id'] === Number(selectedResources[0]))?.offerable_type == 'auto')) ? 
+  const isAutoPilot = paginatedData.find(obj => obj['id'] === Number(selectedResources[0]))?.offerable_type == 'auto'
+  const promotedBulkActions = ((selectedResources.length == 1 && isAutoPilot)) ? 
   [
     {
       content: 'Publish',
@@ -151,7 +159,7 @@ export function OffersList({ pageSize }: IOffersListProps) {
       onAction: () => { createDuplicateOffer();},
     },
   ];
-  const bulkActions = ((selectedResources.length == 1 && paginatedData.find(obj => obj['id'] === Number(selectedResources[0]))?.offerable_type == 'auto')) ?
+  const bulkActions = ((selectedResources.length == 1 && isAutoPilot) || (selectedResources.length > 1 && offersLimit === 1)) ?
   [
     {
       content: 'Unpublish',
@@ -277,25 +285,29 @@ export function OffersList({ pageSize }: IOffersListProps) {
   }
 
   function activateSelectedOffer() {
-    selectedResources.forEach(function (resource) {
-      let url = '/api/v2/merchant/offer_activate';
-      fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ offer: { offer_id: resource }, shop: shopAndHost.shop })
-      })
-        .then((response) => response.json())
-        .then(() => {
-          const dataDup = [...offersData].map((o) => o.id == Number(resource) ? ({...o, status: false}) : (o));
-          setOffersData([...dataDup]);
-          selectedResources.shift();
+    if (offersLimitReached) {
+      setOpenOffersModal(true);
+    } else {
+      selectedResources.forEach(function (resource) {
+        let url = '/api/v2/merchant/offer_activate';
+        fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ offer: { offer_id: resource }, shop: shopAndHost.shop })
         })
-        .catch((error) => {
-          setError(error);
-        })
-    });
+          .then((response) => response.json())
+          .then(() => {
+            const dataDup = [...offersData].map((o) => o.id == Number(resource) ? ({...o, status: false}) : (o));
+            setOffersData([...dataDup]);
+            selectedResources.shift();
+          })
+          .catch((error) => {
+            setError(error);
+          })
+      });
+    }
   }
 
   function deactivateSelectedOffer() {
@@ -426,6 +438,7 @@ export function OffersList({ pageSize }: IOffersListProps) {
         </>
       )}
       <div className="space-10"></div>
+      <UpgradeSubscriptionModal openModal={openOffersModal} setOpenModal={setOpenOffersModal} />
     </div>
   );
 
