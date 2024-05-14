@@ -18,6 +18,7 @@ import { LinksFunction } from "@remix-run/node";
 import styles from "../assets/custom.css?url";
 import { IRootState } from "~/store/store";
 import { LoadingSpinner } from "../components/atoms/index.js";
+import { Subscription as SubscriptionType } from "~/types/types";
 
 export const links: LinksFunction = () => {
   return [{ rel: "stylesheet", href: styles }];
@@ -26,7 +27,7 @@ export const links: LinksFunction = () => {
 export default function Subscription() {
     const shopAndHost = useSelector((state: IRootState) => state.shopAndHost);
     const fetch = useAuthenticatedFetch(shopAndHost.host);
-    const [currentSubscription, setCurrentSubscription] = useState(null);
+    const [currentSubscription, setCurrentSubscription] = useState<SubscriptionType | null>(null);
     const { planName, setPlanName, trialDays, setTrialDays, isSubscriptionUnpaid, setIsSubscriptionUnpaid } = useShopState()
     const [activeOffersCount, setActiveOffersCount] = useState<number>();
     const [unpublishedOfferIds, setUnpublishedOfferIds] = useState<number[]>([]);

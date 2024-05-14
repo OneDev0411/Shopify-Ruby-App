@@ -132,7 +132,7 @@ export default function HomePage() {
             handleButtonClick={handleOpenOfferPage}
           />
           <Layout>
-            {isSubscriptionActive(shop?.subscription) && planName!=='free' && trialDays && trialDays>0 &&
+            {isSubscriptionActive(shop && shop.subscription) && planName!=='free' && trialDays && trialDays>0 &&
               <Layout.Section>
                 <Banner status="info">
                   <p>{ trialDays } days remaining for the trial period</p>

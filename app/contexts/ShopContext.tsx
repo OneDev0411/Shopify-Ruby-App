@@ -9,11 +9,12 @@ export const SETTINGS_DEFAULTS = {
 }
 
 const ShopContext = createContext<ShopContent>({
-    shopSettings: SETTINGS_DEFAULTS
+    shopSettings: SETTINGS_DEFAULTS,
+    shop: null
 });
 
 type ShopContent = {
-    shop?: Shop
+    shop: Shop | null,
     setShop?: (shop: Shop) => void,
     planName?: string,
     setPlanName?: React.Dispatch<React.SetStateAction<string>>,
@@ -31,7 +32,7 @@ type ShopContent = {
 }
 
 export default function ShopProvider({ children }) {
-    const [shop, setShop] = useState<Shop>();
+    const [shop, setShop] = useState<Shop | null>(null);
     const [planName, setPlanName] = useState<string>("");
     const [trialDays, setTrialDays] = useState<number>();
     const [hasOffers, setHasOffers] = useState<boolean>();
