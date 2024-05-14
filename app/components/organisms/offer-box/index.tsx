@@ -89,7 +89,7 @@ const OfferBox = ({ autopilotCheck }: IOfferBoxProp) => {
                         label="Space above offer"
                         type="number"
                         onChange={handleAboveSpace}
-                        value={offer.css_options?.main?.marginTop}
+                        value={parseInt(offer.css_options?.main?.marginTop)}
                         suffix="px"
                         placeholder="1-100px"
                         autoComplete="off"
@@ -100,7 +100,7 @@ const OfferBox = ({ autopilotCheck }: IOfferBoxProp) => {
                         label="Space below offer"
                         type="number"
                         onChange={handleBelowSpace}
-                        value={offer.css_options?.main?.marginBottom}
+                        value={parseInt(offer.css_options?.main?.marginBottom)}
                         suffix="px"
                         placeholder="1-100px"
                         autoComplete="off"
@@ -121,7 +121,7 @@ const OfferBox = ({ autopilotCheck }: IOfferBoxProp) => {
                         label="Border width"
                         type="number"
                         onChange={handleBorderWidth}
-                        value={offer.css_options?.main?.borderWidth}
+                        value={parseInt(offer.css_options?.main?.borderWidth)}
                         suffix="px"
                         placeholder="0-10px"
                         autoComplete="off"

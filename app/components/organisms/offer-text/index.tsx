@@ -68,7 +68,7 @@ const OfferText = () => {
                         suffix="px"
                         autoComplete="off"
                         onChange={handleFontSize}
-                        value={offer.css_options?.text?.fontSize}
+                        value={parseInt(offer.css_options?.text?.fontSize)}
                     />
                 </Grid.Cell>
             </Grid>
@@ -92,7 +92,7 @@ const OfferText = () => {
                         suffix="px"
                         autoComplete="off"
                         onChange={handleBtnSize}
-                        value={offer.css_options?.button?.fontSize.slice(0,2)}
+                        value={parseInt(offer.css_options?.button?.fontSize)}
                     />
                 </Grid.Cell>
             </Grid>
