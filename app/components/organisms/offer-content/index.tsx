@@ -1,6 +1,6 @@
 import React, {useCallback, useContext} from "react";
 import { Link } from '@remix-run/react';
-import {OfferContent as OfferContentType, OfferContext} from "~/contexts/OfferContext";
+import {OfferContent, OfferContext} from "~/contexts/OfferContext";
 import { useShopState } from "~/contexts/ShopContext";
 
 import { Checkbox, Collapsible, Card, BlockStack, Text, TextField } from "@shopify/polaris";

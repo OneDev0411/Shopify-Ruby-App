@@ -5,7 +5,7 @@ import {
   OptionList,
   Text, Thumbnail,
 } from '@shopify/polaris';
-import {useState, useCallback} from 'react';
+import { useState, useCallback } from 'react';
 import {useSelector} from 'react-redux';
 import {useAuthenticatedFetch} from '~/hooks';
 import { IRootState } from '~/store/store';
@@ -15,13 +15,13 @@ interface IModalAddProductProps {
   offer: Offer,
   updateQuery: (value: string) => void,
   isCollection?: boolean,
-  productData: ProductDetails[],
+  productData: Product[],
   selectedItems: (string | number)[],
   setSelectedItems: React.Dispatch<React.SetStateAction<(string | number)[]>>,
   resourceListLoading: boolean,
   updateSelectedProduct?: (selectedProduct: ProductDetails, variants: ProductVariants) => void,
   updateSelectedProducts?: (p: { id: any; title: any }, selectedVariants: ProductVariants) => void
-  updateSelectedCollection?: (selectedItem?: ProductDetails, uncheck?: boolean) => void,
+  updateSelectedCollection?: (selectedItem?: Product, uncheck?: boolean) => void,
   setResourceListLoading: (resListLoading: boolean) => void,
   shop_id: number | undefined,
 }
@@ -279,7 +279,7 @@ export function ModalAddProduct({
         setSelectedItems(id);
       }
     } else {
-      const coll: ProductDetails | undefined = productData.find(item => item.id === id[id.length - 1]);
+      const coll: Product | undefined = productData.find(item => item.id === id[id.length - 1]);
       if (updateSelectedCollection) {
         if (selectedItems.length <= id.length && coll) {
           updateSelectedCollection(coll);

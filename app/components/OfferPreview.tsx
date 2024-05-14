@@ -1,23 +1,20 @@
-import {useState, useEffect, useContext} from "react";
-import { 
-	Card, TextContainer ,SkeletonBodyText
-} from '@shopify/polaris';
+import { useState, useEffect, useContext } from "react";
+import { Card, TextContainer, SkeletonBodyText } from '@shopify/polaris';
 import Compact from './layouts/template_single_compact';
 import Stack from './layouts/template_multi_stack';
 import Carousel from './layouts/template_multi_carousel';
 import Flex from './layouts/template_multi_flex';
-import {useAuthenticatedFetch} from "../hooks/index.js";
-import {useSelector} from "react-redux";
+import { useAuthenticatedFetch } from "../hooks/index.js";
+import { useSelector } from "react-redux";
 import ErrorPage from "./ErrorPage";
-import {OfferContent, OfferContext} from "../contexts/OfferContext";
-import {useShopState} from "../contexts/ShopContext";
+import { OfferContent, OfferContext } from "../contexts/OfferContext";
+import { useShopState } from "../contexts/ShopContext";
 import { IRootState } from "~/store/store";
+import { UpdateCheckKeysValidityFunc } from "~/types/types";
 
 interface IOfferPreviewProps {
-	checkKeysValidity: {
-		[key: string]: string | boolean
-	},
-	updateCheckKeysValidity: (updatedKey: string, updatedValue: string | boolean) => void,
+	checkKeysValidity: Record<string, string | boolean>,
+	updateCheckKeysValidity: UpdateCheckKeysValidityFunc,
 	previewMode?: boolean,
 	updatePreviousAppOffer?: boolean
 }

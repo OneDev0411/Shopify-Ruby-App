@@ -12,7 +12,7 @@ import {OfferContent, OfferContext} from "~/contexts/OfferContext";
 import { AutopilotCheck } from "~/types/types";
 
 interface IOfferBoxProp {
-    autopilotCheck: AutopilotCheck;
+    autopilotCheck: AutopilotCheck,
 }
 
 const OfferBox = ({ autopilotCheck }: IOfferBoxProp) => {
