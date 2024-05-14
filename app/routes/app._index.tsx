@@ -46,7 +46,7 @@ export default function HomePage() {
     setIsSubscriptionUnpaid} = useShopState()
 
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
 
   const navigateTo = useNavigate();
   const [isLegacy, setIsLegacy] = useState(
@@ -58,6 +58,10 @@ export default function HomePage() {
   //   onFID(traceStat, {reportSoftNavs: true});
   //   onCLS(traceStat, {reportSoftNavs: true});
   // }, []);
+
+  const handleError = () => {
+    setError('Some of your analytics data failed to load, so your stats may not be complete.');
+  };
 
   const handleOpenOfferPage = () => {
     navigateTo('/app/edit-offer', { state: { offerID: null } });
@@ -151,17 +155,17 @@ export default function HomePage() {
                   shopData={shop}
                   themeAppExtension={themeAppExtension}
                 />
-              )}
+              )} 
 
               <Layout.Section>
                 <OffersList />
                 {hasOffers && (
                   <Grid>
                     <Grid.Cell columnSpan={{xs: 6, sm: 3, md: 6, lg: 4, xl: 4}}>
-                      <TotalSalesData period='monthly' title={true} />
+                      <TotalSalesData period='monthly' title={true} onError={handleError} />
                     </Grid.Cell>
                     <Grid.Cell columnSpan={{xs: 6, sm: 3, md: 6, lg: 4, xl: 4}}>
-                      <OrderOverTimeData period='monthly' title={true} />
+                      <OrderOverTimeData period='monthly' title={true} onError={handleError} />
                     </Grid.Cell>
                   </Grid>
                 )}

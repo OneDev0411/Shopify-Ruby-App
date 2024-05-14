@@ -709,7 +709,6 @@ const ChoosePlacement = ({ enableOrDisablePublish, autopilotCheck}: IChoosePlace
                         <Modal.Section>
                             <SelectProductsModal selectedItems={selectedItems} setSelectedItems={setSelectedItems}
                                                  offer={offer} shopSettings={shopSettings}
-                                                 handleProductsModal={handleProductsModal}
                                                  selectedProducts={selectedProducts}
                                                  setSelectedProducts={setSelectedProducts}/>
                         </Modal.Section>

@@ -529,5 +529,7 @@ declare global {
     interface Window {
         ENV: IEnvContext;
         Intercom: any;
+        attachEvent: any;
+        intercomSettings: any;
     }
 }

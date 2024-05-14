@@ -42,7 +42,7 @@ export const intercomSettingsConfig = (function () {
             s.async = true;
             s.src = `https://widget.intercom.io/widget/${CHAT_APP_ID}`;
             const x = d.getElementsByTagName('script')[0];
-            x.parentNode.insertBefore(s, x);
+            x.parentNode?.insertBefore(s, x);
         };
 
         if (d.readyState === 'complete') {

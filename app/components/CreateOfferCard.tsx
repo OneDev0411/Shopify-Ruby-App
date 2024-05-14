@@ -230,8 +230,9 @@ function VideoModal({active, handleClose}: IVideoModalProps) {
   );
 }
 
-interface IThemeAppCard extends ShopData {
-  themeAppExtension: ThemeAppExtension
+interface IThemeAppCard {
+  themeAppExtension: ThemeAppExtension,
+  shopData?: Shop
 }
 
 export function ThemeAppCard({shopData, themeAppExtension}: IThemeAppCard) {

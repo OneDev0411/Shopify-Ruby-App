@@ -11,7 +11,7 @@ function getConfig() {
         }
     }
 
-    let extensions = []
+    let extensions : string[] = []
     try {
         extensions = fs.readdirSync('./extensions');
     } catch {
