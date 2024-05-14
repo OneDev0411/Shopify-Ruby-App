@@ -1,11 +1,11 @@
-import { getPerformance } from "firebase/performance";
+import { PerformanceTrace, getPerformance } from "firebase/performance";
 import { firebaseApp } from "./firebase";
 import { trace } from "firebase/performance";
 
 export const perf = getPerformance(firebaseApp);
 
 export const beginTrace = (
-  metric
+  metric: string
 ) => {
   const metricTrace = trace(perf, metric.replace('/', '').replaceAll('/', '_'));
   metricTrace.start();
@@ -13,13 +13,21 @@ export const beginTrace = (
 };
 
 export const endTrace = (
-  metricTrace
+  metricTrace: PerformanceTrace
 ) => {
   // Stop the trace
   metricTrace.stop();
 };
 
-export const traceStat = (metric) => {
+type MetricType = {
+  name: string;
+  delta: number;
+  entries: {
+    startTime: number
+  }[]
+}
+
+export const traceStat = (metric: MetricType) => {
   const metricTrace = trace(perf, metric.name);
   // console.log(`${metric.name} METRIC TRACE`, metric)
   metricTrace.start();
