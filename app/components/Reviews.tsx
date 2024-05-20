@@ -1,5 +1,4 @@
-// @ts-nocheck
-import {Layout, Card, Image, BlockStack, InlineGrid, Text} from "@shopify/polaris";
+import {Layout, Card, BlockStack, InlineGrid, Text} from "@shopify/polaris";
 import "../components/stylesheets/reviewStyle.css";
 
 export const Reviews = () => {
@@ -8,15 +7,17 @@ export const Reviews = () => {
     <div className="review-section">
       <Layout>
         <Layout.Section>
-          <BlockStack distribution="center">
-            <p style={{textAlign:'center'}}><strong>750+ 5 star reviews<br/>Trusted by over a thousand Shopify merchants</strong></p>
+          <BlockStack align="center">
+            <p style={{textAlign:'center'}}>
+              <strong>750+ 5 star reviews<br/>Trusted by over a thousand Shopify merchants</strong>
+            </p>
           </BlockStack>
         </Layout.Section>
       </Layout>
       <div className="space-10"></div>
       <InlineGrid gap="300" columns={{ xs: 1, sm: 1, md: 1, lg: 3, xl: 3 }}>
         <Card>
-            <BlockStack gap={"500"}>
+          <BlockStack gap={"500"}>
             <Text variant="headingMd" as="h2">ECOKIND Cleaning</Text>
             <div>
               <p>
@@ -29,14 +30,14 @@ export const Reviews = () => {
               </p>
             </div>
             <div className='space-16'></div>
-            </BlockStack>
-            <span className="align-center" >
-              <img alt="5 stars Image" width="40%" src="https://assets.incartupsell.com/images/5-star.png"/>
-            </span>
+          </BlockStack>
+          <span className="align-center" >
+            <img alt="5 stars Image" width="40%" src="https://assets.incartupsell.com/images/5-star.png"/>
+          </span>
         </Card>
         <Card>
           <div className="card-content-wrapper">
-           <Text variant="headingMd" as="h2">My Gaming Case</Text>
+            <Text variant="headingMd" as="h2">My Gaming Case</Text>
             <div className="gap-top">
               <p>
                 <strong>United States</strong>
@@ -55,7 +56,7 @@ export const Reviews = () => {
           </div>
         </Card>
         <Card>
-            <BlockStack gap={"500"}>
+          <BlockStack gap={"500"}>
             <Text variant="headingMd" as="h2">Deinhamudi.de</Text>
             <div>
               <p>
@@ -69,10 +70,10 @@ export const Reviews = () => {
               </p>
             </div>
             <div className='space-16 margin-63'></div>
-            </BlockStack>
-            <span className="align-center" >
-              <img alt="5 stars Image" width="40%" src="https://assets.incartupsell.com/images/5-star.png"/>
-            </span>
+          </BlockStack>
+          <span className="align-center" >
+            <img alt="5 stars Image" width="40%" src="https://assets.incartupsell.com/images/5-star.png"/>
+          </span>
         </Card>
       </InlineGrid>
     </div>
