@@ -35,3 +35,23 @@ export const SummaryLabels = [
   'Revenue',
   'Conversion Rate'
 ];
+
+export const FiveStarImage = "https://assets.incartupsell.com/images/5-star.png";
+
+export const CanadaReviewDescription = `
+  Great app with good features to upsell. Been using this for a
+  month and see results. We like how it's customizable. Support is
+  very good too!
+`;
+
+export const USReviewDescription = `
+  I used to use a different in cart upsell app which had a pop up.
+  I like how this apps upsell does not pop up. Lasandra helped me
+  set up this app and the upsell looks beautiful in my cart page.
+  10/10 service, Lasandra went above & beyond!!!
+`;
+
+export const GermanyReviewDescription = `
+  Everything works fluently and I could 3x my conversion rate.
+  Very helpful.
+`;

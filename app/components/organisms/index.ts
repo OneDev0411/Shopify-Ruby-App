@@ -8,6 +8,7 @@ import AppearanceColor from "./appearance-color";
 import OfferText from "./offer-text";
 import AdvancedSettings from "./advanced-settings";
 import AnalyticsGraphCard from "./analytics-graph";
+import ReviewCard from "./reviews-card";
 
 export {
     OfferProduct,
@@ -20,4 +21,5 @@ export {
     OfferText,
     AdvancedSettings,
     AnalyticsGraphCard,
+    ReviewCard
 };

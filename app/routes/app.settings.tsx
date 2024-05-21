@@ -15,13 +15,9 @@ import ModalChoosePlan from '../components/modal_ChoosePlan'
 import ErrorPage from "../components/ErrorPage"
 import { useShopState } from "../contexts/ShopContext";
 import { IRootState } from "~/store/store";
-import { SettingsFormData, ShopSettings, ToastOptions } from "~/types/types";
+import { IApiResponse, SettingsFormData, ShopSettings, ToastOptions } from "~/types/types";
 import "../components/stylesheets/settingPageStyles.css"
 import { sendToastMessage } from "~/shared/helpers/commonHelpers";
-
-interface IApiResponse {
-    message: string;
-}
 
 export default function Settings() {
     const shopAndHost = useSelector((state: IRootState) => state.shopAndHost);

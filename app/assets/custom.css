@@ -78,3 +78,7 @@
   display: grid;
   grid-template-columns: 1fr 2fr;
 }
+
+.billing-image {
+  width: 200px;
+}

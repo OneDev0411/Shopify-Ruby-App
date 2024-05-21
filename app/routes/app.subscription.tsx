@@ -25,16 +25,20 @@ import { billingImg } from "../assets/index";
 // import { traceStat } from "../services/firebase/perf";
 import ErrorPage from "../components/ErrorPage"
 import { useShopState } from "../contexts/ShopContext";
-import { LinksFunction } from "@remix-run/node";
-import styles from "../assets/custom.css?url";
 import { IRootState } from "~/store/store";
 import { LoadingSpinner } from "../components/atoms/index";
-import { Subscription as SubscriptionType } from "~/types/types";
+import { IApiResponse, Subscription as SubscriptionType } from "~/types/types";
 import { sendToastMessage } from "~/shared/helpers/commonHelpers";
 
-export const links: LinksFunction = () => {
-  return [{ rel: "stylesheet", href: styles }];
-};
+type CurrentSubscriptionType = {
+	redirect_to?: string;
+	subscription: SubscriptionType;
+	plan: string;
+	days_remaining_in_trial: number;
+	active_offers_count: number;
+	unpublished_offer_ids: number[];
+	subscription_not_paid: boolean;
+}
 
 export default function Subscription() {
 	const shopAndHost = useSelector((state: IRootState) => state.shopAndHost);
@@ -51,7 +55,8 @@ export default function Subscription() {
 	const [activeOffersCount, setActiveOffersCount] = useState<number>();
 	const [unpublishedOfferIds, setUnpublishedOfferIds] = useState<number[]>([]);
 	const app = useAppBridge();
-	const [isLoading, setIsLoading] = useState<boolean>(false);
+	const [isLoading, setIsLoading] = useState<boolean>(true);
+	const [upgradeButtonDisable, setUpgradeButtonDisable] = useState<boolean>(false);
 
   // useEffect(()=> {
   //   onLCP(traceStat, {reportSoftNavs: true});
@@ -60,7 +65,7 @@ export default function Subscription() {
   // }, []);
 	const [error, setError] = useState<Error | null>(null);
 
-	function handlePlanChange (internal_name: string) {
+	const handlePlanChange = (internal_name: string) => {
 		let redirect = Redirect.create(app);
 
 		fetch('/api/v2/merchant/subscription', {
@@ -74,7 +79,7 @@ export default function Subscription() {
 			}),
 		})
 		.then((response) => response.json())
-		.then((data) => {
+		.then((data: IApiResponse) => {
 			if (data.payment == 'no') {
 				const toastOptions = {
 					message: data.message,
@@ -108,16 +113,17 @@ export default function Subscription() {
 				},
 			})
 			.then((response) => response.json())
-			.then((data) => {
+			.then((data: CurrentSubscriptionType) => {
 				if (data.redirect_to) {
 					redirect.dispatch(Redirect.Action.APP, data.redirect_to);
 				} else {
 					setCurrentSubscription(data.subscription);
-					setPlanName && setPlanName(data.plan);
-					setTrialDays && setTrialDays(data.days_remaining_in_trial);
+					setPlanName(data.plan);
+					setTrialDays(data.days_remaining_in_trial);
 					setActiveOffersCount(data.active_offers_count);
-					setUnpublishedOfferIds(data.unpublished_offer_ids)
-					setIsSubscriptionUnpaid && setIsSubscriptionUnpaid(data.subscription_not_paid)
+					setUnpublishedOfferIds(data.unpublished_offer_ids);
+					setIsSubscriptionUnpaid(data.subscription_not_paid);
+					setIsLoading(false);
 				}
 			})
 			.catch((error: Error) => {
@@ -197,7 +203,7 @@ export default function Subscription() {
 													<Image
 														source={billingImg}
 														alt="upgrade subscription"
-														width={200}
+														className="billing-image"
 													/>
 												</div>
 											</div>
@@ -223,12 +229,13 @@ export default function Subscription() {
                     <InlineStack align="end">
 											<ButtonGroup>
 												<Button
+													disabled={upgradeButtonDisable}
 													variant="primary"
 													onClick={() => {
 														planName === "flex" &&
 														isSubscriptionActive(currentSubscription) &&
 														!isSubscriptionUnpaid
-															? undefined
+															? setUpgradeButtonDisable(true)
 															: handlePlanChange("plan_based_billing");
 													}}
 													accessibilityLabel="Upgrade"
@@ -263,7 +270,7 @@ export default function Subscription() {
 													(planName === "trial" &&
 														isSubscriptionActive(currentSubscription))
 														? undefined
-														: handlePlanChange("plan_based_billing");
+														: handlePlanChange("free_plan");
 													}}
 													accessibilityLabel="Downgrade"
 												>
