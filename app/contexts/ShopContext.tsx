@@ -1,16 +1,17 @@
 import {createContext, useContext, useState} from 'react';
-import { Shop, ShopSettings, ThemeAppExtension } from '~/types/types';
+import {Shop, ShopSettings, ThemeAppExtension} from '~/types/types';
 
 export const SETTINGS_DEFAULTS = {
-    shop_id: undefined,
-    offer_css: '',
-    css_options: {},
-    has_recharge: false
+  shop_id: undefined,
+  offer_css: '',
+  css_options: {},
+  has_recharge: false,
 }
 
 const ShopContext = createContext<ShopContent>({
-    shopSettings: SETTINGS_DEFAULTS,
-    shop: null
+  shopSettings: SETTINGS_DEFAULTS,
+  isSubscriptionUnpaid: true,
+  shop: null
 });
 
 type ShopContent = {
@@ -27,7 +28,7 @@ type ShopContent = {
     setShopSettings?: React.Dispatch<React.SetStateAction<ShopSettings>>,
     themeAppExtension?: ThemeAppExtension,
     setThemeAppExtension?: React.Dispatch<React.SetStateAction<ThemeAppExtension | undefined>>,
-    isSubscriptionUnpaid?: boolean,
+    isSubscriptionUnpaid: boolean,
     setIsSubscriptionUnpaid?: (isSubscriptionUnpaid: boolean) => void,
 }
 
@@ -39,66 +40,66 @@ export default function ShopProvider({ children }) {
     const [shopSettings, setShopSettings] = useState<ShopSettings>({...SETTINGS_DEFAULTS});
     const [isSubscriptionUnpaid, setIsSubscriptionUnpaid] = useState<boolean>(true);
     const [themeAppExtension, setThemeAppExtension] = useState<ThemeAppExtension>();
-
-    function updateShopSettingsAttributes(updatedValue: any, ...updatedKey: string[]) {
-        if (updatedKey.length == 1) {
-            setShopSettings(previousState => {
-                return {...previousState, [updatedKey[0]]: updatedValue};
-            });
-        } else if (updatedKey.length == 2) {
-            setShopSettings(previousState => ({
-                ...previousState,
-                [updatedKey[0]]: {
-                    ...previousState[updatedKey[0]],
-                    [updatedKey[1]]: updatedValue
-                }
-            }));
-        } else if (updatedKey.length == 3) {
-            setShopSettings(previousState => ({
-                ...previousState,
-                [updatedKey[0]]: {
-                    ...previousState[updatedKey[0]],
-                    [updatedKey[1]]: {
-                        ...previousState[updatedKey[0]][updatedKey[1]],
-                        [updatedKey[2]]: updatedValue
-                    }
-                }
-            }));
+      
+  function updateShopSettingsAttributes(updatedValue: any, ...updatedKey: string[]) {
+    if (updatedKey.length == 1) {
+      setShopSettings(previousState => {
+        return {...previousState, [updatedKey[0]]: updatedValue};
+      });
+    } else if (updatedKey.length == 2) {
+      setShopSettings(previousState => ({
+        ...previousState,
+        [updatedKey[0]]: {
+          ...previousState[updatedKey[0]],
+          [updatedKey[1]]: updatedValue
         }
+      }));
+    } else if (updatedKey.length == 3) {
+      setShopSettings(previousState => ({
+        ...previousState,
+        [updatedKey[0]]: {
+          ...previousState[updatedKey[0]],
+          [updatedKey[1]]: {
+            ...previousState[updatedKey[0]][updatedKey[1]],
+            [updatedKey[2]]: updatedValue
+          }
+        }
+      }));
     }
+  }
 
-    return (
-        <ShopContext.Provider
-            value={{
-                shop,
-                setShop,
-                planName,
-                setPlanName,
-                trialDays,
-                setTrialDays,
-                hasOffers,
-                setHasOffers,
-                updateShopSettingsAttributes,
-                shopSettings,
-                setShopSettings,
-                themeAppExtension,
-                setThemeAppExtension,
-                isSubscriptionUnpaid,
-                setIsSubscriptionUnpaid
-            }}
-        >
-            {children}
-        </ShopContext.Provider>
-    );
+  return (
+    <ShopContext.Provider
+      value={{
+        shop,
+        setShop,
+        planName,
+        setPlanName,
+        trialDays,
+        setTrialDays,
+        hasOffers,
+        setHasOffers,
+        updateShopSettingsAttributes,
+        shopSettings,
+        setShopSettings,
+        themeAppExtension,
+        setThemeAppExtension,
+        isSubscriptionUnpaid,
+        setIsSubscriptionUnpaid
+      }}
+    >
+      {children}
+    </ShopContext.Provider>
+  );
 }
 
 // custom hook
 export const useShopState = () => {
-    const ctx: ShopContent = useContext(ShopContext);
+  const ctx: ShopContent = useContext(ShopContext);
 
-    if (!ctx) {
-        throw new Error("useShop must be used within the ShopProvider");
-    }
+  if (!ctx) {
+    throw new Error("useShop must be used within the ShopProvider");
+  }
 
-    return ctx;
+  return ctx;
 };

@@ -29,7 +29,7 @@ const ModalChoosePlan = () => {
       }
     }
 
-    if(isSubscriptionUnpaid === null) {
+    if(isSubscriptionUnpaid) {
       fetch('api/v2/merchant/is_subscription_unpaid', {
         method: 'POST',
         headers: {
@@ -48,18 +48,17 @@ const ModalChoosePlan = () => {
     navigateTo('/app/subscription');
   }, [navigateTo]);
 
-  const handleModalClose = () => {
-    setModalOpen(false);
-  };
+  const handleClose = useCallback(() => { navigateTo('/app/subscription'); }, [])
 
   return (
     <Modal
-      open={isSubscriptionUnpaid}
-      onClose={handleModalClose}
-      primaryAction={{
-        content: 'Choose Plan',
-        onAction: handleChoosePlan,
-      }}
+        title={"Choose Plan"}
+        onClose={handleClose}
+        open={isSubscriptionUnpaid}
+        primaryAction={{
+          content: 'Choose Plan',
+          onAction: handleChoosePlan,
+        }}
     >
       <Modal.Section>
         <div id="not-dismissable-modal">
