@@ -1,30 +1,23 @@
 import { Card, Grid, Button, Page } from "@shopify/polaris";
 import { useAppBridge } from '@shopify/app-bridge-react'
 import { useSelector } from 'react-redux';
-import { useState, useEffect, useCallback } from "react";
-import { Redirect, Toast } from '@shopify/app-bridge/actions';
+import { useState, useEffect } from "react";
+import { Redirect } from '@shopify/app-bridge/actions';
 import { Partners, SettingTabs } from "../components/";
-import {CustomTitleBar } from "../components/customtitlebar";
+import { CustomTitleBar } from "../components/customtitlebar";
 
 import { useAuthenticatedFetch } from "../hooks/useAuthenticatedFetch";
-import { useShopSettings} from "../hooks/useShopSettings";
+import { useShopSettings } from "../hooks/useShopSettings";
 
 import ModalChoosePlan from '../components/modal_ChoosePlan'
 // import { onLCP, onFID, onCLS } from 'web-vitals';
 // import { traceStat } from "../services/firebase/perf.js";
-import ErrorPage from "../components/ErrorPage.jsx"
-import {useShopState} from "../contexts/ShopContext.jsx";
+import ErrorPage from "../components/ErrorPage"
+import { useShopState } from "../contexts/ShopContext";
 import { IRootState } from "~/store/store";
-import { ShopSettings } from "~/types/types";
-
-interface IFormData {
-    productDomSelector?: string;
-    productDomAction?: string;
-    cartDomSelector?: string;
-    cartDomAction?: string;
-    ajaxDomSelector?: string;
-    ajaxDomAction?: string;
-}
+import { SettingsFormData, ShopSettings, ToastOptions } from "~/types/types";
+import "../components/stylesheets/settingPageStyles.css"
+import { sendToastMessage } from "~/shared/helpers/commonHelpers";
 
 interface IApiResponse {
     message: string;
@@ -35,9 +28,16 @@ export default function Settings() {
     const fetch = useAuthenticatedFetch(shopAndHost.host);
     const { fetchShopSettings, updateShopSettings } = useShopSettings();
     const { shopSettings, setShopSettings, updateShopSettingsAttributes } = useShopState();
-    const [formData, setFormData] = useState<IFormData>({});
+    const [formData, setFormData] = useState<SettingsFormData>({
+        productDomSelector: '',
+        productDomAction: '',
+        cartDomSelector: '',
+        cartDomAction: '',
+        ajaxDomSelector: '',
+        ajaxDomAction: ''
+    });
     const app = useAppBridge();
-    const [error, setError] = useState(null);
+    const [error, setError] = useState<Error | null>(null);
 
     // useEffect(()=> {
     //     onLCP(traceStat, {reportSoftNavs: true});
@@ -46,32 +46,32 @@ export default function Settings() {
     //   }, []);
       
     useEffect(() => {
+        const fetchCurrentShop = () => {
+            let redirect = Redirect.create(app);
+            fetchShopSettings({admin: null})
+                .then((response) => response.json())
+                .then((data) => {
+                    if (data.redirect_to) {
+                        redirect.dispatch(Redirect.Action.APP, data.redirect_to);
+                    }
+                    setShopSettings(data.shop_settings);
+                    setFormData({
+                        productDomSelector: data.shop_settings?.custom_product_page_dom_selector,
+                        productDomAction: data.shop_settings?.custom_product_page_dom_action,
+                        cartDomSelector: data.shop_settings?.custom_cart_page_dom_selector,
+                        cartDomAction: data.shop_settings?.custom_cart_page_dom_action,
+                        ajaxDomSelector: data.shop_settings?.custom_ajax_dom_selector,
+                        ajaxDomAction: data.shop_settings?.custom_ajax_dom_action,
+                    })
+                })
+                .catch((error: Error) => {
+                    setError(error);
+                    console.log("Error > ", error);
+                })
+        }
+
         fetchCurrentShop();
     }, []);
-
-    const fetchCurrentShop = useCallback(async () => {
-        let redirect = Redirect.create(app);
-        setShopSettings && fetchShopSettings({admin: null})
-            .then((response) => { return response.json() })
-            .then((data) => {
-                if (data.redirect_to) {
-                    redirect.dispatch(Redirect.Action.APP, data.redirect_to);
-                }
-                setShopSettings(data.shop_settings);
-                setFormData({
-                    productDomSelector: data.shop_settings?.custom_product_page_dom_selector,
-                    productDomAction: data.shop_settings?.custom_product_page_dom_action,
-                    cartDomSelector: data.shop_settings?.custom_cart_page_dom_selector,
-                    cartDomAction: data.shop_settings?.custom_cart_page_dom_action,
-                    ajaxDomSelector: data.shop_settings?.custom_ajax_dom_selector,
-                    ajaxDomAction: data.shop_settings?.custom_ajax_dom_action,
-                })
-            })
-            .catch((error) => {
-                setError(error);
-                console.log("Error > ", error);
-            })
-    }, [])
 
     const handleFormChange = (value: string, id: string) => {
         setFormData({
@@ -80,22 +80,21 @@ export default function Settings() {
         });
     };
 
-    const toggleActivation = async () => {
+    const toggleActivation = () => {
         fetch(`/api/v2/merchant/toggle_activation?shop=${shopAndHost.shop}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
             },
         })
-            .then((response: Response) => { return response.json()as Promise<IApiResponse>; })
+            .then((response: Response) => response.json())
             .then((data: IApiResponse) => {
-                const toastOptions = {
+                const toastOptions: ToastOptions = {
                     message: data.message,
                     duration: 3000,
                     isError: false,
                 };
-                const toastNotice = Toast.create(app, toastOptions);
-                toastNotice.dispatch(Toast.Action.SHOW);
+                sendToastMessage(app, toastOptions);
                 // This caused the user to be logged out of the app
                 // window.location.reload();
             })
@@ -105,14 +104,13 @@ export default function Settings() {
                     duration: 3000,
                     isError: true,
                 };
-                const toastError = Toast.create(app, toastOptions);
-                toastError.dispatch(Toast.Action.SHOW);
+                sendToastMessage(app, toastOptions);
                 console.log("Error:", error);
             })
     }
 
     const handleSave = async () => {
-        setShopSettings && setShopSettings((prev: ShopSettings) => {
+        setShopSettings((prev: ShopSettings) => {
             let data = {
                 ...prev,
                 custom_product_page_dom_selector: formData.productDomSelector,
@@ -123,30 +121,29 @@ export default function Settings() {
                 custom_ajax_dom_action: formData.ajaxDomAction,
             };
             updateShopSettings(data)
-                .then((response) => { return response.json(); })
-                .then((data) => {
+                .then((response) => response.json())
+                .then((data: IApiResponse) => {
                     const toastOptions = {
                         message: data.message,
                         duration: 3000,
                         isError: false,
                     };
-                    const toastNotice = Toast.create(app, toastOptions);
-                    toastNotice.dispatch(Toast.Action.SHOW);
+                    sendToastMessage(app, toastOptions);
                 })
-                .catch(() => {
+                .catch((error: Error) => {
                     const toastOptions = {
                         message: "Error saving shop settings",
                         duration: 3000,
                         isError: false,
                     };
-                    const toastNotice = Toast.create(app, toastOptions);
-                    toastNotice.dispatch(Toast.Action.SHOW);
+                    sendToastMessage(app, toastOptions);
+                    console.log('Error: ', error);
                 })
             return data
         });
     }
 
-    if (error) { return < ErrorPage showBranding={true} />; }
+    if (error) { return <ErrorPage showBranding={true} />; }
 
     return (
         <>
@@ -154,28 +151,16 @@ export default function Settings() {
                 <ModalChoosePlan />
                 <CustomTitleBar title='Settings' buttonText='Save' handleButtonClick={handleSave} />
                 <Card>
-                    {(shopSettings?.activated) ? (
-                        <Grid>
-                            <Grid.Cell columnSpan={{ xs: 6, sm: 3, md: 6, lg: 10, xl: 4 }}>
-                                <p>This app is activated</p>
-                            </Grid.Cell>
-                            <Grid.Cell columnSpan={{ xs: 6, sm: 3, md: 6, lg: 2, xl: 4 }}>
-                                <div style={{ display: 'flex', justifyContent: 'end' }}>
-                                    <Button onClick={toggleActivation}>Deactivate</Button>
-                                </div>
-                            </Grid.Cell>
-                        </Grid>) : (
-                        <Grid>
-                            <Grid.Cell columnSpan={{ xs: 6, sm: 3, md: 6, lg: 10, xl: 4 }}>
-                                <p>This app is deactivated</p>
-                            </Grid.Cell>
-                            <Grid.Cell columnSpan={{ xs: 6, sm: 3, md: 6, lg: 2, xl: 4 }}>
-                                <div style={{ display: 'flex', justifyContent: 'end' }}>
-                                    <Button onClick={toggleActivation}>Activate</Button>
-                                </div>
-                            </Grid.Cell>
-                        </Grid>
-                    )}
+                    <Grid>
+                        <Grid.Cell columnSpan={{ xs: 6, sm: 3, md: 6, lg: 10, xl: 4 }}>
+                            <p>{shopSettings.activated ? 'This app is activated' : 'This app is deactivated'}</p>
+                        </Grid.Cell>
+                        <Grid.Cell columnSpan={{ xs: 6, sm: 3, md: 6, lg: 2, xl: 4 }}>
+                            <div className="activate-btn">
+                                <Button onClick={toggleActivation}>{shopSettings.activated ? 'Deactivate' : 'Activate'}</Button>
+                            </div>
+                        </Grid.Cell>
+                    </Grid>
                 </Card>
                 <div className="space-4"></div>
                 <Grid>
@@ -191,7 +176,16 @@ export default function Settings() {
                     <Grid.Cell columnSpan={{ xs: 6, sm: 6, md: 6, lg: 6, xl: 6 }}>
                         <Card>
                             {/* Tabs */}
-                            {shopSettings ? <SettingTabs formData={formData} currentShop={shopSettings} updateShop={updateShopSettingsAttributes} handleFormChange={handleFormChange} /> : 'Loading...'}
+                            {shopSettings ? (
+                                <SettingTabs
+                                    formData={formData}
+                                    currentShop={shopSettings}
+                                    updateShop={updateShopSettingsAttributes}
+                                    handleFormChange={handleFormChange}
+                                />
+                            ) : (
+                                "Loading..."
+                            )}
                         </Card>
                     </Grid.Cell>
                 </Grid>

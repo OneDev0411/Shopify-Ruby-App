@@ -518,11 +518,26 @@ type ShopSalesStats = {
   redirect_to: string;
 }
 
+interface SettingsFormData {
+  productDomSelector: string;
+  productDomAction: string;
+  cartDomSelector: string;
+  cartDomAction: string;
+  ajaxDomSelector: string;
+  ajaxDomAction: string;
+}
+
+type ToastOptions = {
+  message: string;
+  duration: number;
+  isError: boolean;
+}
+
 export type {
     JsonVariants, ProductDetails, PlacementSetting, AdvancedPlacementSetting, CssOptions, Plan, Offer,
     Shop, ShopSettings, SessionData, Subscription, ThemeAppExtension, ProductVariants, Product, Variant, Rule,
-  IAutopilotSettingsProps, AutopilotCheck, ShopAndHost, ThemeSetting, IVideoModalProps, IEnvContext,
-  UpdateCheckKeysValidityFunc, IAnalyticsGraphProps, AnalyticsData, ShopSalesStats
+    IAutopilotSettingsProps, AutopilotCheck, ShopAndHost, ThemeSetting, IVideoModalProps, IEnvContext,
+    UpdateCheckKeysValidityFunc, IAnalyticsGraphProps, AnalyticsData, ShopSalesStats, SettingsFormData, ToastOptions
 }
 
 declare global {

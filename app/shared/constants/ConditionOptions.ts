@@ -1,4 +1,4 @@
-type ConditionOption = {
+export type ConditionOption = {
   label: string;
   value: string;
 }
