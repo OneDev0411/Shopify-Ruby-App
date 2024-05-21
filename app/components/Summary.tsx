@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from "@remix-run/react";
 import { Card, AppProvider, Text, Image, Grid, Link, Spinner, InlineGrid } from '@shopify/polaris';
@@ -80,14 +80,14 @@ const Summary = (props: ISummaryProps) => {
     useEffect(() => {
       setIsLoading(true);
       getOfferStats();
-      getShopOffersStats('daily');
+      getShopOffersStats('hourly');
     }, [shopAndHost.shop]);
 
     if (error) { return < ErrorPage/>; }
 
     return (
       <>
-        <AppProvider>
+        <AppProvider i18n={translations}>
             <Card>
               <InlineGrid columns={2}>
                 <span className="width-146"><Text variant="headingMd" as="h6">Conversion Summary</Text></span>
@@ -101,7 +101,7 @@ const Summary = (props: ISummaryProps) => {
                     alignItems: 'center',
                     minHeight: '20vh',
                 }}>
-                  <Spinner size="large" color="teal"/>
+                  <Spinner size="large"/>
                 </div>
                 ) : (
                 <>
@@ -109,10 +109,10 @@ const Summary = (props: ISummaryProps) => {
                   <Grid columns={{sm: 6}}>
                     <Grid.Cell columnSpan={{xs: 6, sm: 3, md: 4, lg: 7, xl: 7}}>
                         <div className="card-space">
-                          <Text>Number of views: {offerStats?.views}</Text>
-                          <Text>Number of clicks: {offerStats?.clicks}</Text>
-                          <Text>Revenue: {offerStats?.revenue}</Text>
-                          <Text>Conversion rate: {totalDisplayed > 0 ? ((converted / totalDisplayed) * 100).toFixed(2) : 0}%</Text>
+                          <Text as="p">Number of views: {offerStats?.views}</Text>
+                          <Text as="p">Number of clicks: {offerStats?.clicks}</Text>
+                          <Text as="p">Revenue: {offerStats?.revenue}</Text>
+                          <Text as="p">Conversion rate: {totalDisplayed > 0 ? ((converted / totalDisplayed) * 100).toFixed(2) : 0}%</Text>
                         </div>
                     </Grid.Cell>
                     <Grid.Cell columnSpan={{xs: 6, sm: 3, md: 2, lg: 5, xl: 5}}>

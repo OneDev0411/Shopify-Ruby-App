@@ -3,7 +3,7 @@ import {useSelector} from "react-redux";
 import {Link, useLocation, useNavigate} from "@remix-run/react";
 
 import {Banner, Icon, Layout, Page, Spinner, Tabs} from '@shopify/polaris';
-import {DesktopIcon, MobileIcon} from '@shopify/polaris-icons';
+import {DesktopIcon, MobileIcon, AlertCircleIcon} from '@shopify/polaris-icons';
 import {Redirect} from '@shopify/app-bridge/actions';
 import {FirstTab} from "../components/EditOffer/tabs/First";
 import {SecondTab} from "../components/EditOffer/tabs/Second";
@@ -21,6 +21,7 @@ import {useShopSettings} from "../hooks/useShopSettings.js";
 import {useShopState} from "../contexts/ShopContext";
 import { IRootState } from '~/store/store';
 import { AutopilotCheck, ProductDetails, ShopSettings } from '~/types/types';
+import CustomBanner from '~/components/CustomBanner';
 // import { onLCP, onFID, onCLS } from 'web-vitals';
 // import { traceStat } from "../services/firebase/perf.js";
 
@@ -340,12 +341,16 @@ export default function EditPage() {
                                     fitted
                                 >
                                     { shopSettings?.offers_limit_reached && (
-                                      <div className='warning-banner'>
-                                        <Banner tone="warning">
-                                          <p>You are currently at the limit for published offers. <Link
-                                            to="/subscription">Click here</Link> to upgrade your plan and get access to unlimited offers and features!</p>
-                                        </Banner>
-                                      </div>
+                                        <CustomBanner
+                                            icon={AlertCircleIcon}
+                                            icon_color={"rgb(183,125,11)"}
+                                            content="You are currently at the limit for published offers. " 
+                                            link_keyword="Click here"
+                                            after_link_content=" to upgrade your plan and get access to unlimited offers and features!"
+                                            background_color="rgb(252,239,212)"
+                                            border_color="rgb(244,197,84)"
+                                            link_to={"/app/subscription"}
+                                            name="limited_publish_offer" />
           
                                     )}
                                     <div className='space-4'></div>

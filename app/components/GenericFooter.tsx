@@ -19,23 +19,22 @@ export const GenericFooter = ({text, linkText, linkUrl}: IGenericFooterProps) =>
     </style>
     <div style={{ marginTop: '60px'}}></div>
 		<div style={{display: 'flex', justifyContent: 'center'}}> 
-			<BlockStack>
-          <Icon
-            source={AlertCircleIcon}
-            color="base"
-          />
-          <Text as="p" variant="bodySm">
-            {text}
-            {linkText ? (
-              <Link url={linkUrl} target="_blank">{linkText}.
-                <Icon
-                  source={ExternalSmallIcon}
-                  color="base"
-                />
-              </Link>
-            ): null}
-          </Text>
-      </BlockStack>
+      <div style={{flex: 0.05}}>
+       <Icon source={AlertCircleIcon} tone="base"/>
+      </div>
+      <div style={{flex: 0.3}}>
+        <Text as="p" variant="bodySm">
+          {text}
+          {linkText ? (
+            <Link url={linkUrl} target="_blank">{linkText}.
+              <Icon
+                source={ExternalSmallIcon}
+                tone="base"
+              />
+            </Link>
+          ): null}
+        </Text>
+      </div>
 			<div className="space-10"></div>
     </div>
 		</>

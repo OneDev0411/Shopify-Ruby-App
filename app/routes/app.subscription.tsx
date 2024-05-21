@@ -20,10 +20,11 @@ import { IRootState } from "~/store/store";
 import { LoadingSpinner } from "../components/atoms/index.js";
 import { Subscription as SubscriptionType } from "~/types/types";
 
+import {InfoIcon} from "@shopify/polaris-icons";
 export const links: LinksFunction = () => {
   return [{ rel: "stylesheet", href: styles }];
 };
-
+import CustomBanner from "~/components/CustomBanner";
 export default function Subscription() {
     const shopAndHost = useSelector((state: IRootState) => state.shopAndHost);
     const fetch = useAuthenticatedFetch(shopAndHost.host);
@@ -124,19 +125,35 @@ export default function Subscription() {
               <Layout>
                 <Layout.Section>
                   {(isSubscriptionActive(currentSubscription) && planName!=='free' && trialDays && trialDays>0) ? (
-                    <Banner icon='none' tone="info">
-                      <p>{ trialDays } days remaining for the trial period</p>
-                    </Banner>) : null
+                    <CustomBanner
+                      icon={InfoIcon}
+                      icon_color={"rgb(66,181,194)"}
+                      content=" days remaining for the trial period"
+                      background_color="rgb(221,245,246)"
+                      border_color="rgb(187,221,226)"
+                      trial_days={trialDays}
+                      name="non_icon"
+                    />) : null
                   }
                   {!isSubscriptionActive(currentSubscription) ? (
-                    <Banner icon='none' tone="info">
-                      <p>Your Subscription Is Not Active: please confirm it on this page</p>
-                    </Banner> ) : null
+                    <CustomBanner
+                      icon={InfoIcon}
+                      icon_color={"rgb(66,181,194)"}
+                      content="Your Subscription Is Not Active: please confirm it on this page"
+                      background_color="rgb(221,245,246)"
+                      border_color="rgb(187,221,226)"
+                      name="non_icon"
+                    />) : null
                   }
                   {(planName==='trial' && (unpublishedOfferIds?.length>0 || activeOffersCount)) ? (
-                    <Banner icon='none' tone="info">
-                      <p>If you choose free plan after trial, offers will be unpublished</p>
-                    </Banner>) : null
+                    <CustomBanner
+                      icon={InfoIcon}
+                      icon_color={"rgb(66,181,194)"}
+                      content="If you choose free plan after trial, offers will be unpublished"
+                      background_color="rgb(221,245,246)"
+                      border_color="rgb(187,221,226)"
+                      name="non_icon"
+                    />) : null
                   }
                 </Layout.Section>
                 <Layout.Section>

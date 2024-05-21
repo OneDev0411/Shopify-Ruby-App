@@ -219,7 +219,7 @@ export function OfferPreview(props: IOfferPreviewProps) {
 					<Stack offer={offer} checkKeysValidity={props.checkKeysValidity}/>
 				) : offer.multi_layout == "carousel" ? (
 					carouselLoading ? (
-						<Card sectioned>
+						<Card>
 							<TextContainer>
 								<SkeletonBodyText lines={6} />
 							</TextContainer>
