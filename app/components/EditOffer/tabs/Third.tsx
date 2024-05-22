@@ -2,22 +2,19 @@ import { LegacyStack, ButtonGroup, Button } from "@shopify/polaris";
 import { useContext } from "react";
 import {OfferContent, OfferContext} from "../../../contexts/OfferContext";
 import { AppearanceColor, OfferBox, OfferText } from "../../organisms/index";
-import { AutopilotCheck } from "~/types/types";
 
 interface IThirdTabProps {
     saveDraft: () => void,
     publishOffer: () => void,
-    autopilotCheck: AutopilotCheck,
-    enablePublish: boolean
     handleTabChange: () => void
 }
 
-export function ThirdTab(props: IThirdTabProps) {
-    const {offer} = useContext(OfferContext) as OfferContent;
+export function ThirdTab({ saveDraft, publishOffer, handleTabChange } : IThirdTabProps) {
+    const { offer, enablePublish } = useContext(OfferContext) as OfferContent;
 
     return (
         <div id="appearance-offers">
-            <OfferBox autopilotCheck={props.autopilotCheck} />
+            <OfferBox />
             <div className="space-10" />
 
             <AppearanceColor />
@@ -28,13 +25,13 @@ export function ThirdTab(props: IThirdTabProps) {
             {(offer?.advanced_placement_setting?.advanced_placement_setting_enabled) ? (
                 <>
                     <LegacyStack distribution="center">
-                        <Button onClick={props.handleTabChange}>Continue to Advanced</Button>
+                        <Button onClick={handleTabChange}>Continue to Advanced</Button>
                     </LegacyStack>
                 </>) : (
                 <LegacyStack distribution="center">
                     <ButtonGroup>
-                        <Button onClick={() => props.saveDraft()}>Save Draft</Button>
-                        <Button primary disabled={props.enablePublish} onClick={() => props.publishOffer()}>Publish</Button>
+                        <Button onClick={() => saveDraft()}>Save Draft</Button>
+                        <Button primary disabled={enablePublish} onClick={() => publishOffer()}>Publish</Button>
                     </ButtonGroup>
                 </LegacyStack>
                 )}

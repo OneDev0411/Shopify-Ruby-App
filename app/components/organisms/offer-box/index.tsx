@@ -6,17 +6,11 @@ import {
     Grid,
 } from "@shopify/polaris";
 import { useCallback, useContext } from "react";
-import React from "react";
 import { OfferStyleOptions, OfferBorderOptions } from "~/shared/constants/EditOfferOptions";
 import {OfferContent, OfferContext} from "~/contexts/OfferContext";
-import { AutopilotCheck } from "~/types/types";
 
-interface IOfferBoxProp {
-    autopilotCheck: AutopilotCheck,
-}
-
-const OfferBox = ({ autopilotCheck }: IOfferBoxProp) => {
-    const {offer, updateOffer, updateNestedAttributeOfOffer} = useContext(OfferContext) as OfferContent;
+const OfferBox = () => {
+    const { offer, updateOffer, updateNestedAttributeOfOffer, autopilotCheck } = useContext(OfferContext) as OfferContent;
 
     const handleLayout = useCallback((value: string) => {
         updateOffer("multi_layout", value);

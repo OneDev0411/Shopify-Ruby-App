@@ -18,15 +18,11 @@ import {OfferContent, OfferContext} from "~/contexts/OfferContext";
 import {useShopState} from "../../../contexts/ShopContext";
 import { OfferPlacement } from "../../molecules/index.js";
 import { BannerContainer } from "../../atoms/index.js";
-import { AutopilotCheck, Product, Rule, ShopAndHost, ThemeSetting } from "~/types/types";
+import { Product, Rule, ShopAndHost, ThemeSetting } from "~/types/types";
 import {useEnv} from "../../../contexts/EnvContext";
-interface IChoosePlacementProps {
-    enableOrDisablePublish: (enable: boolean) => void,
-    autopilotCheck: AutopilotCheck,
-}
 
-const ChoosePlacement = ({ enableOrDisablePublish, autopilotCheck}: IChoosePlacementProps) => {
-    const { offer, updateOffer, updateNestedAttributeOfOffer } = useContext(OfferContext) as OfferContent;
+const ChoosePlacement = () => {
+    const { offer, updateOffer, updateNestedAttributeOfOffer, autopilotCheck, setEnablePublish } = useContext(OfferContext) as OfferContent;
     const { shopSettings, themeAppExtension } = useShopState();
     // TODO: swap into context
     const shopAndHost = useSelector<{ shopAndHost: ShopAndHost}, ShopAndHost>(state => state.shopAndHost);
@@ -78,7 +74,7 @@ const ChoosePlacement = ({ enableOrDisablePublish, autopilotCheck}: IChoosePlace
                         }
                         else if(value.page_type == "ajax") {
                             setTemplateImagesURL(previousState => {
-                                return { ...previousState, ["ajax_cart_image_".concat(value.position)]: value.image_url};      
+                                return { ...previousState, ["ajax_cart_image_".concat(value.position)]: value.image_url};
                             });
                         }
                     });
@@ -213,7 +209,7 @@ const ChoosePlacement = ({ enableOrDisablePublish, autopilotCheck}: IChoosePlace
 
     const handleDefaultSettingChange = useCallback((value: boolean, selectedPage: string) => {
         if(value) {
-            enableOrDisablePublish(!value);
+            setEnablePublish(!value);
             if(offer.in_product_page && offer.in_cart_page) {
                 if(selectedPage == "cart") {
                     updateNestedAttributeOfOffer(null, "placement_setting", "template_cart_id");
@@ -288,7 +284,7 @@ const ChoosePlacement = ({ enableOrDisablePublish, autopilotCheck}: IChoosePlace
 
     const handleUseTemplateChange = useCallback((value: boolean, selectedPage: string) => {
         if(value) {
-            enableOrDisablePublish(value);
+            setEnablePublish(value);
             if(offer.in_product_page && offer.in_cart_page) {
                 if(selectedPage == "cart") {
                     updateNestedAttributeOfOffer(!value, "placement_setting", "default_cart_page");
@@ -365,7 +361,7 @@ const ChoosePlacement = ({ enableOrDisablePublish, autopilotCheck}: IChoosePlace
 
     const handleDefaultSettingSecondChange = useCallback((value: boolean, selectedPage: string) => {
         if(value) {
-            enableOrDisablePublish(!value);
+            setEnablePublish(!value);
             if(offer.in_product_page && offer.in_cart_page) {
                 if(selectedPage == "cart") {
                     updateNestedAttributeOfOffer(null, "placement_setting", "template_cart_id");
@@ -430,7 +426,7 @@ const ChoosePlacement = ({ enableOrDisablePublish, autopilotCheck}: IChoosePlace
 
     const handleUseTemplateSecondChange = useCallback((value: boolean, selectedPage: string) => {
         if(value) {
-            enableOrDisablePublish(value);
+            setEnablePublish(value);
             if(offer.in_product_page && offer.in_cart_page) {
                 if(selectedPage == "cart") {
                     updateNestedAttributeOfOffer(!value, "placement_setting", "default_cart_page");
@@ -459,7 +455,7 @@ const ChoosePlacement = ({ enableOrDisablePublish, autopilotCheck}: IChoosePlace
 
     // Called on clickedImages that opened after checking Use Template checkbox
     const handleImageClick = useCallback((pageName: string, clickedImageNum: number) => {
-        enableOrDisablePublish(false);
+        setEnablePublish(false);
         if(pageName === 'product_page') {
             themeTemplateData.forEach(function(record){
                 if(record.page_type == 'product' && record.position == clickedImageNum) {

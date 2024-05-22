@@ -1,4 +1,4 @@
-import { forwardRef, useState, useEffect, useRef } from "react";
+import { useContext } from "react";
 import {
 	Text,
 	Card,
@@ -8,15 +8,11 @@ import TemplateComponent from 'react-mustache-template-component';
 import themeCss from '@assets/theme.css';
 import { useSelector } from 'react-redux';
 import { IRootState } from "~/store/store";
-import { Offer, Shop } from "~/types/types";
+import { OfferContent, OfferContext } from "~/contexts/OfferContext";
 
-interface ICompactProps {
-	offer: Offer,
-	checkKeysValidity: Record<string, string | boolean>,
-}
-
-export default function Compact(props: ICompactProps) {
+export default function Compact() {
 	const shopAndHost = useSelector((state: IRootState) => state.shopAndHost);
+	const { offer, checkKeysValidity } = useContext(OfferContext) as OfferContent;
 
 	const template = `<div id="nudge-offer-{{ id }}" style="background-color: {{ css_options.main.backgroundColor }}; color: {{ css_options.main.color}}; {{#mainMarginTop }} margin-top: {{css_options.main.marginTop}}; {{/mainMarginTop}} {{#mainMarginBottom }} margin-bottom: {{css_options.main.marginBottom}}; {{/mainMarginBottom}} {{#mainBorderWidth}} border: {{css_options.main.borderWidth}}px {{css_options.main.borderStyle}}; {{/mainBorderWidth}} {{#mainBorderRadius}} border-radius: {{css_options.main.borderRadius}}px; {{/mainBorderRadius}} {{ #mobileViewWidth }} width: 320px {{/ mobileViewWidth}}" class="nudge-offer custom with-image  multi compact" data-offerid="163416">
 					{{#show_nothanks}}<a class="dismiss-button" onclick="InCartUpsell.dismissOffer({{ id }}); return false;">&times;</a>{{/show_nothanks}}
@@ -128,6 +124,6 @@ export default function Compact(props: ICompactProps) {
 
 
 	return(
-		<TemplateComponent template={template} data={({...props.offer, ...props.checkKeysValidity})} sanitize={false}/>
+		<TemplateComponent template={template} data={({...offer, ...checkKeysValidity})} sanitize={false}/>
 	);
 };

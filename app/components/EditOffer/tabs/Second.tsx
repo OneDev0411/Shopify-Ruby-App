@@ -1,15 +1,12 @@
 import { useState, useCallback } from 'react';
 import { Button, LegacyStack } from "@shopify/polaris";
 import { ChoosePlacement, DisplayConditions } from "../../organisms/index";
-import { AutopilotCheck } from '~/types/types';
 
 interface ISecondTabProps {
-    autopilotCheck: AutopilotCheck,
     handleTabChange: () => void
-    enableOrDisablePublish: (enable: boolean) => void
 }
 
-export function SecondTab(props: ISecondTabProps) {
+export function SecondTab({ handleTabChange }: ISecondTabProps) {
     const [disableCheckoutInfo, setDisableCheckoutInfo] = useState<string>('')
 
     const changeDisableCheckoutInfo = useCallback((value: string) => {
@@ -18,20 +15,15 @@ export function SecondTab(props: ISecondTabProps) {
 
     return (
         <div id="polaris-placement-cards">
-            <ChoosePlacement
-                autopilotCheck={props.autopilotCheck}
-                enableOrDisablePublish={props.enableOrDisablePublish}
-            />
+            <ChoosePlacement />
             <div className="space-10"/>
 
-            <DisplayConditions 
-                autopilotCheck={props.autopilotCheck}
-            />
+            <DisplayConditions />
             <div className="space-10"/>
 
             <div className="space-4"></div>
             <LegacyStack distribution="center">
-                <Button onClick={props.handleTabChange}>Continue to Appearance</Button>
+                <Button onClick={handleTabChange}>Continue to Appearance</Button>
             </LegacyStack>
             <div className="space-10"></div>
         </div>

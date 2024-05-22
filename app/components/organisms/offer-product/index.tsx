@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState, useContext } from "react";
+import { useCallback, useEffect, useState, useContext } from "react";
 import { Link, useNavigate } from "@remix-run/react";
 import { useSelector } from 'react-redux';
 import {OfferContent, OfferContext} from "~/contexts/OfferContext";
@@ -21,18 +21,15 @@ import {InfoIcon} from '@shopify/polaris-icons';
 import { ModalAddProduct } from "~/components";
 import { useAuthenticatedFetch } from "~/hooks";
 import { AutopilotQuantityOptionsNew } from "~/shared/constants/EditOfferOptions";
-import { IAutopilotSettingsProps, Offer, Product, ProductDetails, ProductVariants, ShopAndHost, UpdateCheckKeysValidityFunc } from "~/types/types";
+import { Product, ShopAndHost } from "~/types/types";
 
-interface IOfferProductProps extends IAutopilotSettingsProps {
-  initialVariants: ProductVariants;
-  updateCheckKeysValidity: UpdateCheckKeysValidityFunc,
-  updateInitialVariants: (selectedItem: string | string[] | Offer['included_variants'], selectedVariants?: number[]) => void;
-  initialOfferableProductDetails: ProductDetails[];
+interface IOfferProductProps {
   setIsLoading: (b: boolean) => void
 }
 
-const OfferProduct = (props: IOfferProductProps) => {
-    const { offer, updateOffer, updateProductsOfOffer, updateIncludedVariants } = useContext(OfferContext) as OfferContent;
+const OfferProduct = ({ setIsLoading }: IOfferProductProps) => {
+    const { offer, updateOffer, updateProductsOfOffer, updateIncludedVariants, updateCheckKeysValidity, autopilotCheck,
+                                setAutopilotCheck, initialVariants, updateInitialVariants, initialOfferableProductDetails } = useContext(OfferContext) as OfferContent;
     const { shopSettings } = useShopState();
     const shopAndHost = useSelector<{ shopAndHost: ShopAndHost}, ShopAndHost>(state => state.shopAndHost);
     const fetch = useAuthenticatedFetch(shopAndHost.host);
@@ -58,14 +55,14 @@ const OfferProduct = (props: IOfferProductProps) => {
         setProductModal(!productModal);
     }, [productModal]);
     const handleModalCloseEvent = useCallback(() => {
-        updateOffer("included_variants", {...props.initialVariants});
+        updateOffer("included_variants", {...initialVariants});
         for (let i = 0; i < productData.length; i++) {
-            if (!Object.keys(props.initialVariants).includes(productData[i].id.toString())) {
+            if (!Object.keys(initialVariants).includes(productData[i].id.toString())) {
                 productData[i].variants = [];
             }
         }
         setProductModal(false);
-    }, [props.initialVariants, productData, offer.offerable_product_shopify_ids]);
+    }, [initialVariants, productData, offer.offerable_product_shopify_ids]);
 
 
     //Called from chiled modal_AddProduct.jsx when the text in searchbox changes
@@ -140,17 +137,17 @@ const OfferProduct = (props: IOfferProductProps) => {
         if (selectedProducts.length == 0) {
             updateOffer("included_variants", {});
             setProductData([]);
-            props.updateCheckKeysValidity("text", product_title_str);
+            updateCheckKeysValidity("text", product_title_str);
         } else if (selectedProducts.length > 1) {
-            props.updateCheckKeysValidity("text", "");
+            updateCheckKeysValidity("text", "");
             updateOffer("text_a", "");
         } else if (selectedProducts.length <= 1) {
-            props.updateCheckKeysValidity("text", product_title_str);
+            updateCheckKeysValidity("text", product_title_str);
             updateOffer("text_a", product_title_str);
         }
         updateOffer("offerable_product_details", []);
         updateOffer("offerable_product_shopify_ids", []);
-        props.updateInitialVariants(offer.included_variants);
+        updateInitialVariants(offer.included_variants);
         let responseCount = 0;
         if (!shopSettings?.shop_id) {
             return
@@ -181,8 +178,8 @@ const OfferProduct = (props: IOfferProductProps) => {
                     data.available_json_variants = data.available_json_variants.filter((o) => offer.included_variants[data.id].includes(o.id))
                     updateProductsOfOffer(data);
                     if (responseCount == 0 && selectedProducts.length <= 1) {
-                        props.updateCheckKeysValidity("text", offer.text_a.replace("{{ product_title }}", data.title));
-                        props.updateCheckKeysValidity('cta', offer.cta_a);
+                        updateCheckKeysValidity("text", offer.text_a.replace("{{ product_title }}", data.title));
+                        updateCheckKeysValidity('cta', offer.cta_a);
                     }
                     responseCount++;
                 }
@@ -207,7 +204,7 @@ const OfferProduct = (props: IOfferProductProps) => {
                 return response.json()
             })
             .then((data) => {
-                props.setAutopilotCheck(data);
+                setAutopilotCheck(data);
 
                 setAutopilotButtonText(
                     data.isPending === "complete"
@@ -223,7 +220,7 @@ const OfferProduct = (props: IOfferProductProps) => {
     }, [])
 
     useEffect(() => {
-        if (offer.id != null && offer.id == props.autopilotCheck?.autopilot_offer_id && offer.autopilot_quantity && offer.autopilot_quantity != offer.offerable_product_details.length) {
+        if (offer.id != null && offer.id == autopilotCheck?.autopilot_offer_id && offer.autopilot_quantity && offer.autopilot_quantity != offer.offerable_product_details.length) {
             let tempArrProdDetails: any = [];
             for (let i = 0; i < offer?.autopilot_quantity; i++) {
                 if (offer.offerable_product_details.length > i) {
@@ -232,19 +229,19 @@ const OfferProduct = (props: IOfferProductProps) => {
             }
             updateOffer("offerable_product_details", tempArrProdDetails);
         }
-    }, [props.autopilotCheck?.autopilot_offer_id, offer.offerable_product_shopify_ids]);
+    }, [autopilotCheck?.autopilot_offer_id, offer.offerable_product_shopify_ids]);
 
     const handleAutoPilotQuantityChange = useCallback((value: number) => {
         let tempInitialOfferable: any = [];
         for (let i = 0; i < value; i++) {
-            if (props.initialOfferableProductDetails.length > i) {
-                tempInitialOfferable[i] = props.initialOfferableProductDetails[i];
+            if (initialOfferableProductDetails.length > i) {
+                tempInitialOfferable[i] = initialOfferableProductDetails[i];
             }
         }
         updateOffer("offerable_product_details", tempInitialOfferable);
         setAutopilotQuantity(value);
         updateOffer("autopilot_quantity", value);
-    }, [props.initialOfferableProductDetails]);
+    }, [initialOfferableProductDetails]);
 
     const handleAutopilotExcludedTags = useCallback((value) => {
         updateOffer("excluded_tags", value);
@@ -279,7 +276,7 @@ const OfferProduct = (props: IOfferProductProps) => {
             if (!shopSettings?.shop_id) {
                 return
             }
-            props.setIsLoading(true);
+            setIsLoading(true);
             fetch(`/api/v2/merchant/enable_autopilot`, {
                 method: 'POST',
                 headers: {
@@ -292,7 +289,7 @@ const OfferProduct = (props: IOfferProductProps) => {
                 })
                 .then((data) => {
                     checkAutopilotStatus();
-                    props.setIsLoading(false);
+                    setIsLoading(false);
                 })
                 .catch((error) => {
                     console.log("# Error updateProducts > ", JSON.stringify(error));
@@ -341,11 +338,11 @@ const OfferProduct = (props: IOfferProductProps) => {
             {/* <Card title="Offer Product" actions={[{content: 'Learn about Autopilot'}]} sectioned> */}
             <Card title="Offer Product" sectioned>
                 <BlockStack spacing="loose" vertical>
-                    {(props.autopilotCheck?.autopilot_offer_id != offer.id || !props.autopilotCheck?.autopilot_offer_id) && (
+                    {(autopilotCheck?.autopilot_offer_id != offer.id || !autopilotCheck?.autopilot_offer_id) && (
                         <p style={{color: '#6D7175'}}>What product would you like to have in the offer?</p>
                     )}
 
-                    {offer.id == null && !props.autopilotCheck?.autopilot_offer_id && shopSettings?.has_pro_features ? (
+                    {offer.id == null && !autopilotCheck?.autopilot_offer_id && shopSettings?.has_pro_features ? (
                         <>
                             <div style={{marginBottom: '20px'}}>
                                 <Button id={"btnLaunchAI"}
@@ -358,7 +355,7 @@ const OfferProduct = (props: IOfferProductProps) => {
                                 getProducts();
                             }}>Select product manually</Button>
                         </>
-                    ) : (offer?.id != props.autopilotCheck?.autopilot_offer_id || !props.autopilotCheck?.autopilot_offer_id) && (
+                    ) : (offer?.id != autopilotCheck?.autopilot_offer_id || !autopilotCheck?.autopilot_offer_id) && (
                         <div>
                             <Button id={"btnSelectProduct"} onClick={() => {
                                 handleModal();
@@ -399,7 +396,7 @@ const OfferProduct = (props: IOfferProductProps) => {
                     )}
 
                 </BlockStack>
-                {(openAutopilotSection || (offer.id != null && props.autopilotCheck?.autopilot_offer_id == offer.id)) && (
+                {(openAutopilotSection || (offer.id != null && autopilotCheck?.autopilot_offer_id == offer.id)) && (
                     <>
                         <BlockStack spacing="loose" vertical>
                             <Select

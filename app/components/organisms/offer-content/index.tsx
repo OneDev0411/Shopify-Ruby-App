@@ -1,18 +1,12 @@
-import React, {useCallback, useContext} from "react";
+import { useCallback, useContext } from "react";
 import { Link } from '@remix-run/react';
 import {OfferContent, OfferContext} from "~/contexts/OfferContext";
 import { useShopState } from "~/contexts/ShopContext";
 
 import { Checkbox, Collapsible, Card, BlockStack, Text, TextField } from "@shopify/polaris";
-import { AutopilotCheck, UpdateCheckKeysValidityFunc } from "~/types/types";
 
-interface IOfferContentProps {
-  updateCheckKeysValidity: UpdateCheckKeysValidityFunc;
-  autopilotCheck: AutopilotCheck;
-}
-
-const OfferTitleDetails = ({ updateCheckKeysValidity, autopilotCheck }: IOfferContentProps) => {
-    const { offer, updateOffer } = useContext(OfferContext) as OfferContent;
+const OfferTitleDetails = () => {
+    const { offer, autopilotCheck, updateOffer, updateCheckKeysValidity } = useContext(OfferContext) as OfferContent;
     const { shopSettings } = useShopState();
 
     const handleTitleChange = useCallback((newValue: string) => updateOffer("title", newValue), []);
