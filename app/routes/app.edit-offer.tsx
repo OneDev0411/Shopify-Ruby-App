@@ -20,14 +20,14 @@ import ErrorPage from "../components/ErrorPage"
 import {useShopSettings} from "../hooks/useShopSettings.js";
 import {useShopState} from "../contexts/ShopContext";
 import { IRootState } from '~/store/store';
-import { AutopilotCheck, ProductDetails, ShopSettings } from '~/types/types';
 import CustomBanner from '~/components/CustomBanner';
+import { ShopSettings } from '~/types/types';
 // import { onLCP, onFID, onCLS } from 'web-vitals';
 // import { traceStat } from "../services/firebase/perf.js";
 
 export default function EditPage() {
-    const { offer, setOffer } = useContext(OfferContext) as OfferContent;
-    const { shopSettings, setShopSettings, themeAppExtension, setThemeAppExtension } = useShopState();
+    const { offer, setOffer, updateCheckKeysValidity, setInitialVariants, setInitialOfferableProductDetails, enablePublish } = useContext(OfferContext) as OfferContent;
+    const { shopSettings, setShopSettings, setThemeAppExtension } = useShopState();
     const { fetchOffer, saveOffer, createOffer } = useOffer();
     const { fetchShopSettings, updateShopSettings } = useShopSettings();
     const shopAndHost = useSelector((state: IRootState) => state.shopAndHost);
@@ -36,16 +36,8 @@ export default function EditPage() {
     const location = useLocation();
     const [error, setError] = useState<Error | null>(null);
 
-    const [enablePublish, setEnablePublish] = useState<boolean>(false)
-
     // Content section tab data
     const [selected, setSelected] = useState<number>(0);
-    const [checkKeysValidity, setCheckKeysValidity] = useState<Record<string,( string | boolean | number)>>({});
-    const [initialVariants, setInitialVariants] = useState<Record<string, (string | number)[]>>({});
-    const [autopilotCheck, setAutopilotCheck] = useState<AutopilotCheck>({
-        isPending: "Launch Autopilot",
-    });
-    const [initialOfferableProductDetails, setInitialOfferableProductDetails] = useState<ProductDetails[]>([]);
 
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -148,19 +140,6 @@ export default function EditPage() {
 
         setShopSettings && setShopSettings(data.shop_settings);
         setThemeAppExtension && setThemeAppExtension(data.theme_app_extension)
-    }
-
-    // TODO: Relocate to offer context
-    //Called whenever the checkKeysValidity changes in any child component
-    function updateCheckKeysValidity(updatedKey: string, updatedValue: string | number | boolean) {
-        setCheckKeysValidity(previousState => {
-            return {...previousState, [updatedKey]: updatedValue};
-        });
-    }
-
-    //Called to update the initial variants of the offer
-    function updateInitialVariants(value) {
-        setInitialVariants({...value});
     }
 
     const save = async (status: boolean) =>  {
@@ -308,10 +287,6 @@ export default function EditPage() {
         setSelected(selected + 1)
     }
 
-    const enableOrDisablePublish = (enable: boolean) => {
-        setEnablePublish(enable);
-    };
-
     if (error) { return < ErrorPage/>; }
 
     return (
@@ -351,35 +326,25 @@ export default function EditPage() {
                                             border_color="rgb(244,197,84)"
                                             link_to={"/app/subscription"}
                                             name="limited_publish_offer" />
-
                                     )}
                                     <div className='space-4'></div>
 
                                     {selected == 0 ?
                                         // page was imported from components folder
-                                        <FirstTab updateCheckKeysValidity={updateCheckKeysValidity}
-                                                  handleTabChange={changeTab} initialVariants={initialVariants}
-                                                  updateInitialVariants={updateInitialVariants}
-                                                  autopilotCheck={autopilotCheck} setAutopilotCheck={setAutopilotCheck}
-                                                  initialOfferableProductDetails={initialOfferableProductDetails}
-                                                  enableOrDisablePublish={enableOrDisablePublish}/>
+                                        <FirstTab handleTabChange={changeTab} />
                                         : ""}
                                     {selected == 1 ?
                                         // page was imported from components folder
-                                        <SecondTab autopilotCheck={autopilotCheck} handleTabChange={changeTab}
-                                                   enableOrDisablePublish={enableOrDisablePublish}
-                                        />
+                                        <SecondTab handleTabChange={changeTab} />
                                         : ""}
                                     {selected == 2 ?
                                         // page was imported from components folder
                                         <ThirdTab saveDraft={saveDraft} publishOffer={publishOffer}
-                                                  autopilotCheck={autopilotCheck} enablePublish={enablePublish}
-                                                  handleTabChange={changeTab}/>
+                                                 handleTabChange={changeTab}/>
                                         : ""}
                                     {selected == 3 ?
                                         // page was imported from components folder
-                                        <FourthTab saveDraft={saveDraft} publishOffer={publishOffer}
-                                                   enablePublish={enablePublish} />
+                                        <FourthTab saveDraft={saveDraft} publishOffer={publishOffer} />
                                         : ""}
                                 </Tabs>
                             </div>
@@ -395,13 +360,9 @@ export default function EditPage() {
                                 >
                                     <div style={{paddingTop: '40px', marginTop: '-40px'}}></div>
                                     {selectedPre == 0 ?
-                                        <OfferPreview checkKeysValidity={checkKeysValidity}
-                                                      updateCheckKeysValidity={updateCheckKeysValidity}
-                                                      updatePreviousAppOffer={updatePreviousAppOffer}/>
+                                        <OfferPreview updatePreviousAppOffer={updatePreviousAppOffer}/>
                                         :
-                                        <OfferPreview checkKeysValidity={checkKeysValidity}
-                                                      updateCheckKeysValidity={updateCheckKeysValidity}
-                                                      updatePreviousAppOffer={updatePreviousAppOffer}/>}
+                                        <OfferPreview updatePreviousAppOffer={updatePreviousAppOffer}/>}
                                 </Tabs>
                             </div>
                         </Layout.Section>

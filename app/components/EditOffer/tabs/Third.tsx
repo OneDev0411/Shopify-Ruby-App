@@ -2,23 +2,20 @@ import {LegacyStack, ButtonGroup, Button, BlockStack} from "@shopify/polaris";
 import { useContext } from "react";
 import {OfferContent, OfferContext} from "../../../contexts/OfferContext";
 import { AppearanceColor, OfferBox, OfferText } from "../../organisms/index";
-import { AutopilotCheck } from "~/types/types";
 
 interface IThirdTabProps {
     saveDraft: () => void,
     publishOffer: () => void,
-    autopilotCheck: AutopilotCheck,
-    enablePublish: boolean
     handleTabChange: () => void
 }
 
-export function ThirdTab(props: IThirdTabProps) {
-    const {offer} = useContext(OfferContext) as OfferContent;
+export function ThirdTab({ saveDraft, publishOffer, handleTabChange } : IThirdTabProps) {
+    const { offer, enablePublish } = useContext(OfferContext) as OfferContent;
 
     return (
         <div id="appearance-offers">
             <BlockStack gap={"500"}>
-                <OfferBox autopilotCheck={props.autopilotCheck} />
+                <OfferBox  />
                 <AppearanceColor />
                 <OfferText />
 
@@ -26,7 +23,7 @@ export function ThirdTab(props: IThirdTabProps) {
                     <>
                         <BlockStack>
                             <div className="align-center">
-                                <span className="padding-fit"><Button onClick={props.handleTabChange}>Continue To Advanced</Button></span>
+                                <span className="padding-fit"><Button onClick={handleTabChange}>Continue To Advanced</Button></span>
                             </div>
                         </BlockStack>
                     </>) : (
@@ -34,8 +31,8 @@ export function ThirdTab(props: IThirdTabProps) {
                         <div className="align-center">
                             <span className="padding-fit">
                                 <ButtonGroup>
-                                    <Button onClick={() => props.saveDraft()}>Save Draft</Button>
-                                    <Button variant="primary" disabled={props.enablePublish} onClick={() => props.publishOffer()}>Publish</Button>
+                                    <Button onClick={() => saveDraft()}>Save Draft</Button>
+                                    <Button variant="primary" disabled={enablePublish} onClick={() => publishOffer()}>Publish</Button>
                                 </ButtonGroup>
                             </span>
                         </div>

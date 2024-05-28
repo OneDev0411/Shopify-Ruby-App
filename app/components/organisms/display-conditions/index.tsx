@@ -17,16 +17,12 @@ import { getKeyFromValue } from "~/shared/helpers/commonHelpers";
 import { QuantityArray, OrderArray } from "~/shared/constants/EditOfferOptions";
 
 import {OfferContent, OfferContext} from "~/contexts/OfferContext";
-import { Rule, AutopilotCheck, Offer } from "~/types/types";
+import { Rule, Offer } from "~/types/types";
 
 const RULE_DEFAULTS: Rule = { quantity: null, rule_selector: 'cart_at_least', item_type: 'product', item_shopify_id: 0, item_name: "" }
 
-interface IDisplayConditionsProps {
-    autopilotCheck: AutopilotCheck,
-}
-
-const DisplayConditions = ({ autopilotCheck } : IDisplayConditionsProps) => {
-    const { offer, setOffer, updateOffer } = useContext(OfferContext) as OfferContent;
+const DisplayConditions = () => {
+    const { offer, setOffer, updateOffer, autopilotCheck } = useContext(OfferContext) as OfferContent;
 
     const [rule, setRule] = useState<Rule>(RULE_DEFAULTS)
     const [quantityErrorText, setQuantityErrorText] = useState<string>("");

@@ -16,12 +16,11 @@ import CustomBanner from "~/components/CustomBanner";
 interface IFourthTabProps {
     saveDraft: () => void,
     publishOffer: () =>  void,
-    enablePublish: boolean
 }
 
 // Advanced Tab
-export function FourthTab(props: IFourthTabProps) {
-    const { offer, updateNestedAttributeOfOffer } = useContext(OfferContext) as OfferContent;
+export function FourthTab({ saveDraft, publishOffer }: IFourthTabProps) {
+    const { offer, updateNestedAttributeOfOffer, enablePublish } = useContext(OfferContext) as OfferContent;
     const { shopSettings, themeAppExtension } = useShopState();
     const env = useEnv();
     const isLegacy = themeAppExtension?.theme_version !== '2.0' || import.meta.env.VITE_ENABLE_THEME_APP_EXTENSION?.toLowerCase() !== 'true';
@@ -93,14 +92,15 @@ export function FourthTab(props: IFourthTabProps) {
                 )
             }
 
+
             <BlockStack gap={"300"}>
                 <AdvancedSettings />
                 <BlockStack>
                     <div className="align-center">
                         <span className="padding-fit">
                             <ButtonGroup>
-                                <Button onClick={() => props.saveDraft()}>Save Draft</Button>
-                                <Button variant="primary" disabled={props.enablePublish} onClick={() => props.publishOffer()}>Publish</Button>
+                                <Button onClick={() => saveDraft()}>Save Draft</Button>
+                                <Button variant="primary" disabled={enablePublish} onClick={() => publishOffer()}>Publish</Button>
                             </ButtonGroup>
                         </span>
                     </div>

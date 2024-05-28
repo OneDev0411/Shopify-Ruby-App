@@ -1,0 +1,44 @@
+.partner-box {
+  margin: 10px;
+}
+
+.partner-image-box {
+  width: 200px;
+  height: 200px;
+  margin: auto;
+  display: flex;
+}
+
+.partner-image {
+  width: 100%;
+	margin: auto;
+  object-fit: cover;
+  object-position: center;
+}
+
+.partner-name-short {
+  font-size: 28px;
+  line-height: 0.8;
+}
+
+.partner-name-long {
+  font-size: 14px;
+  line-height: 0.8;
+}
+
+.partner-description {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+	overflow: hidden;
+}
+
+.partner-stars {
+  width: 60%;
+  margin-bottom: 15px;
+}
+
+.activate-btn {
+  display: flex;
+  justify-content: end;
+}

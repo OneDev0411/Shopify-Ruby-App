@@ -1,117 +1,104 @@
-import {Tabs, Card, TextField, Select, Checkbox} from '@shopify/polaris';
-import {useState, useCallback} from 'react';
-import { DOMActionOptions } from '../shared/constants/DOMActionOptions';
-import { ShopSettings } from '~/types/types';
+import { Tabs, Card, TextField, Checkbox } from '@shopify/polaris';
+import { useState } from 'react';
+import { SettingsFormData, ShopSettings } from '~/types/types';
+import { CustomDomAction } from './molecules';
 
 interface ISettingTabsProps {
-    formData?: IFormData;
-    currentShop?: ShopSettings;
-    updateShop?: ((updatedValue: any, ...updatedKey: string[]) => void);
-    handleFormChange?: (value: string, id: string) => void
+    formData: SettingsFormData;
+    currentShop: ShopSettings;
+    updateShop: ((updatedValue: string | boolean, ...updatedKey: string[]) => void);
+    handleFormChange: (value: string, id: string) => void;
 }
 
-interface IFormData {
-    productDomSelector?: string;
-    productDomAction?: string;
-    cartDomSelector?: string;
-    cartDomAction?: string;
-    ajaxDomSelector?: string;
-    ajaxDomAction?: string;
-}
-
-export function SettingTabs(props: ISettingTabsProps){
+export function SettingTabs({
+    formData, 
+    currentShop, 
+    updateShop, 
+    handleFormChange
+}: ISettingTabsProps) {
     // Tabs
     const [selected, setSelected] = useState<number>(0);
 
-    const handleTabChange = useCallback(
-      (selectedTabIndex) => setSelected(selectedTabIndex),
-      [],
-    );
-    const handleAjaxRefreshCode = useCallback((newValue) => props.updateShop && props.updateShop(newValue, "ajax_refresh_code"), []);
-    const handleUsesAjaxCartChange = useCallback((newValue) => props.updateShop && props.updateShop(newValue, "uses_ajax_cart"), []);
+    const handleTabChange = (selectedTabIndex: number) => {
+        setSelected(selectedTabIndex);
+    }
+    const handleAjaxRefreshCode = (newValue: string) => updateShop(newValue, "ajax_refresh_code");
+    const handleUsesAjaxCartChange = (newValue: boolean) => updateShop(newValue, "uses_ajax_cart");
   
     const tabs = [
-      {
-        id: 'all-customers-1',
-        content: 'Product page',
-        accessibilityLabel: 'All customers',
-        panelID: 'all-customers-content-1',
-        innerContent:<>
-                <TextField label="DOM selector"
-                    id="productDomSelector"
-                    value={props.formData?.productDomSelector}
-                    onChange={props.handleFormChange}
-                    autoComplete="off"
-                ></TextField><br/>
-                <Select
-                    label="DOM action"
-                    id="productDomAction"
-                    options={DOMActionOptions}
-                    onChange={props.handleFormChange}
-                    value={props.formData?.productDomAction}
+        {
+            id: 'all-customers-1',
+            content: 'Product page',
+            accessibilityLabel: 'All customers',
+            panelID: 'all-customers-content-1',
+            innerContent:
+                <CustomDomAction
+                    selectorId="productDomSelector"
+                    actionId="productDomAction"
+                    selectorValue={formData.productDomSelector}
+                    actionValue={formData.productDomAction}
+                    onChangeSelector={handleFormChange}
+                    onChangeAction={handleFormChange}
                 />
-            </>
-      },
-      {
-        id: 'accepts-marketing-1',
-        content: 'Cart page',
-        panelID: 'accepts-marketing-content-1',
-        innerContent:<>
-                <TextField label="DOM selector"
-                    id="cartDomSelector"
-                    value={props.formData?.cartDomSelector}
-                    onChange={props.handleFormChange}
-                    autoComplete="off"
-                ></TextField><br/>
-                <Select
-                    label="DOM action"
-                    id="cartDomAction"
-                    options={DOMActionOptions}
-                    onChange={props.handleFormChange}
-                    value={props.formData?.cartDomAction}
+        },
+        {
+            id: 'accepts-marketing-1',
+            content: 'Cart page',
+            panelID: 'accepts-marketing-content-1',
+            innerContent:
+                <CustomDomAction
+                    selectorId="cartDomSelector"
+                    actionId="cartDomAction"
+                    selectorValue={formData.cartDomSelector}
+                    actionValue={formData.cartDomAction}
+                    onChangeSelector={handleFormChange}
+                    onChangeAction={handleFormChange}
                 />
-            </>
-      },
-      {
-        id: 'repeat-customers-1',
-        content: 'Ajax cart',
-        panelID: 'repeat-customers-content-1',
-        innerContent:<>
-                <TextField label="DOM selector"
-                    id="ajaxDomSelector"
-                    value={props.formData?.ajaxDomSelector}
-                    onChange={props.handleFormChange}
-                    autoComplete="off"
-                ></TextField><br/>
-                <Select
-                    label="DOM action"
-                    id="ajaxDomAction"
-                    options={DOMActionOptions}
-                    onChange={props.handleFormChange}
-                    value={props.formData?.ajaxDomAction}
-                />
-                <br/>
-                <Checkbox
-                    label="My store uses an AJAX (popup or drawer-style) cart"
-                    checked={props.currentShop?.uses_ajax_cart}
-                    onChange={handleUsesAjaxCartChange}
-                ></Checkbox>
-                {(props.currentShop?.uses_ajax_cart) && (
-                    <>
-                        <br/><br/>
-                        <TextField label="AJAX refresh code" value={props.currentShop.ajax_refresh_code} onChange={handleAjaxRefreshCode} multiline={6} autoComplete='off'></TextField>
-                    </>
-                )}
-            </>
-      }
+        },
+        {
+            id: 'repeat-customers-1',
+            content: 'Ajax cart',
+            panelID: 'repeat-customers-content-1',
+            innerContent:
+                <>
+                    <CustomDomAction
+                        selectorId="ajaxDomSelector"
+                        actionId="ajaxDomAction"
+                        selectorValue={formData.ajaxDomSelector}
+                        actionValue={formData.ajaxDomAction}
+                        onChangeSelector={handleFormChange}
+                        onChangeAction={handleFormChange}
+                    />
+                    <br/>
+                    <Checkbox
+                        label="My store uses an AJAX (popup or drawer-style) cart"
+                        checked={currentShop.uses_ajax_cart}
+                        onChange={handleUsesAjaxCartChange}
+                    ></Checkbox>
+                    {(currentShop.uses_ajax_cart) && (
+                        <>
+                            <br/><br/>
+                            <TextField
+                                label="AJAX refresh code"
+                                value={currentShop.ajax_refresh_code}
+                                onChange={handleAjaxRefreshCode}
+                                multiline={6}
+                                autoComplete="off"
+                            ></TextField>
+                        </>
+                    )}
+                </>
+        }
     ];
 
-    return(<>
-        <Tabs tabs={tabs} selected={selected} onSelect={handleTabChange}>
-            <Card>
-            <div>{tabs[selected].innerContent}</div>
-            <div className="space-4"></div>
-            </Card>
-        </Tabs>
-    </>);
+    return(
+        <>
+            <Tabs tabs={tabs} selected={selected} onSelect={handleTabChange}>
+                <Card>
+                    <div>{tabs[selected].innerContent}</div>
+                    <div className="space-4"></div>
+                </Card>
+            </Tabs>
+        </>
+    );
 }
