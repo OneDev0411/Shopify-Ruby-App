@@ -35,8 +35,9 @@ const OfferTitleDetails = ({ updateCheckKeysValidity, autopilotCheck }: IOfferCo
     const handleAbChange = useCallback((newChecked: boolean) => updateOffer("uses_ab_test", newChecked), []);
 
     return (
-        <Card title="Text" sectioned>
-            <BlockStack spacing="loose" vertical>
+        <Card>
+            <BlockStack gap={"500"}>
+                <Text variant="headingMd" as="h6">Text</Text>
                 {(offer.id == null || offer.id != autopilotCheck?.autopilot_offer_id) && (
                     <>
                         <TextField
@@ -78,7 +79,7 @@ const OfferTitleDetails = ({ updateCheckKeysValidity, autopilotCheck }: IOfferCo
                         <div style={{maxWidth: '476px', marginTop: '10px'}}>
                             <Text as="p" variant="headingSm" fontWeight="regular">
                                 A/B testing is available on our Paid plan. Please <Link
-                                to="/subscription">upgrade your subscription</Link> to enable it.
+                                to="/app/subscription">upgrade your subscription</Link> to enable it.
                             </Text>
                         </div>
                     ) : (
@@ -108,7 +109,7 @@ const OfferTitleDetails = ({ updateCheckKeysValidity, autopilotCheck }: IOfferCo
                         expandOnPrint
                      id="sub-collapsible">
                         <br/>
-                        <Text color="critical" as={'p'}>
+                        <Text tone="critical" as={'p'}>
                             If you are A/B testing, you must have a B version of both the Offer Text and the Button Text.
                         </Text>
                     </Collapsible>

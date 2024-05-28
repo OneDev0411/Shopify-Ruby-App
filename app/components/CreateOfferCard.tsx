@@ -232,8 +232,8 @@ function VideoModal({active, handleClose}: IVideoModalProps) {
 }
 
 interface IThemeAppCard {
-  themeAppExtension: ThemeAppExtension,
-  shopData?: ShopData
+  themeAppExtension: ThemeAppExtension | undefined,
+  shopData?: Shop | null
 }
 
 export function ThemeAppCard({shopData, themeAppExtension}: IThemeAppCard) {
@@ -241,7 +241,7 @@ export function ThemeAppCard({shopData, themeAppExtension}: IThemeAppCard) {
   const env = useEnv();
 
   const handleButtonChange = () => {
-    fetch(`/api/v2/merchant/theme_app_check?shop=${shopData.shopify_domain}`, {
+    fetch(`/api/v2/merchant/theme_app_check?shop=${shopData?.shopify_domain}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

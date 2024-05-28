@@ -2,7 +2,7 @@ import {
     Badge,
     Button,
     Checkbox,
-    Icon,
+    Text,
     Card,
     BlockStack,
     Modal,
@@ -31,6 +31,7 @@ const DisplayConditions = ({ autopilotCheck } : IDisplayConditionsProps) => {
     const [rule, setRule] = useState<Rule>(RULE_DEFAULTS)
     const [quantityErrorText, setQuantityErrorText] = useState<string>("");
     const [itemErrorText, setItemErrorText] = useState<string>("");
+    const activatorCon = useRef(null);
 
     function updateCondition() {
         if (QuantityArray.includes(rule.rule_selector)) {
@@ -95,8 +96,11 @@ const DisplayConditions = ({ autopilotCheck } : IDisplayConditionsProps) => {
         <>
             {(offer.id == null || offer.id != autopilotCheck?.autopilot_offer_id) && (
                 <>
-                    <Card title="Display Conditions" sectioned>
-
+                    <Card>
+                        <BlockStack gap="300">
+                            <Text variant="headingMd" as="h6">Display Conditions</Text>
+                            <p style={{color: 'rgb(109, 113, 117)', marginBottom: '14px'}}>None selected (show offer to all customer)</p>
+                        </BlockStack>
                         {offer?.rules_json ? (
                             <p style={{color: '#6D7175', marginTop: '-10px', marginBottom: '14px'}}>None selected (show
                                 offer to all customer)</p>
@@ -124,12 +128,10 @@ const DisplayConditions = ({ autopilotCheck } : IDisplayConditionsProps) => {
                                             {/*</div>*/}
                                         </Badge>
                                     </div>
-                                    {getKeyFromValue(rule.rule_selector)}: &nbsp; {rule.quantity} <b>{rule.item_name}</b>
                                 </li>
                             ))}</>
                         )}
                         <Button onClick={handleConditionModal} >Add condition</Button>
-                        <div className="space-4"/>
                         <p style={{
                             color: '#6D7175',
                             marginTop: '20px',
@@ -154,7 +156,7 @@ const DisplayConditions = ({ autopilotCheck } : IDisplayConditionsProps) => {
                         </p>
 
                         <hr className="legacy-card-hr legacy-card-hr-t20-b15"/>
-                        <BlockStack vertical>
+                        <BlockStack gap={"300"}>
                             <Checkbox
                                 label="Disable checkout button until offer is accepted"
                                 helpText="This is useful for products that can only be purchased in pairs."
@@ -176,6 +178,7 @@ const DisplayConditions = ({ autopilotCheck } : IDisplayConditionsProps) => {
                 </>
             )}
             <Modal
+                activator={activatorCon}
                 open={conditionModal}
                 onClose={handleConditionModal}
                 title="Select products from your store"

@@ -34,7 +34,7 @@ export default function Subscription() {
     const [unpublishedOfferIds, setUnpublishedOfferIds] = useState<number[]>([]);
     const app = useAppBridge();
     const [isLoading, setIsLoading] = useState(false);
-    
+
   // useEffect(()=> {
   //   onLCP(traceStat, {reportSoftNavs: true});
   //   onFID(traceStat, {reportSoftNavs: true});
@@ -88,8 +88,8 @@ export default function Subscription() {
              },
 
       })
-      .then( (response) => { 
-        return response.json(); 
+      .then( (response) => {
+        return response.json();
       })
       .then( (data) => {
         if (data.redirect_to) {
@@ -111,7 +111,7 @@ export default function Subscription() {
     useEffect(() => {
         fetchSubscription();
       }, [fetchSubscription]);
-    
+
   if (error) { return < ErrorPage showBranding={true} />; }
 
   return (

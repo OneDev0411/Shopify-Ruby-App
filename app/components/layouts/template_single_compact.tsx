@@ -1,4 +1,4 @@
-import { forwardRef, useState, useEffect, useRef } from "react";
+import {forwardRef, useState, useEffect, useRef, SetStateAction} from "react";
 import {
 	Text,
 	Card,
@@ -12,7 +12,7 @@ import { Offer, Shop } from "~/types/types";
 
 interface ICompactProps {
 	offer: Offer,
-	checkKeysValidity: Record<string, string | boolean>,
+	checkKeysValidity: Record<string, (string | boolean | number)>,
 }
 
 export default function Compact(props: ICompactProps) {

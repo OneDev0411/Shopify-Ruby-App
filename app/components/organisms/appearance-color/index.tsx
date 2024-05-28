@@ -4,6 +4,7 @@ import {
     Collapsible,
     Grid,
     BlockStack,
+    Text
 } from "@shopify/polaris";
 import { useState, useCallback, useRef, useEffect, useContext } from "react";
 import tinycolor from "tinycolor2";
@@ -91,98 +92,102 @@ const AppearanceColor = () => {
     }, []);
 
     return (
-        <Card title="Color" sectioned>
-            <BlockStack vertical>
-                {/*<Button>Choose Template</Button>*/}
-                <Button
-                    onClick={handleMenuToggle}
-                    ariaExpanded={openEditMenu}
-                    ariaControls="basic-menu-collapsible"
-                >Manually Edit Colors</Button>
-                <Collapsible
-                    open={openEditMenu}
-                    id="basic-menu-collapsible"
-                    transition={{ duration: '500ms', timingFunction: 'ease-in-out' }}
-                    expandOnPrint
-                >
-                    <Grid>
-                        <Grid.Cell columnSpan={{ xs: 4, sm: 4, md: 4, lg: 4, xl: 4 }}>
-                            <ColorPicker
-                                label="Card"
-                                onChangeTextFiled={(newValue: string) => handleTextFieldChanges(newValue, "main", "backgroundColor")}
-                                color={offer.css_options?.main?.backgroundColor ?? ""}
-                                onClickColorSwatchSelector={() => handleToggle("cardColorPicker")}
-                                expanded={open.cardColorPicker}
-                                id="basic-card-collapsible"
-                                colorPickerRef={colorPickerRefs.cardColorPicker}
-                                onChangeColorPicker={(newValue) => handleColorChanges(newValue, "main", "backgroundColor")}
-                            />
-                        </Grid.Cell>
-                        <Grid.Cell columnSpan={{ xs: 4, sm: 4, md: 4, lg: 4, xl: 4 }}>
-                            <ColorPicker
-                                label="Border"
-                                onChangeTextFiled={(newValue: string) => handleTextFieldChanges(newValue, "main", "borderColor")}
-                                color={offer.css_options?.main?.borderColor ?? ""}
-                                onClickColorSwatchSelector={() => handleToggle("borderColorPicker")}
-                                expanded={open.borderColorPicker}
-                                id="basic-border-collapsible"
-                                colorPickerRef={colorPickerRefs.borderColorPicker}
-                                onChangeColorPicker={(newValue) => handleColorChanges(newValue, "main", "borderColor")}
-                            />
-                        </Grid.Cell>
-                        <Grid.Cell columnSpan={{ xs: 4, sm: 4, md: 4, lg: 4, xl: 4 }}>
-                            <ColorPicker
-                                label="Button"
-                                onChangeTextFiled={(newValue: string) => handleTextFieldChanges(newValue, "button", "backgroundColor")}
-                                color={offer.css_options?.button?.backgroundColor ?? ""}
-                                onClickColorSwatchSelector={() => handleToggle("buttonColorPicker")}
-                                expanded={open.buttonColorPicker}
-                                id="basic-button-collapsible"
-                                colorPickerRef={colorPickerRefs.buttonColorPicker}
-                                onChangeColorPicker={(newValue) => handleColorChanges(newValue, "button", "backgroundColor")}
-                            />
-                        </Grid.Cell>
-                    </Grid>
-                    <div style={{marginBottom: '20px'}} />
-                    <Grid>
-                        <Grid.Cell columnSpan={{ xs: 4, sm: 4, md: 4, lg: 4, xl: 4 }}>
-                            <ColorPicker
-                                label="Offer text"
-                                onChangeTextFiled={(newValue: string) => handleTextFieldChanges(newValue, "text", "color")}
-                                color={offer.css_options?.text?.color ?? ""}
-                                onClickColorSwatchSelector={() => handleToggle("textColorPicker")}
-                                expanded={open.textColorPicker}
-                                id="basic-offer-collapsible"
-                                colorPickerRef={colorPickerRefs.textColorPicker}
-                                onChangeColorPicker={(newValue) => handleColorChanges(newValue, "text", "color")}
-                            />
-                        </Grid.Cell>
-                        <Grid.Cell columnSpan={{ xs: 4, sm: 4, md: 4, lg: 4, xl: 4 }}>
-                            <ColorPicker
-                                label="Button text"
-                                onChangeTextFiled={(newValue: string) => handleTextFieldChanges(newValue, "button", "color")}
-                                color={offer.css_options?.button?.color ?? ""}
-                                onClickColorSwatchSelector={() => handleToggle("btnTextColorPicker")}
-                                expanded={open.btnTextColorPicker}
-                                id="basic-button-text-collapsible"
-                                colorPickerRef={colorPickerRefs.btnTextColorPicker}
-                                onChangeColorPicker={(newValue) => handleColorChanges(newValue, "button", "color")}
-                            />
-                        </Grid.Cell>
-                        <Grid.Cell columnSpan={{ xs: 4, sm: 4, md: 4, lg: 4, xl: 4 }}>
-                            <ColorPicker
-                                label="Button border"
-                                onChangeTextFiled={(newValue: string) => handleTextFieldChanges(newValue, "button", "borderColor")}
-                                color={offer.css_options?.button?.borderColor ?? ""}
-                                onClickColorSwatchSelector={() => handleToggle("btnBorderColorPicker")}
-                                expanded={open.btnBorderColorPicker}
-                                id="basic-button-border-collapsible"
-                                colorPickerRef={colorPickerRefs.btnBorderColorPicker}
-                                onChangeColorPicker={(newValue: any) => handleColorChanges(newValue, "button", "borderColor")}
-                            />
-                        </Grid.Cell>
-                    </Grid>
-                </Collapsible>
+        <Card>
+            <BlockStack gap={"300"}>
+                <Text variant="headingSm" as="h2">Color</Text>
+                <BlockStack gap={"300"}>
+                    <span>
+                   <Button
+                       onClick={handleMenuToggle}
+                       ariaExpanded={openEditMenu}
+                       ariaControls="basic-menu-collapsible"
+                   >Manually Edit Colors</Button>
+                </span>
+                    <Collapsible
+                        open={openEditMenu}
+                        id="basic-menu-collapsible"
+                        transition={{ duration: '500ms', timingFunction: 'ease-in-out' }}
+                        expandOnPrint
+                    >
+                        <Grid>
+                            <Grid.Cell columnSpan={{ xs: 4, sm: 4, md: 4, lg: 4, xl: 4 }}>
+                                <ColorPicker
+                                    label="Card"
+                                    onChangeTextFiled={(newValue: string) => handleTextFieldChanges(newValue, "main", "backgroundColor")}
+                                    color={offer.css_options?.main?.backgroundColor ?? ""}
+                                    onClickColorSwatchSelector={() => handleToggle("cardColorPicker")}
+                                    expanded={open.cardColorPicker}
+                                    id="basic-card-collapsible"
+                                    colorPickerRef={colorPickerRefs.cardColorPicker}
+                                    onChangeColorPicker={(newValue) => handleColorChanges(newValue, "main", "backgroundColor")}
+                                />
+                            </Grid.Cell>
+                            <Grid.Cell columnSpan={{ xs: 4, sm: 4, md: 4, lg: 4, xl: 4 }}>
+                                <ColorPicker
+                                    label="Border"
+                                    onChangeTextFiled={(newValue: string) => handleTextFieldChanges(newValue, "main", "borderColor")}
+                                    color={offer.css_options?.main?.borderColor ?? ""}
+                                    onClickColorSwatchSelector={() => handleToggle("borderColorPicker")}
+                                    expanded={open.borderColorPicker}
+                                    id="basic-border-collapsible"
+                                    colorPickerRef={colorPickerRefs.borderColorPicker}
+                                    onChangeColorPicker={(newValue) => handleColorChanges(newValue, "main", "borderColor")}
+                                />
+                            </Grid.Cell>
+                            <Grid.Cell columnSpan={{ xs: 4, sm: 4, md: 4, lg: 4, xl: 4 }}>
+                                <ColorPicker
+                                    label="Button"
+                                    onChangeTextFiled={(newValue: string) => handleTextFieldChanges(newValue, "button", "backgroundColor")}
+                                    color={offer.css_options?.button?.backgroundColor ?? ""}
+                                    onClickColorSwatchSelector={() => handleToggle("buttonColorPicker")}
+                                    expanded={open.buttonColorPicker}
+                                    id="basic-button-collapsible"
+                                    colorPickerRef={colorPickerRefs.buttonColorPicker}
+                                    onChangeColorPicker={(newValue) => handleColorChanges(newValue, "button", "backgroundColor")}
+                                />
+                            </Grid.Cell>
+                        </Grid>
+                        <div style={{marginBottom: '20px'}} />
+                        <Grid>
+                            <Grid.Cell columnSpan={{ xs: 4, sm: 4, md: 4, lg: 4, xl: 4 }}>
+                                <ColorPicker
+                                    label="Offer text"
+                                    onChangeTextFiled={(newValue: string) => handleTextFieldChanges(newValue, "text", "color")}
+                                    color={offer.css_options?.text?.color ?? ""}
+                                    onClickColorSwatchSelector={() => handleToggle("textColorPicker")}
+                                    expanded={open.textColorPicker}
+                                    id="basic-offer-collapsible"
+                                    colorPickerRef={colorPickerRefs.textColorPicker}
+                                    onChangeColorPicker={(newValue) => handleColorChanges(newValue, "text", "color")}
+                                />
+                            </Grid.Cell>
+                            <Grid.Cell columnSpan={{ xs: 4, sm: 4, md: 4, lg: 4, xl: 4 }}>
+                                <ColorPicker
+                                    label="Button text"
+                                    onChangeTextFiled={(newValue: string) => handleTextFieldChanges(newValue, "button", "color")}
+                                    color={offer.css_options?.button?.color ?? ""}
+                                    onClickColorSwatchSelector={() => handleToggle("btnTextColorPicker")}
+                                    expanded={open.btnTextColorPicker}
+                                    id="basic-button-text-collapsible"
+                                    colorPickerRef={colorPickerRefs.btnTextColorPicker}
+                                    onChangeColorPicker={(newValue) => handleColorChanges(newValue, "button", "color")}
+                                />
+                            </Grid.Cell>
+                            <Grid.Cell columnSpan={{ xs: 4, sm: 4, md: 4, lg: 4, xl: 4 }}>
+                                <ColorPicker
+                                    label="Button border"
+                                    onChangeTextFiled={(newValue: string) => handleTextFieldChanges(newValue, "button", "borderColor")}
+                                    color={offer.css_options?.button?.borderColor ?? ""}
+                                    onClickColorSwatchSelector={() => handleToggle("btnBorderColorPicker")}
+                                    expanded={open.btnBorderColorPicker}
+                                    id="basic-button-border-collapsible"
+                                    colorPickerRef={colorPickerRefs.btnBorderColorPicker}
+                                    onChangeColorPicker={(newValue: any) => handleColorChanges(newValue, "button", "borderColor")}
+                                />
+                            </Grid.Cell>
+                        </Grid>
+                    </Collapsible>
+                </BlockStack>
             </BlockStack>
         </Card>
     );

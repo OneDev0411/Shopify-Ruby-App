@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import {OfferContent, OfferContext} from "~/contexts/OfferContext";
 import { useShopState } from "~/contexts/ShopContext";
 
-import { Checkbox, Card, BlockStack, TextField } from "@shopify/polaris";
+import { Checkbox, Card, BlockStack, TextField, Text } from "@shopify/polaris";
 import { ShopAndHost } from "~/types/types";
 
 const DisplayOptions = () => {
@@ -30,8 +30,9 @@ const DisplayOptions = () => {
     const handleRedirectedToProductChange = useCallback((newChecked: boolean) => updateOffer("redirect_to_product", newChecked), []);
 
     return (
-        <Card title="Display options" sectioned>
-            <BlockStack spacing="baseTight" vertical>
+        <Card>
+            <BlockStack gap={"300"}>
+                <Text variant="headingMd" as="h6">Display options</Text>
                 <Checkbox id={"removeImg"}
                           checked={!offer.show_product_image}
                           onChange={handleImageChange}

@@ -7,7 +7,7 @@ import { IRootState } from "~/store/store";
 
 interface IFlexProps {
 	offer: Offer,
-	checkKeysValidity: Record<string, string | boolean>,
+	checkKeysValidity: Record<string, (string | boolean | number)>,
 }
 
 export default function Flex(props: IFlexProps) {

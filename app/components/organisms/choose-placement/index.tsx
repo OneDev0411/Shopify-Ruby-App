@@ -6,6 +6,7 @@ import {
     BlockStack,
     Modal,
     Select,
+    Text
 } from "@shopify/polaris";
 import { useState, useCallback, useRef, useEffect, useContext } from "react";
 import { useSelector } from 'react-redux';
@@ -20,6 +21,8 @@ import { OfferPlacement } from "../../molecules/index.js";
 import { BannerContainer } from "../../atoms/index.js";
 import { AutopilotCheck, Product, Rule, ShopAndHost, ThemeSetting } from "~/types/types";
 import {useEnv} from "../../../contexts/EnvContext";
+import CustomBanner from "~/components/CustomBanner";
+import {AlertTriangleIcon} from "@shopify/polaris-icons";
 interface IChoosePlacementProps {
     enableOrDisablePublish: (enable: boolean) => void,
     autopilotCheck: AutopilotCheck,
@@ -52,6 +55,8 @@ const ChoosePlacement = ({ enableOrDisablePublish, autopilotCheck}: IChoosePlace
     const env = useEnv();
     const isLegacy = themeAppExtension?.theme_version !== '2.0' || env?.ENABLE_THEME_APP_EXTENSION?.toLowerCase() !== 'true';
 
+    const activatorCon = useRef(null);
+
     useEffect(() => {
         fetch(`/api/v2/merchant/active_theme_for_dafault_template?shop=${shopAndHost.shop}`, {
             method: 'GET',
@@ -78,7 +83,7 @@ const ChoosePlacement = ({ enableOrDisablePublish, autopilotCheck}: IChoosePlace
                         }
                         else if(value.page_type == "ajax") {
                             setTemplateImagesURL(previousState => {
-                                return { ...previousState, ["ajax_cart_image_".concat(value.position)]: value.image_url};      
+                                return { ...previousState, ["ajax_cart_image_".concat(value.position)]: value.image_url};
                             });
                         }
                     });
@@ -542,7 +547,6 @@ const ChoosePlacement = ({ enableOrDisablePublish, autopilotCheck}: IChoosePlace
         }
         handleCollectionsModal();
     }
-    const modalColl = useRef(null);
 
     useEffect(() => {
         if (offer.in_product_page && offer.in_cart_page) {
@@ -626,76 +630,77 @@ const ChoosePlacement = ({ enableOrDisablePublish, autopilotCheck}: IChoosePlace
     return (
         <>
             {(!storedThemeNames?.includes(shopifyThemeName) && openBanner && isLegacy) && (
-                <BannerContainer
-                    title="Unsupported Theme Detected"
-                    onDismiss={() => {
-                        setOpenBanner(!openBanner);
-                    }}
-                    tone="warning"
-                >
-                    <p>Templates and default settings are unavailable for your theme.</p><br/>
-                    <p>Please follow <Link
-                        to="https://help.incartupsell.com/en/articles/8558593-how-to-manually-setup-an-offer-new-ui"
-                        target="_blank">this guide</Link> to add your selectors and actions in the Advanced Tab or
-                        contact support for assistance. We will be adding support for more themes regularly!</p>
-                </BannerContainer>
+                <CustomBanner title="Templates and default settings are unavailable for your theme."
+                              icon={AlertTriangleIcon}
+                              icon_color={"rgb(97,106,117)"}
+                              content="Please follow "
+                              link_keyword="this guide"
+                              after_link_content="to add your selectors and actions in the Advanced Tab or
+                    contact support for assistance. We will be adding support for more themes regularly!"
+                              background_color="rgb(249,242,210)"
+                              border_color="rgb(210,210,198)"
+                              link_to={"https://help.incartupsell.com/en/articles/8558593-how-to-manually-setup-an-offer-new-ui"}
+                              name="theme_app_second_banner" />
             )}
 
             {(selected === "ajax" && !themeAppExtension?.theme_app_embed && !isLegacy) && (
-                <BannerContainer
-                    title="You are using Shopify's Theme Editor"
-                    tone="warning">
-                    <p>In order to show the offer in the Ajax Cart, you need to enable it in the Theme Editor.</p><br/>
-                    <p><Link
-                        to={`https://${shopSettings?.shopify_domain}/admin/themes/current/editor?context=apps&template=product&activateAppId=${import.meta.env.VITE_SHOPIFY_ICU_EXTENSION_APP_ID}/ajax_cart_app_block`}
-                        target="_blank">Click here</Link> to go to the theme editor</p>
-                </BannerContainer>
+                <CustomBanner title="You are using Shopify's Theme Editor."
+                              icon={AlertTriangleIcon}
+                              icon_color={"rgb(122,112,84)"}
+                              content="In order to show the offer in the Ajax Cart, you need to enable it in the Theme Editor."
+                              link_keyword="Click here"
+                              after_link_content="to go to the theme editor."
+                              background_color="rgb(249,241,207)"
+                              border_color="rgb(229,211,163)"
+                              link_to={`https://${shopSettings.shopify_domain}/admin/themes/current/editor?context=apps&template=product&activateAppId=${env?.SHOPIFY_ICU_EXTENSION_APP_ID}/ajax_cart_app_block`}
+                              name="theme_app_banner"/>
             )}
-
-            <Card title="Choose placement" sectioned>
-                <p style={{color: '#6D7175', marginTop: '-20px', marginBottom: '23px'}}>Where would you like your offer
-                    to appear?</p>
-
-                <BlockStack spacing="loose" vertical>
-                    <Grid>
-                        <Grid.Cell columnSpan={{xs: 6, sm: 3, md: 3, lg: 6, xl: 6}}>
-                            {/*Select requires a styled dropdown*/}
-                            {!isLegacy ?
-                                <Select
-                                    options={OfferNewThemeOptions}
-                                    onChange={handleSelectChange}
-                                    value={selected}
-                                    label={"OfferNewThemeOptions"}
-                                    labelHidden
+            <Card>
+                <Text variant="headingMd" as="h6">Choose placement</Text>
+                <Text variant="bodyMd" as="p">Where would you like your offer to appear?</Text>
+                <BlockStack>
+                    <BlockStack gap="500">
+                        <Grid>
+                            <Grid.Cell columnSpan={{xs: 6, sm: 3, md: 3, lg: 6, xl: 6}}>
+                                {/*Select requires a styled dropdown*/}
+                                {!isLegacy ?
+                                    <Select
+                                        options={OfferNewThemeOptions}
+                                        onChange={handleSelectChange}
+                                        value={selected}
+                                        label={"OfferNewThemeOptions"}
+                                        labelHidden
+                                    />
+                                    :
+                                    <Select
+                                        options={OfferThemeOptions}
+                                        onChange={handleSelectChange}
+                                        value={selected}
+                                        label={"OfferThemeOptions"}
+                                        labelHidden
+                                    />
+                                }
+                            </Grid.Cell>
+                            {/*To be removed */}
+                            {isLegacy && <Grid.Cell columnSpan={{xs: 6, sm: 3, md: 3, lg: 6, xl: 6}}>
+                                <Checkbox
+                                    label="Enable Advanced Setting"
+                                    checked={offer?.advanced_placement_setting?.advanced_placement_setting_enabled}
+                                    onChange={handleEnableAdvancedSetting}
                                 />
-                                :
-                                <Select
-                                    options={OfferThemeOptions}
-                                    onChange={handleSelectChange}
-                                    value={selected}
-                                    label={"OfferThemeOptions"}
-                                    labelHidden
-                                />
-                            }
-                        </Grid.Cell>
-                        {/*To be removed */}
-                        {isLegacy && <Grid.Cell columnSpan={{xs: 6, sm: 3, md: 3, lg: 6, xl: 6}}>
-                            <Checkbox
-                                label="Enable Advanced Setting"
-                                checked={offer?.advanced_placement_setting?.advanced_placement_setting_enabled}
-                                onChange={handleEnableAdvancedSetting}
-                            />
-                        </Grid.Cell>}
-                    </Grid>
-                    {((offer.id == null || offer.id != autopilotCheck?.autopilot_offer_id) && isLegacy) && (
-                        <>
-                            <div style={{marginBottom: '20px', marginTop: '16px'}}>
-                                <Button onClick={handleSelectProductsModal}>Select Product</Button>
-                            </div>
-
-                            <Button onClick={handleSelectCollectionsModal} >Select Collection</Button>
-                        </>
-                    )}
+                            </Grid.Cell>}
+                        </Grid>
+                        {((offer.id == null || offer.id != autopilotCheck?.autopilot_offer_id) && isLegacy) && (
+                            <BlockStack gap="300">
+                                       <span>
+                                           <Button onClick={handleSelectProductsModal}>Select Product</Button>
+                                       </span>
+                                <span>
+                                            <Button onClick={handleSelectCollectionsModal} >Select Collection</Button>
+                                        </span>
+                            </BlockStack>
+                        )}
+                    </BlockStack>
                     <Modal
                         open={productModal}
                         onClose={handleProductsModal}
@@ -807,7 +812,6 @@ const ChoosePlacement = ({ enableOrDisablePublish, autopilotCheck}: IChoosePlace
                         />
                     ))
                 }
-
             </Card>
         </>
     );

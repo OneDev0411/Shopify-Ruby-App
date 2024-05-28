@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from "react";
+import {useState, useEffect, useContext, SetStateAction} from "react";
 import { Card, TextContainer, SkeletonBodyText } from '@shopify/polaris';
 import Compact from './layouts/template_single_compact';
 import Stack from './layouts/template_multi_stack';
@@ -13,7 +13,7 @@ import { IRootState } from "~/store/store";
 import { UpdateCheckKeysValidityFunc } from "~/types/types";
 
 interface IOfferPreviewProps {
-	checkKeysValidity: Record<string, string | boolean>,
+	checkKeysValidity: Record<string, (string | boolean | number)>,
 	updateCheckKeysValidity: UpdateCheckKeysValidityFunc,
 	previewMode?: boolean,
 	updatePreviousAppOffer?: boolean
@@ -25,7 +25,7 @@ export function OfferPreview(props: IOfferPreviewProps) {
 	const shopAndHost = useSelector((state: IRootState) => state.shopAndHost);
 	const [error, setError] = useState<Error | null>(null);
 	const [carouselLoading, setCarouselLoading] = useState<boolean>(false);
-	
+
 	const fetch = useAuthenticatedFetch(shopAndHost.host);
 
 	useEffect(() => {

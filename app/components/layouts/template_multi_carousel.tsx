@@ -1,4 +1,4 @@
-import { forwardRef, useState, useEffect, useRef } from "react";
+import {forwardRef, useState, useEffect, useRef, SetStateAction} from "react";
 import TemplateComponent from 'react-mustache-template-component';
 import themeCss from '@assets/theme.css';
 import Siema from 'siema';
@@ -9,8 +9,8 @@ import { UpdateCheckKeysValidityFunc } from "~/types/types";
 
 interface ICarouselProps {
 	offer: Offer,
-	checkKeysValidity: Record<string, string | boolean>;
-	updateCheckKeysValidity: UpdateCheckKeysValidityFunc;
+	checkKeysValidity: Record<string, (string | boolean | number)>,
+	updateCheckKeysValidity: UpdateCheckKeysValidityFunc
 }
 
 export default function Carousel(props: ICarouselProps) {

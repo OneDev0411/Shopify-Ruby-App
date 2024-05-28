@@ -1,4 +1,4 @@
-import {useCallback, useContext, useEffect, useState} from 'react';
+import {SetStateAction, useCallback, useContext, useEffect, useState} from 'react';
 import {useSelector} from "react-redux";
 import {Link, useLocation, useNavigate} from "@remix-run/react";
 
@@ -40,7 +40,7 @@ export default function EditPage() {
 
     // Content section tab data
     const [selected, setSelected] = useState<number>(0);
-    const [checkKeysValidity, setCheckKeysValidity] = useState<Record<string, string | boolean>>({});
+    const [checkKeysValidity, setCheckKeysValidity] = useState<Record<string,( string | boolean | number)>>({});
     const [initialVariants, setInitialVariants] = useState<Record<string, (string | number)[]>>({});
     const [autopilotCheck, setAutopilotCheck] = useState<AutopilotCheck>({
         isPending: "Launch Autopilot",
@@ -344,17 +344,17 @@ export default function EditPage() {
                                         <CustomBanner
                                             icon={AlertCircleIcon}
                                             icon_color={"rgb(183,125,11)"}
-                                            content="You are currently at the limit for published offers. " 
+                                            content="You are currently at the limit for published offers. "
                                             link_keyword="Click here"
                                             after_link_content=" to upgrade your plan and get access to unlimited offers and features!"
                                             background_color="rgb(252,239,212)"
                                             border_color="rgb(244,197,84)"
                                             link_to={"/app/subscription"}
                                             name="limited_publish_offer" />
-          
+
                                     )}
                                     <div className='space-4'></div>
-                                    
+
                                     {selected == 0 ?
                                         // page was imported from components folder
                                         <FirstTab updateCheckKeysValidity={updateCheckKeysValidity}

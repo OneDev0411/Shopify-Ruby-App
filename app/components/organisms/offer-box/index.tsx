@@ -3,7 +3,8 @@ import {
     TextField,
     Select,
     RangeSlider,
-    Grid,
+    Grid, BlockStack,
+    Text
 } from "@shopify/polaris";
 import { useCallback, useContext } from "react";
 import React from "react";
@@ -63,33 +64,37 @@ const OfferBox = ({ autopilotCheck }: IOfferBoxProp) => {
     const handlesetBorderRange = useCallback((newValue: string) => updateNestedAttributeOfOffer(parseInt(newValue), "css_options", "main", "borderRadius"), []);
 
     return (
-        <Card title="Offer box" sectioned>
-            {(offer.id != null && autopilotCheck.autopilot_offer_id == offer.id) ? (
-                <>
-                </>
-            ) : (
-                <>
-                    <Grid>
-                        <Grid.Cell columnSpan={{xs: 6, sm: 3, md: 3, lg: 4, xl: 4}}>
-                            <Select
-                                label="Layout"
-                                options={OfferStyleOptions}
-                                onChange={handleLayout}
-                                value={offer.multi_layout}
-                            />
-                        </Grid.Cell>
-                    </Grid>
-                    <br/>
-                </>
-            )
-            }
+        <Card>
+            <BlockStack gap={"300"}>
+                <Text variant="headingSm" as="h2">Offer box</Text>
+                {(offer.id != null && autopilotCheck.autopilot_offer_id == offer.id) ? (
+                    <>
+                    </>
+                ) : (
+                    <>
+                        <Grid>
+                            <Grid.Cell columnSpan={{xs: 6, sm: 3, md: 3, lg: 4, xl: 4}}>
+                                <Select
+                                    label="Layout"
+                                    options={OfferStyleOptions}
+                                    onChange={handleLayout}
+                                    value={offer.multi_layout}
+                                />
+                            </Grid.Cell>
+                        </Grid>
+                        <br/>
+                    </>
+                )
+                }
+            </BlockStack>
+
             <Grid>
                 <Grid.Cell columnSpan={{ xs: 6, sm: 3, md: 3, lg: 4, xl: 4 }}>
                     <TextField
                         label="Space above offer"
                         type="number"
                         onChange={handleAboveSpace}
-                        value={parseInt(offer.css_options?.main?.marginTop)}
+                        value={offer.css_options?.main?.marginTop}
                         suffix="px"
                         placeholder="1-100px"
                         autoComplete="off"
@@ -100,7 +105,7 @@ const OfferBox = ({ autopilotCheck }: IOfferBoxProp) => {
                         label="Space below offer"
                         type="number"
                         onChange={handleBelowSpace}
-                        value={parseInt(offer.css_options?.main?.marginBottom)}
+                        value={offer.css_options?.main?.marginBottom}
                         suffix="px"
                         placeholder="1-100px"
                         autoComplete="off"
@@ -121,7 +126,7 @@ const OfferBox = ({ autopilotCheck }: IOfferBoxProp) => {
                         label="Border width"
                         type="number"
                         onChange={handleBorderWidth}
-                        value={parseInt(offer.css_options?.main?.borderWidth)}
+                        value={offer.css_options?.main?.borderWidth}
                         suffix="px"
                         placeholder="0-10px"
                         autoComplete="off"

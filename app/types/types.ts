@@ -460,6 +460,8 @@ type Rule = {
 }
 
 interface IEnvContext {
+  SERVER_BASE_URL: any;
+  VITE_SHOPIFY_ICU_EXTENSION_APP_ID: string | undefined;
   SHOPIFY_ICU_EXTENSION_APP_ID?: string;
   ENABLE_THEME_APP_EXTENSION?: string
   INTERCOM_APP_ID?: string

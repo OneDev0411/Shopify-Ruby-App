@@ -45,7 +45,7 @@ export default function Settings() {
     //     onFID(traceStat, {reportSoftNavs: true});
     //     onCLS(traceStat, {reportSoftNavs: true});
     //   }, []);
-      
+
     useEffect(() => {
         fetchCurrentShop();
     }, []);
@@ -97,7 +97,10 @@ export default function Settings() {
                 };
                 const toastNotice = Toast.create(app, toastOptions);
                 toastNotice.dispatch(Toast.Action.SHOW);
-                updateShopSettingsAttributes(!shopSettings.activated,'activated');
+                // TODO check this function
+                if (updateShopSettingsAttributes) {
+                    updateShopSettingsAttributes(!shopSettings.activated, 'activated');
+                }
 
             })
             .catch((error: Error) => {

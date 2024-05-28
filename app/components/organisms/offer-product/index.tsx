@@ -14,7 +14,7 @@ import {
     Modal,
     RadioButton,
     Select,
-    TextField
+    TextField, Text
 } from "@shopify/polaris";
 
 import {InfoIcon} from '@shopify/polaris-icons';
@@ -53,6 +53,8 @@ const OfferProduct = (props: IOfferProductProps) => {
     //Available Products
     const [query, setQuery] = useState<string>("");
     const [resourceListLoading, setResourceListLoading] = useState<boolean>(false);
+
+    const activator = useRef(null);
 
     const handleModal = useCallback(() => {
         setProductModal(!productModal);
@@ -338,9 +340,9 @@ const OfferProduct = (props: IOfferProductProps) => {
 
     return (
         <>
-            {/* <Card title="Offer Product" actions={[{content: 'Learn about Autopilot'}]} sectioned> */}
-            <Card title="Offer Product" sectioned>
-                <BlockStack spacing="loose" vertical>
+            <Card>
+                <BlockStack gap={"500"}>
+                    <Text variant="headingMd" as="h6">Offer Product</Text>
                     {(props.autopilotCheck?.autopilot_offer_id != offer.id || !props.autopilotCheck?.autopilot_offer_id) && (
                         <p style={{color: '#6D7175'}}>What product would you like to have in the offer?</p>
                     )}
@@ -349,7 +351,7 @@ const OfferProduct = (props: IOfferProductProps) => {
                         <>
                             <div style={{marginBottom: '20px'}}>
                                 <Button id={"btnLaunchAI"}
-                                        primary
+                                        variant="primary"
                                         onClick={() => enableAutopilot()}>{autopilotButtonText}</Button>
                             </div>
 
@@ -372,8 +374,8 @@ const OfferProduct = (props: IOfferProductProps) => {
                             <>
                                 <div>
                                     <div style={{display: 'flex'}}>
-                                        <Icon source={InfoIcon} color="base"/>
-                                        <Link to="/subscription" style={{marginLeft: '5px'}}>
+                                        <Icon source={InfoIcon} tone="base"/>
+                                        <Link to="/app/subscription" style={{marginLeft: '5px'}}>
                                             Autopilot is available on the Paid Plan.
                                         </Link>
                                     </div>
@@ -397,11 +399,11 @@ const OfferProduct = (props: IOfferProductProps) => {
                             ))}
                         </b>
                     )}
-
                 </BlockStack>
+
                 {(openAutopilotSection || (offer.id != null && props.autopilotCheck?.autopilot_offer_id == offer.id)) && (
                     <>
-                        <BlockStack spacing="loose" vertical>
+                        <BlockStack gap={"300"}>
                             <Select
                                 label="How many products would you like the customer to be able to choose from in the offer?"
                                 options={AutopilotQuantityOptionsNew}
@@ -409,7 +411,7 @@ const OfferProduct = (props: IOfferProductProps) => {
                                 value={autopilotQuantity.toString()}
                             />
                         </BlockStack>
-                        <BlockStack vertical>
+                        <BlockStack gap={"300"}>
                             <RadioButton
                                 label="Stack"
                                 checked={offer.multi_layout === 'stack'}
@@ -421,7 +423,7 @@ const OfferProduct = (props: IOfferProductProps) => {
                                 onChange={() => handleLayoutRadioClicked('carousel')}
                             />
                         </BlockStack>
-                        <BlockStack spacing="loose" vertical>
+                        <BlockStack gap={"300"}>
                             <TextField
                                 label="Exclude products with a tag"
                                 helpText="Autopilot will not suggest any product with this tag."
@@ -433,8 +435,10 @@ const OfferProduct = (props: IOfferProductProps) => {
                     </>
                 )}
             </Card>
+
             {/* Modal */}
             <Modal
+                activator={activator}
                 open={productModal}
                 onClose={handleModalCloseEvent}
                 title="Select products from your store"
