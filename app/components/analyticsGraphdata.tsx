@@ -99,6 +99,7 @@ export function CustomTooltip({ title, children }) {
 export function TotalSalesData(props) {
   const app = useAppBridge();
   const shopAndHost = useSelector((state: IRootState) => state.shopAndHost);
+
   const fetch = useAuthenticatedFetch(shopAndHost.host);
   const [salesTotal, setSalesTotal] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -172,6 +173,7 @@ type OfferStatTimeCheckedout = {
 export function TotalUpSellsData(props) {
   const app = useAppBridge();
   const shopAndHost = useSelector((state: IRootState) => state.shopAndHost);
+
   const fetch = useAuthenticatedFetch(shopAndHost.host);
   const [salesTotal, setSalesTotal] = useState(0);
   const [salesData, setSalesData] = useState(defaultResults);
@@ -224,7 +226,9 @@ export function TotalUpSellsData(props) {
 
 export function ConversionRate(props) {
   const app = useAppBridge();
+
   const shopAndHost = useSelector((state: IRootState) => state.shopAndHost);
+
   const fetch = useAuthenticatedFetch(shopAndHost.host);
   const [addedToCart, setAddedToCart] = useState(0);
   const [reachedCheckout, setReachedCheckout] = useState(0);
@@ -285,6 +289,7 @@ export function ConversionRate(props) {
       )
   }
 
+
   function getOffersStatsTimesCheckedout(period) {
       getOffersStats(
           `/api/v2/merchant/shop_offers_stats_times_checkedout`,
@@ -342,7 +347,9 @@ type ShopOrdersStats = {
 
 export function OrderOverTimeData(props) {
   const app = useAppBridge();
+
   const shopAndHost = useSelector((state: IRootState) => state.shopAndHost);
+
   const fetch = useAuthenticatedFetch(shopAndHost.host);
   const [ordersTotal, setOrdersTotal] = useState(0);
   const [ordersData, setOrdersData] = useState(defaultResults);
@@ -414,6 +421,7 @@ type OfferData = {
 export function TopPerformingOffersData(props) {
   const app = useAppBridge();
   const shopAndHost = useSelector((state: IRootState) => state.shopAndHost);
+
   const fetch = useAuthenticatedFetch(shopAndHost.host);
   const [offersData, setOffersData] = useState<OfferData[]>([]);
 
@@ -499,7 +507,9 @@ export function TopPerformingOffersData(props) {
 
 export function AbTestingData(props) {
   const app = useAppBridge();
+
   const shopAndHost = useSelector((state: IRootState) => state.shopAndHost);
+
   const fetch = useAuthenticatedFetch(shopAndHost.host);
   const [salesTotal, setSalesTotal] = useState(0);
   const [salesData, setSalesData] = useState(0);
@@ -562,7 +572,9 @@ type ShopClicksStats = {
 
 export function ClickThroughtRateData(props) {
   const app = useAppBridge();
+
   const shopAndHost = useSelector((state: IRootState) => state.shopAndHost);
+
   const fetch = useAuthenticatedFetch(shopAndHost.host);
   const [clicksTotal, setClicksTotal] = useState(0);
   const [clicksData, setClicksData] = useState(defaultResults);
