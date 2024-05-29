@@ -1,6 +1,6 @@
 import {
   Card,
-  InlineStack
+  InlineStack,
   BlockStack,
   Tooltip,
   Text,
@@ -36,7 +36,9 @@ const PolarisChart = ({ cardTitle, chartTitle, tooltipText, total, loading, char
               }
           }}
       >
-      <Card style={{ minHeight: 365 }}>
+      <Card
+          // style={{ minHeight: 365 }}
+      >
         <div className='icu-card-content'>
           <BlockStack gap={"200"}>
             <Text variant="headingMd" as="h4">{cardTitle}</Text>
@@ -56,11 +58,11 @@ const PolarisChart = ({ cardTitle, chartTitle, tooltipText, total, loading, char
                         "data": defaultResults
                     },
                 ]}
-                legendPosition="left"
+                // legendPosition="left"
                 theme='Light'
-                state="loading"
+                // state="loading"
             /> ) : (
-                
+
             <StackedAreaChart
             isAnimated={true}
             data={[
@@ -69,7 +71,7 @@ const PolarisChart = ({ cardTitle, chartTitle, tooltipText, total, loading, char
                     "data": chartData
                 },
             ]}
-            legendPosition="left"
+            // legendPosition="left"
             theme='Light'
           />
           )}
@@ -96,7 +98,7 @@ export function CustomTooltip({ title, children }) {
 
 export function TotalSalesData(props) {
   const app = useAppBridge();
-  const shopAndHost = useSelector(state => state.shopAndHost);
+  const shopAndHost = useSelector((state: IRootState) => state.shopAndHost);
   const fetch = useAuthenticatedFetch(shopAndHost.host);
   const [salesTotal, setSalesTotal] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -159,14 +161,17 @@ type OfferStatTimeLoaded = {
 
 type OfferStatTimeClicked = {
   stat_times_clicked: number;
+  stat_times_converted: number;
+  redirect_to: string;
 }
 
 type OfferStatTimeCheckedout = {
   stat_times_checkedout: number;
+  stat_times_clicked: number;
 }
 export function TotalUpSellsData(props) {
   const app = useAppBridge();
-  const shopAndHost = useSelector(state => state.shopAndHost);
+  const shopAndHost = useSelector((state: IRootState) => state.shopAndHost);
   const fetch = useAuthenticatedFetch(shopAndHost.host);
   const [salesTotal, setSalesTotal] = useState(0);
   const [salesData, setSalesData] = useState(defaultResults);
@@ -219,7 +224,7 @@ export function TotalUpSellsData(props) {
 
 export function ConversionRate(props) {
   const app = useAppBridge();
-  const shopAndHost = useSelector(state => state.shopAndHost);
+  const shopAndHost = useSelector((state: IRootState) => state.shopAndHost);
   const fetch = useAuthenticatedFetch(shopAndHost.host);
   const [addedToCart, setAddedToCart] = useState(0);
   const [reachedCheckout, setReachedCheckout] = useState(0);
@@ -308,15 +313,15 @@ export function ConversionRate(props) {
               <div className="space-4"></div>
               <p>CONVERSION FUNNEL</p><br />
               <BlockStack gap={"500"}>
-                  <div height="50px">
+                  <div>
                       <span>Added to cart</span><span style={{ float: 'right' }}>{totalDisplayed > 0 ? ((addedToCart / totalDisplayed) * 100).toFixed(2) : 0}%</span>
                       <div style={{ color: 'grey' }}>{addedToCart >= 0 ? addedToCart : 0} sessions</div>
                   </div>
-                  <div height="50px">
+                  <div>
                       <span>Reached checkout</span><span style={{ float: 'right' }}>{totalDisplayed > 0 ? ((reachedCheckout / totalDisplayed) * 100).toFixed(2) : 0}%</span>
                       <div style={{ color: 'grey' }}>{reachedCheckout >= 0 ? reachedCheckout : 0} sessions</div>
                   </div>
-                  <div height="50px">
+                  <div>
                       <span>Sessions converted</span><span style={{ float: 'right' }}>{totalDisplayed > 0 ? ((converted / totalDisplayed) * 100).toFixed(2) : 0}%</span>
                       <div style={{ color: 'grey' }}>{converted >= 0 ? converted : 0} sessions</div>
                   </div>
@@ -337,7 +342,7 @@ type ShopOrdersStats = {
 
 export function OrderOverTimeData(props) {
   const app = useAppBridge();
-  const shopAndHost = useSelector(state => state.shopAndHost);
+  const shopAndHost = useSelector((state: IRootState) => state.shopAndHost);
   const fetch = useAuthenticatedFetch(shopAndHost.host);
   const [ordersTotal, setOrdersTotal] = useState(0);
   const [ordersData, setOrdersData] = useState(defaultResults);
@@ -394,6 +399,7 @@ export function OrderOverTimeData(props) {
 type OffersList = {
   shopify_domain: string;
   offers: OfferData[];
+  redirect_to: string;
 }
 
 type OfferData = {
@@ -407,7 +413,7 @@ type OfferData = {
 }
 export function TopPerformingOffersData(props) {
   const app = useAppBridge();
-  const shopAndHost = useSelector(state => state.shopAndHost);
+  const shopAndHost = useSelector((state: IRootState) => state.shopAndHost);
   const fetch = useAuthenticatedFetch(shopAndHost.host);
   const [offersData, setOffersData] = useState<OfferData[]>([]);
 
@@ -493,7 +499,7 @@ export function TopPerformingOffersData(props) {
 
 export function AbTestingData(props) {
   const app = useAppBridge();
-  const shopAndHost = useSelector(state => state.shopAndHost);
+  const shopAndHost = useSelector((state: IRootState) => state.shopAndHost);
   const fetch = useAuthenticatedFetch(shopAndHost.host);
   const [salesTotal, setSalesTotal] = useState(0);
   const [salesData, setSalesData] = useState(0);
@@ -556,7 +562,7 @@ type ShopClicksStats = {
 
 export function ClickThroughtRateData(props) {
   const app = useAppBridge();
-  const shopAndHost = useSelector(state => state.shopAndHost);
+  const shopAndHost = useSelector((state: IRootState) => state.shopAndHost);
   const fetch = useAuthenticatedFetch(shopAndHost.host);
   const [clicksTotal, setClicksTotal] = useState(0);
   const [clicksData, setClicksData] = useState(defaultResults);

@@ -1,5 +1,5 @@
 // auto generated file
-// Entry Point for our code and it wraps around the entire application code that's found in routes folder
+// Entry Point for our code, and it wraps around the entire application code that's found in routes folder
 import {
   Links,
   LiveReload,
