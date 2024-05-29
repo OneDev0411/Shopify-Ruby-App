@@ -1,39 +1,32 @@
 import { useState, useCallback } from 'react';
-import { Button, LegacyStack } from "@shopify/polaris";
+import {BlockStack, Button, LegacyStack} from "@shopify/polaris";
 import { ChoosePlacement, DisplayConditions } from "../../organisms/index";
-import { AutopilotCheck } from '~/types/types';
 
 interface ISecondTabProps {
-    autopilotCheck: AutopilotCheck,
     handleTabChange: () => void
-    enableOrDisablePublish: (enable: boolean) => void
 }
 
-export function SecondTab(props: ISecondTabProps) {
+export function SecondTab({ handleTabChange }: ISecondTabProps) {
     const [disableCheckoutInfo, setDisableCheckoutInfo] = useState<string>('')
 
     const changeDisableCheckoutInfo = useCallback((value: string) => {
-         setDisableCheckoutInfo(value);
+        setDisableCheckoutInfo(value);
     }, [disableCheckoutInfo]);
 
     return (
         <div id="polaris-placement-cards">
-            <ChoosePlacement
-                autopilotCheck={props.autopilotCheck}
-                enableOrDisablePublish={props.enableOrDisablePublish}
-            />
-            <div className="space-10"/>
+            <BlockStack gap={"500"}>
+                <BlockStack gap={"500"}>
+                    <ChoosePlacement />
 
-            <DisplayConditions 
-                autopilotCheck={props.autopilotCheck}
-            />
-            <div className="space-10"/>
-
-            <div className="space-4"></div>
-            <LegacyStack distribution="center">
-                <Button onClick={props.handleTabChange}>Continue to Appearance</Button>
-            </LegacyStack>
-            <div className="space-10"></div>
+                    <DisplayConditions />
+                </BlockStack>
+                <BlockStack>
+                    <div className="align-center">
+                        <span className="padding-fit"><Button onClick={handleTabChange}>Continue To Appearance</Button></span>
+                    </div>
+                </BlockStack>
+            </BlockStack>
         </div>
     );
 }

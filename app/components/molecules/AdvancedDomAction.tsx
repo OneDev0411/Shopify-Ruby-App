@@ -1,5 +1,5 @@
 import React from "react";
-import { TextField, Select, Text } from "@shopify/polaris";
+import {TextField, Select, Text, BlockStack} from "@shopify/polaris";
 import { DOMActionOptions } from "../../shared/constants/DOMActionOptions";
 
 interface IDomActionProps {
@@ -21,11 +21,9 @@ const DomAction = ({
     onChangeSelector,
     onChangeAction,
 }: IDomActionProps) => (
-    <>
-        <div>
-            <div style={{paddingBottom: '10px'}}>
-                <Text variant="headingSm" as="h2">{title}</Text>
-            </div>
+    <div>
+        <BlockStack gap={"300"}>
+            <Text variant="headingSm" as="h2">{title}</Text>
             <TextField
                 label="DOM Selector"
                 value={selectorValue}
@@ -34,19 +32,16 @@ const DomAction = ({
                 disabled={disabled}
                 autoComplete="off"
             />
-            <div className="space-4"/>
-
             <Select
                 label="DOM action"
                 id={actionId}
                 options={DOMActionOptions}
                 onChange={onChangeAction}
                 value={actionValue}
-                disabled={disabled}
             />
-        </div>
-        <hr className="legacy-card-hr" />
-    </>
+        </BlockStack>
+        <hr className="legacy-card-hr placement-hr" />
+    </div>
 );
 
 export default DomAction;

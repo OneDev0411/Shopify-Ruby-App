@@ -4,7 +4,7 @@ import {
     Select,
     RangeSlider,
     Grid,
-    Text,
+    Text, BlockStack,
 } from "@shopify/polaris";
 import { useCallback, useContext } from "react";
 import React from "react";
@@ -49,84 +49,84 @@ const OfferText = () => {
     }, []);
 
     return (
-        <Card title="Offer text" sectioned>
+        <Card>
+            <BlockStack gap={"300"}>
+                <Text variant="headingSm" as="h2">Offer text</Text>
+                <Grid>
+                    <Grid.Cell columnSpan={{ xs: 6, sm: 3, md: 3, lg: 6, xl: 6 }}>
+                        <Select
+                            label="Font"
+                            options={OfferFontOptions}
+                            onChange={handleFontSelect}
+                            value={offer.css_options?.text?.fontFamily}
+                        />
+                    </Grid.Cell>
 
-            <Grid>
-                <Grid.Cell columnSpan={{ xs: 6, sm: 3, md: 3, lg: 6, xl: 6 }}>
-                    <Select
-                        label="Font"
-                        options={OfferFontOptions}
-                        onChange={handleFontSelect}
-                        value={offer.css_options?.text?.fontFamily}
-                    />
-                </Grid.Cell>
-
-                <Grid.Cell columnSpan={{ xs: 6, sm: 3, md: 3, lg: 6, xl: 6 }}>
-                    <TextField
-                        label="Size"
-                        type="number"
-                        suffix="px"
-                        autoComplete="off"
-                        onChange={handleFontSize}
-                        value={parseInt(offer.css_options?.text?.fontSize)}
-                    />
-                </Grid.Cell>
-            </Grid>
-            <hr className="legacy-card-hr" />
-            <div style={{paddingBottom: '20px'}}>
+                    <Grid.Cell columnSpan={{ xs: 6, sm: 3, md: 3, lg: 6, xl: 6 }}>
+                        <TextField
+                            label="Size"
+                            type="number"
+                            suffix="px"
+                            autoComplete="off"
+                            onChange={handleFontSize}
+                            value={offer.css_options?.text?.fontSize}
+                        />
+                    </Grid.Cell>
+                </Grid>
+                <hr className="legacy-card-hr placement-hr" />
                 <Text variant="headingMd" as="h2">Button text</Text>
-            </div>
-            <Grid>
-                <Grid.Cell columnSpan={{ xs: 6, sm: 3, md: 3, lg: 6, xl: 6 }}>
-                    <Select
-                        label="Font"
-                        options={OfferFontOptions}
-                        onChange={handleBtnSelect}
-                        value={offer.css_options?.button?.fontFamily}
-                    />
-                </Grid.Cell>
-                <Grid.Cell columnSpan={{ xs: 6, sm: 3, md: 3, lg: 6, xl: 6 }}>
-                    <TextField
-                        label="Size"
-                        type="number"
-                        suffix="px"
-                        autoComplete="off"
-                        onChange={handleBtnSize}
-                        value={parseInt(offer.css_options?.button?.fontSize)}
-                    />
-                </Grid.Cell>
-            </Grid>
-            <br />
-            <Grid>
-                <Grid.Cell columnSpan={{ xs: 6, sm: 3, md: 3, lg: 6, xl: 6 }}>
-                    {/*TODO: double check slider*/}
-                    <RangeSlider
-                        label="Border Radius"
-                        value={parseInt(offer.css_options?.button?.borderRadius || "0")}
-                        min={0}
-                        max={16}
-                        onChange={(sliderVal) => handleRangeSliderChange(sliderVal.toString())}
-                        output
-                    />
-                </Grid.Cell>
-                <Grid.Cell columnSpan={{ xs: 6, sm: 3, md: 3, lg: 6, xl: 6 }}>
-                    <TextField
-                        label="Border Width"
-                        type="number"
-                        suffix="px"
-                        autoComplete="off"
-                        onChange={handleBtnBorderWidth}
-                        value={offer.css_options?.button?.borderWidth}
-                    />
-                </Grid.Cell>
-                <Grid.Cell columnSpan={{ xs: 6, sm: 3, md: 3, lg: 4, xl: 4 }}>
-                    <Select label="Border style"
-                            options={OfferBorderOptions}
-                            onChange={handleBtnBorderStyle}
-                            value={offer?.css_options?.button?.borderStyle}
-                    />
-                </Grid.Cell>
-            </Grid>
+                <Grid>
+                    <Grid.Cell columnSpan={{ xs: 6, sm: 3, md: 3, lg: 6, xl: 6 }}>
+                        <Select
+                            label="Font"
+                            options={OfferFontOptions}
+                            onChange={handleBtnSelect}
+                            value={offer.css_options?.button?.fontFamily}
+                        />
+                    </Grid.Cell>
+                    <Grid.Cell columnSpan={{ xs: 6, sm: 3, md: 3, lg: 6, xl: 6 }}>
+                        <TextField
+                            label="Size"
+                            type="number"
+                            suffix="px"
+                            autoComplete="off"
+                            onChange={handleBtnSize}
+                            value={offer.css_options?.button?.fontSize}
+                        />
+                    </Grid.Cell>
+                </Grid>
+                <br />
+                <Grid>
+                    <Grid.Cell columnSpan={{ xs: 6, sm: 3, md: 3, lg: 6, xl: 6 }}>
+                        {/*TODO: double check slider*/}
+                        <RangeSlider
+                            label="Border Radius"
+                            value={parseInt(offer.css_options?.button?.borderRadius || "0")}
+                            min={0}
+                            max={16}
+                            onChange={(sliderVal) => handleRangeSliderChange(sliderVal.toString())}
+                            output
+                        />
+                    </Grid.Cell>
+                    <Grid.Cell columnSpan={{ xs: 6, sm: 3, md: 3, lg: 6, xl: 6 }}>
+                        <TextField
+                            label="Border Width"
+                            type="number"
+                            suffix="px"
+                            autoComplete="off"
+                            onChange={handleBtnBorderWidth}
+                            value={offer.css_options?.button?.borderWidth}
+                        />
+                    </Grid.Cell>
+                    <Grid.Cell columnSpan={{ xs: 6, sm: 3, md: 3, lg: 4, xl: 4 }}>
+                        <Select label="Border style"
+                                options={OfferBorderOptions}
+                                onChange={handleBtnBorderStyle}
+                                value={offer?.css_options?.button?.borderStyle}
+                        />
+                    </Grid.Cell>
+                </Grid>
+            </BlockStack>
         </Card>
     );
 }

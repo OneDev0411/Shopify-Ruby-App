@@ -3,6 +3,7 @@ import shopAndHost, { IShopAndHostState } from './reducers/shopAndHost';
 
 
 export interface IRootState {
+  UTM: any;
 	shopAndHost: IShopAndHostState
 }
 

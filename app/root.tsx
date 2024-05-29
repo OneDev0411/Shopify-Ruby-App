@@ -14,6 +14,7 @@ import {themeCss} from "@assets";
 import type { LinksFunction } from "@remix-run/node";
 import slick from "slick-carousel/slick/slick.css"
 import slickTheme from "slick-carousel/slick/slick-theme.css"
+import polarisViz from '@shopify/polaris-viz/build/esm/styles.css';
 
 export const links: LinksFunction = () => [
   ...(cssBundleHref
@@ -22,6 +23,7 @@ export const links: LinksFunction = () => [
     { rel: "stylesheet", href: polarisStyles},
     { rel: "stylesheet", href: themeCss },
     {rel: "stylesheet", href: slick},
+    {rel: "stylesheet", href: polarisViz},
     {rel: "stylesheet", href: slickTheme}
 ]
 export default function App() {

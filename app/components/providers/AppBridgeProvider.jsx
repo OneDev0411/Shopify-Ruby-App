@@ -2,7 +2,8 @@ import { useMemo, useState } from "react";
 import { useLocation, useNavigate } from  "@remix-run/react";
 import { Provider } from "@shopify/app-bridge-react";
 import { Banner, Layout, Page } from "@shopify/polaris";
-
+import {AlertTriangleIcon} from "@shopify/polaris-icons";
+import CustomBanner from "../CustomBanner";
 /**
  * A component to configure App Bridge.
  * @desc A thin wrapper around AppBridgeProvider that provides the following capabilities:
@@ -51,34 +52,30 @@ export function AppBridgeProvider({ children }) {
   });
 
   if (!process.env.SHOPIFY_API_KEY || !appBridgeConfig.host) {
-    const bannerProps = !process.env.SHOPIFY_API_KEY
-      ? {
-          title: "Missing Shopify API Key",
-          children: (
-            <>
-              Your app is running without the SHOPIFY_API_KEY environment
-              variable. Please ensure that it is set when running or building
-              your React app.
-            </>
-          ),
-        }
-      : {
-          title: "Missing host query argument",
-          children: (
-            <>
-              Your app can only load if the URL has a <b>host</b> argument.
-              Please ensure that it is set, or access your app using the
-              Partners Dashboard <b>Test your app</b> feature
-            </>
-          ),
-        };
+    const [name, setName] = useState('');
+    const [content, setContent] = useState('');
+
+    if (!process.env.SHOPIFY_API_KEY) {
+      setName('Missing Shopify API Key')
+      setContent("Your app is running without the SHOPIFY_API_KEY environment variable. Please ensure that it is set when running or building your React app.")
+    }
+    else {
+      setName('Missing host query argument')
+      setContent("Your app can only load if the URL has a host argument. Please ensure that it is set, or access your app using the Partners Dashboard Test your app feature.")
+    }
 
     return (
       <Page narrowWidth>
         <Layout>
           <Layout.Section>
             <div style={{ marginTop: "100px" }}>
-              <Banner {...bannerProps} status="critical" />
+              <CustomBanner title={name}
+                        icon={AlertTriangleIcon}
+                        icon_color={"rgb(228,27,1)"}
+                        content={content}
+                        background_color="#FFD4CF"
+                        border_color="rgb(228,27,1)"
+                        />            
             </div>
           </Layout.Section>
         </Layout>
@@ -88,7 +85,7 @@ export function AppBridgeProvider({ children }) {
 
   return (
     <Provider 
-// @ts-ignore
+    // @ts-ignore
     config={appBridgeConfig} router={routerConfig}>
       {children}
     </Provider>

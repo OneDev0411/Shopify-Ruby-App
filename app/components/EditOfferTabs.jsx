@@ -350,7 +350,7 @@ export function EditOfferTabs(props) {
         <div>
             {isLoading ? (
                 <div style={{ overflow: 'hidden', display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', }}>
-                    <Spinner size="large" color="teal"/>
+                    <Spinner size="large"/>
                 </div>
             )   :   (
             <>

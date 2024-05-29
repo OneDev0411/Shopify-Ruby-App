@@ -1,4 +1,4 @@
-import {Page, Layout, Card, BlockStack as Stack, Image} from "@shopify/polaris";
+import {Page, Layout, Card, BlockStack as Stack, Image, BlockStack} from "@shopify/polaris";
 import { TitleBar } from "@shopify/app-bridge-react";
 import {Redirect, Toast} from '@shopify/app-bridge/actions';
 import { useAppBridge } from '@shopify/app-bridge-react'
@@ -17,7 +17,7 @@ export default function ConfirmCharge() {
       let redirect = Redirect.create(app);
       redirect.dispatch(Redirect.Action.APP, `/?shop=${shopAndHost.shop}&host=${shopAndHost.host}`);
     }
-    
+
   return (
     <Page>
         <TitleBar title="Confirm Charge"></TitleBar>
@@ -26,18 +26,18 @@ export default function ConfirmCharge() {
             {success ? (
               <Layout.Section>
                 <Card>
-                  <Stack distribution="center">
-                    <Image 
+                  <BlockStack align="center">
+                    <Image
                         source={woohoo}
                         alt="woohoo"
                     />
-                    </Stack>
-                    <Stack distribution="center">
+                    </BlockStack>
+                    <BlockStack align="center">
                       <div>
                         The subscription was successful
                       </div>
-                    </Stack>
-                    <Stack distribution="center">
+                    </BlockStack>
+                    <Stack align="center">
                     <a href="#" onClick={redirectToHome}>Please click here</a>
                     </Stack>
                   </Card>
@@ -45,14 +45,14 @@ export default function ConfirmCharge() {
               ) : (
               <Layout.Section>
                 <Card>
-                  <Stack distribution="center">
+                  <BlockStack align="center">
                     <div>
                       Ooops! Something went wrong
                     </div>
-                  </Stack> 
-                  <Stack distribution="center">    
+                  </BlockStack>
+                  <BlockStack align="center">
                     <a href="#" onClick={redirectToHome}>Please contact our staff</a>
-                  </Stack>    
+                  </BlockStack>
                 </Card>
               </Layout.Section>
               )}

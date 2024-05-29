@@ -2,11 +2,12 @@ import {
     Card,
     TextField,
     Checkbox,
-    Text,
+    Text, BlockStack, Select,
 } from "@shopify/polaris";
 import { useCallback, useContext } from "react";
 import {OfferContent, OfferContext} from "~/contexts/OfferContext";
 import { DomAction } from "../../molecules";
+import {DOMActionOptions} from "~/shared/constants/DOMActionOptions";
 
 const AdvancedSettings = () => {
 
@@ -23,22 +24,26 @@ const AdvancedSettings = () => {
     return (
         <>
             {/* <Card sectioned title="Offer placement - advanced settings" actions={[{ content: 'View help doc' }]}> */}
-            <Card sectioned title="Offer placement - advanced settings">
-                {(!offer?.advanced_placement_setting?.advanced_placement_setting_enabled) && (
-                    <>
-                        <b>To edit Advanced settings, enable "Advanced Placement Settings" option on the Placement tab.</b>
-                        <br/><br/><br/>
-                    </>
-                )}
-                <DomAction
-                    title="Product page"
-                    actionId="productDomAction"
-                    selectorValue={offer?.advanced_placement_setting?.custom_product_page_dom_selector}
-                    actionValue={offer?.advanced_placement_setting?.custom_product_page_dom_action}
-                    onChangeSelector={handleProductDomSelector}
-                    onChangeAction={handleProductDomAction}
-                    disabled={!offer?.advanced_placement_setting?.advanced_placement_setting_enabled}
-                />
+            <Card>
+                <BlockStack gap={"300"}>
+                    <BlockStack gap={"300"}>
+                        <Text variant="headingMd" as="h6">Offer placement - advanced settings</Text>
+                        {(!offer?.advanced_placement_setting?.advanced_placement_setting_enabled) && (
+                            <>
+                                <b>To edit Advanced settings, enable "Advanced Placement Settings" option on the Placement tab.</b>
+                            </>
+                        )}
+                    </BlockStack>
+                    <DomAction
+                        title="Product page"
+                        actionId="productDomAction"
+                        selectorValue={offer?.advanced_placement_setting?.custom_product_page_dom_selector}
+                        actionValue={offer?.advanced_placement_setting?.custom_product_page_dom_action}
+                        onChangeSelector={handleProductDomSelector}
+                        onChangeAction={handleProductDomAction}
+                        disabled={!offer?.advanced_placement_setting?.advanced_placement_setting_enabled}
+                    />
+                </BlockStack>
 
                 <DomAction
                     title="Cart page"
@@ -61,19 +66,19 @@ const AdvancedSettings = () => {
                 />
 
                 <div>
-                    <div style={{paddingBottom: '10px'}}>
+                    <BlockStack gap={"300"}>
                         <Text variant="headingSm" as="h2">Custom CSS</Text>
-                    </div>
-
-                    <TextField
-                        value={offer?.custom_css}
-                        onChange={handleOfferCss}
-                        multiline={6}
-                        autoComplete="off"
-                        label={"Custom CSS"}
-                        labelHidden
-                    />
+                        <TextField
+                            value={offer?.custom_css}
+                            onChange={handleOfferCss}
+                            multiline={6}
+                            autoComplete="off"
+                            label={"Custom CSS"}
+                            labelHidden
+                        />
+                    </BlockStack>
                 </div>
+
                 <br/>
 
                 <Checkbox

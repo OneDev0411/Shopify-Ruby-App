@@ -33,7 +33,7 @@ const OfferPlacement = ({
     placementPosition,
   }: IOfferPlacementProps) => (
     <>
-        <hr className="legacy-card-hr legacy-card-hr-t20-b15"/>
+        <hr className="legacy-card-hr legacy-card-hr-t20-b15 placement-hr"/>
 
         <div style={{paddingBottom: '12px'}}>
             <Text variant="headingSm" as="h2">

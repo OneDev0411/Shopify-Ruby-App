@@ -1,7 +1,7 @@
 import {
     LegacyStack,
     ButtonGroup,
-    Button,
+    Button, BlockStack,
 } from "@shopify/polaris";
 import {useState, useEffect, useContext} from "react";
 import {Link} from "@remix-run/react";
@@ -10,16 +10,17 @@ import {useShopState} from "../../../contexts/ShopContext";
 import { AdvancedSettings } from "../../organisms/index";
 import { BannerContainer } from "../../atoms/index";
 import { useEnv } from "~/contexts/EnvContext";
+import {AlertCircleIcon, CheckIcon} from "@shopify/polaris-icons";
+import CustomBanner from "~/components/CustomBanner";
 
 interface IFourthTabProps {
     saveDraft: () => void,
     publishOffer: () =>  void,
-    enablePublish: boolean
 }
 
 // Advanced Tab
-export function FourthTab(props: IFourthTabProps) {
-    const { offer, updateNestedAttributeOfOffer } = useContext(OfferContext) as OfferContent;
+export function FourthTab({ saveDraft, publishOffer }: IFourthTabProps) {
+    const { offer, updateNestedAttributeOfOffer, enablePublish } = useContext(OfferContext) as OfferContent;
     const { shopSettings, themeAppExtension } = useShopState();
     const env = useEnv();
     const isLegacy = themeAppExtension?.theme_version !== '2.0' || import.meta.env.VITE_ENABLE_THEME_APP_EXTENSION?.toLowerCase() !== 'true';
@@ -49,48 +50,62 @@ export function FourthTab(props: IFourthTabProps) {
     return (
         <>
             { !isLegacy && !offer.in_ajax_cart &&
-              (
-                <BannerContainer
-                    title="You are using Shopify's Theme Editor"
-                    tone="warning"
-                >
-                    <p>Please use the theme editor to place the offers where you would like it.</p><br/>
-                    <p><Link
-                        to={themeAppUrl}
-                        target="_blank">Click here</Link> to go to the theme editor</p>
-                </BannerContainer>
-              )
+                (
+                    <div style={{marginBottom: "10px"}} className="polaris-banner-container">
+                        <CustomBanner title="You are using Shopify's Theme Editor."
+                                      icon={AlertCircleIcon}
+                                      icon_color={"rgb(97,106,117)"}
+                                      content="Please use the theme editor to place the offers where you would like it."
+                                      link_keyword="Click here"
+                                      after_link_content="to go to the theme editor."
+                                      background_color="rgb(249,242,210)"
+                                      border_color="rgb(210,210,198)"
+                                      link_to={themeAppUrl} name="theme_app_banner"/>
+                    </div>
+                )
             }
 
             { !isLegacy && offer.in_ajax_cart &&
-              (
-                <BannerContainer
-                    title="You are using Shopify's Theme Editor"
-                    tone={themeAppExtension?.theme_app_embed ? 'success' : 'warning'}
-                >
-                    {!themeAppExtension?.theme_app_embed ?
-                        <>
-                            <p>In order to show the offer in the Ajax Cart, you need to enable it in the Theme Editor.</p><br/>
-                            <p><Link
-                            to={`https://${shopSettings?.shopify_domain}/admin/themes/current/editor?context=apps&template=product&activateAppId=${import.meta.env.VITE_SHOPIFY_ICU_EXTENSION_APP_ID}/ajax_cart_app_block`}
-                            target="_blank">Click here</Link> to go to theme editor</p>
-                        </>
-                    :
-                        <p>Advanced settings are no longer needed for Shopify's Theme Editor. You've already enabled the app, all you need to do is publish your offer and it will appear in your Ajax cart</p>
-                    }
-                </BannerContainer>
-              )
+                (
+                    <div style={{marginBottom: "10px"}} className="polaris-banner-container">
+                        {!themeAppExtension?.theme_app_embed ?
+                            <CustomBanner title="You are using Shopify's Theme Editor."
+                                          icon={AlertCircleIcon}
+                                          icon_color={"rgb(183,125,11)"}
+                                          content="In order to show the offer in the Ajax Cart, you need to enable it in the Theme Editor."
+                                          link_keyword="Click here"
+                                          after_link_content="to go to the theme editor."
+                                          background_color="rgb(252,239,212)"
+                                          border_color="rgb(244,197,86)"
+                                          link_to={`https://${shopSettings.shopify_domain}/admin/themes/current/editor?context=apps&template=product&activateAppId=${env?.SHOPIFY_ICU_EXTENSION_APP_ID}/ajax_cart_app_block`}
+                                          name="theme_app_banner"/>
+                            :
+                            <CustomBanner title="You are using Shopify's Theme Editor."
+                                          icon={CheckIcon}
+                                          icon_color={"rgb(20,166,121)"}
+                                          content="Advanced settings are no longer needed for Shopify's Theme Editor. You've already enabled the app, all you need to do is publish your offer and it will appear in your Ajax cart."
+                                          background_color="rgb(224,247,237)"
+                                          border_color="rgb(161,235,206)"
+                                          name="theme_app_banner_success"/>
+                        }
+                    </div>
+                )
             }
 
-            <AdvancedSettings />
-            <div className="space-10"></div>
-            <LegacyStack distribution="center">
-                <ButtonGroup>
-                    <Button onClick={() => props.saveDraft()}>Save Draft</Button>
-                    <Button primary disabled={props.enablePublish} onClick={() => props.publishOffer()}>Publish</Button>
-                </ButtonGroup>
-            </LegacyStack>
-            <div className="space-10"></div>
+
+            <BlockStack gap={"300"}>
+                <AdvancedSettings />
+                <BlockStack>
+                    <div className="align-center">
+                        <span className="padding-fit">
+                            <ButtonGroup>
+                                <Button onClick={() => saveDraft()}>Save Draft</Button>
+                                <Button variant="primary" disabled={enablePublish} onClick={() => publishOffer()}>Publish</Button>
+                            </ButtonGroup>
+                        </span>
+                    </div>
+                </BlockStack>
+            </BlockStack>
         </>
     );
 }

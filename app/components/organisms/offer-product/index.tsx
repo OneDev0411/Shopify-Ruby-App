@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState, useContext } from "react";
+import {useCallback, useEffect, useState, useContext, useRef} from "react";
 import { Link, useNavigate } from "@remix-run/react";
 import { useSelector } from 'react-redux';
 import {OfferContent, OfferContext} from "~/contexts/OfferContext";
@@ -14,25 +14,22 @@ import {
     Modal,
     RadioButton,
     Select,
-    TextField
+    TextField, Text
 } from "@shopify/polaris";
 
 import {InfoIcon} from '@shopify/polaris-icons';
 import { ModalAddProduct } from "~/components";
 import { useAuthenticatedFetch } from "~/hooks";
 import { AutopilotQuantityOptionsNew } from "~/shared/constants/EditOfferOptions";
-import { IAutopilotSettingsProps, Offer, Product, ProductDetails, ProductVariants, ShopAndHost, UpdateCheckKeysValidityFunc } from "~/types/types";
+import { Product, ShopAndHost } from "~/types/types";
 
-interface IOfferProductProps extends IAutopilotSettingsProps {
-  initialVariants: ProductVariants;
-  updateCheckKeysValidity: UpdateCheckKeysValidityFunc,
-  updateInitialVariants: (selectedItem: string | string[] | Offer['included_variants'], selectedVariants?: number[]) => void;
-  initialOfferableProductDetails: ProductDetails[];
+interface IOfferProductProps {
   setIsLoading: (b: boolean) => void
 }
 
-const OfferProduct = (props: IOfferProductProps) => {
-    const { offer, updateOffer, updateProductsOfOffer, updateIncludedVariants } = useContext(OfferContext) as OfferContent;
+const OfferProduct = ({ setIsLoading }: IOfferProductProps) => {
+    const { offer, updateOffer, updateProductsOfOffer, updateIncludedVariants, updateCheckKeysValidity, autopilotCheck,
+                                setAutopilotCheck, initialVariants, updateInitialVariants, initialOfferableProductDetails } = useContext(OfferContext) as OfferContent;
     const { shopSettings } = useShopState();
     const shopAndHost = useSelector<{ shopAndHost: ShopAndHost}, ShopAndHost>(state => state.shopAndHost);
     const fetch = useAuthenticatedFetch(shopAndHost.host);
@@ -54,18 +51,20 @@ const OfferProduct = (props: IOfferProductProps) => {
     const [query, setQuery] = useState<string>("");
     const [resourceListLoading, setResourceListLoading] = useState<boolean>(false);
 
+    const activator = useRef(null);
+
     const handleModal = useCallback(() => {
         setProductModal(!productModal);
     }, [productModal]);
     const handleModalCloseEvent = useCallback(() => {
-        updateOffer("included_variants", {...props.initialVariants});
+        updateOffer("included_variants", {...initialVariants});
         for (let i = 0; i < productData.length; i++) {
-            if (!Object.keys(props.initialVariants).includes(productData[i].id.toString())) {
+            if (!Object.keys(initialVariants).includes(productData[i].id.toString())) {
                 productData[i].variants = [];
             }
         }
         setProductModal(false);
-    }, [props.initialVariants, productData, offer.offerable_product_shopify_ids]);
+    }, [initialVariants, productData, offer.offerable_product_shopify_ids]);
 
 
     //Called from chiled modal_AddProduct.jsx when the text in searchbox changes
@@ -140,17 +139,17 @@ const OfferProduct = (props: IOfferProductProps) => {
         if (selectedProducts.length == 0) {
             updateOffer("included_variants", {});
             setProductData([]);
-            props.updateCheckKeysValidity("text", product_title_str);
+            updateCheckKeysValidity("text", product_title_str);
         } else if (selectedProducts.length > 1) {
-            props.updateCheckKeysValidity("text", "");
+            updateCheckKeysValidity("text", "");
             updateOffer("text_a", "");
         } else if (selectedProducts.length <= 1) {
-            props.updateCheckKeysValidity("text", product_title_str);
+            updateCheckKeysValidity("text", product_title_str);
             updateOffer("text_a", product_title_str);
         }
         updateOffer("offerable_product_details", []);
         updateOffer("offerable_product_shopify_ids", []);
-        props.updateInitialVariants(offer.included_variants);
+        updateInitialVariants(offer.included_variants);
         let responseCount = 0;
         if (!shopSettings?.shop_id) {
             return
@@ -181,8 +180,8 @@ const OfferProduct = (props: IOfferProductProps) => {
                     data.available_json_variants = data.available_json_variants.filter((o) => offer.included_variants[data.id].includes(o.id))
                     updateProductsOfOffer(data);
                     if (responseCount == 0 && selectedProducts.length <= 1) {
-                        props.updateCheckKeysValidity("text", offer.text_a.replace("{{ product_title }}", data.title));
-                        props.updateCheckKeysValidity('cta', offer.cta_a);
+                        updateCheckKeysValidity("text", offer.text_a.replace("{{ product_title }}", data.title));
+                        updateCheckKeysValidity('cta', offer.cta_a);
                     }
                     responseCount++;
                 }
@@ -207,7 +206,7 @@ const OfferProduct = (props: IOfferProductProps) => {
                 return response.json()
             })
             .then((data) => {
-                props.setAutopilotCheck(data);
+                setAutopilotCheck(data);
 
                 setAutopilotButtonText(
                     data.isPending === "complete"
@@ -223,7 +222,7 @@ const OfferProduct = (props: IOfferProductProps) => {
     }, [])
 
     useEffect(() => {
-        if (offer.id != null && offer.id == props.autopilotCheck?.autopilot_offer_id && offer.autopilot_quantity && offer.autopilot_quantity != offer.offerable_product_details.length) {
+        if (offer.id != null && offer.id == autopilotCheck?.autopilot_offer_id && offer.autopilot_quantity && offer.autopilot_quantity != offer.offerable_product_details.length) {
             let tempArrProdDetails: any = [];
             for (let i = 0; i < offer?.autopilot_quantity; i++) {
                 if (offer.offerable_product_details.length > i) {
@@ -232,19 +231,19 @@ const OfferProduct = (props: IOfferProductProps) => {
             }
             updateOffer("offerable_product_details", tempArrProdDetails);
         }
-    }, [props.autopilotCheck?.autopilot_offer_id, offer.offerable_product_shopify_ids]);
+    }, [autopilotCheck?.autopilot_offer_id, offer.offerable_product_shopify_ids]);
 
     const handleAutoPilotQuantityChange = useCallback((value: number) => {
         let tempInitialOfferable: any = [];
         for (let i = 0; i < value; i++) {
-            if (props.initialOfferableProductDetails.length > i) {
-                tempInitialOfferable[i] = props.initialOfferableProductDetails[i];
+            if (initialOfferableProductDetails.length > i) {
+                tempInitialOfferable[i] = initialOfferableProductDetails[i];
             }
         }
         updateOffer("offerable_product_details", tempInitialOfferable);
         setAutopilotQuantity(value);
         updateOffer("autopilot_quantity", value);
-    }, [props.initialOfferableProductDetails]);
+    }, [initialOfferableProductDetails]);
 
     const handleAutopilotExcludedTags = useCallback((value) => {
         updateOffer("excluded_tags", value);
@@ -279,7 +278,7 @@ const OfferProduct = (props: IOfferProductProps) => {
             if (!shopSettings?.shop_id) {
                 return
             }
-            props.setIsLoading(true);
+            setIsLoading(true);
             fetch(`/api/v2/merchant/enable_autopilot`, {
                 method: 'POST',
                 headers: {
@@ -292,7 +291,7 @@ const OfferProduct = (props: IOfferProductProps) => {
                 })
                 .then((data) => {
                     checkAutopilotStatus();
-                    props.setIsLoading(false);
+                    setIsLoading(false);
                 })
                 .catch((error) => {
                     console.log("# Error updateProducts > ", JSON.stringify(error));
@@ -338,18 +337,18 @@ const OfferProduct = (props: IOfferProductProps) => {
 
     return (
         <>
-            {/* <Card title="Offer Product" actions={[{content: 'Learn about Autopilot'}]} sectioned> */}
-            <Card title="Offer Product" sectioned>
-                <BlockStack spacing="loose" vertical>
-                    {(props.autopilotCheck?.autopilot_offer_id != offer.id || !props.autopilotCheck?.autopilot_offer_id) && (
+            <Card>
+                <BlockStack gap={"500"}>
+                    <Text variant="headingMd" as="h6">Offer Product</Text>
+                    {(autopilotCheck?.autopilot_offer_id != offer.id || !autopilotCheck?.autopilot_offer_id) && (
                         <p style={{color: '#6D7175'}}>What product would you like to have in the offer?</p>
                     )}
 
-                    {offer.id == null && !props.autopilotCheck?.autopilot_offer_id && shopSettings?.has_pro_features ? (
+                    {offer.id == null && !autopilotCheck?.autopilot_offer_id && shopSettings?.has_pro_features ? (
                         <>
                             <div style={{marginBottom: '20px'}}>
                                 <Button id={"btnLaunchAI"}
-                                        primary
+                                        variant="primary"
                                         onClick={() => enableAutopilot()}>{autopilotButtonText}</Button>
                             </div>
 
@@ -358,7 +357,7 @@ const OfferProduct = (props: IOfferProductProps) => {
                                 getProducts();
                             }}>Select product manually</Button>
                         </>
-                    ) : (offer?.id != props.autopilotCheck?.autopilot_offer_id || !props.autopilotCheck?.autopilot_offer_id) && (
+                    ) : (offer?.id != autopilotCheck?.autopilot_offer_id || !autopilotCheck?.autopilot_offer_id) && (
                         <div>
                             <Button id={"btnSelectProduct"} onClick={() => {
                                 handleModal();
@@ -372,8 +371,8 @@ const OfferProduct = (props: IOfferProductProps) => {
                             <>
                                 <div>
                                     <div style={{display: 'flex'}}>
-                                        <Icon source={InfoIcon} color="base"/>
-                                        <Link to="/subscription" style={{marginLeft: '5px'}}>
+                                        <Icon source={InfoIcon} tone="base"/>
+                                        <Link to="/app/subscription" style={{marginLeft: '5px'}}>
                                             Autopilot is available on the Paid Plan.
                                         </Link>
                                     </div>
@@ -397,11 +396,11 @@ const OfferProduct = (props: IOfferProductProps) => {
                             ))}
                         </b>
                     )}
-
                 </BlockStack>
-                {(openAutopilotSection || (offer.id != null && props.autopilotCheck?.autopilot_offer_id == offer.id)) && (
+
+                {(openAutopilotSection || (offer.id != null && autopilotCheck?.autopilot_offer_id == offer.id)) && (
                     <>
-                        <BlockStack spacing="loose" vertical>
+                        <BlockStack gap={"300"}>
                             <Select
                                 label="How many products would you like the customer to be able to choose from in the offer?"
                                 options={AutopilotQuantityOptionsNew}
@@ -409,7 +408,7 @@ const OfferProduct = (props: IOfferProductProps) => {
                                 value={autopilotQuantity.toString()}
                             />
                         </BlockStack>
-                        <BlockStack vertical>
+                        <BlockStack gap={"300"}>
                             <RadioButton
                                 label="Stack"
                                 checked={offer.multi_layout === 'stack'}
@@ -421,7 +420,7 @@ const OfferProduct = (props: IOfferProductProps) => {
                                 onChange={() => handleLayoutRadioClicked('carousel')}
                             />
                         </BlockStack>
-                        <BlockStack spacing="loose" vertical>
+                        <BlockStack gap={"300"}>
                             <TextField
                                 label="Exclude products with a tag"
                                 helpText="Autopilot will not suggest any product with this tag."
@@ -433,8 +432,10 @@ const OfferProduct = (props: IOfferProductProps) => {
                     </>
                 )}
             </Card>
+
             {/* Modal */}
             <Modal
+                activator={activator}
                 open={productModal}
                 onClose={handleModalCloseEvent}
                 title="Select products from your store"

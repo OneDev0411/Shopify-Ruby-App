@@ -1043,7 +1043,21 @@ h1{
   display: flex;
 }
 .Polaris-Spinner--sizeLarge svg {
-  fill:#00bd9b;
+  fill:rgb(0, 164, 164);
+}
+.Polaris-Tabs__Wrapper {
+  margin-left: 10%
+}
+.Polaris-Tabs__TabContainer {
+  margin-right: 58px;
+}
+.leadin-card {
+  display: contents;
+}
+.center-btn a {
+color: white;
+  background-color: rgb(47, 72, 204);
+  padding: 10px 20px;
 }
 .hr-custom {
   border-bottom: 1px solid #cacaca;
@@ -1094,7 +1108,6 @@ h1{
   border-radius: 4px !important;
   box-shadow: 0px -1px 0px 0px rgba(0, 0, 0, 0.20) inset, 0px 1px 0px 0px rgba(0, 0, 0, 0.08)  !important;
 }
-
 .Polaris-Tabs--fitted {
   width: 70%;
 }
@@ -1112,7 +1125,6 @@ h1{
   align-items: center;
   height: 36px;
 }
-
 ._Legend_97bxj_150 {
     padding: 6px 0;
     outline: none;
@@ -1127,24 +1139,7 @@ h1{
 .Polaris-Banner {
   background-color: unset; 
 }
-.info-banner {
-  border-color: rgba(109, 211, 222, 1);
-  background-color: rgba(222, 245, 247, 1);
-  border-radius: 15px;
-  box-shadow: none;
-}
-.warning-banner {
-  border-color: rgba(245, 196, 82, 1);
-  background-color:rgba(250, 229, 178, 1);
-  border-radius: 15px;
-  box-shadow: none;
-}
-.theme-warning-banner {
-  border-color: rgba(245, 196, 82, 1);
-  background-color:  #fff1b894;
-  border-radius: 15px;
-  box-shadow: none;
-}
+
 .Polaris-Banner--textWarningOnBgFill {
   --pc-box-background: unset;
 }
@@ -1174,13 +1169,23 @@ h1{
 .Polaris-Label__Text {
   color:#212121;
 }
-
 .Polaris-ExceptionList__Description {
   color: black;
   font-weight: 700;
   margin-left: 10px;
 }
-
+.Polaris-Tabs__Tab--active {
+  background: none;
+  border-radius: 0px;
+  color: #524d4d;
+  border-bottom: 3.2px solid #2F48CC;
+}
+.Polaris-Tabs__Tab:not([aria-disabled="true"]):hover, .Polaris-Tabs__Tab--active:not([aria-disabled="true"]):hover, .Polaris-Tabs__Tab--active:not([aria-disabled="true"]):focus {
+  background-color: unset;
+}
+#graphs .Polaris-Box {
+  min-height: 370px;
+}
 @media (max-width: 489px) {
   .title-bar-button {
     display: flex;

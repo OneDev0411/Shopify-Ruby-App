@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from "react";
+import {useState, useEffect, useContext, SetStateAction} from "react";
 import { Card, TextContainer, SkeletonBodyText } from '@shopify/polaris';
 import Compact from './layouts/template_single_compact';
 import Stack from './layouts/template_multi_stack';
@@ -10,22 +10,19 @@ import ErrorPage from "./ErrorPage";
 import { OfferContent, OfferContext } from "../contexts/OfferContext";
 import { useShopState } from "../contexts/ShopContext";
 import { IRootState } from "~/store/store";
-import { UpdateCheckKeysValidityFunc } from "~/types/types";
 
 interface IOfferPreviewProps {
-	checkKeysValidity: Record<string, string | boolean>,
-	updateCheckKeysValidity: UpdateCheckKeysValidityFunc,
 	previewMode?: boolean,
 	updatePreviousAppOffer?: boolean
 }
 
-export function OfferPreview(props: IOfferPreviewProps) {
-	const { offer, updateOffer, updateNestedAttributeOfOffer } = useContext(OfferContext) as OfferContent;
+export function OfferPreview({ previewMode = false, updatePreviousAppOffer }: IOfferPreviewProps) {
+	const { offer, updateOffer, updateNestedAttributeOfOffer, updateCheckKeysValidity } = useContext(OfferContext) as OfferContent;
 	const { shopSettings } = useShopState();
 	const shopAndHost = useSelector((state: IRootState) => state.shopAndHost);
 	const [error, setError] = useState<Error | null>(null);
 	const [carouselLoading, setCarouselLoading] = useState<boolean>(false);
-	
+
 	const fetch = useAuthenticatedFetch(shopAndHost.host);
 
 	useEffect(() => {
@@ -33,7 +30,7 @@ export function OfferPreview(props: IOfferPreviewProps) {
 		combinedCss();
 		setTimeout(function(){ setCarouselLoading(false) }, 500);
 
-		if (!props.previewMode) {
+		if (!previewMode) {
 			fetch(`/api/v2/merchant/offer_settings`, {
 				method: 'POST',
 				headers: {
@@ -69,142 +66,142 @@ export function OfferPreview(props: IOfferPreviewProps) {
 					console.log("Error > ", error);
 				})
 		}
-	}, [offer, props.updatePreviousAppOffer]);
+	}, [offer, updatePreviousAppOffer]);
 
 	// Called everytime when any attribute in shop changes.
 	function combinedCss () {
 		if(offer?.css_options?.main?.marginTop && parseInt(offer?.css_options?.main?.marginTop) > 0) {
-			props.updateCheckKeysValidity("mainMarginTop", true );
+			updateCheckKeysValidity("mainMarginTop", true );
 		}
 		else {
-			props.updateCheckKeysValidity("mainMarginTop", false);
+			updateCheckKeysValidity("mainMarginTop", false);
 		}
 
 		if(offer?.css_options?.main?.marginBottom && parseInt(offer?.css_options?.main?.marginBottom) > 0) {
-			props.updateCheckKeysValidity("mainMarginBottom", true);
+			updateCheckKeysValidity("mainMarginBottom", true);
 		}
 		else {
-			props.updateCheckKeysValidity("mainMarginbottom", false);
+			updateCheckKeysValidity("mainMarginbottom", false);
 		}
 
 		if(offer?.css_options?.main?.borderWidth && parseInt(offer?.css_options?.main?.borderWidth) > 0) {
-			props.updateCheckKeysValidity("mainBorderWidth", true);
+			updateCheckKeysValidity("mainBorderWidth", true);
 		}
 		else {
-			props.updateCheckKeysValidity("mainBorderWidth", false);
+			updateCheckKeysValidity("mainBorderWidth", false);
 		}
 
 		if(offer?.css_options?.main?.borderRadius && parseInt(offer?.css_options?.main?.borderRadius) != 4) {
-			props.updateCheckKeysValidity("mainBorderRadius", true);
+			updateCheckKeysValidity("mainBorderRadius", true);
 		}
 		else {
-			props.updateCheckKeysValidity("mainBorderRadius", false);
+			updateCheckKeysValidity("mainBorderRadius", false);
 		}
 
 		if(offer?.css_options?.button?.borderRadius && parseInt(offer?.css_options?.button?.borderRadius) != 4) {
-			props.updateCheckKeysValidity("buttonBorderRadius", true);
+			updateCheckKeysValidity("buttonBorderRadius", true);
 		}
 		else {
-			props.updateCheckKeysValidity("buttonBorderRadius", false);
+			updateCheckKeysValidity("buttonBorderRadius", false);
 		}
 
 		if(offer?.css_options?.button?.fontWeight && offer?.css_options?.button?.fontWeight != "bold") {
-			props.updateCheckKeysValidity("buttonFontWeight", true);
+			updateCheckKeysValidity("buttonFontWeight", true);
 		}
 		else {
-			props.updateCheckKeysValidity("buttonFontWeight", false);
+			updateCheckKeysValidity("buttonFontWeight", false);
 		}
 
 		if(offer?.css_options?.button?.fontFamily && (offer?.css_options?.button?.fontFamily != "inherit" && offer?.css_options?.button?.fontFamily != "")) {
-			props.updateCheckKeysValidity("buttonFontFamily", true);
+			updateCheckKeysValidity("buttonFontFamily", true);
 		}
 		else {
-			props.updateCheckKeysValidity("buttonFontFamily", false);
+			updateCheckKeysValidity("buttonFontFamily", false);
 		}
 
 		if(offer?.css_options?.button?.fontSize && parseInt(offer?.css_options?.button?.fontSize) > 0) {
-			props.updateCheckKeysValidity("buttonFontSize", true);
+			updateCheckKeysValidity("buttonFontSize", true);
 		}
 		else {
-			props.updateCheckKeysValidity("buttonFontSize", false);
+			updateCheckKeysValidity("buttonFontSize", false);
 		}
 
 		if(offer?.css_options?.button?.width && (offer?.css_options?.button?.width != "auto" && offer?.css_options?.button?.width != "")) {
-			props.updateCheckKeysValidity("buttonWidth", true);
+			updateCheckKeysValidity("buttonWidth", true);
 		}
 		else {
-			props.updateCheckKeysValidity("buttonWidth", false);
+			updateCheckKeysValidity("buttonWidth", false);
 		}
 
 		if(offer?.css_options?.button?.textTransform && offer?.css_options?.button?.textTransform != "inherit") {
-			props.updateCheckKeysValidity("buttonTextTransform", true);
+			updateCheckKeysValidity("buttonTextTransform", true);
 		}
 		else {
-			props.updateCheckKeysValidity("buttonTextTransform", false);
+			updateCheckKeysValidity("buttonTextTransform", false);
 		}
 
 		if(offer?.css_options?.button?.letterSpacing && offer?.css_options?.button?.letterSpacing != "0") {
-			props.updateCheckKeysValidity("buttonLetterSpacing", true);
+			updateCheckKeysValidity("buttonLetterSpacing", true);
 		}
 		else {
-			props.updateCheckKeysValidity("buttonLetterSpacing", false);
+			updateCheckKeysValidity("buttonLetterSpacing", false);
 		}
 
 		if(offer?.css_options?.text?.fontWeight != "bold") {
-			props.updateCheckKeysValidity("textFontWeight", true);
+			updateCheckKeysValidity("textFontWeight", true);
 		}
 		else {
-			props.updateCheckKeysValidity("textFontWeight", false);
+			updateCheckKeysValidity("textFontWeight", false);
 		}
 
 		if(offer?.css_options?.text?.fontFamily != "inherit") {
-			props.updateCheckKeysValidity("textFontFamily", true);
+			updateCheckKeysValidity("textFontFamily", true);
 		}
 		else {
-			props.updateCheckKeysValidity("textFontFamily", false);
+			updateCheckKeysValidity("textFontFamily", false);
 		}
 
 		if(offer?.css_options?.text?.fontSize != "16px") {
-			props.updateCheckKeysValidity("textFontSize", true);
+			updateCheckKeysValidity("textFontSize", true);
 		}
 		else {
-			props.updateCheckKeysValidity("textFontSize", false);
+			updateCheckKeysValidity("textFontSize", false);
 		}
 
 		if(offer?.css_options?.button?.marginTop != "0px" ||
 			offer?.css_options?.button?.marginRight != "0px" ||
         	offer?.css_options?.button?.marginBottom != "5px" ||
         	offer?.css_options?.button?.marginLeft != "0px") {
-			props.updateCheckKeysValidity("buttonMargin", true);
+			updateCheckKeysValidity("buttonMargin", true);
 		}
 		else {
-			props.updateCheckKeysValidity("buttonMargin", false);
+			updateCheckKeysValidity("buttonMargin", false);
 		}
 
 		if(offer?.css_options?.button?.paddingTop != "6px" ||
 			offer?.css_options?.button?.paddingRight != "10px" ||
         	offer?.css_options?.button?.paddingBottom != "6px" ||
         	offer?.css_options?.button?.paddingLeft != "10px") {
-			props.updateCheckKeysValidity("buttonPadding", true);
+			updateCheckKeysValidity("buttonPadding", true);
 		}
 		else {
-			props.updateCheckKeysValidity("buttonPadding", false);
+			updateCheckKeysValidity("buttonPadding", false);
 		}
 
 		if(offer?.selectedView == "mobile") {
-			props.updateCheckKeysValidity("mobileViewWidth", true);
-			props.updateCheckKeysValidity("mainMarginTop", false);
-			props.updateCheckKeysValidity("mainMarginBottom", false);
+			updateCheckKeysValidity("mobileViewWidth", true);
+			updateCheckKeysValidity("mainMarginTop", false);
+			updateCheckKeysValidity("mainMarginBottom", false);
 		}
 		else {
-			props.updateCheckKeysValidity("mobileViewWidth", false);
+			updateCheckKeysValidity("mobileViewWidth", false);
 		}
 
 		if(offer?.css_options?.button?.borderWidth && parseInt(offer?.css_options?.button?.borderWidth) > 0) {
-			props.updateCheckKeysValidity("buttonBorderWidth", true);
+			updateCheckKeysValidity("buttonBorderWidth", true);
 		}
 		else {
-			props.updateCheckKeysValidity("buttonBorderWidth", false);
+			updateCheckKeysValidity("buttonBorderWidth", false);
 		}
 	}
 
@@ -214,21 +211,21 @@ export function OfferPreview(props: IOfferPreviewProps) {
 		<div>
 			{
 				offer.multi_layout == "compact" ? (
-					<Compact offer={offer} checkKeysValidity={props.checkKeysValidity}/>
+					<Compact />
 				) : offer.multi_layout == "stack" ? (
-					<Stack offer={offer} checkKeysValidity={props.checkKeysValidity}/>
+					<Stack />
 				) : offer.multi_layout == "carousel" ? (
 					carouselLoading ? (
-						<Card sectioned>
+						<Card>
 							<TextContainer>
 								<SkeletonBodyText lines={6} />
 							</TextContainer>
 						</Card>
 					) : (
-						<Carousel offer={offer} checkKeysValidity={props.checkKeysValidity} updateCheckKeysValidity={props.updateCheckKeysValidity}/>
+						<Carousel />
 					)
 				) : offer.multi_layout == "flex" ? (
-					<Flex offer={offer} checkKeysValidity={props.checkKeysValidity}/>
+					<Flex />
 				) : (
 					<div></div>
 				)

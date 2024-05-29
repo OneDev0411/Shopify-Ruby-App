@@ -10,6 +10,9 @@ import {useShopState} from "../contexts/ShopContext";
 import ABTestBanner from '../components/ABTestBanner';
 import ErrorPage from "../components/ErrorPage";
 import { IRootState } from '~/store/store';
+import {
+  InfoIcon
+} from '@shopify/polaris-icons';
 
 // import { onLCP, onFID, onCLS } from 'web-vitals';
 // import { traceStat } from "../services/firebase/perf.js";
@@ -70,7 +73,11 @@ export default function Offers() {
             <Layout>
               {shopSettings?.offers_limit_reached && (
                 <Layout.Section>
-                  <ABTestBanner />
+                  <ABTestBanner icon={InfoIcon}
+                                icon_color={"rgb(42, 172, 187)"}
+                                content={""}
+                                background_color={"rgb(221,245,246)"}
+                                border_color={"rgb(109 192 205)"}/>
                 </Layout.Section>
               )}
               <Layout.Section>

@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "@remix-run/react";
 import { useSelector } from "react-redux";
-import { Banner } from "@shopify/polaris";
+import {Icon} from '@shopify/polaris';
 
 import { IRootState } from "~/store/store";
 
 import { useAuthenticatedFetch } from "../hooks";
 
-const ABTestBanner = () => {
+const ABTestBanner = ({ icon, icon_color, content, background_color, border_color }) => {
   const navigateTo = useNavigate();
   const location = useLocation();
   const shopAndHost = useSelector((state: IRootState) => state.shopAndHost);
@@ -59,7 +59,7 @@ const ABTestBanner = () => {
       },
     })
       .then(() => {
-        navigateTo("/subscription");
+        navigateTo("/app/subscription");
       })
       .catch((error) => {
         console.log("error", error);
@@ -69,8 +69,16 @@ const ABTestBanner = () => {
   return (
     <>
       {openBanner() && (
-        <div className='info-banner'>
-          <Banner tone="info">
+         <div style={{ padding: "20px", 
+                       display: "flex", 
+                       borderRadius: "10px",
+                       backgroundColor: `${background_color}`, 
+                       border: `1px solid ${border_color}`
+                    }}>
+          <div style={{ color: `${icon_color}`}}>
+            <Icon source={icon}/>
+          </div>
+          <div style={{ marginLeft: "1%"}}>
             <p>
               You're currently on the Free plan, and limited to one published
               offer at a time.{" "}
@@ -80,7 +88,7 @@ const ABTestBanner = () => {
               to upgrade your plan to get access to more features, and unlimited
               offers!
             </p>
-          </Banner>
+          </div>
         </div>
       )}
     </>

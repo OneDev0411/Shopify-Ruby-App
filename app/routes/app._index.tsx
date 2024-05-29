@@ -7,8 +7,9 @@ import { Banner, Grid, Layout, Page } from "@shopify/polaris";
 import { isSubscriptionActive } from "../services/actions/subscription";
 import { fetchShopData } from "../services/actions/shop";
 
-import { OffersList, OrderOverTimeData, TotalSalesData } from "../components";
-import { CustomTitleBar } from '../components/customtitlebar'
+import { OrderOverTimeData, TotalSalesData, TotalUpSellsData } from "../components/analyticsGraphdata";
+import { OffersList } from "../components";
+import { CustomTitleBar } from '../components/customtitlebar' 
 
 import "../components/stylesheets/mainstyle.css";
 import {ThemeAppCard} from "../components/CreateOfferCard.jsx";
@@ -24,11 +25,17 @@ import ABTestBanner from "../components/ABTestBanner.jsx";
 // import { traceStat } from "../services/firebase/perf.js";
 import { LoadingSpinner } from "../components/atoms/index.js";
 import { IRootState } from "~/store/store";
+import {
+  InfoIcon
+} from '@shopify/polaris-icons';
+import CustomBanner from "~/components/CustomBanner";
 
 export default function HomePage() {
   const env = useEnv();
   const app = useAppBridge();
   const shopAndHost = useSelector((state: IRootState) => state.shopAndHost);
+  const UTM = useSelector((state: IRootState) => state.UTM);
+
 
   const {
     shop,
@@ -138,37 +145,51 @@ export default function HomePage() {
           <Layout>
             {isSubscriptionActive(shop && shop.subscription) && planName!=='free' && trialDays && trialDays>0 &&
               <Layout.Section>
-                <Banner status="info">
-                  <p>{ trialDays } days remaining for the trial period</p>
-                </Banner>
+                <CustomBanner
+                  icon={InfoIcon}
+                  icon_color={"rgb(66,181,194)"}
+                  content="days remaining for the trial period"
+                  background_color="rgb(221,245,246)"
+                  border_color="rgb(187,221,226)"
+                  trial_days={trialDays}
+                />
               </Layout.Section>
             }
 
               {shopSettings?.offers_limit_reached && (
                 <Layout.Section>
-                  <ABTestBanner />
+                  <ABTestBanner icon={InfoIcon}
+                                icon_color={"rgb(42, 172, 187)"}
+                                content={""}
+                                background_color={"rgb(221,245,246)"}
+                                border_color={"rgb(109 192 205)"}/>
                 </Layout.Section>
               )}
 
               {!isLegacy && (
-                <ThemeAppCard
-                  shopData={shop}
-                  themeAppExtension={themeAppExtension}
-                />
-              )} 
+                <Layout.Section>
+                  <ThemeAppCard
+                    shopData={shop}
+                    themeAppExtension={themeAppExtension}
+                  />
+                </Layout.Section>
+              )}
 
               <Layout.Section>
                 <OffersList />
                 {hasOffers && (
                   <Grid>
+                   <Grid.Cell columnSpan={{xs: 6, sm: 3, md: 6, lg: 4, xl: 4}}>
+                        <TotalSalesData period='30-days' title={true} />
+                      </Grid.Cell>  
                     <Grid.Cell columnSpan={{xs: 6, sm: 3, md: 6, lg: 4, xl: 4}}>
-                      <TotalSalesData period='monthly' title={true} onError={handleError} />
+                      <TotalUpSellsData period='30-days' title={true} />
                     </Grid.Cell>
-                    <Grid.Cell columnSpan={{xs: 6, sm: 3, md: 6, lg: 4, xl: 4}}>
-                      <OrderOverTimeData period='monthly' title={true} onError={handleError} />
-                    </Grid.Cell>
-                  </Grid>
-                )}
+                  <Grid.Cell columnSpan={{xs: 6, sm: 3, md: 6, lg: 4, xl: 4}}>
+                    <OrderOverTimeData period='30-days' title={true} />
+                  </Grid.Cell>
+                </Grid>
+                )} 
               </Layout.Section>
           </Layout>
           <div className="space-10"></div>

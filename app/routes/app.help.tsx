@@ -18,13 +18,12 @@ export default function HelpPage() {
     //     onFID(traceStat, {reportSoftNavs: true});
     //     onCLS(traceStat, {reportSoftNavs: true});
     //   }, []);
-    
+
     const handleClose = useCallback(() => {
         setActive(false);
       }, []);
 
-    const videoModal = useRef(null);
-    const activator = videoModal;
+    const activator = useRef(null);
 
   return (
         <Page>
@@ -72,15 +71,15 @@ export default function HelpPage() {
                         title="Create Your First Upsell and Cross-Sell Offer"
                     >
                         <Modal.Section>
-                        <iframe 
-                            width="560" 
-                            height="315" 
-                            src="https://www.youtube-nocookie.com/embed/NibJDu5YFdM?rel=0" 
-                            title="YouTube video player" 
-                            // frameborder="0" 
+                        <iframe
+                            width="560"
+                            height="315"
+                            src="https://www.youtube-nocookie.com/embed/NibJDu5YFdM?rel=0"
+                            title="YouTube video player"
+                            // frameborder="0"
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                             // allowfullscreen
-                        > 
+                        >
                         </iframe>
                         </Modal.Section>
                     </Modal>

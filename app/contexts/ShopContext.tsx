@@ -9,9 +9,11 @@ export const SETTINGS_DEFAULTS = {
 }
 
 const ShopContext = createContext<ShopContent>({
-  shopSettings: SETTINGS_DEFAULTS,
-  isSubscriptionUnpaid: true,
-  shop: null
+    shopSettings: SETTINGS_DEFAULTS,
+    shop: null,
+    setShopSettings: () => {},
+    updateShopSettingsAttributes: () => {},
+    isSubscriptionUnpaid: true
 });
 
 type ShopContent = {
@@ -23,9 +25,9 @@ type ShopContent = {
     setTrialDays?: React.Dispatch<React.SetStateAction<number | undefined>>,
     hasOffers?: boolean,
     setHasOffers?: (hasOffers: boolean) => void,
-    updateShopSettingsAttributes?: (updatedValue: any, ...updatedKey: string[]) => void,
+    updateShopSettingsAttributes: (updatedValue: string | boolean, ...updatedKey: string[]) => void,
     shopSettings: ShopSettings,
-    setShopSettings?: React.Dispatch<React.SetStateAction<ShopSettings>>,
+    setShopSettings: React.Dispatch<React.SetStateAction<ShopSettings>>,
     themeAppExtension?: ThemeAppExtension,
     setThemeAppExtension?: React.Dispatch<React.SetStateAction<ThemeAppExtension | undefined>>,
     isSubscriptionUnpaid: boolean,
@@ -41,7 +43,7 @@ export default function ShopProvider({ children }) {
     const [isSubscriptionUnpaid, setIsSubscriptionUnpaid] = useState<boolean>(true);
     const [themeAppExtension, setThemeAppExtension] = useState<ThemeAppExtension>();
       
-  function updateShopSettingsAttributes(updatedValue: any, ...updatedKey: string[]) {
+  function updateShopSettingsAttributes(updatedValue: string | boolean, ...updatedKey: string[]) {
     if (updatedKey.length == 1) {
       setShopSettings(previousState => {
         return {...previousState, [updatedKey[0]]: updatedValue};
