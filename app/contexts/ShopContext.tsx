@@ -13,16 +13,21 @@ const ShopContext = createContext<ShopContent>({
     shop: null,
     setShopSettings: () => {},
     updateShopSettingsAttributes: () => {},
-    isSubscriptionUnpaid: true
+    isSubscriptionUnpaid: true,
+    planName: '',
+    setPlanName: () => {},
+    trialDays: 0,
+    setTrialDays: () => {},
+    setIsSubscriptionUnpaid: () => {}
 });
 
 type ShopContent = {
     shop: Shop | null,
     setShop?: (shop: Shop) => void,
-    planName?: string,
-    setPlanName?: React.Dispatch<React.SetStateAction<string>>,
-    trialDays?: number,
-    setTrialDays?: React.Dispatch<React.SetStateAction<number | undefined>>,
+    planName: string,
+    setPlanName: React.Dispatch<React.SetStateAction<string>>,
+    trialDays: number,
+    setTrialDays: React.Dispatch<React.SetStateAction<number>>,
     hasOffers?: boolean,
     setHasOffers?: (hasOffers: boolean) => void,
     updateShopSettingsAttributes: (updatedValue: string | boolean, ...updatedKey: string[]) => void,
@@ -31,13 +36,13 @@ type ShopContent = {
     themeAppExtension?: ThemeAppExtension,
     setThemeAppExtension?: React.Dispatch<React.SetStateAction<ThemeAppExtension | undefined>>,
     isSubscriptionUnpaid: boolean,
-    setIsSubscriptionUnpaid?: (isSubscriptionUnpaid: boolean) => void,
+    setIsSubscriptionUnpaid: (isSubscriptionUnpaid: boolean) => void,
 }
 
 export default function ShopProvider({ children }) {
     const [shop, setShop] = useState<Shop | null>(null);
     const [planName, setPlanName] = useState<string>("");
-    const [trialDays, setTrialDays] = useState<number>();
+    const [trialDays, setTrialDays] = useState<number>(0);
     const [hasOffers, setHasOffers] = useState<boolean>();
     const [shopSettings, setShopSettings] = useState<ShopSettings>({...SETTINGS_DEFAULTS});
     const [isSubscriptionUnpaid, setIsSubscriptionUnpaid] = useState<boolean>(true);
