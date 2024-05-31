@@ -13,9 +13,9 @@ export const OffersListSortOptions = [
 ];
 
 export const ExcludeVariantSelectors = [
-  'cart_at_least', 
-  'cart_at_most', 
-  'cart_exactly', 
+  'cart_at_least',
+  'cart_at_most',
+  'cart_exactly',
   'cart_does_not_contain'
 ];
 
@@ -55,3 +55,5 @@ export const GermanyReviewDescription = `
   Everything works fluently and I could 3x my conversion rate.
   Very helpful.
 `;
+
+export const ApiBaseUrl = '/api/v2/merchant';
