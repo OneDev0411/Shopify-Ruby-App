@@ -1,14 +1,27 @@
-import {Link,Icon,Modal, Card, Page, Layout, Image, ExceptionList,Grid, List, BlockStack} from "@shopify/polaris";
+import {
+    Link,
+    Modal,
+    Card,
+    Page,
+    Layout,
+    Image,
+    ExceptionList,
+    Grid,
+    List,
+    BlockStack,
+    Text,
+} from "@shopify/polaris";
 import { helpImage } from "@assets/index";
-import {LightbulbIcon} from '@shopify/polaris-icons';
-import {useRef, useState, useCallback} from 'react';
+import { LightbulbIcon } from '@shopify/polaris-icons';
+import { useRef, useState } from 'react';
 import "../components/stylesheets/mainstyle.css";
 import { CustomTitleBar } from "../components/customtitlebar";
 import { HelpLinks } from "../shared/constants/HelpPageLinks";
 
 import ModalChoosePlan from '../components/modal_ChoosePlan';
+import { ArticleLink } from "~/shared/constants/Others";
 // import { onLCP, onFID, onCLS } from 'web-vitals';
-// import { traceStat } from "../services/firebase/perf.js";
+// import { traceStat } from "../services/firebase/perf";
 
 export default function HelpPage() {
     const [active, setActive] = useState<boolean>(false);
@@ -18,10 +31,10 @@ export default function HelpPage() {
     //     onFID(traceStat, {reportSoftNavs: true});
     //     onCLS(traceStat, {reportSoftNavs: true});
     //   }, []);
-
-    const handleClose = useCallback(() => {
+    
+    const handleClose = () => {
         setActive(false);
-      }, []);
+    }
 
     const activator = useRef(null);
 
@@ -37,19 +50,21 @@ export default function HelpPage() {
                             <ExceptionList
                                 items={[
                                     {
-                                    icon: LightbulbIcon,
-                                    description:
-                                        'Here is a list of relevant articles you may find helpful',
+                                        icon: LightbulbIcon,
+                                        description:
+                                            'Here is a list of relevant articles you may find helpful',
                                     },
                                 ]}
                             />
-                            <p>There are more help articles in our <Link url="https://help.incartupsell.com/en/collections/6780837-help-articles-for-new-ui" external target="_blank">Help Docs</Link> page</p>
+                            <p>There are more help articles in our <Link url={ArticleLink} target="_blank">Help Docs</Link> page</p>
                             <Grid>
                                 <Grid.Cell columnSpan={{xs: 6, sm: 3, md: 6, lg: 8, xl: 6}}>
-                                    <div className={"help-articles"}>
+                                    <div className="help-articles">
                                         <List>
                                             {HelpLinks.map((helpLink)=> {
-                                            return <List.Item><Link url={helpLink.link} external removeUnderline target="_blank">{helpLink.title}</Link></List.Item>
+                                                return <List.Item>
+                                                    <Link url={helpLink.link} removeUnderline target="_blank">{helpLink.title}</Link>
+                                                </List.Item>
                                             })}
                                         </List>
                                     </div>
@@ -71,16 +86,15 @@ export default function HelpPage() {
                         title="Create Your First Upsell and Cross-Sell Offer"
                     >
                         <Modal.Section>
-                        <iframe
-                            width="560"
-                            height="315"
-                            src="https://www.youtube-nocookie.com/embed/NibJDu5YFdM?rel=0"
-                            title="YouTube video player"
-                            // frameborder="0"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                            // allowfullscreen
-                        >
-                        </iframe>
+                            <iframe 
+                                width="560" 
+                                height="315" 
+                                src="https://www.youtube-nocookie.com/embed/NibJDu5YFdM?rel=0" 
+                                title="YouTube video player" 
+                                // frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                // allowfullscreen
+                            /> 
                         </Modal.Section>
                     </Modal>
                 </Layout.Section>

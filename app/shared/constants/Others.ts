@@ -111,3 +111,5 @@ export const PricingList = [
     value: "99.99"
   }
 ];
+
+export const ArticleLink = "https://help.incartupsell.com/en/collections/6780837-help-articles-for-new-ui";
