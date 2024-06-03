@@ -4,7 +4,6 @@ import {
 	Layout,
 	Image,
 	BlockStack,
-	Banner,
 	Text,
 	InlineStack,
 	Button,
@@ -29,6 +28,7 @@ import { IRootState } from "~/store/store";
 import { LoadingSpinner } from "../components/atoms/index";
 import { IApiResponse, Subscription as SubscriptionType } from "~/types/types";
 import { sendToastMessage } from "~/shared/helpers/commonHelpers";
+import { PricingList, SubscriptionFeatures } from "~/shared/constants/Others";
 import {InfoIcon} from "@shopify/polaris-icons";
 import CustomBanner from "~/components/CustomBanner";
 
@@ -57,8 +57,11 @@ export default function Subscription() {
 	const [activeOffersCount, setActiveOffersCount] = useState<number>();
 	const [unpublishedOfferIds, setUnpublishedOfferIds] = useState<number[]>([]);
 	const app = useAppBridge();
-	const [isLoading, setIsLoading] = useState<boolean>(true);
-	const [upgradeButtonDisable, setUpgradeButtonDisable] = useState<boolean>(false);
+	const [isLoading, setIsLoading] = useState<boolean>(false);
+	const firstBannerCondition: boolean = isSubscriptionActive(currentSubscription) && planName!=='free' && trialDays && trialDays ? true : false;
+	const thirdBannerCondition: boolean = (planName==='trial' && (unpublishedOfferIds?.length>0 || activeOffersCount)) ? true : false;
+	const showUpgradeButton: boolean = !(planName === "flex" && isSubscriptionActive(currentSubscription) && !isSubscriptionUnpaid);
+	const showFreePlanButton: boolean = !(planName === "free" || (planName === "trial" &&	isSubscriptionActive(currentSubscription)));
 
   // useEffect(()=> {
   //   onLCP(traceStat, {reportSoftNavs: true});
@@ -106,8 +109,10 @@ export default function Subscription() {
 	}
 
 	useEffect(() => {
+		setIsLoading(true);
 		const fetchSubscription = () => {
 			let redirect = Redirect.create(app);
+			setIsLoading(true);
 			fetch(`/api/v2/merchant/current_subscription?shop=${shopAndHost.shop}`, {
 				method: 'GET',
 				headers: {
@@ -128,15 +133,16 @@ export default function Subscription() {
 					setIsLoading(false);
 				}
 			})
-			.catch((error: Error) => {
-				setError(error);
-				console.log("error", error);
+			.catch((err: Error) => {
+				setError(err);
+				setIsLoading(false);
+				console.log("error", err);
 			})
 		};
-
+		
 		fetchSubscription();
 	}, []);
-
+    
   if (error) { return <ErrorPage showBranding={true} />; }
 
   return (
@@ -149,37 +155,34 @@ export default function Subscription() {
             <div className="auto-height paid-subscription">
               <Layout>
                 <Layout.Section>
-                  {(isSubscriptionActive(currentSubscription) && planName!=='free' && trialDays && trialDays>0) ? (
-                    <CustomBanner
-                      icon={InfoIcon}
-                      icon_color={"rgb(66,181,194)"}
-                      content=" days remaining for the trial period"
-                      background_color="rgb(221,245,246)"
-                      border_color="rgb(187,221,226)"
-                      trial_days={trialDays}
-                      name="non_icon"
-                    />) : null
-                  }
-                  {!isSubscriptionActive(currentSubscription) ? (
-                    <CustomBanner
-                      icon={InfoIcon}
-                      icon_color={"rgb(66,181,194)"}
-                      content="Your Subscription Is Not Active: please confirm it on this page"
-                      background_color="rgb(221,245,246)"
-                      border_color="rgb(187,221,226)"
-                      name="non_icon"
-                    />) : null
-                  }
-                  {(planName==='trial' && (unpublishedOfferIds?.length>0 || activeOffersCount)) ? (
-                    <CustomBanner
-                      icon={InfoIcon}
-                      icon_color={"rgb(66,181,194)"}
-                      content="If you choose free plan after trial, offers will be unpublished"
-                      background_color="rgb(221,245,246)"
-                      border_color="rgb(187,221,226)"
-                      name="non_icon"
-                    />) : null
-                  }
+                  	{firstBannerCondition && (
+						<CustomBanner
+							icon={InfoIcon}
+							icon_color={"rgb(66,181,194)"}
+							content=" days remaining for the trial period"
+							background_color="rgb(221,245,246)"
+							border_color="rgb(187,221,226)"
+							trial_days={trialDays}
+							name="non_icon"
+						/>)}
+                  	{!isSubscriptionActive(currentSubscription) && (
+						<CustomBanner
+							icon={InfoIcon}
+							icon_color={"rgb(66,181,194)"}
+							content="Your Subscription Is Not Active: please confirm it on this page"
+							background_color="rgb(221,245,246)"
+							border_color="rgb(187,221,226)"
+							name="non_icon"
+						/>)}
+                  	{thirdBannerCondition && (
+						<CustomBanner
+						icon={InfoIcon}
+						icon_color={"rgb(66,181,194)"}
+						content="If you choose free plan after trial, offers will be unpublished"
+						background_color="rgb(221,245,246)"
+						border_color="rgb(187,221,226)"
+						name="non_icon"
+					/>)}
                 </Layout.Section>
                 <Layout.Section>
                   Choose a Plan
@@ -187,115 +190,94 @@ export default function Subscription() {
                 <Layout.Section>
                   <Card>
                     <BlockStack>
-											<div className="recommended-current">
-												{(planName==='flex' && isSubscriptionActive(currentSubscription)) ? (
-													<p><small>Current Plan</small></p>
-												) : (
-													<p><small>Recommended</small></p>
-												)}
-											</div>
-											<Text variant="headingMd" as="h6">IN CART UPSELL & CROSS-SELL UNLIMITED - Paid Subscription</Text>
-											<p className="subscription-subtitle">Upgrade now on our 30-DAY FREE TRIAL!</p>
-											<div className="sub-hr-custom"></div>
-											<div className="pl-10">
-												<p className="bold space-4">Features</p>
-												<div className="features-grid">
-													<div className="features">
-														<p className="subscription-feature">500 Upsell Offers</p>
-														<p className="subscription-desc">Create as many as you want!</p>
-														<p className="subscription-feature">Unlimited Upsell orders</p>
-														<p className="subscription-desc">No order limit!</p>
-														<p className="subscription-feature">Autopilot AI offers</p>
-														<p className="subscription-desc">Automatic offers feature, simply let it run</p>
-														<p className="subscription-feature">Autopilot AI offers</p>
-														<p className="subscription-desc">Cart, AJAX cart, & product page offers</p>
-														<p className="subscription-feature">Offer multiple upsells</p>
-														<p className="subscription-desc">A/B testing</p>
-														<p className="subscription-feature">Learn which offers perform the best</p>
-														<p className="subscription-desc">Offer discounts with upsell offers</p>
-														<p className="subscription-feature">Conditional logic</p>
-														<p className="subscription-desc">Show the right offer based on set conditions</p>
-														<p className="subscription-feature">Custom design & placement</p>
-														<p className="subscription-desc">Full offer box design customization </p>
-													</div>
-													<Image
-														source={billingImg}
-														alt="upgrade subscription"
-														className="billing-image"
-													/>
-												</div>
-											</div>
-											<div className="sub-hr-custom"></div>
-											<div className="pl-10">
-												<p className="bold space-4">Pricing</p>
-												<p className="mb-16">Paid app subscription plan pricing is based on your Shopify store’s subscription</p>
+						<div className="recommended-current">
+							{(planName==='flex' && isSubscriptionActive(currentSubscription)) ? (
+								<Text variant="bodySm" as="p">Current Plan</Text>
+							) : (
+								<Text variant="bodySm" as="p">Recommended</Text>
+							)}
+						</div>
+						<Text variant="headingMd" as="h6">IN CART UPSELL & CROSS-SELL UNLIMITED - Paid Subscription</Text>
+						<Text as="p">Upgrade now on our 30-DAY FREE TRIAL!</Text>
+						<div className="sub-hr-custom"></div>
+						<BlockStack as="div" gap="400">
+							<Text as="p" fontWeight="bold">Features</Text>
+							<BlockStack>
+								<BlockStack gap="050">
+									{SubscriptionFeatures.map((feature, id) => (
+										<BlockStack key={id}>
+											<Text as="p">{feature.feature}</Text>
+											<Text as="p">{feature.description}</Text>
+										</BlockStack>
+									))}
+								</BlockStack>
+								<Image
+									source={billingImg}
+									alt="upgrade subscription"
+									width={200}
+								/>
+							</BlockStack>
+						</BlockStack>
+						<div className="sub-hr-custom"></div>
+						<BlockStack gap="400">
+							<Text as="p" fontWeight="bold">Pricing</Text>
+							<Text as="p">Paid app subscription plan pricing is based on your Shopify store’s subscription</Text>
 
-												<div className="pricing-grid">
-													<p><b>Shopify Subscription</b></p>
-													<p><b>In Cart Upsell & Cross Sell Unlimited price</b></p>
-													<p className="mt-14">Basic</p>
-													<p className="mt-14">$19.99/mo</p>
-													<p className="mt-14">Shopify</p>
-													<p className="mt-14">$29.99/mo</p>
-													<p className="mt-14">Advanced</p>
-													<p className="mt-14">$59.99/mo</p>
-													<p className="mt-14">Plus</p>
-													<p className="mt-14">$99.99/mo</p>
-												</div>
-											</div>
+							<BlockStack gap="300">
+								<Text as="p" fontWeight="bold">Shopify Subscription</Text>
+								<Text as="p" fontWeight="bold">In Cart Upsell & Cross Sell Unlimited price</Text>
+								{PricingList.map((price, id) => (
+									<BlockStack gap="300" key={id}>
+										<Text as="p">{price.type}</Text>
+										<Text as="p">${price.value}/mo</Text>
+									</BlockStack>	
+								))}
+							</BlockStack>
+						</BlockStack>
                     </BlockStack>
-                    <InlineStack align="end">
-											<ButtonGroup>
-												<Button
-													disabled={upgradeButtonDisable}
-													variant="primary"
-													onClick={() => {
-														planName === "flex" &&
-														isSubscriptionActive(currentSubscription) &&
-														!isSubscriptionUnpaid
-															? setUpgradeButtonDisable(true)
-															: handlePlanChange("plan_based_billing");
-													}}
-													accessibilityLabel="Upgrade"
-												>
-													Upgrade
-												</Button>
-											</ButtonGroup>
-										</InlineStack>
+                    {showUpgradeButton && 
+						<InlineStack align="end">
+							<ButtonGroup>
+								<Button
+									variant="primary"
+									onClick={() => handlePlanChange("plan_based_billing")}
+									accessibilityLabel="Upgrade"
+								>
+									Upgrade
+								</Button>
+							</ButtonGroup>
+						</InlineStack>
+					}
                   </Card>
                 </Layout.Section>
                 <Layout.Section variant="oneThird">
                   <Card>
                     <div className="recommended-current">
                       {(planName==='free' && isSubscriptionActive(currentSubscription)) ? (
-                        <p><small>Current Plan</small></p>
+                        <Text variant="bodySm" as="p" >Current Plan</Text>
                       ) : (
-                        <p><small>Not Recommended</small></p>
+                        <Text variant="bodySm" as="p">Not Recommended</Text>
                       )}
                     </div>
                     <Text variant="headingMd" as="h6">Free</Text>
-                    <p className="subscription-subtitle">1 branded upsell offer</p>
+										<Text as="p">1 branded upsell offer</Text>
                     <div className="mt-28">
-                      <p><b>1 upsell offer only</b></p>
-                      <p>with “Powered by In Cart Upsell” watermark at bottom of offer block</p>
+                      <Text as="p" fontWeight="bold">1 upsell offer only</Text>
+                      <Text as="p">with “Powered by In Cart Upsell” watermark at bottom of offer block</Text>
                     </div>
-                    <InlineStack align="end">
-											<ButtonGroup>
-												<Button
-													variant="primary"
-													onClick={() => {
-													planName === "free" ||
-													(planName === "trial" &&
-														isSubscriptionActive(currentSubscription))
-														? undefined
-														: handlePlanChange("free_plan");
-													}}
-													accessibilityLabel="Downgrade"
-												>
-													Downgrade
-												</Button>
-											</ButtonGroup>
-										</InlineStack>
+						{showFreePlanButton &&
+							<InlineStack align="end">
+								<ButtonGroup>
+									<Button
+										variant="primary"
+										onClick={() => handlePlanChange("free_plan")}
+										accessibilityLabel="Downgrade"
+									>
+										Downgrade
+									</Button>
+								</ButtonGroup>
+							</InlineStack>
+						}
                   </Card>
                 </Layout.Section>
               </Layout>
@@ -305,9 +287,9 @@ export default function Subscription() {
             <Layout>
               <Layout.Section>
                 <Card>
-                  <p>Need help, have some questions, or just want to say hi? We're available for a live chat 7 days a week from 5 AM EST - 9 PM EST.</p>
+                  <Text as="p">Need help, have some questions, or just want to say hi? We're available for a live chat 7 days a week from 5 AM EST - 9 PM EST.</Text>
                   <br/>
-                  <p>Not anything urgent? Fire us an email, we usually respond with 24 hours Monday to Friday</p>
+                  <Text as="p">Not anything urgent? Fire us an email, we usually respond with 24 hours Monday to Friday</Text>
                 </Card>
               </Layout.Section>
             </Layout>

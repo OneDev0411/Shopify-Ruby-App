@@ -542,11 +542,36 @@ interface IApiResponse {
 }
 
 export type {
-    JsonVariants, ProductDetails, PlacementSetting, AdvancedPlacementSetting, CssOptions, Plan, Offer,
-    Shop, ShopSettings, SessionData, Subscription, ThemeAppExtension, ProductVariants, Product, Variant, Rule,
-    IAutopilotSettingsProps, AutopilotCheck, ShopAndHost, ThemeSetting, IVideoModalProps, IEnvContext,
-    UpdateCheckKeysValidityFunc, IAnalyticsGraphProps, AnalyticsData, ShopSalesStats, SettingsFormData, ToastOptions, IApiResponse
-}
+  JsonVariants,
+  ProductDetails,
+  PlacementSetting,
+  AdvancedPlacementSetting,
+  CssOptions,
+  Plan,
+  Offer,
+  Shop,
+  ShopSettings,
+  SessionData,
+  Subscription,
+  ThemeAppExtension,
+  ProductVariants,
+  Product,
+  Variant,
+  Rule,
+  IAutopilotSettingsProps,
+  AutopilotCheck,
+  ShopAndHost,
+  ThemeSetting,
+  IVideoModalProps,
+  IEnvContext,
+  UpdateCheckKeysValidityFunc,
+  IAnalyticsGraphProps,
+  AnalyticsData,
+  ShopSalesStats,
+  SettingsFormData,
+  ToastOptions,
+  IApiResponse,
+};
 
 declare global {
     interface Window {

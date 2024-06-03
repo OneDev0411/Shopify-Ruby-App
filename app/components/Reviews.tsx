@@ -1,7 +1,7 @@
-import { Layout, Card, BlockStack, InlineGrid, Text } from "@shopify/polaris";
+import { Layout, BlockStack, InlineGrid, Text } from "@shopify/polaris";
 import "../components/stylesheets/reviewStyle.css";
 import { ReviewCard } from "./organisms";
-import { CanadaReviewDescription, FiveStarImage, GermanyReviewDescription, USReviewDescription } from "~/shared/constants/Others";
+import { CanadaReviewDescription, GermanyReviewDescription, USReviewDescription } from "~/shared/constants/Others";
 
 export const Reviews = () => {
     
@@ -10,9 +10,7 @@ export const Reviews = () => {
       <Layout>
         <Layout.Section>
           <BlockStack align="center">
-            <p className="review-section-title">
-              <strong>750+ 5 star reviews<br/>Trusted by over a thousand Shopify merchants</strong>
-            </p>
+            <Text alignment="center" as="strong">750+ 5 star reviews<br/>Trusted by over a thousand Shopify merchants</Text>
           </BlockStack>
         </Layout.Section>
       </Layout>
@@ -23,21 +21,11 @@ export const Reviews = () => {
           reviewCountry="Canada"
           reviewDescription={CanadaReviewDescription} 
         />
-        <Card>
-          <div className="card-content-wrapper">
-            <Text variant="headingMd" as="h2">My Gaming Case</Text>
-            <div className="gap-top">
-              <p>
-                <strong>United States</strong>
-              </p>
-              <p>{USReviewDescription}</p>
-              <br />
-            </div>
-            <span className="align-center" >
-              <img alt="5 stars Image" className="five-star-image" src={FiveStarImage}/>
-            </span>
-          </div>
-        </Card>
+        <ReviewCard
+          reviewHead="My Gaming Case"
+          reviewCountry="United States"
+          reviewDescription={USReviewDescription}
+        />
         <ReviewCard
           reviewHead="Deinhamudi.de"
           reviewCountry="Germany"

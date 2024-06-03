@@ -1,15 +1,15 @@
 
-import {Icon, Text, Button} from '@shopify/polaris';
-import {Link} from "@remix-run/react";
+import { Icon, Text } from '@shopify/polaris';
+import { Link } from "@remix-run/react";
 import { XIcon }  from '@shopify/polaris-icons';
-import {useState} from "react";
+import { useState } from "react";
 
 const CustomBanner = ({ icon,icon_color="", content="", link_keyword="", after_link_content="", background_color="",
                         border_color="", link_to="", name="", title="", trial_days=0 }) => {
   let contentBlock: JSX.Element | null = null;
   let dismissIconBlock: JSX.Element | null = null;
   let iconBlock: JSX.Element | null = null;
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState<boolean>(true);
 
   const closeBanner = () => {
     setOpen(false);
@@ -20,10 +20,11 @@ const CustomBanner = ({ icon,icon_color="", content="", link_keyword="", after_l
     contentBlock = (
       <>
         <Text as="h6" variant="headingMd">{title}</Text><br/>
-        <p>{content}<br/><br/>
-        <Link to={link_to} target="_blank">{link_keyword}</Link>{" "}
-        {after_link_content}
-        </p>
+        <Text as="p">
+          {content}<br/><br/>
+          <Link to={link_to} target="_blank">{link_keyword}</Link>{" "}
+          {after_link_content}
+        </Text>
       </>
     );
   }
@@ -31,22 +32,22 @@ const CustomBanner = ({ icon,icon_color="", content="", link_keyword="", after_l
     contentBlock = (
       <>
         <Text as="h6" variant="headingMd">{title}</Text><br/>
-        <p>
+        <Text as="p">
           {content}
           <Link to={link_to} target="_blank">{link_keyword}</Link>{" "}
           {after_link_content}
-        </p>
+        </Text>
       </>
     );
   }
   else if (name=="limited_publish_offer") {
     contentBlock = (
       <>
-        <p>
+        <Text as="p">
           {content}
           <Link to={link_to}>{link_keyword}</Link>
           {after_link_content}
-        </p>
+        </Text>
       </>
     );
   }
@@ -54,15 +55,15 @@ const CustomBanner = ({ icon,icon_color="", content="", link_keyword="", after_l
     contentBlock = (
       <>
         <Text as="h6" variant="headingMd">{title}</Text>
-        <p>{content}</p>
+        <Text as="p">{content}</Text>
       </>
     );
   }
   else if (trial_days != 0) {
-    contentBlock = (<p>{trial_days} {content}</p>)
+    contentBlock = (<Text as="p">{trial_days} {content}</Text>)
   }
   else {
-    contentBlock = (<p>{content}</p>)
+    contentBlock = (<Text as="p">{content}</Text>)
   }
 
   if (name=="dismiss_banner" || name=="theme_app_second_banner" || name=="analytics_dismiss_banner") {

@@ -57,3 +57,57 @@ export const GermanyReviewDescription = `
 `;
 
 export const ApiBaseUrl = '/api/v2/merchant';
+
+export const SubscriptionFeatures = [
+  {
+    feature: "500 Upsell Offers",
+    description : "Create as many as you want!"
+  },
+  {
+    feature: "Unlimited Upsell orders",
+    description : "No order limit!"
+  },
+  {
+    feature: "Autopilot AI offers",
+    description : "Automatic offers feature, simply let it run"
+  },
+  {
+    feature: "Autopilot AI offers",
+    description : "Cart, AJAX cart, & product page offers"
+  },
+  {
+    feature: "Offer multiple upsells",
+    description : "A/B testing"
+  },
+  {
+    feature: "Learn which offers perform the best",
+    description : "Offer discounts with upsell offers"
+  },
+  {
+    feature: "Conditional logic",
+    description : "Show the right offer based on set conditions"
+  },
+  {
+    feature: "Custom design & placement",
+    description : "Full offer box design customization"
+  }
+];
+
+export const PricingList = [
+  {
+    type: "Basic",
+    value: "19.99"
+  },
+  {
+    type: "Basic",
+    value: "29.99"
+  },
+  {
+    type: "Basic",
+    value: "59.99"
+  },
+  {
+    type: "Basic",
+    value: "99.99"
+  }
+];
