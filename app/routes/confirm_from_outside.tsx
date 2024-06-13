@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
-import {Redirect} from '@shopify/app-bridge/actions';
+import { Redirect } from '@shopify/app-bridge/actions';
 import { useAppBridge } from '@shopify/app-bridge-react';
 import { useSelector } from "react-redux";
 import { useAuthenticatedFetch } from "../hooks";
-import { Toast } from '@shopify/app-bridge/actions';
 import { IRootState } from '~/store/store';
+import { sendToastMessage } from '~/shared/helpers/commonHelpers';
 
 const ConfirmFromOutside = () => {
   const urlParams = new URLSearchParams(typeof document !== 'undefined' ? window.location.search : '');
@@ -19,12 +19,12 @@ const ConfirmFromOutside = () => {
 
     fetch(`/api/v2/merchant/subscription/confirm_charge?shop=${shopify_domain}&charge_id=${charge_id}`, {
       method: 'GET',
-         headers: {
-           'Content-Type': 'application/json',
-         },
+        headers: {
+          'Content-Type': 'application/json',
+        },
      })
-     .then( (response) => { return response.json(); })
-     .then( (data) => {
+     .then((response) => response.json())
+     .then((data) => {
       if (typeof document !== 'undefined' && window.top == window.self) {
         // If the current window is the 'parent', change the URL by setting location.href  
         redirect.dispatch(Redirect.Action.REMOTE, `/confirm_charge?success=${data.success}`);
@@ -41,8 +41,7 @@ const ConfirmFromOutside = () => {
         duration: 3000,
         isError: true,
       };
-      const toastError = Toast.create(app, toastOptions);
-      toastError.dispatch(Toast.Action.SHOW);
+      sendToastMessage(app, toastOptions)
       console.log("error", error);
      })
   }

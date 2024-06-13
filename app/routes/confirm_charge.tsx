@@ -1,8 +1,8 @@
-import {Page, Layout, Card, BlockStack as Stack, Image, BlockStack} from "@shopify/polaris";
+import { Page, Layout, Card, BlockStack as Stack, Image, BlockStack } from "@shopify/polaris";
 import { TitleBar } from "@shopify/app-bridge-react";
-import {Redirect, Toast} from '@shopify/app-bridge/actions';
+import { Redirect } from '@shopify/app-bridge/actions';
 import { useAppBridge } from '@shopify/app-bridge-react'
-import {woohoo} from "@assets";
+import { woohoo } from "@assets";
 import "../components/stylesheets/mainstyle.css";
 import React from 'react';
 import { useSelector } from 'react-redux';
@@ -55,7 +55,7 @@ export default function ConfirmCharge() {
                   </BlockStack>
                 </Card>
               </Layout.Section>
-              )}
+            )}
           </Layout>
         </div>
         <div className="space-10"></div>

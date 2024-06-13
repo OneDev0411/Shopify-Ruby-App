@@ -46,6 +46,13 @@
     max-width: 100px;
 }
 
+.edit-offer {
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+}
+
 .edit-offer #appearance input[type=number]{
     max-width: unset;
 }
